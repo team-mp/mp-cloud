@@ -1,0 +1,237 @@
+[
+  {
+    "ID": "651037a9-ffaf-4591-9697-6b171676a452",
+    "Name": "確認ダイアログ表示",
+    "Commands": [
+      {
+        "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+        "ConditionAndCommandPairList": [
+          {
+            "ConfirmDialogSettings": {
+              "Title": "確認",
+              "FormulaText": "更新します。よろしいですか？",
+              "YesButtonText": "はい",
+              "NoButtonText": "いいえ",
+              "ConfirmIcon": 1
+            },
+            "CommandList": [
+              {
+                "$type": "Forguncy.Model.RunJavaScriptCommand, ServerDesignerCommon",
+                "JavaScript": "return true;",
+                "ID": "e36a44f65bd64e7fb3078014468ae678"
+              }
+            ],
+            "ID": "516be6ed-b49b-4c51-9463-264a2c4f4de2"
+          },
+          {
+            "CommandList": [
+              {
+                "$type": "Forguncy.Model.RunJavaScriptCommand, ServerDesignerCommon",
+                "JavaScript": "return false;",
+                "ID": "019256581d4f4b81b2236bfdc4cdc89a"
+              }
+            ],
+            "ID": "051e02bb-afa1-4c06-a377-45c1c15b57e3"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "ID": "73d6a821-e3af-4c90-96a4-05a5f994d97f",
+    "Name": "更新後画面を終了（連結データ最新化あり）",
+    "Commands": [
+      {
+        "$type": "Forguncy.Model.ClosePopupCommand, ServerDesignerCommon",
+        "ReloadData": true
+      }
+    ]
+  },
+  {
+    "ID": "fcb48237-d629-46b8-af06-d9ab3deebcb1",
+    "Name": "郵便番号から住所取得",
+    "Commands": [
+      {
+        "$type": "Forguncy.Model.RunJavaScriptCommand, ServerDesignerCommon",
+        "JavaScript": "var page = Forguncy.Page;\r\nvar zip_code = page.getCell(\"zip_code\").getValue();\r\nvar address1 = page.getCell(\"address1\");\r\nvar address2 = page.getCell(\"address2\");\r\nvar address3 = page.getCell(\"address3\");\r\n\r\nif(zip_code == null){\r\n   alert(\"郵便番号を入力して下さい\");\r\n   return false;\r\n};\r\n\r\n\r\n//住所取得開始\r\ngetAddressData(zip_code);\r\n\r\n/* 郵便番号から都道府県・市区町村データを取得する */\r\n\r\nfunction getAddressData(zip) {\r\n  //var zipPattern = /^[0-9]{3}-?[0-9]{4}$/;\r\n  //if(!zip.match(zipPattern)) {\r\n  //  return false;\r\n  //}\r\n \r\n  var api = 'https://zipcloud.ibsnet.co.jp/api/search?zipcode=';\r\n  var param = zip.replace('-', '');\r\n  var url = api + param;\r\n \r\n  fetchJsonp(url, {\r\n    timeout: 10000,\r\n  })\r\n  .then((response) => {\r\n    return response.json();\r\n  })\r\n  .then((data) => {\r\n    if(data.status === 400){\r\n      // エラー時の処理\r\n    }else if(data.results === null){\r\n      // 郵便番号から住所が見つからなかった場合の処理\r\n      address1.setValue(); \r\n      address2.setValue(); \r\n      address3.setValue(); \r\n    } else {\r\n      address1.setValue(data.results[0].address1);\r\n      address2.setValue(data.results[0].address2);\r\n      address3.setValue(data.results[0].address3);\r\n      console.log(data.results[0]);\r\n    }\r\n  })\r\n\r\n}",
+        "ID": "59b9dfa44592428192fa97ee533e636e"
+      }
+    ]
+  },
+  {
+    "ID": "d264c889-25fd-4117-8903-138fed0edbd5",
+    "Name": "物件情報入力チェック",
+    "Params": [
+      {
+        "ID": "f4020dbd-8489-4d17-a560-2d13d30fec2f",
+        "Name": "P_物件名"
+      },
+      {
+        "ID": "84220e0a-8669-4f56-ac13-b3c44128e6f9",
+        "Name": "P_都道府県"
+      },
+      {
+        "ID": "ba48ec7c-6dd8-4607-bdb5-682e8362e8d1",
+        "Name": "P_市区郡名"
+      },
+      {
+        "ID": "4ec6b7ec-2f7b-43d7-b867-86188a32337d",
+        "Name": "P_町名番地"
+      }
+    ],
+    "Commands": [
+      {
+        "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+        "ConditionAndCommandPairList": [
+          {
+            "Condition": {
+              "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+              "param": {
+                "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+                "cellLocations": [
+                  {
+                    "SerializeProperty": "=P_物件名"
+                  }
+                ]
+              },
+              "value": "%Null%"
+            },
+            "CommandList": [
+              {
+                "$type": "Forguncy.Model.ShowMessageCommand, ServerDesignerCommon",
+                "MessageFormula": "物件名を入力してください"
+              },
+              {
+                "$type": "SetFocusCommand.SetFocusCommand, SetFocusCommand",
+                "TargetCell": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=P_物件名"
+                }
+              },
+              {
+                "$type": "Forguncy.Model.RunJavaScriptCommand, ServerDesignerCommon",
+                "JavaScript": "return false;",
+                "ID": "20ca16284c8c446e92e810f41c11d5b5"
+              }
+            ],
+            "ID": "96b49c0a-1467-4476-aec0-2e1c032ab503"
+          }
+        ]
+      },
+      {
+        "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+        "ConditionAndCommandPairList": [
+          {
+            "Condition": {
+              "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+              "param": {
+                "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+                "cellLocations": [
+                  {
+                    "SerializeProperty": "=P_都道府県"
+                  }
+                ]
+              },
+              "value": "%Null%"
+            },
+            "CommandList": [
+              {
+                "$type": "Forguncy.Model.ShowMessageCommand, ServerDesignerCommon",
+                "MessageFormula": "都道府県を選択してください"
+              },
+              {
+                "$type": "SetFocusCommand.SetFocusCommand, SetFocusCommand",
+                "TargetCell": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=P_都道府県"
+                }
+              },
+              {
+                "$type": "Forguncy.Model.RunJavaScriptCommand, ServerDesignerCommon",
+                "JavaScript": "return false;",
+                "ID": "e2376ca6a5c245b485ddb2ea23c85b64"
+              }
+            ],
+            "ID": "d9fead80-727c-4cb2-8bda-14f254d163f5"
+          }
+        ]
+      },
+      {
+        "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+        "ConditionAndCommandPairList": [
+          {
+            "Condition": {
+              "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+              "param": {
+                "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+                "cellLocations": [
+                  {
+                    "SerializeProperty": "=P_市区郡名"
+                  }
+                ]
+              },
+              "value": "%Null%"
+            },
+            "CommandList": [
+              {
+                "$type": "Forguncy.Model.ShowMessageCommand, ServerDesignerCommon",
+                "MessageFormula": "市区郡を入力してください"
+              },
+              {
+                "$type": "SetFocusCommand.SetFocusCommand, SetFocusCommand",
+                "TargetCell": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=P_市区郡名"
+                }
+              },
+              {
+                "$type": "Forguncy.Model.RunJavaScriptCommand, ServerDesignerCommon",
+                "JavaScript": "return false;",
+                "ID": "8d82b51eb2644fdaac97ee863e0b7a75"
+              }
+            ],
+            "ID": "bf99a264-e934-43fe-9fcf-1106862a1879"
+          }
+        ]
+      },
+      {
+        "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+        "ConditionAndCommandPairList": [
+          {
+            "Condition": {
+              "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+              "param": {
+                "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+                "cellLocations": [
+                  {
+                    "SerializeProperty": "=P_町名番地"
+                  }
+                ]
+              },
+              "value": "%Null%"
+            },
+            "CommandList": [
+              {
+                "$type": "Forguncy.Model.ShowMessageCommand, ServerDesignerCommon",
+                "MessageFormula": "町名番地を入力してください"
+              },
+              {
+                "$type": "SetFocusCommand.SetFocusCommand, SetFocusCommand",
+                "TargetCell": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=P_町名番地"
+                }
+              },
+              {
+                "$type": "Forguncy.Model.RunJavaScriptCommand, ServerDesignerCommon",
+                "JavaScript": "return false;",
+                "ID": "d50a33dfb5e84d68bb1da46584b6c0a6"
+              }
+            ],
+            "ID": "f79cf79d-1f91-4d62-bb2a-6fb176208e92"
+          }
+        ]
+      }
+    ]
+  }
+]
