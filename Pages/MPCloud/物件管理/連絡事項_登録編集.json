@@ -220,8 +220,10 @@
   "Values": {
     "1,2": "以下より分類を選択して下さい",
     "4,30": "▼物件ID",
+    "7,30": "▼参照連絡ID",
     "13,2": "公開設定",
     "13,6": 1,
+    "16,18": "削除する",
     "16,24": "登録する"
   },
   "AttachInfos": {
@@ -271,6 +273,12 @@
         "ColumnName": "content"
       }
     },
+    "8,30": {
+      "BindingInfo": {
+        "TableName": "t_object_notice",
+        "ColumnName": "notice_id"
+      }
+    },
     "13,6": {
       "CellType": {
         "$type": "Forguncy.CheckBoxCellType, ServerDesignerCommon",
@@ -281,6 +289,63 @@
       "BindingInfo": {
         "TableName": "t_object_notice",
         "ColumnName": "release_public_flg"
+      }
+    },
+    "16,18": {
+      "CellType": {
+        "$type": "Forguncy.ButtonCellType, ServerDesignerCommon",
+        "CommandList": [
+          {
+            "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+            "ConditionAndCommandPairList": [
+              {
+                "ConfirmDialogSettings": {
+                  "Title": "確認",
+                  "FormulaText": "この登録を削除します。よろしいですか？",
+                  "YesButtonText": "はい",
+                  "NoButtonText": "いいえ",
+                  "ConfirmIcon": 4
+                },
+                "CommandList": [
+                  {
+                    "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+                    "TableName": "t_object_notice",
+                    "UpdateType": "delete",
+                    "ShowConfirm": false,
+                    "ReloadAfterSucceed": false,
+                    "ConfirmText": "本当に削除してもよろしいですか？",
+                    "UpdateValues": []
+                  }
+                ],
+                "ID": "17900ef8-149b-4b4f-a9d3-4b932a0dc46a"
+              }
+            ]
+          },
+          {
+            "$type": "Forguncy.Model.ClosePopupCommand, ServerDesignerCommon",
+            "ReloadData": true
+          }
+        ],
+        "Text": "削除する",
+        "TemplateKey": "_RS_RoundCorner_Style1"
+      },
+      "ConditionFormatRulesCollection": {
+        "Rules": [
+          {
+            "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
+            "Formula": {
+              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+              "SerializeProperty": "=ISBLANK(連絡事項_登録編集!$AE$9)"
+            },
+            "StyleInfo": {
+              "Underline": null,
+              "Strikethrough": null
+            },
+            "IsDisabled": false,
+            "IsInvisible": true,
+            "IsReadOnly": false
+          }
+        ]
       }
     },
     "16,24": {
@@ -319,7 +384,7 @@
                     "$type": "Forguncy.Model.StopCommand, ServerDesignerCommon"
                   }
                 ],
-                "ID": "c3209827-67fa-4445-a8b7-d7b9c5bab0cd"
+                "ID": "19ddc991-01e0-4d04-8264-0302affa2528"
               }
             ]
           },
@@ -355,29 +420,64 @@
                     "$type": "Forguncy.Model.StopCommand, ServerDesignerCommon"
                   }
                 ],
-                "ID": "3f636d47-faa3-46b4-ae83-ccc57c11eccd"
+                "ID": "05eb5b72-1eb9-448a-b934-eb2fcb11ea29"
               }
             ]
           },
           {
-            "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
-            "TableName": "t_object_notice",
-            "UpdateType": "add",
-            "ShowConfirm": false,
-            "CheckDataValidation": false,
-            "ReloadAfterSucceed": false,
-            "ConfirmText": "本当に追加してもよろしいですか？",
-            "UpdateValues": [
+            "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+            "ConditionAndCommandPairList": [
               {
-                "ColumnName": "create_user_id",
-                "Value": "%CurrentUser.user_id%"
+                "Condition": {
+                  "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                  "param": {
+                    "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+                    "cellLocations": [
+                      {
+                        "SerializeProperty": "=連絡事項_登録編集!AE9"
+                      }
+                    ]
+                  },
+                  "value": "%Null%"
+                },
+                "CommandList": [
+                  {
+                    "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+                    "TableName": "t_object_notice",
+                    "UpdateType": "add",
+                    "ShowConfirm": false,
+                    "CheckDataValidation": false,
+                    "ReloadAfterSucceed": false,
+                    "ConfirmText": "本当に追加してもよろしいですか？",
+                    "UpdateValues": [
+                      {
+                        "ColumnName": "create_user_id",
+                        "Value": "%CurrentUser.user_id%"
+                      },
+                      {
+                        "ColumnName": "object_id",
+                        "Value": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=連絡事項_登録編集!AE6"
+                        }
+                      }
+                    ]
+                  }
+                ],
+                "ID": "18440ae6-7538-480a-bde4-3ea2098136ff"
               },
               {
-                "ColumnName": "object_id",
-                "Value": {
-                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=連絡事項_登録編集!AE6"
-                }
+                "CommandList": [
+                  {
+                    "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+                    "TableName": "t_object_notice",
+                    "ShowConfirm": false,
+                    "CheckDataValidation": false,
+                    "ConfirmText": "本当に更新してもよろしいですか？",
+                    "UpdateValues": []
+                  }
+                ],
+                "ID": "74bc95c9-ac15-4db5-85e7-577a8e1205f1"
               }
             ]
           },
@@ -411,6 +511,12 @@
       },
       {
         "FontFamily": 3
+      },
+      {
+        "Background": 6,
+        "Formatter": 1,
+        "VerticalAlignment": 2,
+        "WordWrap": true
       }
     ],
     "Types": {
@@ -420,7 +526,8 @@
         "Top",
         "Body",
         "[AUTO]General",
-        "#FFFFC000"
+        "#FFFFC000",
+        "#FFFFFF00"
       ]
     },
     "CellStyles": {
@@ -442,14 +549,12 @@
       "6,32": 1,
       "6,33": 1,
       "7,29": 1,
-      "7,30": 1,
+      "7,30": 2,
       "7,31": 1,
       "7,32": 1,
       "7,33": 1,
       "8,29": 1,
-      "8,30": 1,
-      "8,31": 1,
-      "8,32": 1,
+      "8,30": 5,
       "8,33": 1,
       "9,29": 1,
       "9,30": 1,
@@ -466,6 +571,11 @@
       "11,31": 1,
       "11,32": 1,
       "11,33": 1,
+      "16,18": 4,
+      "16,19": 4,
+      "16,20": 4,
+      "16,21": 4,
+      "16,22": 4,
       "16,24": 4,
       "16,25": 4,
       "16,26": 4,
@@ -486,19 +596,74 @@
     "2,2,1,27",
     "4,2,8,27",
     "13,6,1,7",
-    "5,30,1,3"
+    "5,30,1,3",
+    "8,30,1,3",
+    "16,18,1,5"
   ],
   "PageInfo": {
     "$type": "Forguncy.Model.Pages.NormalPage, ServerDesignerCommon",
+    "PageLoadedCommandList": [
+      {
+        "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+        "ConditionAndCommandPairList": [
+          {
+            "Condition": {
+              "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+              "param": {
+                "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+                "cellLocations": [
+                  {
+                    "SerializeProperty": "=連絡事項_登録編集!AE9"
+                  }
+                ]
+              },
+              "value": "%Null%"
+            },
+            "CommandList": [
+              {
+                "$type": "Forguncy.Model.SetCellPropertyCommand, ServerDesignerCommon",
+                "PropertyItemsList": [
+                  {
+                    "TargetCells": {
+                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                      "SerializeProperty": "=連絡事項_登録編集!Y17"
+                    },
+                    "Value": "登録する"
+                  }
+                ]
+              }
+            ],
+            "ID": "bd211b2a-a00f-43c4-82f4-24613e1726c5"
+          },
+          {
+            "CommandList": [
+              {
+                "$type": "Forguncy.Model.SetCellPropertyCommand, ServerDesignerCommon",
+                "PropertyItemsList": [
+                  {
+                    "TargetCells": {
+                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                      "SerializeProperty": "=連絡事項_登録編集!Y17"
+                    },
+                    "Value": "更新する"
+                  }
+                ]
+              }
+            ],
+            "ID": "d986c865-07fb-45e5-b811-f4f4374c2bbf"
+          }
+        ]
+      }
+    ],
     "AuthorizeInfo": {
       "VisitMode": 2
     },
     "RowBreakLines": [],
     "RepeatRangeSettings": [],
-    "RelatedDataTableName": "t_object"
+    "RelatedDataTableName": "t_object_notice"
   },
   "PrintInfo": {
     "Margin": {},
     "PaperSize": {}
   }
-}//gap5nkny5cwRvqW+6hkhnoU9ESCZ5bIWgX1H72FM5nZeV1DMnt+pS0BuLRKoVQ/wZ9Za66bEnBfbKXCGLcEDqRsosyam309TqnEQKimHMINpHRtDKAPmVRDVcjZ+Yyt8beuTnVaQkN25pr67fNeYlGKkB72fdnvXg9l/PvfHpTxa+mhjW1sBU3lwzD3djvJCFAu149lrY/2ilu6ZSifVAt5MUi0kOmT7c0ZLhLcdYw18NXjPfPNOrKbrBla3oxRlxQvNKmSACQjQTOyhGS5SnvbulFMiHwToIFcnDl863H/hBxnIhy4SefpmWjZPaq+f9roKAMmN97jV9JMS+B/tlz85eJzKcPHUgcFRDg1iO5ZRLEKM62EUSIeJpq48Iw8LA6n9hI8X9R2lXOziSHDvNnJu1grjdrh5kcgLDiYb0JtFIKcE1KA57Aef6GkioO89PfGzjp1PGAasSwFeZE8/qYFktQWtTQLO/GLaNXIzr+t5+rRfRS8iMW1dpLQitbCYsTnrtGxT72KmMMS1pWDWkhL4VwKOg++zTgHLMS9YzQLkJWNFrIbOiKOdNO8lVqutsth+nX8O2oLaJscYpDG6O6YDiJjy/NkRPi8Ywup+DPMFLUI/TCE3YiU32JxkIgYN9y5NSDzubOvteRBNP81M4nTyFpCDI92bQ/AMnFr8hqXP7f7VAd8CUnW1z7SZQChklsbxLuP/mSz/QsUrdA1TU+Z1Tr1oawP7gF7T7/ICXH6JZJydXAoP2ToQkV+WMSSbBltJjhasq+dUTLpqplM9MnDPkpRshHwHghu6Eyc6B81yUKs+7y7Ri0NIWzMn326LOvy/r0EvYNgdPAqvGw5p9M18bJkZWRIcGdrCKBD+ilaKIkBVNUmCA6OCnI/c7QbLxQ5pQ/GWeLtcj9m1rdbBGg==|920
+}//EbWOKOLPCnJgGZspka29rNHTadwwF3hhTnWYTqOYWHizJcJHw/BxBvUFpsVfxjgm91qTk5OT1QHcNALRN4XFoavKW9MBNEanEJAHbFIe1rAbabYpeAuJvMACTzveZN+yZyppDmWW6crrc3p+4ayovldBQQzBHhTxuLNyLuU0DhemCYqLQA2HZNTbWB3Uocuzp/qmQzxPpkusoAk39MO2WbKYDvdxT/5dboXySkZS92VVKYzM4Pp/FIT0ytLrh2OsHke8EqupMTenYkZy+9MsB4U4b+ZoMtDKQXz+z6nbM9kuTW+kSuF2j8QomE1ROlxbdFWR0HRYFY59oMnQxt9sXw/vQ+zEUdQx6n1/oy4c27U1dqo9dyBrofnZa/9rx/CafKqoyh2VD8IU/81G8MabK40Oag44/L1JJaXJcuJg2gMJso/jUMnm3ORAcOlPWmbpgFPF9tgzI9Bngyr7nyrbCO6DU6rh/e6p/l48HiFP2XjRYgBjSrOc5axwdRX4BzxDmKMQwW4J1Lxs87a3KpPT0OrKQY5aCuZl5vWFj/6fntsFyOGFR0RM/2YllerJEVY8S0F7AuyXgeHLgTnhFl/PXJ1fd6NYoQyxoQv3Y9l7TQ6maXnhIVtIogjHHUqcOYKGP/sijr9ar53xVqVvYrenqc6UFBanqaJQ0TR+Wo9/1Y77+4vkR/+fqHD7zPNj6NyKa0GzCvciKVTDVw7PSwA0x5yRPvQ6hlTu71XPXnnWMbZlWLrpU7xrja9sdoiAA9TlGY42EemNklAS1xptTWp07QD4VkPyBN+unOOMwEUOg/ScsHUKJEKuSSNrQzoPhhPUtRFkYc2GUSZVkAJVcuN4ThR/Z0uZd39dHvk7aN52jtCiDbix4B0N77rvQ7qnws7aKlNylm22OE25MXuATuzPYg==|920
