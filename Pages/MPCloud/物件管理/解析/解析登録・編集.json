@@ -111,6 +111,11 @@
           "DesignLengthInPixel": 10.0
         }
       },
+      "25": {
+        "GridRowColumnDefinition": {
+          "DesignLengthInPixel": 10.0
+        }
+      },
       "26": {
         "GridRowColumnDefinition": {
           "DesignLengthInPixel": 20.0
@@ -136,6 +141,11 @@
           "DesignLengthInPixel": 10.0
         }
       },
+      "31": {
+        "GridRowColumnDefinition": {
+          "DesignLengthInPixel": 10.0
+        }
+      },
       "32": {
         "GridRowColumnDefinition": {
           "DesignLengthInPixel": 20.0
@@ -151,20 +161,10 @@
           "DesignLengthInPixel": 20.0
         }
       },
-      "42": {
+      "45": {
         "GridRowColumnDefinition": {
           "DesignLengthInPixel": 20.0,
           "IsHidden": true
-        }
-      },
-      "25": {
-        "GridRowColumnDefinition": {
-          "DesignLengthInPixel": 10.0
-        }
-      },
-      "31": {
-        "GridRowColumnDefinition": {
-          "DesignLengthInPixel": 10.0
         }
       }
     },
@@ -172,21 +172,26 @@
       39,
       40,
       41,
-      42
+      42,
+      43,
+      44,
+      45
     ],
-    "Count": 43
+    "Count": 46
   },
   "Values": {
     "1,2": "解析日",
     "1,23": "解析ステータス",
+    "1,29": 1,
     "1,39": "▼解析ID",
     "3,2": "解析者",
     "3,8": "%CurrentUser.user_id%",
     "3,25": "確定解除",
     "3,32": "解析確定",
-    "4,39": "▼物件ID",
+    "4,39": "▼解析確定フラグ",
     "5,2": "解析結果",
     "7,2": "許容応力度",
+    "7,39": "▼物件ID",
     "9,2": "沈下変状",
     "11,2": "その他留意点",
     "13,2": "土地履歴",
@@ -240,7 +245,8 @@
         "DisplayColumnBindingInfo": {
           "TableName": "m_analysis_status",
           "ColumnName": "analysis_status_name"
-        }
+        },
+        "CellDefaultValue": 1
       },
       "BindingInfo": {
         "TableName": "t_object_analysis",
@@ -320,8 +326,47 @@
     "3,25": {
       "CellType": {
         "$type": "Forguncy.ButtonCellType, ServerDesignerCommon",
+        "CommandList": [
+          {
+            "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+            "ConditionAndCommandPairList": [
+              {
+                "ConfirmDialogSettings": {
+                  "Title": "確認",
+                  "FormulaText": "確定を解除します。よろしいですか？",
+                  "YesButtonText": "はい",
+                  "NoButtonText": "いいえ",
+                  "ConfirmIcon": 4
+                },
+                "CommandList": [
+                  {
+                    "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+                    "TableName": "t_object_analysis",
+                    "ShowConfirm": false,
+                    "CheckDataValidation": false,
+                    "ConfirmText": "本当に更新してもよろしいですか？",
+                    "UpdateValues": [
+                      {
+                        "ColumnName": "analysis_confirm_flg",
+                        "Value": "0"
+                      },
+                      {
+                        "ColumnName": "analysis_status_id",
+                        "Value": "1"
+                      }
+                    ]
+                  },
+                  {
+                    "$type": "Forguncy.Model.ClosePopupCommand, ServerDesignerCommon",
+                    "ReloadData": true
+                  }
+                ],
+                "ID": "5a27d3a0-fe35-4774-95f0-8a4afb2b9f76"
+              }
+            ]
+          }
+        ],
         "Text": "確定解除",
-        "IsDisabled": true,
         "TemplateKey": "_RS_Outline_RoundCorner_Style3",
         "Icon": {
           "Name": "Mobile/456_delete_8.svg",
@@ -345,6 +390,20 @@
             "IsDisabled": false,
             "IsInvisible": true,
             "IsReadOnly": false
+          },
+          {
+            "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
+            "Formula": {
+              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+              "SerializeProperty": "=解析登録・編集!$AN$6=0"
+            },
+            "StyleInfo": {
+              "Underline": null,
+              "Strikethrough": null
+            },
+            "IsDisabled": true,
+            "IsInvisible": false,
+            "IsReadOnly": false
           }
         ]
       }
@@ -352,6 +411,46 @@
     "3,32": {
       "CellType": {
         "$type": "Forguncy.ButtonCellType, ServerDesignerCommon",
+        "CommandList": [
+          {
+            "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+            "ConditionAndCommandPairList": [
+              {
+                "ConfirmDialogSettings": {
+                  "Title": "確認",
+                  "FormulaText": "解析確定します。よろしいですか？",
+                  "YesButtonText": "はい",
+                  "NoButtonText": "いいえ",
+                  "ConfirmIcon": 1
+                },
+                "CommandList": [
+                  {
+                    "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+                    "TableName": "t_object_analysis",
+                    "ShowConfirm": false,
+                    "CheckDataValidation": false,
+                    "ConfirmText": "本当に更新してもよろしいですか？",
+                    "UpdateValues": [
+                      {
+                        "ColumnName": "analysis_confirm_flg",
+                        "Value": "1"
+                      },
+                      {
+                        "ColumnName": "analysis_status_id",
+                        "Value": "3"
+                      }
+                    ]
+                  },
+                  {
+                    "$type": "Forguncy.Model.ClosePopupCommand, ServerDesignerCommon",
+                    "ReloadData": true
+                  }
+                ],
+                "ID": "eecd29d3-3a7f-4d42-9291-9100232d4e9c"
+              }
+            ]
+          }
+        ],
         "Text": "解析確定",
         "TemplateKey": "_RS_Outline_RoundCorner_Style3",
         "Icon": {
@@ -375,6 +474,20 @@
             },
             "IsDisabled": false,
             "IsInvisible": true,
+            "IsReadOnly": false
+          },
+          {
+            "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
+            "Formula": {
+              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+              "SerializeProperty": "=解析登録・編集!$AN$6=1"
+            },
+            "StyleInfo": {
+              "Underline": null,
+              "Strikethrough": null
+            },
+            "IsDisabled": true,
+            "IsInvisible": false,
             "IsReadOnly": false
           }
         ]
@@ -458,7 +571,7 @@
                 }
               }
             },
-            "ID": "1508a412158143b3888a338de0c7ac17"
+            "ID": "43e3f70c29b24b1aac3d79888d1d521a"
           },
           {
             "$type": "Forguncy.Model.SetCellPropertyCommand, ServerDesignerCommon",
@@ -485,7 +598,7 @@
     "5,39": {
       "BindingInfo": {
         "TableName": "t_object_analysis",
-        "ColumnName": "object_id"
+        "ColumnName": "analysis_confirm_flg"
       }
     },
     "7,8": {
@@ -566,7 +679,7 @@
                 }
               }
             },
-            "ID": "79bfc1b24ea34b80882c8cbd4df42de5"
+            "ID": "960adb2b12ba45e4b37402402d5ae84b"
           },
           {
             "$type": "Forguncy.Model.SetCellPropertyCommand, ServerDesignerCommon",
@@ -588,6 +701,12 @@
       "BindingInfo": {
         "TableName": "t_object_analysis",
         "ColumnName": "allowable_stress_id"
+      }
+    },
+    "8,39": {
+      "BindingInfo": {
+        "TableName": "t_object_analysis",
+        "ColumnName": "object_id"
       }
     },
     "9,8": {
@@ -668,7 +787,7 @@
                 }
               }
             },
-            "ID": "8668a100822f403d9c7de697c84468ae"
+            "ID": "622f6aa233ae4caeb41aab5a461ef679"
           },
           {
             "$type": "Forguncy.Model.SetCellPropertyCommand, ServerDesignerCommon",
@@ -889,7 +1008,7 @@
             },
             "Value": {
               "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-              "SerializeProperty": "=解析登録・編集!AN6"
+              "SerializeProperty": "=解析登録・編集!AN9"
             }
           },
           "Condition2": {
@@ -968,7 +1087,7 @@
                     "ReloadData": true
                   }
                 ],
-                "ID": "83715e53-bdf9-4d73-9274-6e0051e9228b"
+                "ID": "1f6ba4da-99b7-4b35-9246-960192e10f8f"
               }
             ]
           }
@@ -1037,11 +1156,11 @@
                         },
                         "Value": {
                           "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                          "SerializeProperty": "=解析登録・編集!AN6"
+                          "SerializeProperty": "=解析登録・編集!AN9"
                         }
                       }
                     },
-                    "ID": "46d7f0ae056c4cde9156c3587bbd84ce"
+                    "ID": "05eb5423e6ba41f29bd10e23ba737dd1"
                   },
                   {
                     "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
@@ -1062,7 +1181,7 @@
                     ]
                   }
                 ],
-                "ID": "c5771b7b-ee07-4692-941c-59c5fba02459"
+                "ID": "029f3c68-f1ef-4a9a-8097-0d4362f42ee8"
               },
               {
                 "CommandList": [
@@ -1076,7 +1195,7 @@
                     "UpdateValues": []
                   }
                 ],
-                "ID": "df344ec1-88e4-42d7-a743-95dddcdc282e"
+                "ID": "2af39802-eb84-4582-99d4-e50cf15ac3e2"
               }
             ]
           },
@@ -1117,13 +1236,17 @@
         "HorizontalAlignment": 4
       },
       {
-        "Background": 5,
+        "Background": 3,
         "FontFamily": 1
       },
       {
         "FontFamily": 1,
         "FontSize": 14.666666666666666,
         "HorizontalAlignment": 4
+      },
+      {
+        "Background": 5,
+        "FontFamily": 1
       },
       {
         "Formatter": 6,
@@ -1155,13 +1278,8 @@
       "3,34": 4,
       "3,35": 4,
       "3,36": 4,
-      "4,39": 1,
-      "4,40": 4,
-      "4,41": 4,
       "5,8": 5,
       "5,39": 6,
-      "5,40": 4,
-      "5,41": 4,
       "7,8": 7,
       "7,12": 4,
       "7,13": 4,
@@ -1184,6 +1302,15 @@
       "7,36": 4,
       "7,37": 4,
       "7,38": 4,
+      "7,39": 1,
+      "7,40": 4,
+      "7,41": 4,
+      "7,42": 4,
+      "7,43": 4,
+      "7,44": 4,
+      "8,39": 8,
+      "8,40": 4,
+      "8,41": 4,
       "9,8": 7,
       "9,12": 4,
       "9,13": 4,
@@ -1209,6 +1336,9 @@
       "9,39": 4,
       "9,40": 4,
       "9,41": 4,
+      "9,42": 4,
+      "9,43": 4,
+      "9,44": 4,
       "15,2": 1,
       "15,3": 4,
       "15,4": 4,
@@ -1225,7 +1355,7 @@
       "15,16": 4,
       "15,17": 4,
       "17,8": 4,
-      "19,8": 8,
+      "19,8": 9,
       "30,25": 4,
       "30,26": 4,
       "30,27": 4,
@@ -1257,14 +1387,15 @@
     "7,8,1,3",
     "9,8,1,3",
     "2,39,1,3",
-    "5,39,1,3",
     "11,8,1,29",
     "13,8,1,10",
     "17,8,1,10",
     "15,8,1,10",
     "3,25,1,6",
     "30,25,1,6",
-    "26,8,1,10"
+    "26,8,1,10",
+    "8,39,1,3",
+    "5,39,1,3"
   ],
   "PageInfo": {
     "$type": "Forguncy.Model.Pages.NormalPage, ServerDesignerCommon",
@@ -1299,7 +1430,7 @@
                 ]
               }
             ],
-            "ID": "86aca812-8c7d-45ec-9e67-1d837700cfeb"
+            "ID": "e4038431-bb78-4437-8ee9-5c4f5e6ff07a"
           }
         ]
       }
@@ -1316,4 +1447,4 @@
     "Margin": {},
     "PaperSize": {}
   }
-}//uoBSmuTiiMCAX269Y8rYM15XM/aLv7wLPiV3Thv2JGXK7dGoygnU7+FkxnPUGs4TzY02p4SZ6EqPWmf2C1mWMXhm/qjDqq36P2i1KwSsOvQqFzwlO27LsrsXsnHvIKr+gJFWXxO84L3I8jlRIDajddu3FAaAQoljYGv+LhYRHSwdki+nhrNEEPTcbFrnLJvfPb9WG3pb6eFYM9KGCuxm5sHEPCLxB7cqgDogqtjiM4Cp+oUmjL1goaQlGyroE1ERbgyLEn8ZNZujFSlPJcKoVjcRVJxQQYu3nsYMHwKqoYUBL7LplSQ/l2GRgHnLUMaLXasbNJhifO5KWxM+IsD7fMnbxRNQvZdnMwoSrfhOd9wBAqlvduxKd244dmfYZXlYQX+PduwWKJAKDbjGGhlCtWBtR8mZu6QHboKYoQM6WfpwReAEtP/e9bBTI3kTRKaXx4E/3M+kIRVl1UHRpQ6MpvSaG1ckeib5WApE5WhQKN6b1s0Echc0+7saUu2YFlNRA6CUUCypB09ebiH9+pA5eawAx01LDORxf62X25ieldqDU87Pq2tpSfGuCOnHDI+w8UybakEKhF+sUiC6mwtLNxejzfetj81E+uy+orI/QnhvTjlDCm3yWlfCXu9qkBCmHcsnOn/YV4l3r8G20rK38KOvKysJ5LMvHs1hMj3ztMUHqQIN5c0DXUtpxCRaBtIUQX91t6mQd7wT0GCYj6jyoMyHRXL60JZ0YKBeES5TD3Xoi5CZdH4ZKULn/wmKM/xEFtlXtPlsVKPvdP1z4IgG31X0FoemgeRGU3ZSw8+ouFN5iSpsHEQtF239wO4ufwEPOcg8oT+Ex0fE41FovNW/Hi5FwPoKsBhYG6eATr4KP5e9r/LtYxv4mlCLtr8iCoZO6j5OM2+DpaOSdNemayaaEQ==|920
+}//6ByWIjcpfg46lJSy9zlDTUkeK9jo8C8FUL2mq9DoxzkPMsL/Hw2iN8VozLCNfrToe6QCUBpixfttV+0hG2YyEwZVzL3oWXqia64ZEQDP39UFCBDMBHEh+Vm8Apf2q7vIehLnoQ2asTNSyRQAybCUh+Tsq3S2v4xK9TkWU3pQ++W5C6AydAziGi3v1lC1tfznvPn2xddcWoecIYYG60HReiKT4U+TfNRGM4x6E3+pdohDKEDQpdxV6XNU1moAGV5bb/U1evSuFb4eij9LFeomQXdT0WyRLZN0vW5sv/AVUWu2vpQaZcpmH0r0LfP+2QnYLcX8sRSlsGvE2G6HJm811gS/cljWkVz1+Hbtqbes76qmBdvFiqFpMOYgVhA5lxNB6fsQHV2IjYkObLdablaMjAcsiWbaa9Aq5iNGQO4/uN9StupaZP9LbUvMWyhPIpEjSkoMXOloy6S2lPUWgDEMnRxrAl4Wh+6/PhWfSL5nM11gK+jyE36D5A7apB4Da1ApcU3dJQGqmZ1rFXctI8Pdl6glxvT2RyNyBSXzBBycO+/hGrPEwmn60eRrxpAn2/BOzAnKodeKBC9sb11pSt4yAhyZvKmLiGyx2mu47778U3cFzEQWr4x6R4tJIAP/SceCh9HHJsEA+Ok2wwzwWW4jt7ZdCWDy+GhYMLnudceQTEHdUBXMz8UEww0tU9wh7EGH5Nq1DbmjihqusCPC1zrWv+ZpGxv0gsR58WdKsJMLdMSKUqwc0d3ClQLBWkbdOXYrRzCCVQcgfuU2wyuWE+KwejlNAYeViqfgKBBTEoPCqLAOrUWPmPS1ireU8W/oevJI0t4IFECBQIrpD7v+jVIi7Tdp4YaoMbQe1Cz2Zxe0q+MuNVxw6oEfz7NeYw4LBclkTX2IGGBJMmP4vZEaf1FCrA==|920
