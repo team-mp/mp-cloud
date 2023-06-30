@@ -349,7 +349,7 @@
                 }
               }
             },
-            "ID": "5ee71773163343418056595bc485b97c"
+            "ID": "f3cadb56ff154efa95c2b3040783b6e1"
           },
           {
             "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
@@ -376,7 +376,7 @@
                     "$type": "Forguncy.Model.StopCommand, ServerDesignerCommon"
                   }
                 ],
-                "ID": "0646bbe0-21c7-444c-b815-aa6365a2387f"
+                "ID": "34ae73c1-2e0a-4bbc-8b0d-9c00bb3a5d38"
               }
             ]
           },
@@ -392,6 +392,18 @@
                     "ColumnName": "construction_id"
                   },
                   "ColumnName": "工事会社ID"
+                },
+                {
+                  "BindingInfo": {
+                    "TableName": "m_customer_specify_construction",
+                    "ColumnName": "construction_id",
+                    "RelationBinding": {
+                      "RelatedTable": "m_customer",
+                      "RelatedColumn": "customer_id",
+                      "DisplayColumn": "customer_abbr"
+                    }
+                  },
+                  "ColumnName": "工事会社略称"
                 }
               ],
               "SqlCondition": {
@@ -406,7 +418,7 @@
                 }
               }
             },
-            "ID": "569487d6e1a1425092ae22aee45de22e"
+            "ID": "946be7c238394eea9eb1c84a9be2618a"
           },
           {
             "$type": "Forguncy.Model.LoopCommand, ServerDesignerCommon",
@@ -420,30 +432,98 @@
             },
             "CommandList": [
               {
-                "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
-                "TableName": "t_object_construction",
-                "UpdateType": "add",
-                "ShowConfirm": false,
-                "CheckDataValidation": false,
-                "ConfirmText": "本当に追加してもよろしいですか？",
-                "UpdateValues": [
-                  {
-                    "ColumnName": "object_id",
-                    "Value": {
-                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                      "SerializeProperty": "=物件詳細_工事!AV12"
+                "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                "ParameterName": "登録済み件数",
+                "TableValue": {
+                  "TableName": "t_object_construction_estimate",
+                  "TableValueType": 3,
+                  "SqlCondition": {
+                    "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                    "Condition1": {
+                      "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                      "ColumnBindingInfo": {
+                        "TableName": "t_object_construction_estimate",
+                        "ColumnName": "object_id"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=物件詳細_工事!AV12"
+                      }
+                    },
+                    "Condition2": {
+                      "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                      "ColumnBindingInfo": {
+                        "TableName": "t_object_construction_estimate",
+                        "ColumnName": "construction_customer_id"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=物件詳細_工事!Item.工事会社ID"
+                      }
                     }
+                  }
+                },
+                "ID": "2dfdafa9ae814475b26f6967d83b3969"
+              },
+              {
+                "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+                "ConditionAndCommandPairList": [
+                  {
+                    "Condition": {
+                      "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                      "param": {
+                        "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+                        "cellLocations": [
+                          {
+                            "SerializeProperty": "=物件詳細_工事!登録済み件数"
+                          }
+                        ]
+                      },
+                      "value": "0"
+                    },
+                    "CommandList": [
+                      {
+                        "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+                        "TableName": "t_object_construction_estimate",
+                        "UpdateType": "add",
+                        "ShowConfirm": false,
+                        "CheckDataValidation": false,
+                        "ConfirmText": "本当に追加してもよろしいですか？",
+                        "UpdateValues": [
+                          {
+                            "ColumnName": "object_id",
+                            "Value": {
+                              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                              "SerializeProperty": "=物件詳細_工事!AV12"
+                            }
+                          },
+                          {
+                            "ColumnName": "construction_customer_id",
+                            "Value": {
+                              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                              "SerializeProperty": "=物件詳細_工事!Item.工事会社ID"
+                            }
+                          },
+                          {
+                            "ColumnName": "construction_status_id",
+                            "Value": "1"
+                          }
+                        ]
+                      }
+                    ],
+                    "ID": "76954c50-101a-4dc8-85bb-a159b8f3640b"
                   },
                   {
-                    "ColumnName": "construction_customer_id",
-                    "Value": {
-                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                      "SerializeProperty": "=物件詳細_工事!Item.工事会社ID"
-                    }
-                  },
-                  {
-                    "ColumnName": "construction_status_id",
-                    "Value": "1"
+                    "CommandList": [
+                      {
+                        "$type": "Forguncy.Model.ShowMessageCommand, ServerDesignerCommon",
+                        "MessageFormula": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=物件詳細_工事!Item.工事会社略称&\"はすでに登録ずみとなります\""
+                        }
+                      }
+                    ],
+                    "ID": "6d37dc5f-77d3-4f0d-a2ed-152c80604a06"
                   }
                 ]
               }
@@ -521,8 +601,7 @@
             "工事ステータス名": "工事ステータス名",
             "行番号": "行番号"
           }
-        },
-        "TemplateKey": "スタイル1"
+        }
       }
     },
     "11,47": {
@@ -534,7 +613,7 @@
     "14,47": {
       "ListViewInfo": {
         "ShowColumnHeaderInDesigner": true,
-        "TableName": "t_object_construction",
+        "TableName": "t_object_construction_estimate",
         "RowIndex": 14,
         "ColumnIndex": 47,
         "ColumnCount": 13,
@@ -546,7 +625,7 @@
         "SqlCondition": {
           "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
           "ColumnBindingInfo": {
-            "TableName": "t_object_construction",
+            "TableName": "t_object_construction_estimate",
             "ColumnName": "object_id"
           },
           "Value": {
@@ -560,14 +639,14 @@
     },
     "15,47": {
       "BindingInfo": {
-        "TableName": "t_object_construction",
+        "TableName": "t_object_construction_estimate",
         "ColumnName": "construction_customer_id"
       },
       "NameUsedInJavaScript": "工事会社ID"
     },
     "15,48": {
       "BindingInfo": {
-        "TableName": "t_object_construction",
+        "TableName": "t_object_construction_estimate",
         "ColumnName": "construction_customer_id",
         "RelationBinding": {
           "RelatedTable": "m_customer",
@@ -579,14 +658,14 @@
     },
     "15,49": {
       "BindingInfo": {
-        "TableName": "t_object_construction",
+        "TableName": "t_object_construction_estimate",
         "ColumnName": "construction_method_id"
       },
       "NameUsedInJavaScript": "工法ID"
     },
     "15,50": {
       "BindingInfo": {
-        "TableName": "t_object_construction",
+        "TableName": "t_object_construction_estimate",
         "ColumnName": "construction_method_id",
         "RelationBinding": {
           "RelatedTable": "m_construction_method",
@@ -598,49 +677,49 @@
     },
     "15,51": {
       "BindingInfo": {
-        "TableName": "t_object_construction",
+        "TableName": "t_object_construction_estimate",
         "ColumnName": "requested_date"
       },
       "NameUsedInJavaScript": "依頼日"
     },
     "15,52": {
       "BindingInfo": {
-        "TableName": "t_object_construction",
+        "TableName": "t_object_construction_estimate",
         "ColumnName": "design_check_result"
       },
       "NameUsedInJavaScript": "設計審査結果"
     },
     "15,53": {
       "BindingInfo": {
-        "TableName": "t_object_construction",
+        "TableName": "t_object_construction_estimate",
         "ColumnName": "design_check_comment"
       },
       "NameUsedInJavaScript": "設計審査コメント"
     },
     "15,54": {
       "BindingInfo": {
-        "TableName": "t_object_construction",
+        "TableName": "t_object_construction_estimate",
         "ColumnName": "design_approval_date"
       },
       "NameUsedInJavaScript": "設計承認日"
     },
     "15,55": {
       "BindingInfo": {
-        "TableName": "t_object_construction",
+        "TableName": "t_object_construction_estimate",
         "ColumnName": "estimate_sending_date"
       },
       "NameUsedInJavaScript": "見積送付日"
     },
     "15,56": {
       "BindingInfo": {
-        "TableName": "t_object_construction",
+        "TableName": "t_object_construction_estimate",
         "ColumnName": "construction_status_id"
       },
       "NameUsedInJavaScript": "工事ステータスID"
     },
     "15,57": {
       "BindingInfo": {
-        "TableName": "t_object_construction",
+        "TableName": "t_object_construction_estimate",
         "ColumnName": "construction_status_id",
         "RelationBinding": {
           "RelatedTable": "m_construction_status",
@@ -1095,11 +1174,11 @@
     },
     "RowBreakLines": [],
     "RepeatRangeSettings": [],
-    "RelatedDataTableName": "t_object_construction",
+    "RelatedDataTableName": "t_object_construction_estimate",
     "PageResponsiveMode": 4
   },
   "PrintInfo": {
     "Margin": {},
     "PaperSize": {}
   }
-}//znFXYKfmCsWzqUTBl/48mW+zZtapNXScSVDnlpQ+QJTefsaNtLB4SjjxLwiztKBPstyndTuHwbNATckwn29DeXeykd9SJBxOHgH1ngYTrTf4AASME0UnfFIONfLk70JBWUvWYglhOp+2TTKo4YLAnxkV07iqN4q4oK0ctbtoZ1FB+xVpdih5g7TUZZYdwT8nTR16ZkhjRtpWHDFd3F3+adm5auHXyzqN3k8S3gh5kzRwjXGVEkaMb7o5SKEyvIv4IGtd3lBzuwMCaQBlhl/BLTVTfT+k7Op3nD0W/xgV2u7ai2va9GqamDgC40sU39OzmpagJvQsDcAQwRlEaCI6ClkdVF50403zUrFsmOzfztE6QMUFVCa17LHqEGRdapGRSpTyOedBC9Um1T3xdV8zixYrfzgdQxKqYOcf+HitRObmXBSGbxYp/jMegKTAi08J+xujbmswx0NsdD3/vkK8Vk0mt56OTJuCT70uMOJtgw/XCB8Ol43fMKTn2lVxl/YWR9Q4H6B9lxg0rVMQ8bvxKrcLLfKGqLusbjO9BmneBCotYLmUaK8GYVxpW5mav6YTjB85FryrwNQ7NEwEb0iHlLjdXjohIY8+6GFoMOfLuyP4NE+jJAFzNoo3jB5MVy93cilwHAZ8bURMy+lsrGmehMoLQM7iwqlSQL3OC75w1irXlwVy1KY16TejFFx9mmEQFZLOck9Rs9JEWOU0KLA1/JqEtNnObNxOpK3nG8AQ6j2/0iR6EDaOJwt71+TLOXx7t1aJQg8lJhXdqtnBVIODm4OEdAq5rbN1LOPUfbonvR9/w2OS5KypllQcaYFETokWZ/hs1vqR2tnrRJO5et4ZC7PN8oiziWWNudMCPReig7XuYNJqD+snZb9OHMCJTalKxVmRMaZdkARvwJf5oOgI7Q==|920
+}//nbMl7FDlF4MGWIKi+B7h4OsT6cy4TZucHoaTHt/Jgl7GrdwWz4iyHkUx+KTomd1a1XZpb3YwldZ6uPiTWwj/tfGLrN8ugVnGFl1DsmPBAijZNU9Y9LacTUb+Y+GK4wZZdoWxfF/t/GO/1DgsmU9QzAJs/LNJXVs0aegjKF12By7LJj/2Fdp8wC9Q4h6L159miumm54XVIcoLByrWxYxpmueLe5VpkjF2OWd3oarMjSx3OeNAKEmq94waLFl1cT+28gghDRXC+qsrN5bPWbLPwvRqX3kTHvurlnTdJM6sNsF4dJ2PQkspVegqaEltER+bFVwzKpgKTZk9lM333sXsiT1IxprMuvokzYiX6B53oxQL3eiUV4+MZZvjSiedIunmtOCVZMno720CrZsUHsXZXFw5DgA86pQScHu2HcrqK+/bCwvnQwS4W9kyp7a3FARTHEgZTL5hRju3YO/BoteuHQdmJObAmtBO/QhCN4ube1w7hq3///lj2Nxt+G26NaqM8WbNqB7Vnrjoq6nDa6gCYrs41HVgPnLh0tvqwIZVig/JKYixYHtLieMlA/rV/irdK82LkefCs+qFpDLwEC1Qta1pCh4uorYd+tK4SiG7C3m1FotwI8dPGLWzZZuxgwGpMv1sP8xeyhP8f/YQCfVfrcN7FkB0+FKjgc4CeFRtlXGqu/520o10OcHc+wKaqbGE9Zeiy7WviDXgTMUUtIcNd6lMIO2sQ8SZxJwktd5w+iDZ1IaFqwRJNlDblWw8G9gc36S9m/gatV29dzoTWgombA+dMNY8G3A2K9q+J6PhIteZCwn5OHoezD0LqCDBLl2oBCRuvCWGjcMhBiQRT9BmgaAa0EhZ6m2EvRogYl5JSi5bTZK3wttTZ53EcmljCFDCCAYM05PTuyRYJqVQM8ox+Q==|920
