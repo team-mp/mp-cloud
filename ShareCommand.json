@@ -2,14 +2,62 @@
   {
     "ID": "651037a9-ffaf-4591-9697-6b171676a452",
     "Name": "確認ダイアログ表示",
+    "Params": [
+      {
+        "ID": "6c89412f-f509-4fef-b824-e7c2cb0fbece",
+        "Name": "P_ボタン名"
+      }
+    ],
     "Commands": [
+      {
+        "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+        "ConditionAndCommandPairList": [
+          {
+            "Condition": {
+              "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+              "param": {
+                "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+                "cellLocations": [
+                  {
+                    "SerializeProperty": "=P_ボタン名"
+                  }
+                ]
+              },
+              "value": "登録する"
+            },
+            "CommandList": [
+              {
+                "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                "ParameterName": "実行メッセージ",
+                "ParameterValue": "登録します。よろしいですか？",
+                "ID": "0b2354612b4c4635b8ba8173bdf71d94"
+              }
+            ],
+            "ID": "38066d66-2ded-4f40-b8cf-b3b89bc701d0"
+          },
+          {
+            "CommandList": [
+              {
+                "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                "ParameterName": "実行メッセージ",
+                "ParameterValue": "更新します。よろしいですか？",
+                "ID": "48593907b55d44e08afd828539ede47f"
+              }
+            ],
+            "ID": "00124fea-98e2-47e2-91be-6634a318ba2a"
+          }
+        ]
+      },
       {
         "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
         "ConditionAndCommandPairList": [
           {
             "ConfirmDialogSettings": {
               "Title": "確認",
-              "FormulaText": "更新します。よろしいですか？",
+              "FormulaText": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=実行メッセージ"
+              },
               "YesButtonText": "はい",
               "NoButtonText": "いいえ",
               "ConfirmIcon": 1
@@ -18,20 +66,20 @@
               {
                 "$type": "Forguncy.Model.RunJavaScriptCommand, ServerDesignerCommon",
                 "JavaScript": "return true;",
-                "ID": "e36a44f65bd64e7fb3078014468ae678"
+                "ID": "66f7199422254fde93760761d81b0e69"
               }
             ],
-            "ID": "516be6ed-b49b-4c51-9463-264a2c4f4de2"
+            "ID": "ae808cba-9fc7-426e-8fcb-1ca0ce025b9b"
           },
           {
             "CommandList": [
               {
                 "$type": "Forguncy.Model.RunJavaScriptCommand, ServerDesignerCommon",
                 "JavaScript": "return false;",
-                "ID": "019256581d4f4b81b2236bfdc4cdc89a"
+                "ID": "6af3c139cae841399f592cf3ca37aa4e"
               }
             ],
-            "ID": "051e02bb-afa1-4c06-a377-45c1c15b57e3"
+            "ID": "c929c344-8349-4cb3-9a96-bbbb97031128"
           }
         ]
       }
@@ -54,7 +102,7 @@
       {
         "$type": "Forguncy.Model.RunJavaScriptCommand, ServerDesignerCommon",
         "JavaScript": "var page = Forguncy.Page;\r\nvar zip_code = page.getCell(\"zip_code\").getValue();\r\nvar address1 = page.getCell(\"address1\");\r\nvar address2 = page.getCell(\"address2\");\r\nvar address3 = page.getCell(\"address3\");\r\n\r\nif(zip_code == null){\r\n   alert(\"郵便番号を入力して下さい\");\r\n   return false;\r\n};\r\n\r\n\r\n//住所取得開始\r\ngetAddressData(zip_code);\r\n\r\n/* 郵便番号から都道府県・市区町村データを取得する */\r\n\r\nfunction getAddressData(zip) {\r\n  //var zipPattern = /^[0-9]{3}-?[0-9]{4}$/;\r\n  //if(!zip.match(zipPattern)) {\r\n  //  return false;\r\n  //}\r\n \r\n  var api = 'https://zipcloud.ibsnet.co.jp/api/search?zipcode=';\r\n  var param = zip.replace('-', '');\r\n  var url = api + param;\r\n \r\n  fetchJsonp(url, {\r\n    timeout: 10000,\r\n  })\r\n  .then((response) => {\r\n    return response.json();\r\n  })\r\n  .then((data) => {\r\n    if(data.status === 400){\r\n      // エラー時の処理\r\n    }else if(data.results === null){\r\n      // 郵便番号から住所が見つからなかった場合の処理\r\n      address1.setValue(); \r\n      address2.setValue(); \r\n      address3.setValue(); \r\n    } else {\r\n      address1.setValue(data.results[0].address1);\r\n      address2.setValue(data.results[0].address2);\r\n      address3.setValue(data.results[0].address3);\r\n      console.log(data.results[0]);\r\n    }\r\n  })\r\n\r\n}",
-        "ID": "59b9dfa44592428192fa97ee533e636e"
+        "ID": "5bfeb2f9d42243528f3969e19ffd54dc"
       }
     ]
   },
@@ -111,10 +159,10 @@
               {
                 "$type": "Forguncy.Model.RunJavaScriptCommand, ServerDesignerCommon",
                 "JavaScript": "return false;",
-                "ID": "20ca16284c8c446e92e810f41c11d5b5"
+                "ID": "cd3bfd864c84470b9cadada5ceb6275f"
               }
             ],
-            "ID": "96b49c0a-1467-4476-aec0-2e1c032ab503"
+            "ID": "30384cc0-20e6-418d-8dd3-9fdedbad14ba"
           }
         ]
       },
@@ -149,10 +197,10 @@
               {
                 "$type": "Forguncy.Model.RunJavaScriptCommand, ServerDesignerCommon",
                 "JavaScript": "return false;",
-                "ID": "e2376ca6a5c245b485ddb2ea23c85b64"
+                "ID": "a7ace490985741c1a4971cd359c5d14d"
               }
             ],
-            "ID": "d9fead80-727c-4cb2-8bda-14f254d163f5"
+            "ID": "cc03b6c3-e9d3-41cd-b805-1cac4e64ca1f"
           }
         ]
       },
@@ -187,10 +235,10 @@
               {
                 "$type": "Forguncy.Model.RunJavaScriptCommand, ServerDesignerCommon",
                 "JavaScript": "return false;",
-                "ID": "8d82b51eb2644fdaac97ee863e0b7a75"
+                "ID": "1b3492cdc85b44b5ab681de79e5a16c1"
               }
             ],
-            "ID": "bf99a264-e934-43fe-9fcf-1106862a1879"
+            "ID": "b3f4366d-fedc-49bf-909e-a1e9d99d5e24"
           }
         ]
       },
@@ -225,10 +273,10 @@
               {
                 "$type": "Forguncy.Model.RunJavaScriptCommand, ServerDesignerCommon",
                 "JavaScript": "return false;",
-                "ID": "d50a33dfb5e84d68bb1da46584b6c0a6"
+                "ID": "8c13075b9bff43aa9367d280be49c2cf"
               }
             ],
-            "ID": "f79cf79d-1f91-4d62-bb2a-6fb176208e92"
+            "ID": "984cd669-cdd6-4b4e-85fa-5941c7ecb395"
           }
         ]
       }
