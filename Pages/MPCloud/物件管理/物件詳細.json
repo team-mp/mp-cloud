@@ -383,6 +383,7 @@
     "1,6": "No",
     "1,21": "板橋区双葉町 1棟現場",
     "4,1": "共有情報＞",
+    "4,48": "解析至急依頼",
     "4,58": "不足資料通知",
     "4,68": "キャンセル登録",
     "4,78": "添付ファイル",
@@ -393,6 +394,7 @@
     "6,88": "連絡事項_リスト",
     "7,65": "物件ステータス",
     "7,122": "▼物件ID",
+    "7,127": "▼解析至急フラグ",
     "10,21": "申込",
     "10,122": 1,
     "11,21": "物件詳細_タブ",
@@ -405,7 +407,8 @@
   },
   "Formulas": {
     "27,133": "EC28&\"　\"&EA28",
-    "18,122": "ODATA(\"m_customer_notice/$count?$filter=customer_id eq \"&IF(ISBLANK(DS32),\"null\",DS32))"
+    "18,122": "ODATA(\"m_customer_notice/$count?$filter=customer_id eq \"&IF(ISBLANK(DS32),\"null\",DS32))",
+    "4,48": "IF(DX11=1,\"解析至急解除\",\"解析至急依頼\")"
   },
   "AttachInfos": {
     "1,2": {
@@ -519,6 +522,100 @@
             "IconWidth": 16.0
           }
         ]
+      }
+    },
+    "4,48": {
+      "CellType": {
+        "$type": "Forguncy.ButtonCellType, ServerDesignerCommon",
+        "CommandList": [
+          {
+            "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+            "ConditionAndCommandPairList": [
+              {
+                "Condition": {
+                  "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                  "param": {
+                    "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+                    "cellLocations": [
+                      {
+                        "SerializeProperty": "=物件詳細!DX11"
+                      }
+                    ]
+                  },
+                  "value": "1"
+                },
+                "CommandList": [
+                  {
+                    "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+                    "TableName": "t_object",
+                    "ShowConfirm": false,
+                    "CheckDataValidation": false,
+                    "ConfirmText": "本当に更新してもよろしいですか？",
+                    "UpdateValues": [
+                      {
+                        "ColumnName": "analysis_urgent_flg",
+                        "Value": "0"
+                      },
+                      {
+                        "ColumnName": "analysis_urgent_user_id"
+                      },
+                      {
+                        "ColumnName": "analysis_urgent_date"
+                      }
+                    ]
+                  },
+                  {
+                    "$type": "Forguncy.Model.ShowMessageCommand, ServerDesignerCommon",
+                    "MessageFormula": "解析至急を解除しました"
+                  }
+                ],
+                "ID": "bd6504df-1749-49f7-8a59-982d4013cb7e"
+              },
+              {
+                "CommandList": [
+                  {
+                    "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+                    "TableName": "t_object",
+                    "ShowConfirm": false,
+                    "CheckDataValidation": false,
+                    "ConfirmText": "本当に更新してもよろしいですか？",
+                    "UpdateValues": [
+                      {
+                        "ColumnName": "analysis_urgent_flg",
+                        "Value": "1"
+                      },
+                      {
+                        "ColumnName": "analysis_urgent_user_id",
+                        "Value": "%CurrentUser.user_id%"
+                      },
+                      {
+                        "ColumnName": "analysis_urgent_date",
+                        "Value": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=NOW()"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "$type": "Forguncy.Model.ShowMessageCommand, ServerDesignerCommon",
+                    "MessageFormula": "解析至急に更新しました"
+                  }
+                ],
+                "ID": "86dd94aa-4b2e-4b59-9751-e279191a17b6"
+              }
+            ]
+          }
+        ],
+        "Text": "解析至急依頼",
+        "TemplateKey": "スタイル1",
+        "Icon": {
+          "Name": "Application/002_add_2.svg",
+          "BuiltIn": true,
+          "Color": "Background 1",
+          "UseCellTypeForeColor": true
+        },
+        "IconSize": 14.0
       }
     },
     "4,58": {
@@ -1028,6 +1125,12 @@
         ]
       }
     },
+    "10,127": {
+      "BindingInfo": {
+        "TableName": "t_object",
+        "ColumnName": "analysis_urgent_flg"
+      }
+    },
     "11,21": {
       "CellType": {
         "$type": "Forguncy.ContentContainerCellType, ServerDesignerCommon",
@@ -1070,7 +1173,7 @@
                     "RetrunParamNames": {}
                   }
                 ],
-                "ID": "5e414a78-d1bb-4850-bf77-799fa073d76f"
+                "ID": "ef871bb8-1634-4be7-92c8-f365cdb95d39"
               },
               {
                 "Condition": {
@@ -1139,7 +1242,7 @@
                     "RetrunParamNames": {}
                   }
                 ],
-                "ID": "5c60ad71-988f-41d7-a0e1-52ec04a5d137"
+                "ID": "3f988219-53e1-4c72-9676-828d4c14438f"
               }
             ]
           }
@@ -1467,6 +1570,9 @@
         "FontFamily": 1
       },
       {
+        "Background": 15
+      },
+      {
         "Background": null,
         "FontFamily": 1,
         "FontSize": 14.67
@@ -1479,9 +1585,6 @@
       {
         "Background": 15,
         "FontFamily": 1
-      },
-      {
-        "Background": 15
       },
       {
         "Background": 8,
@@ -1913,6 +2016,14 @@
       "4,18": 9,
       "4,19": 9,
       "4,20": 9,
+      "4,48": 20,
+      "4,49": 9,
+      "4,50": 9,
+      "4,51": 9,
+      "4,52": 9,
+      "4,53": 9,
+      "4,54": 9,
+      "4,55": 9,
       "4,56": 9,
       "4,58": 20,
       "4,59": 9,
@@ -2187,9 +2298,7 @@
       "10,124": 9,
       "10,125": 12,
       "10,126": 12,
-      "10,127": 12,
-      "10,128": 9,
-      "10,129": 9,
+      "10,127": 29,
       "10,130": 9,
       "10,131": 9,
       "10,132": 9,
@@ -2198,7 +2307,7 @@
       "10,135": 9,
       "10,136": 12,
       "11,20": 12,
-      "11,21": 29,
+      "11,21": 30,
       "11,121": 12,
       "11,122": 9,
       "11,123": 9,
@@ -2297,7 +2406,7 @@
       "16,134": 12,
       "16,135": 12,
       "16,136": 12,
-      "17,0": 30,
+      "17,0": 31,
       "17,20": 12,
       "17,121": 12,
       "17,122": 21,
@@ -2314,7 +2423,7 @@
       "17,135": 12,
       "17,136": 9,
       "18,20": 12,
-      "18,122": 31,
+      "18,122": 32,
       "18,123": 9,
       "18,124": 9,
       "19,20": 12,
@@ -2325,11 +2434,11 @@
       "23,123": 9,
       "23,124": 9,
       "25,128": 18,
-      "25,129": 30,
-      "25,130": 30,
-      "25,131": 30,
-      "25,132": 30,
-      "25,133": 30,
+      "25,129": 31,
+      "25,130": 31,
+      "25,131": 31,
+      "25,132": 31,
+      "25,133": 31,
       "26,122": 25,
       "26,128": 22,
       "26,129": 22,
@@ -2339,29 +2448,29 @@
       "26,133": 22,
       "26,134": 25,
       "27,122": 25,
-      "27,128": 30,
-      "27,129": 30,
-      "27,130": 30,
-      "27,131": 30,
-      "27,132": 30,
-      "27,133": 30,
+      "27,128": 31,
+      "27,129": 31,
+      "27,130": 31,
+      "27,131": 31,
+      "27,132": 31,
+      "27,133": 31,
       "28,122": 25,
       "28,123": 25,
       "28,124": 25,
       "28,125": 25,
-      "28,128": 30,
-      "28,129": 30,
-      "28,130": 30,
-      "28,131": 30,
-      "28,132": 30,
-      "28,133": 30,
+      "28,128": 31,
+      "28,129": 31,
+      "28,130": 31,
+      "28,131": 31,
+      "28,132": 31,
+      "28,133": 31,
       "28,134": 25,
-      "29,128": 30,
-      "29,129": 30,
-      "29,130": 30,
-      "29,131": 30,
-      "29,132": 30,
-      "29,133": 30,
+      "29,128": 31,
+      "29,129": 31,
+      "29,130": 31,
+      "29,131": 31,
+      "29,132": 31,
+      "29,133": 31,
       "29,134": 25,
       "30,88": 9,
       "30,89": 12,
@@ -2396,14 +2505,14 @@
       "30,118": 12,
       "30,119": 12,
       "30,120": 12,
-      "30,128": 30,
-      "30,129": 30,
-      "30,130": 30,
-      "30,131": 30,
-      "30,132": 30,
-      "30,133": 30,
+      "30,128": 31,
+      "30,129": 31,
+      "30,130": 31,
+      "30,131": 31,
+      "30,132": 31,
+      "30,133": 31,
       "30,134": 25,
-      "31,122": 32,
+      "31,122": 29,
       "33,122": 9,
       "33,123": 9,
       "33,124": 9,
@@ -2432,72 +2541,72 @@
       "38,17": 12,
       "38,18": 35,
       "38,19": 12,
-      "38,21": 30,
-      "38,22": 30,
-      "38,23": 30,
-      "38,24": 30,
-      "38,25": 30,
-      "38,26": 30,
-      "38,27": 30,
-      "38,28": 30,
-      "38,29": 30,
-      "38,30": 30,
-      "38,31": 30,
-      "38,32": 30,
-      "38,33": 30,
-      "38,34": 30,
-      "38,35": 30,
-      "38,36": 30,
-      "38,37": 30,
-      "38,38": 30,
-      "38,39": 30,
-      "38,40": 30,
-      "38,41": 30,
-      "38,42": 30,
-      "38,43": 30,
-      "38,44": 30,
-      "38,45": 30,
-      "38,46": 30,
-      "38,47": 30,
-      "38,48": 30,
-      "38,49": 30,
-      "38,50": 30,
-      "38,51": 30,
-      "38,52": 30,
-      "38,53": 30,
-      "38,54": 30,
-      "38,55": 30,
-      "38,56": 30,
-      "38,57": 30,
-      "38,58": 30,
-      "38,59": 30,
-      "38,60": 30,
-      "38,61": 30,
-      "38,62": 30,
-      "38,63": 30,
-      "38,64": 30,
-      "38,65": 30,
-      "38,66": 30,
-      "38,67": 30,
-      "38,68": 30,
-      "38,69": 30,
-      "38,70": 30,
-      "38,71": 30,
-      "38,72": 30,
-      "38,73": 30,
-      "38,74": 30,
-      "38,75": 30,
-      "38,76": 30,
-      "38,77": 30,
-      "38,78": 30,
-      "38,79": 30,
-      "38,80": 30,
-      "38,81": 30,
-      "38,82": 30,
-      "38,83": 30,
-      "38,84": 30,
-      "38,85": 30,
-      "38,86": 30,
+      "38,21": 31,
+      "38,22": 31,
+      "38,23": 31,
+      "38,24": 31,
+      "38,25": 31,
+      "38,26": 31,
+      "38,27": 31,
+      "38,28": 31,
+      "38,29": 31,
+      "38,30": 31,
+      "38,31": 31,
+      "38,32": 31,
+      "38,33": 31,
+      "38,34": 31,
+      "38,35": 31,
+      "38,36": 31,
+      "38,37": 31,
+      "38,38": 31,
+      "38,39": 31,
+      "38,40": 31,
+      "38,41": 31,
+      "38,42": 31,
+      "38,43": 31,
+      "38,44": 31,
+      "38,45": 31,
+      "38,46": 31,
+      "38,47": 31,
+      "38,48": 31,
+      "38,49": 31,
+      "38,50": 31,
+      "38,51": 31,
+      "38,52": 31,
+      "38,53": 31,
+      "38,54": 31,
+      "38,55": 31,
+      "38,56": 31,
+      "38,57": 31,
+      "38,58": 31,
+      "38,59": 31,
+      "38,60": 31,
+      "38,61": 31,
+      "38,62": 31,
+      "38,63": 31,
+      "38,64": 31,
+      "38,65": 31,
+      "38,66": 31,
+      "38,67": 31,
+      "38,68": 31,
+      "38,69": 31,
+      "38,70": 31,
+      "38,71": 31,
+      "38,72": 31,
+      "38,73": 31,
+      "38,74": 31,
+      "38,75": 31,
+      "38,76": 31,
+      "38,77": 31,
+      "38,78": 31,
+      "38,79": 31,
+      "38,80": 31,
+      "38,81": 31,
+      "38,82": 31,
+      "38,83": 31,
+      "38,84": 31,
+      "38,85": 31,
+      "38,86": 31,
       "38,121": 12,
       "38,122": 12,
       "38,123": 12,
@@ -2574,7 +2683,6 @@
     "4,111,1,10",
     "1,104,1,16",
     "4,58,1,9",
-    "4,54,1,2",
     "4,95,1,7",
     "1,58,1,2",
     "1,60,1,41",
@@ -2588,6 +2696,8 @@
     "28,122,1,4",
     "28,128,3,7",
     "7,74,1,12",
+    "4,48,1,9",
+    "10,127,1,3",
     "26,122,1,4"
   ],
   "PageInfo": {
@@ -2633,4 +2743,4 @@
       "Formula": "物件詳細!$CR$5"
     }
   ]
-}//Fo+lBK8MqRfq8lWJdUSIhBN5wIEEVhN7ipG1Adrz/S8DUhz7XP2IGWZGPUxJcaWf+M6d4aYD9YscNGIbtY77JFNx+prNGsmYwMg4haTr72ihsr2YOBKfGo8kA2viTvlFuq0yzJuPDxVZwIgf3cwTkdjkq9oXWTTnHy6zW5sZPW8kw4wWTFFtwkLgwyQ25O7G1CNMQBNQ+NzWY8lWChiNBQJUT+lWgkZ4f6D9UaOvkcM8kp3/ggCJUQaD8JqLjYdPyc8l8yPyREG/uldD3X/i7gT7X8Z+W0O+scKJLQ+Pc+UgnDWPVIMS1MeW+glG8AanlcwCbbhnNQ0OMBJaDXWGbgN2uWo4IlsdPdrEjCDwvCrhY07PH9PtGfNFpqzI9kqtJJO6vlNUbSfWWts9Z3Mg2+b/a/3vkL3xxLqw0C3r8MXJwdf+pUmUI5cp433ubBB0TJsnQK1rOqc2cjlAuR249PFY885Q+9/5I8DJdaog+Orf2E3pZmoP/Sl0WebL2piARIdjz+aybxYD7uMtD9ctYG3TJDXTroyBeSxlV0dgKAReyfB7rFsB/uok4MW5nD+a77sVvIEK0I5gCLxOVNu3yWUEVV3lwbUS/0y7FIv83PLRlr7n9Gh5MWSLIGHY9ak83ULYi9hG9NCYoYUqdF3qDZys7xMjU3HtshIMtx4J4Zw5BUJs3fbK1KlZXMZ2XJcqz/HmlDYIN9Lt6OaiW+lyejmthQd/KkWxvriTFFuZPWF1ng4fkaN+RpXKku+7oP8jP3HNX+ig5xCtYeRMPwPZ+OSDrtBYOEkg8/M53jQrO3CRKb69K7soYJTEWtVtxMmeV/gEMSd7hkX9zLgeTwXoun5xsFkFFQE/KSOM/HveZ9uUAO3Twwh8Yd9lny0t7IckxyfZA5wY3ICVHNSFxABYGA==|920
+}//cCMgi5gJWvPAiT0c42qlh6F27wh8XT0Bi0FF58wKcBDjucjfdiIMoZucdHA7cmRwOEvPdpM6synqhDLalxg4T8tn10bG8K6cmNZX7J6U1tpOHw1PbYXPXJewrg3/c7/wJrX9WoeapcOQ8MxYTpnMl+GShwtz77cDpctddn0mDN8u0LHDZ6w5tqFPPRhOKVTYDqasZmogTm61+peqpy5ILiYMrXkkK+abbnI+1fV7vHFDYVMxynUyb9rCthizZZP6dxALlkXNLZqWlNGK+j2BjtmRZGL81qDv6C3BZhjfR+sLH20MexsldXakCncBvqVRKzDv+IR4DLj5VmXaVruIoszwidqk5FAFScl6dz/XooZNvOO3OiyBNIBhFdXGFiIah3j//CH+Vl/m+JefAUnDcDGCTW3iAdM+J+vDctBJuZUO1vNzep/tIP1fEG7+TxYvkwlIZE/97t/6mjMnf7VBHTqNXhoqrnP2xANWLsT+UJiCLVzWr9qQpJmfs3QbV+ZKqibFjLK1sAkZCHGDRmWodqSn4so4xDsCscrtdHydSSZHDbUiMl/OzQMPd2Fng+VE5Pol4h44gar2zCQEu+ntIKoOvaciyHZDQcHFENQ3F/kfHsMw+Z1JUbq+S+qytnL6MTO7cjh/HyJw/LhR3oDyLMdulHtDEfRIoCLNiJzvDzfUOe/2r5cLmMPKoR5d4fvDTQon8LiQM+Vx/RBm8T0WwqVZ0R0XzpVKSs8Ac4zOu7nJZ+UIVZdPpioGn9tgcrYiYBDgD3J7uXsvvDgBX94XCtEHfWF8QuRRNZxadVDq1TSdRVsE81axwLDnBFiB8Jo/fv7tijbYYEdb9yj9YqM4UU2IyaQsgW/txtPjqpgyAqEtl8zEKH3FDSBP6xM8sGQH+0Jt2Mgb0h1PBa2oV1Nnrw==|920
