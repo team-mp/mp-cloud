@@ -16,10 +16,13 @@
           "Name": "P_ファイル属性ID"
         },
         {
-          "Name": "P_添付コメント"
+          "Name": "P_コメント"
         },
         {
           "Name": "P_添付ファイル"
+        },
+        {
+          "Name": "P_公開フラグ"
         }
       ]
     }
@@ -62,27 +65,79 @@
               }
             }
           },
-          "ID": "a545c9392e6249ffbe2392f935777660"
+          "ID": "74ec0ee8035e40f6a3a6c9536e3d17d3"
         },
         {
           "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
           "ParameterName": "保存元サーバーパス名",
-          "ID": "856cd1bc9418498c92e50bcd2be3b839"
+          "ParameterValue": "C:\\ProgramData\\Forguncy\\kiso1\\7373\\WebSite\\Upload\\Temp\\",
+          "ID": "19481dc022924452a429d3340a086aa9"
+        },
+        {
+          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+          "ParameterName": "保存先サーバーパス名",
+          "ParameterValue": "C:\\Dropbox\\Team-MP Dropbox\\和幸磯野\\",
+          "ID": "57705ff15ee74887bfd4a62867e71180"
+        },
+        {
+          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+          "ParameterName": "第一階層フォルダ名",
+          "ParameterValue": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=TEXT(物件情報.申込日,\"yyyy年mm月\")"
+          },
+          "ID": "7f2a9e116a8a4a3a94a5896e87e49840",
+          "Comments": "年月"
+        },
+        {
+          "$type": "OperateFilesCommand.CreateFolderCommand, OperateFilesCommand",
+          "FolderPath": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=保存先サーバーパス名&第一階層フォルダ名"
+          },
+          "Comments": "第一階層フォルダの作成"
+        },
+        {
+          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+          "ParameterName": "第二階層フォルダ名",
+          "ParameterValue": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=第一階層フォルダ名&\"\\\"&物件情報.物件番号"
+          },
+          "ID": "d9364b961e5142afbff25714e629d49c",
+          "Comments": "物件番号"
+        },
+        {
+          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+          "ParameterName": "保存先フォルダパス名",
+          "ParameterValue": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=保存先サーバーパス名&第二階層フォルダ名&\"\\\""
+          },
+          "ID": "51cc918e196c4067bbfea15ca6acda4e"
+        },
+        {
+          "$type": "OperateFilesCommand.CreateFolderCommand, OperateFilesCommand",
+          "FolderPath": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=保存先フォルダパス名"
+          },
+          "Comments": "第二階層"
         },
         {
           "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
           "ParameterName": "添付ファイル数",
           "ParameterValue": {
             "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-            "SerializeProperty": "=LEN(P_添付コメント)-LEN(SUBSTITUTE(P_添付コメント,\"|\",\"\"))"
+            "SerializeProperty": "=LEN(P_添付ファイル)-LEN(SUBSTITUTE(P_添付ファイル,\"|\",\"\"))"
           },
-          "ID": "9ec04706d761405d8982757a25bb8a9a"
+          "ID": "90fdbb7e93424fcc936b77806b731f10"
         },
         {
           "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
           "ParameterName": "ファイル名開始位置",
           "ParameterValue": "1",
-          "ID": "4877c4bb4937401a9698a1f473062215"
+          "ID": "834fc7066c784d3a9fb0cb9b6d7df03b"
         },
         {
           "$type": "Forguncy.Model.LoopCommand, ServerDesignerCommon",
@@ -100,9 +155,9 @@
               "ParameterName": "文字数",
               "ParameterValue": {
                 "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                "SerializeProperty": "=FIND(\"|\",P_添付コメント,ファイル名開始位置)"
+                "SerializeProperty": "=FIND(\"|\",P_添付ファイル,ファイル名開始位置)"
               },
-              "ID": "954d65950e4e4feba7e497282b746a5f"
+              "ID": "343f74ebfc0a484d999c3052927e24ee"
             },
             {
               "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
@@ -111,7 +166,442 @@
                 "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
                 "SerializeProperty": "=MID(P_添付ファイル,ファイル名開始位置,文字数-ファイル名開始位置)"
               },
-              "ID": "0044e17d02004ac4bc2576a4edbde433"
+              "ID": "e90b018da1f74a38aedb64959f525d48"
+            },
+            {
+              "$type": "OperateFilesCommand.GetFilesFromFolderCommand, OperateFilesCommand",
+              "FolderPath": "C:\\ProgramData\\Forguncy\\kiso1\\",
+              "IncludeSubFolder": true,
+              "ToParameterName": "ファイル検索",
+              "Comments": "ローカル開発用"
+            },
+            {
+              "$type": "Forguncy.Model.LoopCommand, ServerDesignerCommon",
+              "LoopInfo": {
+                "$type": "Forguncy.Model.CountLoopInfo, ServerDesignerCommon",
+                "LoopCount": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=ファイル検索"
+                },
+                "LoopItemParamName": "Item_検索ファイル"
+              },
+              "CommandList": [
+                {
+                  "$type": "OperateFilesCommand.GetFileInformation, OperateFilesCommand",
+                  "FilePath": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=Item_検索ファイル"
+                  },
+                  "ToParameterName": "検索ファイル名"
+                },
+                {
+                  "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+                  "ConditionAndCommandPairList": [
+                    {
+                      "Condition": {
+                        "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                        "param": {
+                          "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                          "ParamObject": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=検索ファイル名"
+                          }
+                        },
+                        "value": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=取得ファイル名"
+                        }
+                      },
+                      "CommandList": [
+                        {
+                          "$type": "OperateFilesCommand.GetFileInformation, OperateFilesCommand",
+                          "FilePath": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=Item_検索ファイル"
+                          },
+                          "FileInfomationType": 2,
+                          "ToParameterName": "フォルダパス名"
+                        },
+                        {
+                          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                          "ParameterName": "保存元サーバーパス名",
+                          "ParameterValue": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=フォルダパス名&\"\\\""
+                          },
+                          "ID": "c80eddd42ff24db7a7a80c4b6e2e1fe1"
+                        },
+                        {
+                          "$type": "Forguncy.Model.EndLoopCommand, ServerDesignerCommon"
+                        }
+                      ],
+                      "ID": "d1d43984-a4e5-4f9d-9320-9da8975f5390"
+                    }
+                  ]
+                }
+              ],
+              "Comments": "ローかつ開発用"
+            },
+            {
+              "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+              "ParameterName": "表示ファイル名",
+              "ParameterValue": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=MID(取得ファイル名,38,100)"
+              },
+              "ID": "400d5eb34ad24bdf99b218b86f193dd6"
+            },
+            {
+              "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+              "ParameterName": "取得ファイルフルパス名",
+              "ParameterValue": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=保存元サーバーパス名&取得ファイル名"
+              },
+              "ID": "b5e407782e2448af964f5e8c6242aabe"
+            },
+            {
+              "$type": "OperateFilesCommand.GetFileInformation, OperateFilesCommand",
+              "FilePath": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=取得ファイルフルパス名"
+              },
+              "FileInfomationType": 1,
+              "ToParameterName": "拡張子",
+              "Comments": "拡張子取得"
+            },
+            {
+              "$type": "OperateFilesCommand.GetFileInformation, OperateFilesCommand",
+              "FilePath": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=取得ファイルフルパス名"
+              },
+              "FileInfomationType": 6,
+              "ToParameterName": "ファイルサイズ",
+              "Comments": "ファイルサイズ取得"
+            },
+            {
+              "$type": "Forguncy.Model.LoopCommand, ServerDesignerCommon",
+              "LoopInfo": {
+                "$type": "Forguncy.Model.CountLoopInfo, ServerDesignerCommon",
+                "LoopCount": "999",
+                "LoopIndexParamName": "カウンター",
+                "LoopItemParamName": "Item"
+              },
+              "CommandList": [
+                {
+                  "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+                  "ConditionAndCommandPairList": [
+                    {
+                      "Condition": {
+                        "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                        "param": {
+                          "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                          "ParamObject": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=カウンター"
+                          }
+                        },
+                        "value": "1"
+                      },
+                      "CommandList": [
+                        {
+                          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                          "ParameterName": "保存ファイル名",
+                          "ParameterValue": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=TEXT(P_ファイル属性ID,\"000\")&\"_\"&表示ファイル名"
+                          },
+                          "ID": "e397bedb81c9446c972ce1e62dd4ba3b"
+                        }
+                      ],
+                      "ID": "e6e3e8a8-0b71-4e45-8ae2-6961975f8588"
+                    },
+                    {
+                      "CommandList": [
+                        {
+                          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                          "ParameterName": "連番付与ファイル名",
+                          "ParameterValue": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=SUBSTITUTE(表示ファイル名,拡張子,\"\")&\"_\"&TEXT(カウンター-1,\"0\")"
+                          },
+                          "ID": "b3bfcfa757c945728a9d636936610dd4"
+                        },
+                        {
+                          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                          "ParameterName": "保存ファイル名",
+                          "ParameterValue": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=TEXT(P_ファイル属性ID,\"000\")&\"_\"&連番付与ファイル名&拡張子"
+                          },
+                          "ID": "2b3e150eb20442b28a26fbbc8cd37fb6"
+                        }
+                      ],
+                      "ID": "47ba4e7a-3f8f-4072-8f30-65bf3a787452"
+                    }
+                  ]
+                },
+                {
+                  "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                  "ParameterName": "登録済みカウント",
+                  "TableValue": {
+                    "TableName": "t_object_attachment",
+                    "TableValueType": 3,
+                    "SqlCondition": {
+                      "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                      "Condition1": {
+                        "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                        "Condition1": {
+                          "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                          "ColumnBindingInfo": {
+                            "TableName": "t_object_attachment",
+                            "ColumnName": "object_id"
+                          },
+                          "Value": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=P_物件ID"
+                          }
+                        },
+                        "Condition2": {
+                          "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                          "ColumnBindingInfo": {
+                            "TableName": "t_object_attachment",
+                            "ColumnName": "file_attribute_id"
+                          },
+                          "Value": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=P_ファイル属性ID"
+                          }
+                        }
+                      },
+                      "Condition2": {
+                        "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                        "ColumnBindingInfo": {
+                          "TableName": "t_object_attachment",
+                          "ColumnName": "save_file_name"
+                        },
+                        "Value": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=保存ファイル名"
+                        }
+                      }
+                    }
+                  },
+                  "ID": "6a1c0dacbd1440cb8c88900ed41331c1"
+                },
+                {
+                  "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+                  "ConditionAndCommandPairList": [
+                    {
+                      "Condition": {
+                        "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                        "param": {
+                          "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                          "ParamObject": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=登録済みカウント"
+                          }
+                        },
+                        "value": "0"
+                      },
+                      "CommandList": [
+                        {
+                          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                          "ParameterName": "保存ファイルフルパス名",
+                          "ParameterValue": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=保存先フォルダパス名&保存ファイル名"
+                          },
+                          "ID": "c47429c9bd9c4c85a1de749b834ab64b"
+                        },
+                        {
+                          "$type": "OperateFilesCommand.GetFileInformation, OperateFilesCommand",
+                          "FilePath": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=保存ファイルフルパス名"
+                          },
+                          "FileInfomationType": 5,
+                          "ToParameterName": "ファイル有無"
+                        },
+                        {
+                          "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+                          "ConditionAndCommandPairList": [
+                            {
+                              "Condition": {
+                                "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                                "param": {
+                                  "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                                  "ParamObject": {
+                                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                    "SerializeProperty": "=ファイル有無"
+                                  }
+                                },
+                                "value": "False"
+                              },
+                              "CommandList": [
+                                {
+                                  "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+                                  "TableName": "t_object_attachment",
+                                  "UpdateType": "add",
+                                  "ShowConfirm": false,
+                                  "ConfirmText": "本当に追加してもよろしいですか？",
+                                  "UpdateValues": [
+                                    {
+                                      "ColumnName": "object_id",
+                                      "Value": {
+                                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                        "SerializeProperty": "=P_物件ID"
+                                      }
+                                    },
+                                    {
+                                      "ColumnName": "file_attribute_id",
+                                      "Value": {
+                                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                        "SerializeProperty": "=P_ファイル属性ID"
+                                      }
+                                    },
+                                    {
+                                      "ColumnName": "display_file_name",
+                                      "Value": {
+                                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                        "SerializeProperty": "=表示ファイル名"
+                                      }
+                                    },
+                                    {
+                                      "ColumnName": "file_path_name",
+                                      "Value": {
+                                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                        "SerializeProperty": "=保存先フォルダパス名"
+                                      }
+                                    },
+                                    {
+                                      "ColumnName": "save_file_name",
+                                      "Value": {
+                                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                        "SerializeProperty": "=保存ファイル名"
+                                      }
+                                    },
+                                    {
+                                      "ColumnName": "file_size",
+                                      "Value": {
+                                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                        "SerializeProperty": "=ファイルサイズ"
+                                      }
+                                    },
+                                    {
+                                      "ColumnName": "file_created_date",
+                                      "Value": {
+                                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                        "SerializeProperty": "=NOW()"
+                                      }
+                                    },
+                                    {
+                                      "ColumnName": "upload_user_id",
+                                      "Value": "%CurrentUser.user_id%"
+                                    },
+                                    {
+                                      "ColumnName": "publish_flg",
+                                      "Value": {
+                                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                        "SerializeProperty": "=P_公開フラグ"
+                                      }
+                                    }
+                                  ],
+                                  "ParamNameToSaveNewRowValue": "添付情報"
+                                },
+                                {
+                                  "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+                                  "ConditionAndCommandPairList": [
+                                    {
+                                      "Condition": {
+                                        "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                                        "param": {
+                                          "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                                          "ParamObject": {
+                                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                            "SerializeProperty": "=P_コメント"
+                                          }
+                                        },
+                                        "value": "%Null%",
+                                        "compareType": 1
+                                      },
+                                      "CommandList": [
+                                        {
+                                          "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+                                          "TableName": "t_object_attachment_comment",
+                                          "UpdateType": "add",
+                                          "ShowConfirm": false,
+                                          "ConfirmText": "本当に追加してもよろしいですか？",
+                                          "UpdateValues": [
+                                            {
+                                              "ColumnName": "attachment_id",
+                                              "Value": {
+                                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                                "SerializeProperty": "=添付情報.添付ID"
+                                              }
+                                            },
+                                            {
+                                              "ColumnName": "attachment_comment",
+                                              "Value": {
+                                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                                "SerializeProperty": "=P_コメント"
+                                              }
+                                            },
+                                            {
+                                              "ColumnName": "comment_user_id",
+                                              "Value": "%CurrentUser.user_id%"
+                                            },
+                                            {
+                                              "ColumnName": "comment_date",
+                                              "Value": {
+                                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                                "SerializeProperty": "=NOW()"
+                                              }
+                                            }
+                                          ]
+                                        }
+                                      ],
+                                      "ID": "b5163254-e223-4a35-bc13-c3166e9ac7ac"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "$type": "OperateFilesCommand.CopyFileCommand, OperateFilesCommand",
+                                  "FilePath": {
+                                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                    "SerializeProperty": "=取得ファイルフルパス名"
+                                  },
+                                  "TargetFolderPath": {
+                                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                    "SerializeProperty": "=保存先フォルダパス名"
+                                  }
+                                },
+                                {
+                                  "$type": "OperateFilesCommand.RenameFileCommand, OperateFilesCommand",
+                                  "FilePath": {
+                                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                    "SerializeProperty": "=保存先フォルダパス名&表示ファイル名"
+                                  },
+                                  "NewName": {
+                                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                    "SerializeProperty": "=保存ファイル名"
+                                  }
+                                },
+                                {
+                                  "$type": "Forguncy.Model.EndLoopCommand, ServerDesignerCommon"
+                                }
+                              ],
+                              "ID": "462e3dc4-d23e-4544-b6f1-e13ef4662894"
+                            }
+                          ]
+                        }
+                      ],
+                      "ID": "84a8bdd7-b597-4965-98a3-6a98f906d1ba"
+                    }
+                  ]
+                }
+              ]
             },
             {
               "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
@@ -120,9 +610,14 @@
                 "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
                 "SerializeProperty": "=文字数+1"
               },
-              "ID": "c1099d7587c34f43bf757e230debbd4a"
+              "ID": "83bd8829d23648e1965b68838d38b7cd"
             }
           ]
+        },
+        {
+          "$type": "Forguncy.Model.ReturnCommand, ServerDesignerCommon",
+          "ErrorCode": "0",
+          "CustomReturns": []
         }
       ]
     }
