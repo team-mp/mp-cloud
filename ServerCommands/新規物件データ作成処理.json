@@ -308,6 +308,20 @@
               {
                 "BindingInfo": {
                   "TableName": "m_order_type",
+                  "ColumnName": "initial_surveying_status_id"
+                },
+                "ColumnName": "初期測量ステータスID"
+              },
+              {
+                "BindingInfo": {
+                  "TableName": "m_order_type",
+                  "ColumnName": "initial_analysis_status_id"
+                },
+                "ColumnName": "初期解析ステータスID"
+              },
+              {
+                "BindingInfo": {
+                  "TableName": "m_order_type",
                   "ColumnName": "initial_file_attibute_id"
                 },
                 "ColumnName": "初期ファイル属性ID"
@@ -325,12 +339,12 @@
               }
             }
           },
-          "ID": "fad960ab3c90420b9d9aef50eb24375a"
+          "ID": "b22d1157d4ee4f518ad53172330ff5f8"
         },
         {
           "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
           "ParameterName": "親物件ID",
-          "ID": "4728b43f365c4344bb548137c9a05869"
+          "ID": "168c43590c5f4adfb7013467dfa94783"
         },
         {
           "$type": "Forguncy.Model.LoopCommand, ServerDesignerCommon",
@@ -738,7 +752,7 @@
                         "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
                         "SerializeProperty": "=New物件情報.物件ID"
                       },
-                      "ID": "d4bed824a1734c13885c3f78e624ca50"
+                      "ID": "15bab3d31a7d40d780c044716d9e9a72"
                     },
                     {
                       "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
@@ -768,7 +782,7 @@
                       ]
                     }
                   ],
-                  "ID": "60fab1a6-7ebe-4395-9116-da0dca253c16"
+                  "ID": "1daed038-941a-4c39-87b4-a82b8574633b"
                 }
               ],
               "Comments": "親物件IDをセット"
@@ -859,7 +873,7 @@
                           ]
                         }
                       ],
-                      "ID": "11fcf555-4b5a-43f6-828f-aa5760d88e89"
+                      "ID": "69d1fa22-5218-4ae3-a6f1-2392981bec45"
                     }
                   ],
                   "Comments": "選択済みの場合"
@@ -953,7 +967,7 @@
                           ]
                         }
                       ],
-                      "ID": "3155ec0c-5266-40a1-acd3-ea4f006a9253"
+                      "ID": "96f80002-f9c5-4e62-82ff-0fa2d094ab79"
                     }
                   ],
                   "Comments": "選択済みの場合"
@@ -1062,7 +1076,7 @@
                       "ParamNameToSaveNewRowValue": "New調査情報"
                     }
                   ],
-                  "ID": "dcef34e0-dc36-4dda-aad6-c1a7a77ea8e9"
+                  "ID": "42644eba-5479-4c35-af1c-aa6e0fcb883b"
                 }
               ],
               "Comments": "地盤調査の場合"
@@ -1104,10 +1118,109 @@
                       ]
                     }
                   ],
-                  "ID": "8899e08c-3f4e-4e00-8092-6f60f4a66d70"
+                  "ID": "25018d4c-5b47-44f4-bc2d-af21229452a0"
                 }
               ],
               "Comments": "測量調査の場合"
+            },
+            {
+              "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+              "ConditionAndCommandPairList": [
+                {
+                  "Condition": {
+                    "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                    "param": {
+                      "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                      "ParamObject": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=申込タイプ.地盤解析フラグ"
+                      }
+                    },
+                    "value": "1"
+                  },
+                  "CommandList": [
+                    {
+                      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                      "ParameterName": "調査ID",
+                      "ID": "60063fb57f09489187c57ee3f977d5a5"
+                    },
+                    {
+                      "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+                      "ConditionAndCommandPairList": [
+                        {
+                          "Condition": {
+                            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                            "param": {
+                              "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                              "ParamObject": {
+                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                "SerializeProperty": "=申込タイプ.地盤調査フラグ"
+                              }
+                            },
+                            "value": "1"
+                          },
+                          "CommandList": [
+                            {
+                              "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                              "ParameterName": "調査ID",
+                              "ParameterValue": {
+                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                "SerializeProperty": "=New調査情報.調査ID"
+                              },
+                              "ID": "2a0325d1d8ed43f3b7608d9ef29046d9"
+                            }
+                          ],
+                          "ID": "8d747751-2550-4d92-b8a7-f7a19aacc625"
+                        }
+                      ],
+                      "Comments": "地盤調査があれば調査IDを取得"
+                    },
+                    {
+                      "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+                      "TableName": "t_object_analysis",
+                      "UpdateType": "add",
+                      "ShowConfirm": false,
+                      "ConfirmText": "本当に追加してもよろしいですか？",
+                      "UpdateValues": [
+                        {
+                          "ColumnName": "object_id",
+                          "Value": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=New物件情報.物件ID"
+                          }
+                        },
+                        {
+                          "ColumnName": "analysis_serial_no",
+                          "Value": "1"
+                        },
+                        {
+                          "ColumnName": "analysis_register_date",
+                          "Value": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=P_申込日"
+                          }
+                        },
+                        {
+                          "ColumnName": "analysis_status_id",
+                          "Value": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=申込タイプ.初期解析ステータスID"
+                          }
+                        },
+                        {
+                          "ColumnName": "survey_id",
+                          "Value": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=調査ID"
+                          }
+                        }
+                      ],
+                      "ParamNameToSaveNewRowValue": "New解析情報"
+                    }
+                  ],
+                  "ID": "01721045-2423-4f43-b0f3-19473e30791d"
+                }
+              ]
             },
             {
               "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
@@ -1210,12 +1323,12 @@
                               ]
                             }
                           ],
-                          "ID": "57b88bf1-0a1c-406d-872a-414eb4683a0d"
+                          "ID": "e5875819-efe5-45e0-b6f2-abecfe529019"
                         }
                       ]
                     }
                   ],
-                  "ID": "5477ddb3-313e-4de7-a4df-95a5c5d773bf"
+                  "ID": "9657d1ca-d66d-4c27-b2c2-810eef98cda3"
                 }
               ],
               "Comments": "共通添付ファイル登録"
@@ -1321,12 +1434,12 @@
                               ]
                             }
                           ],
-                          "ID": "c97ba74a-b9b3-4bda-af86-65c980b2bfab"
+                          "ID": "cb2eda09-8087-45e3-a170-9f2a786dc127"
                         }
                       ]
                     }
                   ],
-                  "ID": "9daf8699-3a86-46ae-983b-1dc6917483d6"
+                  "ID": "209e661f-2352-410a-b8db-3f138157c2ef"
                 }
               ],
               "Comments": "個別添付ファイル登録"
