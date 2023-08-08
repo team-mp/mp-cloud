@@ -669,18 +669,18 @@
     "36,35": "基礎形状",
     "36,57": "設計接地圧",
     "36,72": "kN/㎡",
-    "38,80": "▼受付商品",
     "39,2": "受付商品",
     "39,14": "品名",
     "39,49": "数量",
     "39,58": "単位",
     "39,64": "金額",
+    "39,80": "▼受付商品",
     "43,2": "オプション",
     "43,14": "品名",
     "43,49": "数量",
     "43,58": "単位",
     "43,64": "金額",
-    "43,80": "▼オプション商品"
+    "44,80": "▼オプション商品"
   },
   "Formulas": {
     "21,105": "IF(CR22>0,IFERROR(ODATA(\"m_customer_user?$select=user_name&$filter=user_id eq \"&IF(ISBLANK(CR22),\"null\",CR22)),\"\"),\"\")",
@@ -791,26 +791,38 @@
         "ItemsQuery": {
           "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
           "Condition1": {
-            "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
-            "ColumnBindingInfo": {
-              "TableName": "v_customer_order_type",
-              "ColumnName": "顧客ID"
+            "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+            "Condition1": {
+              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+              "ColumnBindingInfo": {
+                "TableName": "v_customer_order_type",
+                "ColumnName": "顧客ID"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=申込内容詳細!CW7"
+              }
             },
-            "Value": {
-              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-              "SerializeProperty": "=申込内容詳細!CW7"
+            "Condition2": {
+              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+              "ColumnBindingInfo": {
+                "TableName": "v_customer_order_type",
+                "ColumnName": "グループID"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=申込内容詳細!CH5"
+              }
             }
           },
           "Condition2": {
-            "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+            "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+            "CompareType": 6,
             "ColumnBindingInfo": {
               "TableName": "v_customer_order_type",
-              "ColumnName": "グループID"
+              "ColumnName": "有効フラグ"
             },
-            "Value": {
-              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-              "SerializeProperty": "=申込内容詳細!CH5"
-            }
+            "Value": "1"
           }
         }
       },
@@ -1143,7 +1155,7 @@
                 }
               }
             },
-            "ID": "462bd6d9415b403e81aa6cb79ca4da30"
+            "ID": "efa4b70ddfb440f2a5a30b2a6662181b"
           },
           {
             "$type": "Forguncy.Model.SetCellPropertyCommand, ServerDesignerCommon",
@@ -1250,7 +1262,7 @@
                     "Comments": "住宅事業者情報クリア"
                   }
                 ],
-                "ID": "3fbeff10-f3a3-4ce4-bf81-79ca7c383c8a"
+                "ID": "13fd86b3-93f3-4127-9a53-48f2c753abea"
               }
             ],
             "Comments": "申込グループが変更されたら"
@@ -1548,7 +1560,7 @@
                     "Comments": "物件担当者情報クリア"
                   }
                 ],
-                "ID": "449e6215-3949-4fe9-a314-61fe3e43ad03"
+                "ID": "ee28e9d7-ad6a-4d68-be6c-d058402bb800"
               }
             ]
           }
@@ -2300,18 +2312,12 @@
             "PageName": "顧客検索",
             "PassValues": [
               {
-                "Source": "1",
-                "TargetCell": {
-                  "SerializeProperty": "=顧客検索!$Z$2"
-                }
-              },
-              {
                 "Source": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
                   "SerializeProperty": "=申込内容詳細!住宅事業者ID"
                 },
                 "TargetCell": {
-                  "SerializeProperty": "=顧客検索!$AZ$3"
+                  "SerializeProperty": "=顧客検索!顧客ID"
                 }
               },
               {
@@ -2320,7 +2326,25 @@
                   "SerializeProperty": "=申込内容詳細!申込グループID"
                 },
                 "TargetCell": {
-                  "SerializeProperty": "=顧客検索!$AL$2"
+                  "SerializeProperty": "=顧客検索!グループフィルタ"
+                }
+              },
+              {
+                "Source": "1",
+                "TargetCell": {
+                  "SerializeProperty": "=顧客検索!属性フィルタ"
+                }
+              },
+              {
+                "Source": "1",
+                "TargetCell": {
+                  "SerializeProperty": "=顧客検索!属性固定フラグ"
+                }
+              },
+              {
+                "Source": "1",
+                "TargetCell": {
+                  "SerializeProperty": "=顧客検索!グループ固定フラグ"
                 }
               }
             ],
@@ -4079,6 +4103,92 @@
         "ColumnName": "ground_pressure"
       }
     },
+    "40,14": {
+      "CellType": {
+        "$type": "Forguncy.RepeaterCellType, ServerDesignerCommon",
+        "ListviewName": "受付商品ビュー",
+        "TemplatePageName": "84b414d162f3423fb61dd36350ccfe1"
+      }
+    },
+    "40,80": {
+      "ListViewInfo": {
+        "ShowColumnHeaderInDesigner": true,
+        "TableName": "t_object_order_product",
+        "RowIndex": 40,
+        "ColumnIndex": 80,
+        "ColumnCount": 8,
+        "RowCount": 3,
+        "ShowEditStatusIcon": true,
+        "UseSimpleBar": true,
+        "Name": "受付商品ビュー",
+        "SqlCondition": {
+          "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+          "Condition1": {
+            "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+            "ColumnBindingInfo": {
+              "TableName": "t_object_order_product",
+              "ColumnName": "object_id"
+            },
+            "Value": {
+              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+              "SerializeProperty": "=申込内容詳細!CC3"
+            }
+          },
+          "Condition2": {
+            "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+            "ColumnBindingInfo": {
+              "TableName": "t_object_order_product",
+              "ColumnName": "product_order_type"
+            },
+            "Value": "1"
+          }
+        },
+        "TopCondition": null,
+        "CommitType": 1,
+        "DoNotLoadDataWhenLoadPage": true,
+        "ListViewStyleName": "_RS_Medium1"
+      }
+    },
+    "41,80": {
+      "BindingInfo": {
+        "TableName": "t_object_order_product",
+        "ColumnName": "product_name"
+      },
+      "NameUsedInJavaScript": "商品名"
+    },
+    "41,81": {
+      "BindingInfo": {
+        "TableName": "t_object_order_product",
+        "ColumnName": "special_note"
+      },
+      "NameUsedInJavaScript": "商品注釈"
+    },
+    "41,82": {
+      "BindingInfo": {
+        "TableName": "t_object_order_product",
+        "ColumnName": "quantity"
+      },
+      "NameUsedInJavaScript": "数量"
+    },
+    "41,83": {
+      "BindingInfo": {
+        "TableName": "t_object_order_product",
+        "ColumnName": "product_id",
+        "RelationBinding": {
+          "RelatedTable": "m_product",
+          "RelatedColumn": "product_id",
+          "DisplayColumn": "quantity_unit"
+        }
+      },
+      "NameUsedInJavaScript": "単位"
+    },
+    "41,84": {
+      "BindingInfo": {
+        "TableName": "t_object_order_product",
+        "ColumnName": "amount"
+      },
+      "NameUsedInJavaScript": "金額"
+    },
     "44,14": {
       "CellType": {
         "$type": "Forguncy.RepeaterCellType, ServerDesignerCommon",
@@ -4086,11 +4196,11 @@
         "TemplatePageName": "82b0c6be5f584a4db4aa0d112304df2"
       }
     },
-    "44,80": {
+    "45,80": {
       "ListViewInfo": {
         "ShowColumnHeaderInDesigner": true,
         "TableName": "t_object_order_product",
-        "RowIndex": 44,
+        "RowIndex": 45,
         "ColumnIndex": 80,
         "ColumnCount": 8,
         "RowCount": 3,
@@ -4125,26 +4235,28 @@
         "ListViewStyleName": "_RS_Medium1"
       }
     },
-    "45,80": {
+    "46,80": {
       "BindingInfo": {
         "TableName": "t_object_order_product",
-        "ColumnName": "product_id",
-        "RelationBinding": {
-          "RelatedTable": "m_product",
-          "RelatedColumn": "product_id",
-          "DisplayColumn": "product_name"
-        }
+        "ColumnName": "product_name"
       },
       "NameUsedInJavaScript": "商品名"
     },
-    "45,81": {
+    "46,81": {
+      "BindingInfo": {
+        "TableName": "t_object_order_product",
+        "ColumnName": "special_note"
+      },
+      "NameUsedInJavaScript": "商品注釈"
+    },
+    "46,82": {
       "BindingInfo": {
         "TableName": "t_object_order_product",
         "ColumnName": "quantity"
       },
       "NameUsedInJavaScript": "数量"
     },
-    "45,82": {
+    "46,83": {
       "BindingInfo": {
         "TableName": "t_object_order_product",
         "ColumnName": "product_id",
@@ -4156,7 +4268,7 @@
       },
       "NameUsedInJavaScript": "単位"
     },
-    "45,83": {
+    "46,84": {
       "BindingInfo": {
         "TableName": "t_object_order_product",
         "ColumnName": "amount"
@@ -4347,12 +4459,17 @@
         "BorderRight": 0
       },
       {
+        "HorizontalAlignment": 17,
         "BorderBottom": 0,
         "BorderLeft": 0
       },
       {
         "BorderBottom": 0,
         "BorderRight": 0
+      },
+      {
+        "FontFamily": 0,
+        "FontSize": -1.0
       },
       {
         "BorderRight": 0
@@ -4368,9 +4485,6 @@
       },
       {
         "HorizontalAlignment": 17
-      },
-      {
-        "FontSize": -1.0
       },
       {
         "BorderTop": null
@@ -5665,7 +5779,6 @@
       "36,91": 4,
       "36,92": 4,
       "36,93": 4,
-      "38,80": 16,
       "39,2": 0,
       "39,14": 34,
       "39,15": 35,
@@ -5727,6 +5840,7 @@
       "39,71": 35,
       "39,72": 35,
       "39,73": 39,
+      "39,80": 4,
       "40,14": 40,
       "40,15": 12,
       "40,16": 12,
@@ -5762,7 +5876,7 @@
       "40,46": 12,
       "40,47": 12,
       "40,48": 12,
-      "40,49": 40,
+      "40,49": 12,
       "40,50": 12,
       "40,51": 12,
       "40,52": 12,
@@ -5771,13 +5885,13 @@
       "40,55": 12,
       "40,56": 12,
       "40,57": 12,
-      "40,58": 40,
+      "40,58": 12,
       "40,59": 12,
       "40,60": 12,
       "40,61": 12,
       "40,62": 12,
       "40,63": 12,
-      "40,64": 40,
+      "40,64": 12,
       "40,65": 12,
       "40,66": 12,
       "40,67": 12,
@@ -5787,9 +5901,31 @@
       "40,71": 12,
       "40,72": 12,
       "40,73": 41,
+      "40,80": 1,
+      "40,82": 1,
+      "40,83": 1,
+      "40,84": 1,
+      "40,85": 4,
+      "40,86": 4,
+      "40,87": 4,
+      "41,80": 1,
+      "41,82": 1,
+      "41,83": 1,
+      "41,84": 1,
+      "41,85": 4,
+      "41,86": 4,
+      "41,87": 4,
+      "42,80": 1,
+      "42,81": 1,
+      "42,82": 1,
+      "42,83": 1,
+      "42,84": 1,
+      "42,85": 42,
+      "42,86": 42,
+      "42,87": 42,
       "43,2": 21,
-      "43,13": 42,
-      "43,14": 43,
+      "43,13": 43,
+      "43,14": 44,
       "43,15": 38,
       "43,16": 38,
       "43,17": 38,
@@ -5849,20 +5985,39 @@
       "43,71": 38,
       "43,72": 38,
       "43,73": 38,
-      "43,74": 44,
-      "43,80": 5,
-      "44,13": 42,
-      "44,14": 45,
-      "44,74": 44,
-      "45,13": 42,
-      "45,74": 44,
-      "46,13": 42,
-      "46,74": 44,
-      "46,85": 46,
-      "46,86": 46,
-      "46,87": 46,
-      "47,13": 42,
-      "47,74": 44,
+      "43,74": 45,
+      "44,13": 43,
+      "44,14": 46,
+      "44,74": 45,
+      "44,80": 5,
+      "45,13": 43,
+      "45,74": 45,
+      "45,80": 1,
+      "45,82": 1,
+      "45,83": 1,
+      "45,84": 1,
+      "45,85": 4,
+      "45,86": 4,
+      "45,87": 4,
+      "46,13": 43,
+      "46,74": 45,
+      "46,80": 1,
+      "46,82": 1,
+      "46,83": 1,
+      "46,84": 1,
+      "46,85": 4,
+      "46,86": 4,
+      "46,87": 4,
+      "47,13": 43,
+      "47,74": 45,
+      "47,80": 1,
+      "47,81": 1,
+      "47,82": 1,
+      "47,83": 1,
+      "47,84": 1,
+      "47,85": 42,
+      "47,86": 42,
+      "47,87": 42,
       "48,14": 35,
       "48,15": 35,
       "48,16": 35,
@@ -6098,8 +6253,10 @@
     "43,49,1,9",
     "43,58,1,6",
     "43,64,1,10",
-    "46,80,1,8",
-    "44,14,4,60"
+    "44,14,4,60",
+    "42,80,1,8",
+    "47,80,1,8",
+    "40,14,1,60"
   ],
   "PageInfo": {
     "$type": "Forguncy.Model.Pages.NormalPage, ServerDesignerCommon",
@@ -6178,7 +6335,7 @@
                 ]
               }
             ],
-            "ID": "a9c2d648-b5ab-49c4-a7f2-420b5b1b3d99"
+            "ID": "372fe8d0-2dde-4f28-ac95-bdbbb1e1fc1e"
           }
         ]
       }
@@ -6297,4 +6454,4 @@
       "Formula": "申込内容詳細!$DG$36"
     }
   ]
-}//zt6vBUhSZQtIhNqZ3ryZcwwBBRgzZZRrXodj1DfK42BB5CTVvKp5k4FHdtZRZmsSkMk+8Uca7nwnzbYli9gZdGw8efQFXWi3nw6vA5lJ2eST4OQgEXxMHiUEAgiUB967mFDZ/QHaw52XLT9fWG9s41WK3rIlP3hdSOTgMalvqRTw6nM6ca0oyA5X4mLCh5g6YLQM4l4in7UxUojYVnL9Yg5YluqaY/kbe/4/0eNNUTP9/QkUXQd2v9Al5i4mjAVt3z3La4GAQWbqRbzCX9iWNQgUU436EDWWUPKHQ8GsZk841zPwBymlCt5d0DqkQ9va77yREX5tknXdRWKjDx24vlffngkkl4NcTw0d2rq/qYHGnu79t1iW7KlX0aNzBsaG7umvuk+FQIKYG17ZYL+QUKxeievcytnq0Qk8sITr2lJiwzGZSHNJ1Lju+P9dqyAFGVXaYfxNfW4XBXxBPos7tQ39F9VuQOepck/bSdBsgag/0rGIACkdQiJI0g5DsQXvZsniHK1AZLH26CUHDUQTa84YmuU2qkRIEPhak0sPFWEg+QU44qmDGH2G2qahFrUr2yEBcg1ZpxYI5r+NDO0y7Sjz5C3+dSQFozy2U2BiroMsjgnAnxZNcNncxXhBr1xhuJlupxSW9lJ0IOki6rtK3Gk/tigALr0epJHHuGe8CJ1YIxC8hMo5V8Lvekk2VOFMmgYzE6oBFd2oOSu9M+/2kQv3nEXwLsyUJ5Lc9zPekanSPmrv5I+OPAYo3r2VWEM9msnU0gj8ZDlBKfPTvPEh5yGajBh0bcDB/AKClX9ioA0p8zZHQ51q6zWFPaE5RcyPHuuSR1zhbO2thkf9jAEk1FVtRm38lRKXbVq/kBhSBiXmZmh6Yd3CXnaU/4AwkyZk0Ns58fC2z25PIswMBkOWBA==|920
+}//AFNQN/VrCjuZrFpufvoGyPrAua7vdqh3oyZ/N4CfyTtfLvXnCkIRl4WUcSqWTAyH4iGEgYEuza8G9ATMktP60FjqB3AQLb8dLRSRcVjS6sF17awWcCxp/XSU7pl8OP8RUmfNWYpSx3iVtocobQ1QpPiMOcZ2CCLaGgFwlX9qthHSqdAJPSDMKo4wec2lmZ0HDhmwjZyqK/4YVQA9TAUoZzUlZJ25y4x+M8qtQ4YvQyFkUJIa8X5hrEpX0CTbGvKYATShqAUxAfpHhrkZQIdFMnyFuYdXjBFy55qFHdDG17r4jkXv2fNLxLVVjl62KrhHVEKx5/vY2wn4vEKA+eGe96KdcsZaiqTkGHg6k97ADc+9cr4Dc096goyS53ww4mA8k/xQhGlJW/0N52+/u9tLXm58cfYcmagTHNBF4E3G1POm3Exyp5WUKgydgZvAf8lcKhw+OiPgeDd7GHNO9j56/MLhFEvrVT+RDHiVBzIzT8dMVseJ6U6/zFwN7ZlZ0PiLocsaO7eji9i5R6AQCxlAhYIFL5qjMxNHi8QH07OlnrjtnpREwSwIT9x0HzwK8lQLgW6NZUr6IgV1VvGr3ch5bNPeHH4nY8Dch6/mAgGjCstkyxPlg+WdgheZ8VRcvWkrnQunv9g2zNWnG5M6kj7y+UkUiok6y/D3yvk0QH/BwUwcfHbE+Ab4jffQgb/EjVAOZAxuXQH2ieTwpkIxKs827/1SBMb1MFSSOicnh6T5YTPiZISkt+3PBjEMqVFlgmaI9XhJSH4Qjffhrs8CIhosOYK6HwgDahbmwxAxooepD0AeRthWrL9BByTqoi7UUcs32ZJEZ0jkLrdKk4jJuf2nb8oQ7a0uc1uUnxiILuUpUC0kiJ0WHqwj4UF9ZVA+agTgQlB/plK8+htBnnndDmFStg==|920
