@@ -321,7 +321,7 @@
     "7,10": 0,
     "7,43": "▼調査会社ID",
     "9,3": "指定調査会社",
-    "10,43": "▼物件ID",
+    "10,43": "▼物件申込タイプID",
     "11,3": "調査会社",
     "13,3": "調査区分",
     "13,10": 2,
@@ -329,6 +329,7 @@
     "13,43": "▼対象住宅事業者ID",
     "15,3": "調査方法",
     "15,26": "調査承諾日",
+    "16,43": "▼申込ステータスID",
     "17,3": "調査予定日",
     "17,17": "～",
     "17,26": "報告書受領日",
@@ -2029,6 +2030,17 @@
         ]
       }
     },
+    "17,43": {
+      "BindingInfo": {
+        "TableName": "t_object_survey",
+        "ColumnName": "object_order_type_id",
+        "RelationBinding": {
+          "RelatedTable": "t_object_order_type",
+          "RelatedColumn": "object_order_type_id",
+          "DisplayColumn": "order_status_id"
+        }
+      }
+    },
     "19,10": {
       "CellType": {
         "$type": "Forguncy.DateCellType, ServerDesignerCommon",
@@ -2608,13 +2620,13 @@
                         }
                       }
                     },
-                    "ID": "cbbf9770da884c949ae1154fde8bc963"
+                    "ID": "a38b377a520741a09ce46e658f6072c5"
                   },
                   {
                     "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
                     "ParameterName": "最大調査履歴番号",
                     "ParameterValue": "0",
-                    "ID": "cec295baf19b41b88f51f4e1e7bf9067"
+                    "ID": "b90b2cde33984647a1803bed3ff438d8"
                   },
                   {
                     "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
@@ -2674,10 +2686,10 @@
                                 ]
                               }
                             },
-                            "ID": "d98c68f807244da6bd77306f129961b0"
+                            "ID": "ef3ccdc418f94c6ca1a6a807dff024d3"
                           }
                         ],
-                        "ID": "9b10b53e-a9eb-4d7a-b4d1-b64a20b6aeb5"
+                        "ID": "a116804b-c37e-4424-932a-7c0a47718651"
                       }
                     ]
                   },
@@ -2700,7 +2712,7 @@
                     ]
                   }
                 ],
-                "ID": "676e3310-dcde-48e1-90a0-77f029113163"
+                "ID": "ebebef96-a038-4f5c-aa55-bd8555e72f8b"
               },
               {
                 "CommandList": [
@@ -2712,9 +2724,88 @@
                     "ReloadAfterSucceed": false,
                     "ConfirmText": "本当に更新してもよろしいですか？",
                     "UpdateValues": []
+                  },
+                  {
+                    "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                    "ParameterName": "調査結果待ち判定",
+                    "TableValue": {
+                      "TableName": "m_survey_status",
+                      "OnlyGetValue": true,
+                      "TableValueType": 0,
+                      "BindingInfos": [
+                        {
+                          "BindingInfo": {
+                            "TableName": "m_survey_status",
+                            "ColumnName": "survey_result_wait_flg"
+                          },
+                          "ColumnName": "survey_result_wait_flg"
+                        }
+                      ],
+                      "SqlCondition": {
+                        "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                        "ColumnBindingInfo": {
+                          "TableName": "m_survey_status",
+                          "ColumnName": "survey_status_id"
+                        },
+                        "Value": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=調査登録・編集!AF2"
+                        }
+                      }
+                    },
+                    "ID": "d0abe7be10d84c3885615e98f8fabb5c"
+                  },
+                  {
+                    "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+                    "ConditionAndCommandPairList": [
+                      {
+                        "Condition": {
+                          "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                          "param": {
+                            "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+                            "cellLocations": [
+                              {
+                                "SerializeProperty": "=調査登録・編集!調査結果待ち判定"
+                              }
+                            ]
+                          },
+                          "value": "1"
+                        },
+                        "CommandList": [
+                          {
+                            "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                            "ParameterName": "調査結果待ちステータスID",
+                            "TableValue": {
+                              "TableName": "m_object_status",
+                              "OnlyGetValue": true,
+                              "TableValueType": 0,
+                              "BindingInfos": [
+                                {
+                                  "BindingInfo": {
+                                    "TableName": "m_object_status",
+                                    "ColumnName": "order_status_id"
+                                  },
+                                  "ColumnName": "order_status_id"
+                                }
+                              ],
+                              "SqlCondition": {
+                                "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                                "ColumnBindingInfo": {
+                                  "TableName": "m_object_status",
+                                  "ColumnName": "survey_result_wait_flg"
+                                },
+                                "Value": "1"
+                              }
+                            },
+                            "ID": "42024a8d1edc4eb7b5b8adfea09cf098"
+                          }
+                        ],
+                        "ID": "b61be76a-c435-4403-a72f-4523147cbe85"
+                      }
+                    ]
                   }
                 ],
-                "ID": "e3677dff-2c8f-4eb3-8a90-fda7fac6b9e4"
+                "ID": "43eda82f-8562-485d-b65a-3af38ca840ac"
               }
             ]
           },
@@ -3153,7 +3244,7 @@
       "16,36": 2,
       "16,37": 2,
       "16,38": 2,
-      "16,43": 2,
+      "16,43": 1,
       "16,44": 2,
       "16,45": 2,
       "16,46": 2,
@@ -3198,6 +3289,7 @@
       "17,39": 2,
       "17,40": 2,
       "17,41": 2,
+      "17,43": 3,
       "18,3": 2,
       "18,4": 2,
       "18,5": 2,
@@ -3639,7 +3731,8 @@
     "32,28,1,6",
     "1,31,1,9",
     "30,43,1,10",
-    "21,10,1,6"
+    "21,10,1,6",
+    "17,43,1,3"
   ],
   "PageInfo": {
     "$type": "Forguncy.Model.Pages.NormalPage, ServerDesignerCommon",
@@ -3691,4 +3784,4 @@
     "Margin": {},
     "PaperSize": {}
   }
-}//xotTXsyXhC6rLY6zwx2Kk9y9c9GyVC9U94fMikKEsY+PT/Hjyv54EbxPjJtAtNZk4IM2Tj/RhiWMMwizHaUKpcYB1BSW75pGntj6YPyOrvCIw0QRENyfI4BkFeLcFmdEi87Xb8w2kopGhdIPAvRii+Mj2J4v5xRAjcSwEVy6mMctazXNx3Bid6IJpf8VWAwHwi/RY1lKC9dlyUVt8HJVf6UO8GHopBG+T4X5uscCm54kMDYPA3rtqGLi/dw9VjBlsd0E8LNMk/hdqtFkB+nWuJvms3AW/xQnn9x17g/WXOA8XlcDCFp2Rx3TrKXW6dHtFA8LBbhVM7cLawDNYUuTkutho+cJiUlE/n2PO633rMVPx+BQ2MEzz7e/T9d9gVHiwKs/F6T2+pSUFFaZuaMMoiZJSpEBAw4N4y5x183kzp09ORO28wFFklW0IWqlfO+/2TBWP46btGmltVz+xzS+p5+UAVRUNjbuL/LLLBVKghEJEd9FA2ZDP3eKos1G+AK5ZXPdNM4fG6YyFPZeWNx0GjdfNOpk5KJXA2IdfqDqh4JVQrsF7bgaQw6ZYue/Pc8bgsWqqp8yVyM7kxh/pMhLq9QQr9F9JAn1HoivcfOFC/+88cKEj3hzDQsZgt93ftg48x5XNQ0/OAYf5qPC/QkAWSttPPmXl73F1VcEEITaWCtuc3B3ZfSnq19Orb13nMUMiT+PbJvDdUTFLffBctQ3DowKFkEsllBSnKW803IDe3Sq5TGMHQg2JthwI7ApiAFY/py2YY9M0c4yk7sH2Xw1/97DcREV8sOdJFyQ8mq75g7q4bCElZHvw7G6TpIAVwIfgzA7cjfALFiYvzA0HrXO9gvQe9HncVD2NErovU2qDLUUUOcH4cE/guaRye47jOX3uv+BZ/e3Gg+h8JW/aI8I2Q==|920
+}//P0p9PB3hqK0rU9c4iMz2uCTsMwUeMSOXHUHDJg2kq7EQUHbmgvHFefFL41MDl1rhex9YM3Sg2Qzlfd+ZwVoYCqUEXn0JuHbfLSHzKJ2jHegNE4/t6V1Rh6UYaXIPmWCkdfbw6eDMWTJ8jJFFSOa1RE3fpi4c3tBKjqcExSJlxA7zSE6KaViupqN4PJm0XclrhbSxc8Iib+O2oe5acv1/p7a4OpmDtOLqgzLMC0V8DJvs5pnB7C5gSx9kpnymsSit5XIw75k10I7paXZPman4LCH/lme/LUy5ZcsUvyE6M5GujzwvHlImSvn9kAsg8hw/ttxNijms2YX7efJJE+arf++hO0hLsVQU148OoXzwHJei7hgoxd2tsrrImTsB++XTeVUjiVu2aPiwVh0Luk1eb6Ifb7B7uwPH8BEH4Zh9rNa2yBW9cXMtxVAv/77RZIGUYvTKUUn1q/J8UGQtRzVT1hW2lXxuB8U5wZP3CPpMc75TRhcXaZAiclfxMBZDRHPdnv6EAdq7yNVuIEpoFlIaXUgb1z/rQhlVeVV+nDLaRhTkXZUx5z5Jt6vtisAMn4LGz2JnTMLG7vsC/RWUXUeGhHR4OJ+F17yerksjD8ZVnOUdHITScO54IwA+M3yFpJYRGd9fS5ehnLfdmU6n8huYvL4AjX7QToNYgxUgdCtizvehSjjH0xMP30LRf3uPLjuRCPmA5q+2S6WDauWz75dceiPWRcsy6Y029tue/klYlRuI1H59lmWa5WjzdONra0wB6JYEiHMxTm1YjeFKIzXS5xrOFD/8OZzil6KQdsDC5Ft3Z2XMjhG+tJMCu7PpK8AD4dbb1H139KMBc6wJQap0t2Wl9h/7r+dFkSZeU2boZJBW2YQEJHjmwPyqGho+aTUjPN9IsFF845jISt1MYxoo3g==|920
