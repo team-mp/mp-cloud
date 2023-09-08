@@ -187,14 +187,20 @@
     "1,22": "属性",
     "1,34": "グループ",
     "1,51": "▼顧客ID",
-    "4,51": "▼顧客名",
-    "7,51": "▼属性固定フラグ",
-    "10,51": "▼グループ固定フラグ",
+    "4,51": "▼属性固定フラグ",
+    "7,51": "▼グループ固定フラグ",
+    "10,51": "▼顧客名",
+    "13,51": "▼空白文字位置取得",
+    "16,51": "▼検索ワード1",
+    "19,51": "▼検索ワード2",
     "22,38": "選択値をクリアして戻る"
   },
   "Formulas": {
-    "5,51": "IF(AZ3>0,ODATA(\"m_customer?$select=customer_abbr&$filter=customer_id eq \"&IF(ISBLANK(AZ3),\"null\",AZ3)),\"\")",
-    "22,17": "\"現在、「\"&AZ6&\"」が選択されています\""
+    "11,51": "IF(AZ3>0,ODATA(\"m_customer?$select=customer_abbr&$filter=customer_id eq \"&IF(ISBLANK(AZ3),\"null\",AZ3)),\"\")",
+    "22,17": "\"現在、「\"&AZ12&\"」が選択されています\"",
+    "14,51": "IF(IFERROR(SEARCH(\" \",C2),0)>0,IFERROR(SEARCH(\" \",C2),0),IFERROR(SEARCH(\"　\",C2),0))",
+    "17,51": "IF(AZ15>0,TRIM(LEFT(C2,AZ15-1)),TRIM(C2))",
+    "20,51": "IF(AZ15>0,TRIM(MID(C2,AZ15+1,100)),\"\")"
   },
   "AttachInfos": {
     "1,2": {
@@ -212,6 +218,17 @@
         },
         "TemplateKey": "_RS_LightLine_Translucent_SmallRoundCorner_Normal1",
         "WaterMark": "検索ワードを入力してください"
+      }
+    },
+    "1,20": {
+      "CellType": {
+        "$type": "Forguncy.ImageCellType, ServerDesignerCommon",
+        "ToolTip": "スペース文字で２ワードによる複合検索が可能です",
+        "TemplateKey": "ヒント",
+        "ImagePath": "Mobile/452_help_1.svg",
+        "BuiltIn": true,
+        "Color": "Accent 1",
+        "UseCellForeColor": true
       }
     },
     "1,25": {
@@ -239,16 +256,12 @@
             "DisplayValue": "転圧会社"
           },
           {
-            "Value": "5",
+            "Value": "4",
             "DisplayValue": "工事会社"
           },
           {
-            "Value": "4",
-            "DisplayValue": "代理店"
-          },
-          {
             "Value": "5",
-            "DisplayValue": "取次店"
+            "DisplayValue": "測量会社"
           },
           {
             "Value": "6",
@@ -260,14 +273,22 @@
           },
           {
             "Value": "8",
-            "DisplayValue": "本社"
+            "DisplayValue": "代理店"
           },
           {
             "Value": "9",
-            "DisplayValue": "個人"
+            "DisplayValue": "取次店"
           },
           {
             "Value": "10",
+            "DisplayValue": "本社"
+          },
+          {
+            "Value": "11",
+            "DisplayValue": "個人"
+          },
+          {
+            "Value": "12",
             "DisplayValue": "その他取引先"
           }
         ]
@@ -438,71 +459,166 @@
                                   "Condition1": {
                                     "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
                                     "Condition1": {
-                                      "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
-                                      "CompareType": 6,
-                                      "ColumnBindingInfo": {
-                                        "TableName": "m_customer",
-                                        "ColumnName": "customer_name"
+                                      "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                                      "Condition1": {
+                                        "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                                        "Condition1": {
+                                          "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                                          "Condition1": {
+                                            "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                                            "CompareType": 6,
+                                            "ColumnBindingInfo": {
+                                              "TableName": "m_customer",
+                                              "ColumnName": "customer_name"
+                                            },
+                                            "Value": {
+                                              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                              "SerializeProperty": "=顧客検索!AZ18"
+                                            },
+                                            "LeftBracket": 1
+                                          },
+                                          "Condition2": {
+                                            "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                                            "CompareType": 6,
+                                            "ColumnBindingInfo": {
+                                              "TableName": "m_customer",
+                                              "ColumnName": "customer_abbr"
+                                            },
+                                            "Value": {
+                                              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                              "SerializeProperty": "=顧客検索!AZ18"
+                                            }
+                                          },
+                                          "RelationType": 1
+                                        },
+                                        "Condition2": {
+                                          "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                                          "CompareType": 6,
+                                          "ColumnBindingInfo": {
+                                            "TableName": "m_customer",
+                                            "ColumnName": "customer_kana"
+                                          },
+                                          "Value": {
+                                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                            "SerializeProperty": "=顧客検索!AZ18"
+                                          }
+                                        },
+                                        "RelationType": 1
                                       },
-                                      "Value": {
-                                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                                        "SerializeProperty": "=顧客検索!C2"
+                                      "Condition2": {
+                                        "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                                        "CompareType": 6,
+                                        "ColumnBindingInfo": {
+                                          "TableName": "m_customer",
+                                          "ColumnName": "住所"
+                                        },
+                                        "Value": {
+                                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                          "SerializeProperty": "=顧客検索!AZ18"
+                                        },
+                                        "RightBracket": 1
                                       },
-                                      "LeftBracket": 1
+                                      "RelationType": 1
                                     },
                                     "Condition2": {
-                                      "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
-                                      "CompareType": 6,
-                                      "ColumnBindingInfo": {
-                                        "TableName": "m_customer",
-                                        "ColumnName": "customer_abbr"
+                                      "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                                      "Condition1": {
+                                        "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                                        "Condition1": {
+                                          "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                                          "Condition1": {
+                                            "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                                            "CompareType": 6,
+                                            "ColumnBindingInfo": {
+                                              "TableName": "m_customer",
+                                              "ColumnName": "customer_name"
+                                            },
+                                            "Value": {
+                                              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                              "SerializeProperty": "=顧客検索!AZ21"
+                                            },
+                                            "LeftBracket": 1
+                                          },
+                                          "Condition2": {
+                                            "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                                            "CompareType": 6,
+                                            "ColumnBindingInfo": {
+                                              "TableName": "m_customer",
+                                              "ColumnName": "customer_abbr"
+                                            },
+                                            "Value": {
+                                              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                              "SerializeProperty": "=顧客検索!AZ21"
+                                            }
+                                          },
+                                          "RelationType": 1
+                                        },
+                                        "Condition2": {
+                                          "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                                          "CompareType": 6,
+                                          "ColumnBindingInfo": {
+                                            "TableName": "m_customer",
+                                            "ColumnName": "customer_kana"
+                                          },
+                                          "Value": {
+                                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                            "SerializeProperty": "=顧客検索!AZ21"
+                                          }
+                                        },
+                                        "RelationType": 1
                                       },
-                                      "Value": {
-                                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                                        "SerializeProperty": "=顧客検索!C2"
-                                      }
-                                    },
-                                    "RelationType": 1
+                                      "Condition2": {
+                                        "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                                        "CompareType": 6,
+                                        "ColumnBindingInfo": {
+                                          "TableName": "m_customer",
+                                          "ColumnName": "住所"
+                                        },
+                                        "Value": {
+                                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                          "SerializeProperty": "=顧客検索!AZ21"
+                                        },
+                                        "RightBracket": 1
+                                      },
+                                      "RelationType": 1
+                                    }
                                   },
                                   "Condition2": {
-                                    "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
-                                    "CompareType": 6,
+                                    "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                                    "CompareType": 3,
                                     "ColumnBindingInfo": {
                                       "TableName": "m_customer",
-                                      "ColumnName": "customer_kana"
+                                      "ColumnName": "builder_flg"
                                     },
                                     "Value": {
                                       "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                                      "SerializeProperty": "=顧客検索!C2"
+                                      "SerializeProperty": "=IF(VALUE(顧客検索!Z2)=1,1,0)"
                                     }
-                                  },
-                                  "RelationType": 1
+                                  }
                                 },
                                 "Condition2": {
-                                  "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
-                                  "CompareType": 6,
+                                  "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                                  "CompareType": 3,
                                   "ColumnBindingInfo": {
                                     "TableName": "m_customer",
-                                    "ColumnName": "住所"
+                                    "ColumnName": "survey_flg"
                                   },
                                   "Value": {
                                     "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                                    "SerializeProperty": "=顧客検索!C2"
-                                  },
-                                  "RightBracket": 1
-                                },
-                                "RelationType": 1
+                                    "SerializeProperty": "=IF(VALUE(顧客検索!Z2)=2,1,0)"
+                                  }
+                                }
                               },
                               "Condition2": {
                                 "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
                                 "CompareType": 3,
                                 "ColumnBindingInfo": {
                                   "TableName": "m_customer",
-                                  "ColumnName": "builder_flg"
+                                  "ColumnName": "compaction_flg"
                                 },
                                 "Value": {
                                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                                  "SerializeProperty": "=IF(VALUE(顧客検索!Z2)=1,1,0)"
+                                  "SerializeProperty": "=IF(VALUE(顧客検索!Z2)=3,1,0)"
                                 }
                               }
                             },
@@ -511,11 +627,11 @@
                               "CompareType": 3,
                               "ColumnBindingInfo": {
                                 "TableName": "m_customer",
-                                "ColumnName": "survey_flg"
+                                "ColumnName": "construction_flg"
                               },
                               "Value": {
                                 "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                                "SerializeProperty": "=IF(VALUE(顧客検索!Z2)=2,1,0)"
+                                "SerializeProperty": "=IF(VALUE(顧客検索!Z2)=4,1,0)"
                               }
                             }
                           },
@@ -524,11 +640,11 @@
                             "CompareType": 3,
                             "ColumnBindingInfo": {
                               "TableName": "m_customer",
-                              "ColumnName": "construction_flg"
+                              "ColumnName": "surveying_flg"
                             },
                             "Value": {
                               "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                              "SerializeProperty": "=IF(VALUE(顧客検索!Z2)=3,1,0)"
+                              "SerializeProperty": "=IF(VALUE(顧客検索!Z2)=5,1,0)"
                             }
                           }
                         },
@@ -537,11 +653,11 @@
                           "CompareType": 3,
                           "ColumnBindingInfo": {
                             "TableName": "m_customer",
-                            "ColumnName": "agency_flg"
+                            "ColumnName": "billing_flg"
                           },
                           "Value": {
                             "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                            "SerializeProperty": "=IF(VALUE(顧客検索!Z2)=4,1,0)"
+                            "SerializeProperty": "=IF(VALUE(顧客検索!Z2)=6,1,0)"
                           }
                         }
                       },
@@ -550,11 +666,11 @@
                         "CompareType": 3,
                         "ColumnBindingInfo": {
                           "TableName": "m_customer",
-                          "ColumnName": "brokerage_flg"
+                          "ColumnName": "payeer_flg"
                         },
                         "Value": {
                           "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                          "SerializeProperty": "=IF(VALUE(顧客検索!Z2)=5,1,0)"
+                          "SerializeProperty": "=IF(VALUE(顧客検索!Z2)=7,1,0)"
                         }
                       }
                     },
@@ -563,11 +679,11 @@
                       "CompareType": 3,
                       "ColumnBindingInfo": {
                         "TableName": "m_customer",
-                        "ColumnName": "billing_flg"
+                        "ColumnName": "agency_flg"
                       },
                       "Value": {
                         "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                        "SerializeProperty": "=IF(VALUE(顧客検索!Z2)=6,1,0)"
+                        "SerializeProperty": "=IF(VALUE(顧客検索!Z2)=8,1,0)"
                       }
                     }
                   },
@@ -576,11 +692,11 @@
                     "CompareType": 3,
                     "ColumnBindingInfo": {
                       "TableName": "m_customer",
-                      "ColumnName": "payeer_flg"
+                      "ColumnName": "brokerage_flg"
                     },
                     "Value": {
                       "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                      "SerializeProperty": "=IF(VALUE(顧客検索!Z2)=7,1,0)"
+                      "SerializeProperty": "=IF(VALUE(顧客検索!Z2)=9,1,0)"
                     }
                   }
                 },
@@ -593,7 +709,7 @@
                   },
                   "Value": {
                     "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                    "SerializeProperty": "=IF(VALUE(顧客検索!Z2)=8,1,0)"
+                    "SerializeProperty": "=IF(VALUE(顧客検索!Z2)=10,1,0)"
                   }
                 }
               },
@@ -606,7 +722,7 @@
                 },
                 "Value": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=IF(VALUE(顧客検索!Z2)=9,1,0)"
+                  "SerializeProperty": "=IF(VALUE(顧客検索!Z2)=11,1,0)"
                 }
               }
             },
@@ -619,7 +735,7 @@
               },
               "Value": {
                 "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                "SerializeProperty": "=IF(VALUE(顧客検索!Z2)=10,1,0)"
+                "SerializeProperty": "=IF(VALUE(顧客検索!Z2)=12,1,0)"
               }
             }
           },
@@ -675,12 +791,12 @@
         "ColumnName": "customer_id"
       }
     },
-    "8,51": {
+    "5,51": {
       "CellComment": {
         "Comments": "1がセットされると属性選択を無効にする"
       }
     },
-    "11,51": {
+    "8,51": {
       "CellComment": {
         "Comments": "1がセットされるとグループ選択を無効にする"
       }
@@ -777,10 +893,11 @@
         "BorderRight": 0
       },
       {
-        "Background": 6
+        "Background": 6,
+        "FontFamily": 1
       },
       {
-        "Background": 4
+        "Background": 6
       },
       {
         "HorizontalAlignment": 7
@@ -831,14 +948,32 @@
       "4,45": 6,
       "4,48": 6,
       "4,51": 3,
-      "5,51": 7,
-      "8,51": 8,
-      "10,51": 1,
+      "4,52": 3,
+      "4,53": 3,
+      "5,51": 4,
+      "5,52": 3,
+      "5,53": 3,
+      "6,51": 3,
+      "6,52": 3,
+      "6,53": 3,
+      "7,51": 1,
+      "7,52": 3,
+      "7,53": 3,
+      "8,51": 4,
+      "8,52": 3,
+      "8,53": 3,
+      "10,51": 3,
       "10,52": 3,
       "10,53": 3,
-      "11,51": 4,
+      "11,51": 7,
       "11,52": 3,
       "11,53": 3,
+      "14,51": 8,
+      "17,51": 8,
+      "19,51": 1,
+      "20,51": 7,
+      "20,52": 3,
+      "20,53": 3,
       "22,17": 9,
       "22,38": 10,
       "22,39": 3,
@@ -857,17 +992,20 @@
     "4,2,1,15",
     "4,17,1,19",
     "4,36,1,10",
-    "1,2,1,18",
     "4,46,1,3",
     "2,51,1,3",
     "1,25,1,7",
     "1,37,1,9",
     "22,38,1,8",
-    "5,51,1,3",
     "22,17,1,21",
+    "5,2,16,48",
+    "5,51,1,3",
     "8,51,1,3",
     "11,51,1,3",
-    "5,2,16,48",
+    "14,51,1,3",
+    "17,51,1,3",
+    "20,51,1,3",
+    "1,2,1,17",
     "3,2,1,15",
     "3,17,1,19",
     "3,36,1,10",
@@ -897,15 +1035,15 @@
     },
     {
       "Name": "属性固定フラグ",
-      "Formula": "顧客検索!$AZ$9"
+      "Formula": "顧客検索!$AZ$6"
     },
     {
       "Name": "グループ固定フラグ",
-      "Formula": "顧客検索!$AZ$12"
+      "Formula": "顧客検索!$AZ$9"
     },
     {
       "Name": "顧客ID",
       "Formula": "顧客検索!$AZ$3"
     }
   ]
-}//wILwSCF6EuUjCVGJ6df++HXB3brK+nf824KRqzDUpWahGcAkacwKTgbAzsz5O+VbfsBQk47HrhsRrkTUx5RJ2iOXID41eEXykjH5788EecRapCKbcvtJfOBPaoUK8hoNz4dHFbZmbhTUPsep9zUEPRuYKpdYOsOhiLHvawopDskNCCGt+vJ4qB8yqFMyIXxj56e+Z7912HLK6UJxItBf0SEbaVNzIZeu7Cf2IqPDSNgPQB1LY+oynUdbqq5UKF6qtBLq6b9BkEG01ZUvxzUrEdhIdZkXTmOSAILHz4Oh9egVSEMKHH180ppOZ7jIPRqGeU2mbLl22oa5vSLDMu3CoWS+8nmL/iaFXsTg8FnrjcfeGrDHsUbEfR/37ax7CTssnHgGx8ecWCZorGPOxbWJxVESyp4bGtftyLix9SY1YtRNiGD9YSlqA/s9wF9h1Rs3oKas6lSJrCou5CJsW4akAnpDyme8wjoSsbx2Ydmhg0w0YrlDZgzFB58UAFTUBn49EB1fH213ANaoJiSkOtnKG4fF0EdSpGK2gqKHGv9rF40VM1gYGi4d3JG+kWDsRSa/5K+3QTzGjq9KdQqAIj5Sxl8XZ+0qLi/kaDb+EC68Hb8W5IYi/e4WIukMBGQKYPTOeldO4LL2r2C6UwnJoe21Rp+LQNiRHn74FaWBsRji8L6An8QyiWxGOvICFht0fen4egoHC/MxiVV8YoJ2OTffMqmSWS4WZn38rLimRC08aXTmnxUS5n8HWH4JsA1WJ2G/Nq6BTruvAlXJ0fUgr14uXdNjjthVaB1k8tmamt+U0AC4sBVrqRaK0aRw5EepXn9HZ2qrVE3xfzK5fMeX3iYouwcfgEWE6cbZvO5C4Z57am+ruOWaCZ1cg0Sg19zp1r0LeYQVFQuYXSc/HWjguRPOzw==|920
+}//TmXwahLXpduoLrtX35Z+VyMH14WN6SXU3jt68BprGeW7yH+8ao1v39fB18t/qdqVNcCYhH4+kQiksXvYDRLND9E/Fh7OYV8FSGqm6mVIk5PAAqjCKr4v+X36P6mnKI7NLst9bJZkd7ZfLCletcyVTW1f6sBqR6t0SDRNoZzMSwlM70ynT033TJ+2/Dxhz8Mbfn98YMNYQ8UcLogT8LNe7GmI5CwpjlnROiC8g+Xgn3fEyDp+cuLbWvxjqgBHAI61e+6A3en1ivpyogvWwiuXOAkl+J8IyNJsstjCBg1zhEvsbeCRZMYPWDoV3GwwdxUYlgUwBmlS5UCRaT7DFWJ2P6ps2YBTQD4PPaFqrv+AZ+ZeAdhCb72ZWMVPJ5G+67Xwyhp9txGU0QndS+0MnPvCzQZ5kidmoKMdWxizVvf/UrFn5GsZ+5x7rv12lS7Lae58bin83LqBpOkqlxZU/j9SJJ2ix7iX/Mryjm9+hMIjlQPV0+/QHEW0Uev0K8foIy9kBWMbK006l93Z/J5Vr6cL58Vm62EnSOletocuDiDax3b08cTgsWyIAYdLvy4f1JtHqoBnUiXLSDHgnVNFUPPAb3y7s2w8dL7IKFwjpuxG8edcBt7npF9BkyJlR9MbwkT6iDO9ebbyqHqR8QY8E+txpqxVsrMW6BPKR/O1f+zIMoh8SFrag2iATee/+W27qbhyaXVmle8HLC/gJ0WZmzPIDBLDk+U88zhjhkopPUdu5HYvbWCivaKA41dnMpAcIm4UH2OaRqWJJfgeDXl00fEQfnJs8V098er7qlNc2kJyruOqANlGvrkB1AZXMiEF7ZlAkXwOmfD7eEGjYbwzMy0At/f3rk4jkosYPvvAAlCWXHl8jyV64fbtmSYeR1Vt0Z8Gz1pKYZyXIdDJ/4u8Sg73QQ==|920
