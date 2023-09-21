@@ -1,0 +1,583 @@
+{
+  "Enabled": true,
+  "Triggers": [
+    {
+      "$type": "Forguncy.ServerCommands.Models.PostRequestTrigger, ServerDesignerCommon",
+      "Permission": {
+        "AllowRoles": [
+          "FGC_LoginUser"
+        ]
+      },
+      "Parameters": [
+        {
+          "Name": "P_物件申込タイプID"
+        },
+        {
+          "Name": "P_測量ID"
+        },
+        {
+          "Name": "P_測量依頼日"
+        },
+        {
+          "Name": "P_測量希望区分"
+        },
+        {
+          "Name": "P_測量希望開始日"
+        },
+        {
+          "Name": "P_測量希望終了日"
+        },
+        {
+          "Name": "P_測量希望時刻"
+        },
+        {
+          "Name": "P_立会者有無フラグ"
+        },
+        {
+          "Name": "P_立会者"
+        },
+        {
+          "Name": "P_敷地調査フラグ"
+        },
+        {
+          "Name": "P_敷調会社ID"
+        },
+        {
+          "Name": "P_敷調手配日"
+        },
+        {
+          "Name": "P_敷調承諾日"
+        },
+        {
+          "Name": "P_敷調予定開始日"
+        },
+        {
+          "Name": "P_敷調予定終了日"
+        },
+        {
+          "Name": "P_敷調実施日"
+        },
+        {
+          "Name": "P_敷調報告書受領日"
+        },
+        {
+          "Name": "P_敷調報告書納品日"
+        },
+        {
+          "Name": "P_役所調査フラグ"
+        },
+        {
+          "Name": "P_役調会社ID"
+        },
+        {
+          "Name": "P_役調手配日"
+        },
+        {
+          "Name": "P_役調承諾日"
+        },
+        {
+          "Name": "P_役調予定開始日"
+        },
+        {
+          "Name": "P_役調予定終了日"
+        },
+        {
+          "Name": "P_役調実施日"
+        },
+        {
+          "Name": "P_役調報告書受領日"
+        },
+        {
+          "Name": "P_役調報告書納品日"
+        },
+        {
+          "Name": "P_測量ステータスID"
+        }
+      ]
+    }
+  ],
+  "Commands": [
+    {
+      "$type": "Forguncy.Model.ServerTransactionCommand, ServerDesignerCommon",
+      "CommandList": [
+        {
+          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+          "ParameterName": "測量完了ステータス",
+          "TableValue": {
+            "TableName": "m_surveying_status",
+            "OnlyGetValue": true,
+            "TableValueType": 0,
+            "BindingInfos": [
+              {
+                "BindingInfo": {
+                  "TableName": "m_surveying_status",
+                  "ColumnName": "surveying_status_id"
+                },
+                "ColumnName": "surveying_status_id"
+              }
+            ],
+            "SqlCondition": {
+              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+              "ColumnBindingInfo": {
+                "TableName": "m_surveying_status",
+                "ColumnName": "surveying_complete_flg"
+              },
+              "Value": "1"
+            }
+          },
+          "ID": "ff2bb9a1cf04469ca0f6ad2ff436c3b4"
+        },
+        {
+          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+          "ParameterName": "物件商品",
+          "TableValue": {
+            "TableName": "t_object_product",
+            "TableValueType": 1,
+            "BindingInfos": [
+              {
+                "BindingInfo": {
+                  "TableName": "t_object_product",
+                  "ColumnName": "object_product_id"
+                },
+                "ColumnName": "物件商品ID"
+              },
+              {
+                "BindingInfo": {
+                  "TableName": "t_object_product",
+                  "ColumnName": "object_order_type_id"
+                },
+                "ColumnName": "物件申込タイプID"
+              }
+            ],
+            "SqlCondition": {
+              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+              "ColumnBindingInfo": {
+                "TableName": "t_object_product",
+                "ColumnName": "surveying_id"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_測量ID"
+              }
+            },
+            "TopCount": "1",
+            "OrderBySqlCondition": {
+              "OrderByColumns": [
+                {
+                  "ColumnBindingInfo": {
+                    "TableName": "t_object_product",
+                    "ColumnName": "object_product_id"
+                  },
+                  "Order": 1
+                }
+              ]
+            }
+          },
+          "ID": "adc62a71024945339b25804e95bb61de"
+        },
+        {
+          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+          "ParameterName": "物件申込タイプ",
+          "TableValue": {
+            "TableName": "t_object_order_type",
+            "TableValueType": 1,
+            "BindingInfos": [
+              {
+                "BindingInfo": {
+                  "TableName": "t_object_order_type",
+                  "ColumnName": "order_status_id"
+                },
+                "ColumnName": "申込ステータスID"
+              },
+              {
+                "BindingInfo": {
+                  "TableName": "t_object_order_type",
+                  "ColumnName": "order_status_id",
+                  "RelationBinding": {
+                    "RelatedTable": "m_object_status",
+                    "RelatedColumn": "order_status_id",
+                    "DisplayColumn": "sort_no"
+                  }
+                },
+                "ColumnName": "申込ステータス並び順"
+              },
+              {
+                "BindingInfo": {
+                  "TableName": "t_object_order_type",
+                  "ColumnName": "latest_analysis_id"
+                },
+                "ColumnName": "最新解析ID"
+              },
+              {
+                "BindingInfo": {
+                  "TableName": "t_object_order_type",
+                  "ColumnName": "latest_analysis_id",
+                  "RelationBinding": {
+                    "RelatedTable": "t_object_analysis",
+                    "RelatedColumn": "analysis_id",
+                    "DisplayColumn": "analysis_status_id"
+                  }
+                },
+                "ColumnName": "解析ステータスID"
+              },
+              {
+                "BindingInfo": {
+                  "TableName": "t_object_order_type",
+                  "ColumnName": "latest_analysis_id",
+                  "RelationBinding": {
+                    "RelatedTable": "t_object_analysis",
+                    "RelatedColumn": "analysis_id",
+                    "DisplayColumn": "analysis_status_id",
+                    "NextRelationBinding": {
+                      "RelatedTable": "m_analysis_status",
+                      "RelatedColumn": "analysis_status_id",
+                      "DisplayColumn": "sort_no"
+                    }
+                  }
+                },
+                "ColumnName": "解析ステータス並び順"
+              }
+            ],
+            "SqlCondition": {
+              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+              "ColumnBindingInfo": {
+                "TableName": "t_object_order_type",
+                "ColumnName": "object_order_type_id"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=物件商品.物件申込タイプID"
+              }
+            }
+          },
+          "ID": "d694070010ff4496947dec349047e916"
+        },
+        {
+          "$type": "Forguncy.Model.RequestServerCommand, ServerDesignerCommon",
+          "ServerCommandName": "支払先ID取得",
+          "Parameters": [
+            {
+              "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_敷調会社ID"
+              },
+              "ParamName": "P_調査工事会社ID"
+            }
+          ],
+          "ResultErrorCodeTo": {
+            "SerializeProperty": "リターンコード"
+          },
+          "ResultMessageTo": {
+            "SerializeProperty": "リターンメッセージ"
+          },
+          "ReturnPropertiesTo": [
+            {
+              "ResultPropertyName": "R_支払先ID",
+              "ResultTo": {
+                "SerializeProperty": "支払先ID"
+              }
+            }
+          ],
+          "RefreshAfterFinish": true,
+          "CheckDataValidation": true
+        },
+        {
+          "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+          "TableName": "t_object_surveying",
+          "ShowConfirm": false,
+          "ConfirmText": "本当に更新してもよろしいですか？",
+          "RowsToUpdate": 1,
+          "RowsToUpdateCondition": {
+            "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+            "ColumnBindingInfo": {
+              "TableName": "t_object_surveying",
+              "ColumnName": "surveying_id"
+            },
+            "Value": {
+              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+              "SerializeProperty": "=P_測量ID"
+            }
+          },
+          "UpdateValues": [
+            {
+              "ColumnName": "object_order_type_id",
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_物件申込タイプID"
+              }
+            },
+            {
+              "ColumnName": "surveying_request_date",
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_測量依頼日"
+              }
+            },
+            {
+              "ColumnName": "surveying_preferred_type",
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_測量希望区分"
+              }
+            },
+            {
+              "ColumnName": "surveying_preferred_sttdate",
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_測量希望開始日"
+              }
+            },
+            {
+              "ColumnName": "surveying_preferred_enddate",
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_測量希望終了日"
+              }
+            },
+            {
+              "ColumnName": "surveying_preferred_time",
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_測量希望時刻"
+              }
+            },
+            {
+              "ColumnName": "withness_being_flg",
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_立会者有無フラグ"
+              }
+            },
+            {
+              "ColumnName": "withness",
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_立会者"
+              }
+            },
+            {
+              "ColumnName": "site_survey_flg",
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_敷地調査フラグ"
+              }
+            },
+            {
+              "ColumnName": "site_survey_customer_id",
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_敷調会社ID"
+              }
+            },
+            {
+              "ColumnName": "site_survey_arrange_date",
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_敷調手配日"
+              }
+            },
+            {
+              "ColumnName": "site_survey_accept_date",
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_敷調承諾日"
+              }
+            },
+            {
+              "ColumnName": "scheduled_site_survey_sttdate",
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_敷調予定開始日"
+              }
+            },
+            {
+              "ColumnName": "scheduled_site_survey_enddate",
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_敷調予定終了日"
+              }
+            },
+            {
+              "ColumnName": "site_survey_enforcement_date",
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_敷調実施日"
+              }
+            },
+            {
+              "ColumnName": "site_survey_report_receipt_date",
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_敷調報告書受領日"
+              }
+            },
+            {
+              "ColumnName": "site_suvey_report_delivery_date",
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_敷調報告書納品日"
+              }
+            },
+            {
+              "ColumnName": "gove_survey_flg",
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_役所調査フラグ"
+              }
+            },
+            {
+              "ColumnName": "gove_survey_customer_id",
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_役調会社ID"
+              }
+            },
+            {
+              "ColumnName": "gove_survey_arrange_date",
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_役調手配日"
+              }
+            },
+            {
+              "ColumnName": "gove_survey_accept_date",
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_役調承諾日"
+              }
+            },
+            {
+              "ColumnName": "scheduled_gove_survey_sttdate",
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_役調予定開始日"
+              }
+            },
+            {
+              "ColumnName": "scheduled_gove_survey_enddate",
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_役調予定終了日"
+              }
+            },
+            {
+              "ColumnName": "gove_survey_enforcement_date",
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_役調実施日"
+              }
+            },
+            {
+              "ColumnName": "gove_survey_report_receipt_date",
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_役調報告書受領日"
+              }
+            },
+            {
+              "ColumnName": "gove_survey_report_delivery_date",
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_役調報告書納品日"
+              }
+            },
+            {
+              "ColumnName": "site_survey_year_month",
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=TEXT(P_敷調実施日,\"yyyymm\")"
+              }
+            },
+            {
+              "ColumnName": "gove_survey_year_month",
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=TEXT(P_役調実施日,\"yyyymm\")"
+              }
+            },
+            {
+              "ColumnName": "surveying_status_id",
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=測量完了ステータス"
+              }
+            },
+            {
+              "ColumnName": "surveying_complete_flg",
+              "Value": "1"
+            },
+            {
+              "ColumnName": "surveying_complete_user_id",
+              "Value": "%CurrentUser.user_id%"
+            },
+            {
+              "ColumnName": "surveying_complete_datetime",
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=NOW()"
+              }
+            }
+          ],
+          "ParamNameToSaveNewRowValue": "New測量情報",
+          "Comments": ""
+        },
+        {
+          "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+          "ConditionAndCommandPairList": [
+            {
+              "Condition": {
+                "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                "param": {
+                  "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                  "ParamObject": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=物件商品.物件商品ID"
+                  }
+                },
+                "value": "%Null%",
+                "compareType": 1
+              },
+              "CommandList": [
+                {
+                  "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+                  "TableName": "t_object_product",
+                  "ShowConfirm": false,
+                  "ConfirmText": "本当に更新してもよろしいですか？",
+                  "RowsToUpdate": 1,
+                  "RowsToUpdateCondition": {
+                    "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                    "ColumnBindingInfo": {
+                      "TableName": "t_object_product",
+                      "ColumnName": "object_product_id"
+                    },
+                    "Value": {
+                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                      "SerializeProperty": "=物件商品.物件商品ID"
+                    }
+                  },
+                  "UpdateValues": [
+                    {
+                      "ColumnName": "payment_comp_id",
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=支払先ID"
+                      }
+                    }
+                  ]
+                }
+              ],
+              "ID": "9bbc44b2-31b6-442e-9850-001da84abb82"
+            }
+          ]
+        },
+        {
+          "$type": "Forguncy.Model.ReturnCommand, ServerDesignerCommon",
+          "ErrorCode": "0",
+          "CustomReturns": []
+        }
+      ]
+    }
+  ],
+  "Name": "測量データ確定処理"
+}
