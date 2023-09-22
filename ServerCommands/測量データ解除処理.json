@@ -1,0 +1,152 @@
+{
+  "Enabled": true,
+  "Triggers": [
+    {
+      "$type": "Forguncy.ServerCommands.Models.PostRequestTrigger, ServerDesignerCommon",
+      "Permission": {
+        "AllowRoles": [
+          "FGC_LoginUser"
+        ]
+      },
+      "Parameters": [
+        {
+          "Name": "P_物件申込タイプID"
+        },
+        {
+          "Name": "P_測量ID"
+        }
+      ]
+    }
+  ],
+  "Commands": [
+    {
+      "$type": "Forguncy.Model.ServerTransactionCommand, ServerDesignerCommon",
+      "CommandList": [
+        {
+          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+          "ParameterName": "申込_測量結果待ちステータスID",
+          "TableValue": {
+            "TableName": "m_object_status",
+            "OnlyGetValue": true,
+            "TableValueType": 0,
+            "BindingInfos": [
+              {
+                "BindingInfo": {
+                  "TableName": "m_object_status",
+                  "ColumnName": "order_status_id"
+                },
+                "ColumnName": "order_status_id"
+              }
+            ],
+            "SqlCondition": {
+              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+              "ColumnBindingInfo": {
+                "TableName": "m_object_status",
+                "ColumnName": "surveying_result_wait_flg"
+              },
+              "Value": "1"
+            }
+          },
+          "ID": "9bfd0cf15adc4cb19cb948965033c0e7"
+        },
+        {
+          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+          "ParameterName": "測量_測量結果待ちステータスID",
+          "TableValue": {
+            "TableName": "m_surveying_status",
+            "OnlyGetValue": true,
+            "TableValueType": 0,
+            "BindingInfos": [
+              {
+                "BindingInfo": {
+                  "TableName": "m_surveying_status",
+                  "ColumnName": "surveying_status_id"
+                },
+                "ColumnName": "surveying_status_id"
+              }
+            ],
+            "SqlCondition": {
+              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+              "ColumnBindingInfo": {
+                "TableName": "m_surveying_status",
+                "ColumnName": "surveying_result_wait_flg"
+              },
+              "Value": "1"
+            }
+          },
+          "ID": "499062eaa79e462d98747a94581316cf"
+        },
+        {
+          "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+          "TableName": "t_object_order_type",
+          "ShowConfirm": false,
+          "ConfirmText": "本当に更新してもよろしいですか？",
+          "RowsToUpdate": 1,
+          "RowsToUpdateCondition": {
+            "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+            "ColumnBindingInfo": {
+              "TableName": "t_object_order_type",
+              "ColumnName": "object_order_type_id"
+            },
+            "Value": {
+              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+              "SerializeProperty": "=P_物件申込タイプID"
+            }
+          },
+          "UpdateValues": [
+            {
+              "ColumnName": "order_status_id",
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=申込_測量結果待ちステータスID"
+              }
+            }
+          ]
+        },
+        {
+          "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+          "TableName": "t_object_surveying",
+          "ShowConfirm": false,
+          "ConfirmText": "本当に更新してもよろしいですか？",
+          "RowsToUpdate": 1,
+          "RowsToUpdateCondition": {
+            "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+            "ColumnBindingInfo": {
+              "TableName": "t_object_surveying",
+              "ColumnName": "surveying_id"
+            },
+            "Value": {
+              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+              "SerializeProperty": "=P_測量ID"
+            }
+          },
+          "UpdateValues": [
+            {
+              "ColumnName": "surveying_status_id",
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=測量_測量結果待ちステータスID"
+              }
+            },
+            {
+              "ColumnName": "surveying_complete_flg",
+              "Value": "0"
+            },
+            {
+              "ColumnName": "surveying_complete_user_id"
+            },
+            {
+              "ColumnName": "surveying_complete_datetime"
+            }
+          ]
+        },
+        {
+          "$type": "Forguncy.Model.ReturnCommand, ServerDesignerCommon",
+          "ErrorCode": "0",
+          "CustomReturns": []
+        }
+      ]
+    }
+  ],
+  "Name": "測量データ解除処理"
+}
