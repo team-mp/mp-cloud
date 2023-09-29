@@ -1,0 +1,228 @@
+{
+  "Enabled": true,
+  "Triggers": [
+    {
+      "$type": "Forguncy.ServerCommands.Models.PostRequestTrigger, ServerDesignerCommon",
+      "Permission": {
+        "AllowRoles": [
+          "FGC_LoginUser"
+        ]
+      },
+      "Parameters": [
+        {
+          "Name": "P_宛先"
+        },
+        {
+          "Name": "P_CC"
+        },
+        {
+          "Name": "P_件名"
+        },
+        {
+          "Name": "P_本文"
+        },
+        {
+          "Name": "P_添付ファイル"
+        },
+        {
+          "Name": "P_物件申込タイプID"
+        },
+        {
+          "Name": "P_送信ユーザーID"
+        }
+      ]
+    }
+  ],
+  "Commands": [
+    {
+      "$type": "Forguncy.Model.ServerTransactionCommand, ServerDesignerCommon",
+      "CommandList": [
+        {
+          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+          "ParameterName": "差出人メールアドレス",
+          "TableValue": {
+            "TableName": "m_environment",
+            "OnlyGetValue": true,
+            "TableValueType": 0,
+            "BindingInfos": [
+              {
+                "BindingInfo": {
+                  "TableName": "m_environment",
+                  "ColumnName": "mailsender_address"
+                },
+                "ColumnName": "mailsender_address"
+              }
+            ],
+            "SqlCondition": {
+              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+              "ColumnBindingInfo": {
+                "TableName": "m_environment",
+                "ColumnName": "ID"
+              },
+              "Value": "1"
+            }
+          },
+          "ID": "5065e05472634cc098b0a56de056cb28"
+        },
+        {
+          "$type": "Forguncy.Model.CatchExceptionCommand, ServerDesignerCommon",
+          "TryCommandPart": {
+            "CommandList": [
+              {
+                "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+                "TableName": "t_mail_history",
+                "UpdateType": "add",
+                "ShowConfirm": false,
+                "ConfirmText": "本当に追加してもよろしいですか？",
+                "UpdateValues": [
+                  {
+                    "ColumnName": "object_order_type_id",
+                    "Value": {
+                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                      "SerializeProperty": "=P_物件申込タイプID"
+                    }
+                  },
+                  {
+                    "ColumnName": "to_address",
+                    "Value": {
+                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                      "SerializeProperty": "=P_宛先"
+                    }
+                  },
+                  {
+                    "ColumnName": "cc_address",
+                    "Value": {
+                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                      "SerializeProperty": "=P_CC"
+                    }
+                  },
+                  {
+                    "ColumnName": "subject",
+                    "Value": {
+                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                      "SerializeProperty": "=P_件名"
+                    }
+                  },
+                  {
+                    "ColumnName": "body",
+                    "Value": {
+                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                      "SerializeProperty": "=P_本文"
+                    }
+                  },
+                  {
+                    "ColumnName": "send_user_id",
+                    "Value": {
+                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                      "SerializeProperty": "=P_送信ユーザーID"
+                    }
+                  },
+                  {
+                    "ColumnName": "send_date",
+                    "Value": {
+                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                      "SerializeProperty": "=NOW()"
+                    }
+                  }
+                ]
+              },
+              {
+                "$type": "Forguncy.Model.SendMailCommand, ServerDesignerCommon",
+                "From": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=差出人メールアドレス"
+                },
+                "Subject": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=P_件名"
+                },
+                "Content": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=P_本文"
+                },
+                "EnhancedRecipient": {
+                  "CommonValue": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=P_宛先"
+                  }
+                },
+                "EnhancedCC": {
+                  "CommonValue": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=P_CC"
+                  }
+                },
+                "Attachments": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=P_添付ファイル"
+                },
+                "ID": "daf8052527b24c40a3056693596e585d"
+              }
+            ]
+          },
+          "CatchCommandPart": {
+            "CommandList": [
+              {
+                "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                "ParameterName": "送信者メールドレス",
+                "TableValue": {
+                  "TableName": "m_user",
+                  "OnlyGetValue": true,
+                  "TableValueType": 0,
+                  "BindingInfos": [
+                    {
+                      "BindingInfo": {
+                        "TableName": "m_user",
+                        "ColumnName": "mail_address"
+                      },
+                      "ColumnName": "mail_address"
+                    }
+                  ],
+                  "SqlCondition": {
+                    "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                    "ColumnBindingInfo": {
+                      "TableName": "m_user",
+                      "ColumnName": "user_id"
+                    },
+                    "Value": {
+                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                      "SerializeProperty": "=P_送信ユーザーID"
+                    }
+                  }
+                },
+                "ID": "770a988322164e58819800efa8e68a59"
+              },
+              {
+                "$type": "Forguncy.Model.SendMailCommand, ServerDesignerCommon",
+                "From": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=差出人メールアドレス"
+                },
+                "Subject": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=\"【送信エラー】\"&P_件名"
+                },
+                "Content": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=P_本文"
+                },
+                "EnhancedRecipient": {
+                  "CommonValue": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=送信者メールドレス"
+                  }
+                },
+                "Attachments": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=P_添付ファイル"
+                },
+                "ID": "1a624551f9a94502b2a3ea1b2661d7e0"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "Name": "メール送信処理"
+}
