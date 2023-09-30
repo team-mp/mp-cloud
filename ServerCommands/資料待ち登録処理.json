@@ -38,7 +38,7 @@
             "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
             "SerializeProperty": "=LEN(P_送付予定資料)-LEN(SUBSTITUTE(P_送付予定資料,\",\",\"\"))+1"
           },
-          "ID": "cc0183739fe94526849790b9879766c3"
+          "ID": "a871cc16938a432f9f4a42fe7154b7c5"
         },
         {
           "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
@@ -47,7 +47,12 @@
             "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
             "SerializeProperty": "=P_送付予定資料"
           },
-          "ID": "ea48ac2b282544279c43b164a0491b98"
+          "ID": "b18289d921f94c6fab015e7d9698eb95"
+        },
+        {
+          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+          "ParameterName": "送付待ち資料名",
+          "ID": "c22d9692fcb54fa3a2075f8ca84352e3"
         },
         {
           "$type": "Forguncy.Model.LoopCommand, ServerDesignerCommon",
@@ -68,7 +73,7 @@
                 "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
                 "SerializeProperty": "=IFERROR(FIND(\",\",検索文字列),0)"
               },
-              "ID": "b87f7f8808544e6888375592093e003c"
+              "ID": "9dfe82b8e676448f8acec214620e3f0e"
             },
             {
               "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
@@ -93,10 +98,10 @@
                         "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
                         "SerializeProperty": "=検索文字列"
                       },
-                      "ID": "f2d2b067a35b42ee803005f4b9a5aa83"
+                      "ID": "3ea31bb8a00b4b11948caf1711001d23"
                     }
                   ],
-                  "ID": "5cb1af54-46ba-4570-90cb-dbff7d3c2837"
+                  "ID": "d30fa123-9063-4673-afe5-2f9b7d1fc61c"
                 },
                 {
                   "CommandList": [
@@ -107,7 +112,7 @@
                         "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
                         "SerializeProperty": "=LEFT(検索文字列,カンマ文字位置-1)"
                       },
-                      "ID": "24011ed278fc499caf23093587087f42"
+                      "ID": "52eb1af97c6441a48f2647691c505c86"
                     },
                     {
                       "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
@@ -116,12 +121,57 @@
                         "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
                         "SerializeProperty": "=MID(検索文字列,カンマ文字位置+1,1000)"
                       },
-                      "ID": "5de54dfa07b64e1a93c7542866dedb3f"
+                      "ID": "f47b454ad757498da82d7be36106532b"
                     }
                   ],
-                  "ID": "cea6bd04-0f9b-432b-98b6-02fa2a1b7c26"
+                  "ID": "c6439e37-66d7-4959-a7d5-7af96a3d366e"
                 }
               ]
+            },
+            {
+              "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+              "ConditionAndCommandPairList": [
+                {
+                  "Condition": {
+                    "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                    "param": {
+                      "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                      "ParamObject": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=送付待ち資料名"
+                      }
+                    },
+                    "value": "%Null%"
+                  },
+                  "CommandList": [
+                    {
+                      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                      "ParameterName": "送付待ち資料名",
+                      "ParameterValue": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=\"・\"&資料名"
+                      },
+                      "ID": "8b6f727fc126433ebdbe8375472bc556"
+                    }
+                  ],
+                  "ID": "53883c06-f15a-4f2b-9874-03c445128df0"
+                },
+                {
+                  "CommandList": [
+                    {
+                      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                      "ParameterName": "送付待ち資料名",
+                      "ParameterValue": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=送付待ち資料名&CHAR(10)&\"・\"&資料名"
+                      },
+                      "ID": "985b9fca2f0d46c2887355e776b42631"
+                    }
+                  ],
+                  "ID": "7d627fa6-5c62-4609-b6ea-a60c9ebbaa5b"
+                }
+              ],
+              "Comments": "改行「・」付きで文字列生成"
             },
             {
               "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
@@ -142,6 +192,13 @@
                   "Value": {
                     "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
                     "SerializeProperty": "=資料名"
+                  }
+                },
+                {
+                  "ColumnName": "sorce_document_list_name",
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=送付待ち資料名"
                   }
                 },
                 {
@@ -176,7 +233,8 @@
                   "ColumnName": "entry_user_id",
                   "Value": "%CurrentUser.user_id%"
                 }
-              ]
+              ],
+              "ParamNameToSaveNewRowValue": "New資料待ち"
             }
           ]
         },
@@ -208,9 +266,22 @@
         {
           "$type": "Forguncy.Model.ReturnCommand, ServerDesignerCommon",
           "ErrorCode": "0",
-          "CustomReturns": []
+          "CustomReturns": [
+            {
+              "ReturnPropertyName": "R_最終資料待ちID",
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=New資料待ち.資料待ちID"
+              }
+            }
+          ]
         }
       ]
+    }
+  ],
+  "ReturnProperties": [
+    {
+      "Name": "R_最終資料待ちID"
     }
   ],
   "Name": "資料待ち登録処理"
