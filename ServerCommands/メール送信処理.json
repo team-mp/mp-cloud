@@ -62,12 +62,126 @@
               "Value": "1"
             }
           },
-          "ID": "5065e05472634cc098b0a56de056cb28"
+          "ID": "667e2f66b44d4e31b9b96004a78f263e"
         },
         {
           "$type": "Forguncy.Model.CatchExceptionCommand, ServerDesignerCommon",
           "TryCommandPart": {
             "CommandList": [
+              {
+                "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                "ParameterName": "添付ファイル文字列",
+                "ID": "31aa444178344a9b9453ee1295da3881"
+              },
+              {
+                "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                "ParameterName": "添付ファイル数",
+                "ParameterValue": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=LEN(P_添付ファイル)-LEN(SUBSTITUTE(P_添付ファイル,\"|\",\"\"))"
+                },
+                "ID": "896bdc6cba154c80a42eee116cab86e0"
+              },
+              {
+                "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                "ParameterName": "ファイル名開始位置",
+                "ParameterValue": "1",
+                "ID": "01561d9cff35439eadf7450e9693dfcf"
+              },
+              {
+                "$type": "Forguncy.Model.LoopCommand, ServerDesignerCommon",
+                "LoopInfo": {
+                  "$type": "Forguncy.Model.CountLoopInfo, ServerDesignerCommon",
+                  "LoopCount": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=添付ファイル数"
+                  },
+                  "LoopIndexParamName": "カウンター",
+                  "LoopItemParamName": "Item"
+                },
+                "CommandList": [
+                  {
+                    "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                    "ParameterName": "文字数",
+                    "ParameterValue": {
+                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                      "SerializeProperty": "=IFERROR(FIND(\"|\",P_添付ファイル,ファイル名開始位置),1000)"
+                    },
+                    "ID": "378f2ac8c8ab4ba5814b46706b942982"
+                  },
+                  {
+                    "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                    "ParameterName": "取得ファイル名",
+                    "ParameterValue": {
+                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                      "SerializeProperty": "=MID(P_添付ファイル,ファイル名開始位置,文字数-ファイル名開始位置)"
+                    },
+                    "ID": "47de602039044e958249e42fe733c1b4"
+                  },
+                  {
+                    "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                    "ParameterName": "表示ファイル名",
+                    "ParameterValue": {
+                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                      "SerializeProperty": "=MID(取得ファイル名,38,100)"
+                    },
+                    "ID": "2e0c86c2a1dc4014b7b86df616f94b0f"
+                  },
+                  {
+                    "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+                    "ConditionAndCommandPairList": [
+                      {
+                        "Condition": {
+                          "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                          "param": {
+                            "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                            "ParamObject": {
+                              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                              "SerializeProperty": "=カウンター"
+                            }
+                          },
+                          "value": "1"
+                        },
+                        "CommandList": [
+                          {
+                            "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                            "ParameterName": "添付ファイル文字列",
+                            "ParameterValue": {
+                              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                              "SerializeProperty": "=\"・\"&表示ファイル名"
+                            },
+                            "ID": "47fc39f0cebe4cdd98b6cfcd49db0414"
+                          }
+                        ],
+                        "ID": "41884a35-7814-49bc-b20f-96854256b32d"
+                      },
+                      {
+                        "CommandList": [
+                          {
+                            "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                            "ParameterName": "添付ファイル文字列",
+                            "ParameterValue": {
+                              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                              "SerializeProperty": "=添付ファイル文字列&CHAR(10)&\"・\"&表示ファイル名"
+                            },
+                            "ID": "00d8bbdb58924b71b9074f11442e3425"
+                          }
+                        ],
+                        "ID": "0dec7a4d-0701-4651-a859-aedb8a0a5a49"
+                      }
+                    ]
+                  },
+                  {
+                    "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                    "ParameterName": "ファイル名開始位置",
+                    "ParameterValue": {
+                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                      "SerializeProperty": "=文字数+1"
+                    },
+                    "ID": "b16ab1303aaf482c947497ab6458de20"
+                  }
+                ]
+              },
               {
                 "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
                 "TableName": "t_mail_history",
@@ -108,6 +222,13 @@
                     "Value": {
                       "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
                       "SerializeProperty": "=P_本文"
+                    }
+                  },
+                  {
+                    "ColumnName": "attachment_files",
+                    "Value": {
+                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                      "SerializeProperty": "=添付ファイル文字列"
                     }
                   },
                   {
@@ -156,7 +277,7 @@
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
                   "SerializeProperty": "=P_添付ファイル"
                 },
-                "ID": "daf8052527b24c40a3056693596e585d"
+                "ID": "c8f83ba0d5804b66924e46a58b61337a"
               }
             ]
           },
@@ -190,7 +311,7 @@
                     }
                   }
                 },
-                "ID": "770a988322164e58819800efa8e68a59"
+                "ID": "5b2725d3e02a4f17abfdebb3459c2ffe"
               },
               {
                 "$type": "Forguncy.Model.SendMailCommand, ServerDesignerCommon",
@@ -216,7 +337,7 @@
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
                   "SerializeProperty": "=P_添付ファイル"
                 },
-                "ID": "1a624551f9a94502b2a3ea1b2661d7e0"
+                "ID": "424629618c1f4565bd67180739ecc034"
               }
             ]
           }
