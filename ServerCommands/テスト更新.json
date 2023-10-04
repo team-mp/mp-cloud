@@ -18,21 +18,86 @@
       "$type": "Forguncy.Model.ServerTransactionCommand, ServerDesignerCommon",
       "CommandList": [
         {
-          "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
-          "TableName": "m_user",
-          "UpdateType": "delete",
-          "ShowConfirm": true,
-          "ConfirmText": "本当に削除してもよろしいですか？",
-          "RowsToUpdate": 1,
-          "RowsToUpdateCondition": {
-            "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
-            "ColumnBindingInfo": {
-              "TableName": "m_user",
-              "ColumnName": "customer_id"
-            },
-            "Value": "%Null%"
+          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+          "ParameterName": "ユーザー",
+          "TableValue": {
+            "TableName": "m_user",
+            "BindingInfos": [
+              {
+                "BindingInfo": {
+                  "TableName": "m_user",
+                  "ColumnName": "user_id"
+                },
+                "ColumnName": "ユーザーID"
+              },
+              {
+                "BindingInfo": {
+                  "TableName": "m_user",
+                  "ColumnName": "mail_address"
+                },
+                "ColumnName": "メールアドレス"
+              }
+            ],
+            "SqlCondition": {
+              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+              "CompareType": 1,
+              "ColumnBindingInfo": {
+                "TableName": "m_user",
+                "ColumnName": "mail_address"
+              },
+              "Value": "%Null%"
+            }
           },
-          "UpdateValues": []
+          "ID": "c639f80cab17460c973c37a78179a6e2"
+        },
+        {
+          "$type": "Forguncy.Model.LoopCommand, ServerDesignerCommon",
+          "LoopInfo": {
+            "$type": "Forguncy.Model.CountLoopInfo, ServerDesignerCommon",
+            "LoopCount": {
+              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+              "SerializeProperty": "=ユーザー"
+            },
+            "LoopItemParamName": "Item"
+          },
+          "CommandList": [
+            {
+              "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+              "ParameterName": "新メールアドレス",
+              "ParameterValue": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=Item.メールアドレス&\"p\""
+              },
+              "ID": "3e21de97d45241449cdced846f73a1f1"
+            },
+            {
+              "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+              "TableName": "m_user",
+              "ShowConfirm": false,
+              "ConfirmText": "本当に更新してもよろしいですか？",
+              "RowsToUpdate": 1,
+              "RowsToUpdateCondition": {
+                "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                "ColumnBindingInfo": {
+                  "TableName": "m_user",
+                  "ColumnName": "user_id"
+                },
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=Item.ユーザーID"
+                }
+              },
+              "UpdateValues": [
+                {
+                  "ColumnName": "mail_address",
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=新メールアドレス"
+                  }
+                }
+              ]
+            }
+          ]
         }
       ]
     }
