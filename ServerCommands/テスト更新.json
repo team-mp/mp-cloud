@@ -15,87 +15,93 @@
   ],
   "Commands": [
     {
-      "$type": "Forguncy.Model.ServerTransactionCommand, ServerDesignerCommon",
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "物件",
+      "TableValue": {
+        "TableName": "t_object_order_type",
+        "BindingInfos": [
+          {
+            "BindingInfo": {
+              "TableName": "t_object_order_type",
+              "ColumnName": "object_order_type_id"
+            },
+            "ColumnName": "物件申込タイプID"
+          },
+          {
+            "BindingInfo": {
+              "TableName": "t_object_order_type",
+              "ColumnName": "order_date"
+            },
+            "ColumnName": "申込日"
+          }
+        ],
+        "SqlCondition": {
+          "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+          "Condition1": {
+            "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+            "CompareType": 1,
+            "ColumnBindingInfo": {
+              "TableName": "t_object_order_type",
+              "ColumnName": "order_date"
+            },
+            "Value": "%Null%"
+          },
+          "Condition2": {
+            "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+            "ColumnBindingInfo": {
+              "TableName": "t_object_order_type",
+              "ColumnName": "order_year_month"
+            },
+            "Value": "%Null%"
+          }
+        }
+      },
+      "ID": "042742a2baba4915b9a5ab1860a3dc97"
+    },
+    {
+      "$type": "Forguncy.Model.LoopCommand, ServerDesignerCommon",
+      "LoopInfo": {
+        "$type": "Forguncy.Model.CountLoopInfo, ServerDesignerCommon",
+        "LoopCount": {
+          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+          "SerializeProperty": "=物件"
+        },
+        "LoopItemParamName": "Item"
+      },
       "CommandList": [
         {
           "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
-          "ParameterName": "ユーザー",
-          "TableValue": {
-            "TableName": "m_user",
-            "BindingInfos": [
-              {
-                "BindingInfo": {
-                  "TableName": "m_user",
-                  "ColumnName": "user_id"
-                },
-                "ColumnName": "ユーザーID"
-              },
-              {
-                "BindingInfo": {
-                  "TableName": "m_user",
-                  "ColumnName": "mail_address"
-                },
-                "ColumnName": "メールアドレス"
-              }
-            ],
-            "SqlCondition": {
-              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
-              "CompareType": 1,
-              "ColumnBindingInfo": {
-                "TableName": "m_user",
-                "ColumnName": "mail_address"
-              },
-              "Value": "%Null%"
-            }
+          "ParameterName": "申込年月",
+          "ParameterValue": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=TEXT(Item.申込日,\"yyyymm\")"
           },
-          "ID": "c639f80cab17460c973c37a78179a6e2"
+          "ID": "2c4bbb1b3765491aacad2e5f46a2c3ad"
         },
         {
-          "$type": "Forguncy.Model.LoopCommand, ServerDesignerCommon",
-          "LoopInfo": {
-            "$type": "Forguncy.Model.CountLoopInfo, ServerDesignerCommon",
-            "LoopCount": {
+          "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+          "TableName": "t_object_order_type",
+          "ShowConfirm": false,
+          "ConfirmText": "本当に更新してもよろしいですか？",
+          "RowsToUpdate": 1,
+          "RowsToUpdateCondition": {
+            "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+            "ColumnBindingInfo": {
+              "TableName": "t_object_order_type",
+              "ColumnName": "object_order_type_id"
+            },
+            "Value": {
               "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-              "SerializeProperty": "=ユーザー"
-            },
-            "LoopItemParamName": "Item"
+              "SerializeProperty": "=Item.物件申込タイプID"
+            }
           },
-          "CommandList": [
+          "UpdateValues": [
             {
-              "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
-              "ParameterName": "新メールアドレス",
-              "ParameterValue": {
+              "ColumnName": "order_year_month",
+              "Value": {
                 "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                "SerializeProperty": "=Item.メールアドレス&\"p\""
-              },
-              "ID": "3e21de97d45241449cdced846f73a1f1"
-            },
-            {
-              "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
-              "TableName": "m_user",
-              "ShowConfirm": false,
-              "ConfirmText": "本当に更新してもよろしいですか？",
-              "RowsToUpdate": 1,
-              "RowsToUpdateCondition": {
-                "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
-                "ColumnBindingInfo": {
-                  "TableName": "m_user",
-                  "ColumnName": "user_id"
-                },
-                "Value": {
-                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=Item.ユーザーID"
-                }
-              },
-              "UpdateValues": [
-                {
-                  "ColumnName": "mail_address",
-                  "Value": {
-                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                    "SerializeProperty": "=新メールアドレス"
-                  }
-                }
-              ]
+                "SerializeProperty": "=申込年月"
+              }
             }
           ]
         }
