@@ -182,7 +182,121 @@
               }
             }
           },
-          "ID": "d1b158caad8a41f68d22f1923041f8eb"
+          "ID": "c522b37361d741ab8dfbcf4bb8a1b142"
+        },
+        {
+          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+          "ParameterName": "依頼品目文字列",
+          "ID": "fe1819f83ae2494da841067e20652b21"
+        },
+        {
+          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+          "ParameterName": "受付商品",
+          "TableValue": {
+            "TableName": "t_object_order_product",
+            "BindingInfos": [
+              {
+                "BindingInfo": {
+                  "TableName": "t_object_order_product",
+                  "ColumnName": "product_name"
+                },
+                "ColumnName": "商品名"
+              },
+              {
+                "BindingInfo": {
+                  "TableName": "t_object_order_product",
+                  "ColumnName": "product_id",
+                  "RelationBinding": {
+                    "RelatedTable": "m_product",
+                    "RelatedColumn": "product_id",
+                    "DisplayColumn": "request_name"
+                  }
+                },
+                "ColumnName": "依頼品名"
+              }
+            ],
+            "SqlCondition": {
+              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+              "ColumnBindingInfo": {
+                "TableName": "t_object_order_product",
+                "ColumnName": "object_order_type_id"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_物件申込タイプID"
+              }
+            },
+            "OrderBySqlCondition": {
+              "OrderByColumns": [
+                {
+                  "ColumnBindingInfo": {
+                    "TableName": "t_object_order_product",
+                    "ColumnName": "product_order_type"
+                  },
+                  "Order": 0
+                }
+              ]
+            }
+          },
+          "ID": "46f03d74ebf441baaafa4f3c076d66fc"
+        },
+        {
+          "$type": "Forguncy.Model.LoopCommand, ServerDesignerCommon",
+          "LoopInfo": {
+            "$type": "Forguncy.Model.CountLoopInfo, ServerDesignerCommon",
+            "LoopCount": {
+              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+              "SerializeProperty": "=受付商品"
+            },
+            "LoopIndexParamName": "カウンター",
+            "LoopItemParamName": "Item"
+          },
+          "CommandList": [
+            {
+              "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+              "ConditionAndCommandPairList": [
+                {
+                  "Condition": {
+                    "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                    "param": {
+                      "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                      "ParamObject": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=カウンター"
+                      }
+                    },
+                    "value": "1"
+                  },
+                  "CommandList": [
+                    {
+                      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                      "ParameterName": "依頼品目文字列",
+                      "ParameterValue": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=\"・\"&IF(Item.依頼品名<>\"\",Item.依頼品名,Item.商品名)"
+                      },
+                      "ID": "1f07ba220bb94f2288dcea37dd1b4c07"
+                    }
+                  ],
+                  "ID": "cae1b73c-faf6-4c4f-8034-e4c27e5694f0"
+                },
+                {
+                  "CommandList": [
+                    {
+                      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                      "ParameterName": "依頼品目文字列",
+                      "ParameterValue": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=依頼品目文字列&CHAR(10)&\"・\"&IF(Item.依頼品名<>\"\",Item.依頼品名,Item.商品名)"
+                      },
+                      "ID": "b6211853edb74626be7a4f0169b7657f"
+                    }
+                  ],
+                  "ID": "f6947365-0dc2-4d6e-8aba-14b75a8a6cd2"
+                }
+              ]
+            }
+          ]
         },
         {
           "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
@@ -459,6 +573,13 @@
               "Value": {
                 "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
                 "SerializeProperty": "=P_申込ステータスID"
+              }
+            },
+            {
+              "ColumnName": "request_product_string",
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=依頼品目文字列"
               }
             }
           ]
