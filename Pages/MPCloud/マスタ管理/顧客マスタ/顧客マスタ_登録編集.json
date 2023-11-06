@@ -168,8 +168,10 @@
     "5,3": "顧客略称",
     "5,8": "＊",
     "7,3": "顧客名カナ",
-    "7,8": "＊",
-    "29,34": "更新する"
+    "29,34": "="
+  },
+  "Formulas": {
+    "29,34": "IF(顧客ID=\"\",\"登録する\",\"更新する\")"
   },
   "AttachInfos": {
     "1,10": {
@@ -257,6 +259,78 @@
         "$type": "Forguncy.ButtonCellType, ServerDesignerCommon",
         "CommandList": [
           {
+            "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+            "ConditionAndCommandPairList": [
+              {
+                "Condition": {
+                  "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                  "param": {
+                    "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+                    "cellLocations": [
+                      {
+                        "SerializeProperty": "=顧客マスタ_登録編集!顧客名"
+                      }
+                    ]
+                  },
+                  "value": "%Null%"
+                },
+                "CommandList": [
+                  {
+                    "$type": "Forguncy.Model.ShowMessageCommand, ServerDesignerCommon",
+                    "MessageFormula": "顧客名を入力してください"
+                  },
+                  {
+                    "$type": "SetFocusCommand.SetFocusCommand, SetFocusCommand",
+                    "TargetCell": {
+                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                      "SerializeProperty": "=顧客マスタ_登録編集!顧客名"
+                    }
+                  },
+                  {
+                    "$type": "Forguncy.Model.StopCommand, ServerDesignerCommon"
+                  }
+                ],
+                "ID": "c149a7db-3a7e-49f2-ad12-75426dc7784e"
+              }
+            ]
+          },
+          {
+            "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+            "ConditionAndCommandPairList": [
+              {
+                "Condition": {
+                  "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                  "param": {
+                    "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+                    "cellLocations": [
+                      {
+                        "SerializeProperty": "=顧客マスタ_登録編集!顧客名略称"
+                      }
+                    ]
+                  },
+                  "value": "%Null%"
+                },
+                "CommandList": [
+                  {
+                    "$type": "Forguncy.Model.ShowMessageCommand, ServerDesignerCommon",
+                    "MessageFormula": "顧客略称を入力してください"
+                  },
+                  {
+                    "$type": "SetFocusCommand.SetFocusCommand, SetFocusCommand",
+                    "TargetCell": {
+                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                      "SerializeProperty": "=顧客マスタ_登録編集!顧客名略称"
+                    }
+                  },
+                  {
+                    "$type": "Forguncy.Model.StopCommand, ServerDesignerCommon"
+                  }
+                ],
+                "ID": "3b6caab5-aa25-490b-88eb-865628b66931"
+              }
+            ]
+          },
+          {
             "$type": "Forguncy.Model.ShareCommand, ServerDesignerCommon",
             "ShareCommandContainerRefer": {
               "ShareCommandContainerID": "651037a9-ffaf-4591-9697-6b171676a452"
@@ -274,70 +348,601 @@
             "ReturnPropertiesTo": []
           },
           {
-            "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
-            "ConditionAndCommandPairList": [
-              {
-                "Condition": {
-                  "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
-                  "param": {
-                    "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
-                    "cellLocations": [
-                      {
-                        "SerializeProperty": "=顧客マスタ_登録編集!K2"
-                      }
-                    ]
-                  },
-                  "value": "%Null%"
-                },
-                "CommandList": [
-                  {
-                    "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
-                    "TableName": "m_customer",
-                    "UpdateType": "add",
-                    "ShowConfirm": false,
-                    "CheckDataValidation": false,
-                    "ReloadAfterSucceed": false,
-                    "ConfirmText": "本当に追加してもよろしいですか？",
-                    "UpdateValues": []
-                  }
-                ],
-                "ID": "b7dddf53-ac08-45b0-b102-8b98dad7b9d4"
-              },
-              {
-                "CommandList": [
-                  {
-                    "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
-                    "TableName": "m_customer",
-                    "ShowConfirm": false,
-                    "CheckDataValidation": false,
-                    "ReloadAfterSucceed": false,
-                    "ConfirmText": "本当に更新してもよろしいですか？",
-                    "UpdateValues": []
-                  }
-                ],
-                "ID": "17387b50-57ed-4b93-8006-090ca7c52eb7"
-              }
-            ]
+            "$type": "LoadingCommand.StartLoadingCommand, LoadingCommand",
+            "LoadingText": "お待ちください",
+            "LoadingTextColor": "Background 1 0"
           },
           {
-            "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
-            "ParameterName": "顧客既定値登録件数",
-            "TableValue": {
-              "TableName": "m_customer_default",
-              "TableValueType": 3,
-              "SqlCondition": {
-                "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
-                "ColumnBindingInfo": {
-                  "TableName": "m_customer_default",
-                  "ColumnName": "customer_id"
-                },
+            "$type": "Forguncy.Model.RequestServerCommand, ServerDesignerCommon",
+            "ServerCommandName": "顧客データ更新処理",
+            "Parameters": [
+              {
+                "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
                 "Value": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
                   "SerializeProperty": "=顧客マスタ_登録編集!顧客ID"
-                }
+                },
+                "ParamName": "P_顧客ID"
+              },
+              {
+                "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=顧客マスタ_登録編集!顧客名"
+                },
+                "ParamName": "P_顧客名"
+              },
+              {
+                "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=顧客マスタ_登録編集!顧客名略称"
+                },
+                "ParamName": "P_顧客略称"
+              },
+              {
+                "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                "ParamName": "P_非公開顧客名"
+              },
+              {
+                "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=顧客マスタ_登録編集!顧客名カナ"
+                },
+                "ParamName": "P_顧客名カナ"
+              },
+              {
+                "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=顧客マスタ_登録編集!郵便番号"
+                },
+                "ParamName": "P_郵便番号"
+              },
+              {
+                "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=顧客マスタ_登録編集!都道府県名"
+                },
+                "ParamName": "P_都道府県名"
+              },
+              {
+                "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=顧客マスタ_登録編集!市区郡名"
+                },
+                "ParamName": "P_市区郡名"
+              },
+              {
+                "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=顧客マスタ_登録編集!町名番地"
+                },
+                "ParamName": "P_町名番地"
+              },
+              {
+                "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=顧客マスタ_登録編集!ビル名"
+                },
+                "ParamName": "P_ビル名"
+              },
+              {
+                "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=顧客マスタ_登録編集!電話番号"
+                },
+                "ParamName": "P_電話番号"
+              },
+              {
+                "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=顧客マスタ_登録編集!FAX番号"
+                },
+                "ParamName": "P_FAX番号"
+              },
+              {
+                "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                "ParamName": "P_緯度"
+              },
+              {
+                "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                "ParamName": "P_経度"
+              },
+              {
+                "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                "ParamName": "P_ホームページURL"
+              },
+              {
+                "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=顧客マスタ_登録編集!住宅事業者フラグ"
+                },
+                "ParamName": "P_住宅事業者フラグ"
+              },
+              {
+                "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=顧客マスタ_登録編集!調査会社フラグ"
+                },
+                "ParamName": "P_調査会社フラグ"
+              },
+              {
+                "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=顧客マスタ_登録編集!転圧会社フラグ"
+                },
+                "ParamName": "P_転圧会社フラグ"
+              },
+              {
+                "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=顧客マスタ_登録編集!工事会社フラグ"
+                },
+                "ParamName": "P_工事会社フラグ"
+              },
+              {
+                "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=顧客マスタ_登録編集!測量会社フラグ"
+                },
+                "ParamName": "P_測量会社フラグ"
+              },
+              {
+                "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=顧客マスタ_登録編集!代理店フラグ"
+                },
+                "ParamName": "P_代理店フラグ"
+              },
+              {
+                "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=顧客マスタ_登録編集!取次店フラグ"
+                },
+                "ParamName": "P_取次店フラグ"
+              },
+              {
+                "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=顧客マスタ_登録編集!請求先フラグ"
+                },
+                "ParamName": "P_請求先フラグ"
+              },
+              {
+                "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=顧客マスタ_登録編集!支払先フラグ"
+                },
+                "ParamName": "P_支払先フラグ"
+              },
+              {
+                "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=顧客マスタ_登録編集!本社フラグ"
+                },
+                "ParamName": "P_本社フラグ"
+              },
+              {
+                "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=顧客マスタ_登録編集!個人フラグ"
+                },
+                "ParamName": "P_個人フラグ"
+              },
+              {
+                "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=顧客マスタ_登録編集!その他取引先フラグ"
+                },
+                "ParamName": "P_その他取引先フラグ"
+              },
+              {
+                "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=顧客マスタ_登録編集!親会社ID"
+                },
+                "ParamName": "P_親会社ID"
+              },
+              {
+                "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=顧客マスタ_登録編集!既定グループID"
+                },
+                "ParamName": "P_既定グループID"
+              },
+              {
+                "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=顧客マスタ_登録編集!新規グループID"
+                },
+                "ParamName": "P_新規グループID"
+              },
+              {
+                "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=顧客マスタ_登録編集!発注書必要フラグ"
+                },
+                "ParamName": "P_発注書必要フラグ"
+              },
+              {
+                "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=顧客マスタ_登録編集!請求先ID"
+                },
+                "ParamName": "P_請求先ID"
+              },
+              {
+                "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=顧客マスタ_登録編集!請求書宛名"
+                },
+                "ParamName": "P_請求書宛名"
+              },
+              {
+                "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=顧客マスタ_登録編集!請求書担当者名"
+                },
+                "ParamName": "P_請求書担当者名"
+              },
+              {
+                "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=顧客マスタ_登録編集!請求書発行単位"
+                },
+                "ParamName": "P_請求書発行単位"
+              },
+              {
+                "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=顧客マスタ_登録編集!請求書書式"
+                },
+                "ParamName": "P_請求書書式"
+              },
+              {
+                "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=顧客マスタ_登録編集!請求書送付方法"
+                },
+                "ParamName": "P_請求書送付方法"
+              },
+              {
+                "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=顧客マスタ_登録編集!請求書郵送先郵便番号"
+                },
+                "ParamName": "P_請求書郵送先郵便番号"
+              },
+              {
+                "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=顧客マスタ_登録編集!請求書郵送先住所"
+                },
+                "ParamName": "P_請求書郵送先住所"
+              },
+              {
+                "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=顧客マスタ_登録編集!請求締日"
+                },
+                "ParamName": "P_請求締日"
+              },
+              {
+                "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=顧客マスタ_登録編集!入金月"
+                },
+                "ParamName": "P_入金月"
+              },
+              {
+                "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=顧客マスタ_登録編集!入金日"
+                },
+                "ParamName": "P_入金日"
+              },
+              {
+                "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=顧客マスタ_登録編集!入金営業日"
+                },
+                "ParamName": "P_入金営業日"
+              },
+              {
+                "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=顧客マスタ_登録編集!支払先ID"
+                },
+                "ParamName": "P_支払先ID"
+              },
+              {
+                "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=顧客マスタ_登録編集!支払締日"
+                },
+                "ParamName": "P_支払締日"
+              },
+              {
+                "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=顧客マスタ_登録編集!支払月"
+                },
+                "ParamName": "P_支払月"
+              },
+              {
+                "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=顧客マスタ_登録編集!支払日"
+                },
+                "ParamName": "P_支払日"
+              },
+              {
+                "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=顧客マスタ_登録編集!支払営業日"
+                },
+                "ParamName": "P_支払営業日"
+              },
+              {
+                "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=顧客マスタ_登録編集!営業担当者ID"
+                },
+                "ParamName": "P_営業担当者ID"
+              },
+              {
+                "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=顧客マスタ_登録編集!有効フラグ"
+                },
+                "ParamName": "P_有効フラグ"
+              },
+              {
+                "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=顧客マスタ_登録編集!一般問合せメールアドレス"
+                },
+                "ParamName": "P_一般問合せメールアドレス"
+              },
+              {
+                "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=顧客マスタ_登録編集!調査依頼メールアドレス"
+                },
+                "ParamName": "P_調査依頼メールアドレス"
+              },
+              {
+                "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=顧客マスタ_登録編集!敷調依頼メールアドレス"
+                },
+                "ParamName": "P_敷調依頼メールアドレス"
+              },
+              {
+                "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=顧客マスタ_登録編集!役調依頼メールアドレス"
+                },
+                "ParamName": "P_役調依頼メールアドレス"
+              },
+              {
+                "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=顧客マスタ_登録編集!転圧依頼メールアドレス"
+                },
+                "ParamName": "P_転圧依頼メールアドレス"
+              },
+              {
+                "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=顧客マスタ_登録編集!工事依頼メールアドレス"
+                },
+                "ParamName": "P_工事依頼メールアドレス"
+              },
+              {
+                "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=顧客マスタ_登録編集!建物構造ID"
+                },
+                "ParamName": "P_建物構造ID"
+              },
+              {
+                "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=顧客マスタ_登録編集!基礎形状ID"
+                },
+                "ParamName": "P_基礎形状ID"
+              },
+              {
+                "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=顧客マスタ_登録編集!設計接地圧"
+                },
+                "ParamName": "P_設計接地圧"
+              },
+              {
+                "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=顧客マスタ_登録編集!営業設計工務表示フラグ"
+                },
+                "ParamName": "P_営業設計工務表示フラグ"
+              },
+              {
+                "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=顧客マスタ_登録編集!通知先ユーザー1"
+                },
+                "ParamName": "P_通知先ユーザー1"
+              },
+              {
+                "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=顧客マスタ_登録編集!通知先ユーザー2"
+                },
+                "ParamName": "P_通知先ユーザー2"
+              },
+              {
+                "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=顧客マスタ_登録編集!通知先ユーザー3"
+                },
+                "ParamName": "P_通知先ユーザー3"
+              },
+              {
+                "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=顧客マスタ_登録編集!通知先ユーザー4"
+                },
+                "ParamName": "P_通知先ユーザー4"
+              },
+              {
+                "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=顧客マスタ_登録編集!通知先ユーザー5"
+                },
+                "ParamName": "P_通知先ユーザー5"
+              },
+              {
+                "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=顧客マスタ_登録編集!通知先ユーザー6"
+                },
+                "ParamName": "P_通知先ユーザー6"
+              },
+              {
+                "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=顧客マスタ_登録編集!初期調査区分"
+                },
+                "ParamName": "P_初期調査区分"
+              },
+              {
+                "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=顧客マスタ_登録編集!工事見積セット添付フラグ"
+                },
+                "ParamName": "P_工事見積セット添付フラグ"
+              },
+              {
+                "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=顧客マスタ_登録編集!転圧判定不可フラグ"
+                },
+                "ParamName": "P_転圧判定不可フラグ"
+              },
+              {
+                "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=顧客マスタ_登録編集!工事判定自動見積フラグ"
+                },
+                "ParamName": "P_工事判定自動見積フラグ"
+              },
+              {
+                "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=顧客マスタ_登録編集!既定保証期間"
+                },
+                "ParamName": "P_既定保証期間"
+              },
+              {
+                "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=顧客マスタ_登録編集!郵送手数料フラグ"
+                },
+                "ParamName": "P_郵送手数料フラグ"
+              },
+              {
+                "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=顧客マスタ_登録編集!保証書原本郵送フラグ"
+                },
+                "ParamName": "P_保証書原本郵送フラグ"
+              },
+              {
+                "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=顧客マスタ_登録編集!郵送方法区分"
+                },
+                "ParamName": "P_郵送方法区分"
               }
+            ],
+            "ResultErrorCodeTo": {
+              "SerializeProperty": "リターンコード"
             },
-            "ID": "4e4e2c690b384b4f95e617b1a060d171"
+            "ResultMessageTo": {
+              "SerializeProperty": "リターンメッセージ"
+            },
+            "CheckDataValidation": false
+          },
+          {
+            "$type": "LoadingCommand.EndLoadingCommand, LoadingCommand"
           },
           {
             "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
@@ -349,7 +954,7 @@
                     "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
                     "cellLocations": [
                       {
-                        "SerializeProperty": "=顧客マスタ_登録編集!顧客既定値登録件数"
+                        "SerializeProperty": "=顧客マスタ_登録編集!リターンコード"
                       }
                     ]
                   },
@@ -357,70 +962,58 @@
                 },
                 "CommandList": [
                   {
-                    "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
-                    "TableName": "m_customer_default",
-                    "UpdateType": "add",
-                    "ShowConfirm": false,
-                    "CheckDataValidation": false,
-                    "ReloadAfterSucceed": false,
-                    "ConfirmText": "本当に追加してもよろしいですか？",
-                    "UpdateValues": []
-                  }
-                ],
-                "ID": "33dfcfae-7111-41a8-9a4b-7c1d25ac6561"
-              },
-              {
-                "CommandList": [
-                  {
-                    "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
-                    "TableName": "m_customer_default",
-                    "ShowConfirm": false,
-                    "CheckDataValidation": false,
-                    "ReloadAfterSucceed": false,
-                    "ConfirmText": "本当に更新してもよろしいですか？",
-                    "UpdateValues": []
-                  }
-                ],
-                "ID": "a0efaa9b-dfa1-4a22-a047-0d764540a972"
-              }
-            ]
-          },
-          {
-            "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
-            "ConditionAndCommandPairList": [
-              {
-                "Condition": {
-                  "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
-                  "param": {
-                    "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
-                    "cellLocations": [
+                    "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+                    "ConditionAndCommandPairList": [
                       {
-                        "SerializeProperty": "=顧客マスタ_登録編集!最新化フラグ"
+                        "Condition": {
+                          "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                          "param": {
+                            "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+                            "cellLocations": [
+                              {
+                                "SerializeProperty": "=顧客マスタ_登録編集!最新化フラグ"
+                              }
+                            ]
+                          },
+                          "value": "1"
+                        },
+                        "CommandList": [
+                          {
+                            "$type": "Forguncy.Model.ClosePopupCommand, ServerDesignerCommon",
+                            "ReloadData": true
+                          }
+                        ],
+                        "ID": "3ffba526-97c6-4164-b4c8-0b4a58ecacad"
+                      },
+                      {
+                        "CommandList": [
+                          {
+                            "$type": "Forguncy.Model.ClosePopupCommand, ServerDesignerCommon"
+                          }
+                        ],
+                        "ID": "f42ec69f-bdbc-4af3-9307-4557e5feee01"
                       }
                     ]
-                  },
-                  "value": "1"
-                },
-                "CommandList": [
-                  {
-                    "$type": "Forguncy.Model.ClosePopupCommand, ServerDesignerCommon",
-                    "ReloadData": true
                   }
                 ],
-                "ID": "6ef04202-a0e0-4a1e-9548-9058943c6d93"
+                "ID": "588b614d-b7d7-4a3b-84e0-a934bbb89f6f"
               },
               {
                 "CommandList": [
                   {
-                    "$type": "Forguncy.Model.ClosePopupCommand, ServerDesignerCommon"
+                    "$type": "Forguncy.Model.ShowMessageCommand, ServerDesignerCommon",
+                    "MessageFormula": {
+                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                      "SerializeProperty": "=顧客マスタ_登録編集!リターンメッセージ"
+                    }
                   }
                 ],
-                "ID": "de2314d7-3ad4-4073-be4f-de0519ed4fd1"
+                "ID": "6754c425-4482-4292-bab4-c70e9fcd257a"
               }
             ]
           }
         ],
-        "Text": "更新する",
+        "Text": "=",
         "TemplateKey": "_RS_RoundCorner_Style1"
       }
     }
@@ -931,7 +1524,7 @@
                 }
               }
             ],
-            "ID": "f29bc072-cb9d-48b4-a6e8-e3b7020b1374"
+            "ID": "eea78216-f9f1-431f-97a7-80e9725e0d11"
           }
         ]
       }
@@ -970,4 +1563,4 @@
       "Formula": "顧客マスタ_登録編集!$K$8"
     }
   ]
-}//FSsBI6l1ZFMrZVfIj5PVI3zVtc4n1+59WCogLj0D3ylesKTNua7wffJZRsJZDwbIFBk5R5RMIzctUm/OAus0nri1TXG7IUeAmqFHUyKmC3L+iKkqWi7pGDDhMN0faqGki2WZIBgtgyL8/DkT+wumkEwDjC2V5wYWplfUl/5kxDxOWcv+D1DnUXU0fT5AttfyWSRwIS1UYWSZdr6W0jfh74RdzdjEEq/NUQPlyl0WJeX+sghYA8TyzK4BjenvuefzIYC1TH/G3uzEuQnlLW01YDl5r9a9aMG5outbJWufPjnil12dGsMhtXv1Db2yp+jPNb0O2GIeV3LbsuXyxs65LGyP/yTSYgZmqtImb9Wk3+0ZUFhDVTSlY6dS09dQiywGsyIWCMa9fyQZkAKaQFQ5dJwgL6sXXxZImlzuYoNPV7hMqGxUj2Ty5BMLbeH8TNIFc4naUZ7sJs7ijmOxpzdkAjHi6l3Ge9r91Woqe2ZLIVrldx9I3sGPOl67u2iWLJrd1WMwxvdgfrH0g6lE4r/RBALSncz7RbCAQBICVzvcEuBcF+UqVAker1CWG8/paEByZSLTajbKqU9UopUvfRQ7xPG03G+Djpfna4aRLYxVUEUOYpaT66wvxGXp7kL88GHFmCll/b45wbd6WKBCS7HmTNu8L2FF5R7CtidfzV2p62WLDbc0A+6WgGCqVxS/mTG3UpKR5d9h1WMWYltDTSdzvzOTqQHys/FFrpl2qniwU+XbIt/dEVzcj1xni6/NgJtuyHfbhDCSJg7S93gEh0lWVL0Ris6/7ZGK1JnZXIw30OWkm6QiGneiHrdUCgO/Oey0/0tCgSgVsHs9F2Ufx7n2n8iiF6G3ESXnVzO7oA1QLnHUThu80eFwYkY3XJv5PJiJ8Zi9SN4U3wH8fCVdU16u0w==|920
+}//VtmXaj91z57bO1nDnAjUM46R9AKVw5Nun8fgrXsyK0zzatRba6v+LXKXlrVzhiecyx8TBDMgyJT0COAfmo+Zg1VfxosK5+Me98mmAet4L3rADweEXPPG9M2PHbIpHjYsCaS3U0e/xx/jSUiEkQX1y2r5W9krGSRAJQtNEH1+6SWl6i4bxTsYpTNcyopAXCd+OMCSo3JfizWevdjvsvkdgZn5Pr/ONDCN2ICfoi4NyYVSEF/11qySqoYUqAdXhv3X5A1mOT9CQB4vpiVwg+qpTnn4+AY1LRH4D1gtwmgxMhc2pvO+lnRQGosRHM6202uV4IBMogca+tb4ks1j1ZgUqHt3p8yjAMvlpHKz++AfesmsvaZFLCoK4rsRgJiczFY8hpGvpeN3+teRJTUE7r35l0ZRLN+Tpg8ehaa5ONBgEcTqA1ONFHsdldJnayu6kt40CSMz93eWd0H7O/zKkJeYRm3AmuMhKFS4FAP9k0v7UPp63TFvedImGQk1Z+O3z4J0XX1MlHWaXx9PKmZjVREki/z5BKq9+X2A12SLDY0hrmupjGsvdzBcehELsNp5E6G5gudM41Iy2FDkQEsn/kscERoADheHE3FR9KVpzmZTxRxKXN6/shL0PfhI4S4M5/IxF2SMINjXCbzpo6qpen3MsufhOKsitjovS21sI+npKeFdz5I58/hrzP9E2jowXDNwzMUNWX2xD4MF8o/wczP/B0RWcSseTp+MDGdIPgj+YI0y4v55QAkc9Xxxpj7GbmDjf+LvR/eIWGqDTwzFiBFAjnDpDPO+vewWqSbLMlGW7UVMlQS3hQw5DmRYTZNmSXXJywY4B1U6frSg4xsW7mDQCSigaa3T1uisVC5s61Ottj4F7u+0hBupmK/05CgVcb4vzP+/fSKmmMvDAp3OdnOvgA==|920
