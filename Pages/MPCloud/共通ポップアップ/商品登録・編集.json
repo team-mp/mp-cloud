@@ -56,6 +56,11 @@
           "DesignLengthInPixel": 25.0
         }
       },
+      "23": {
+        "GridRowColumnDefinition": {
+          "DesignLengthInPixel": 25.0
+        }
+      },
       "27": {
         "GridRowColumnDefinition": {
           "DesignLengthInPixel": 20.0
@@ -228,9 +233,15 @@
       58,
       59,
       60,
-      61
+      61,
+      62,
+      63,
+      64,
+      65,
+      66,
+      67
     ],
-    "Count": 62
+    "Count": 68
   },
   "Values": {
     "1,3": "登録日",
@@ -238,10 +249,12 @@
     "1,35": "計上確定",
     "1,48": "▼物件商品ID",
     "1,55": "▼申込ID",
+    "1,60": "▼ポップアップメッセージ",
     "3,3": "計上区分",
     "3,10": 1,
     "4,48": "▼計上確定フラグ",
     "4,55": "▼調査ID",
+    "4,60": "▼ポップアップ表示フラグ",
     "5,3": "商品",
     "7,3": "請求商品名",
     "7,48": "▼請求先ID",
@@ -259,8 +272,13 @@
     "16,55": "▼工事ID",
     "17,10": "仕入金額（税抜）",
     "17,29": "利益率",
+    "19,48": "▼画面ロックフラグ",
     "19,55": "▼保証ID",
+    "21,3": "専用発注書",
+    "22,48": "▼発注書必要フラグ",
     "22,55": "▼住宅事業者ID",
+    "23,3": "発注書受領日",
+    "25,48": "▼請求日",
     "25,55": "▼グループID",
     "28,55": "▼申込タイプID",
     "30,27": "削除する",
@@ -270,7 +288,9 @@
     "15,34": "R16-R18",
     "17,34": "IF(R16>0,AI16/R16,0)",
     "11,10": "IFERROR(ODATA(\"m_customer?$select=customer_name&$filter=customer_id eq \"&IF(ISBLANK(AW9),\"null\",AW9)),\"\")",
-    "13,10": "IFERROR(ODATA(\"m_customer?$select=customer_name&$filter=customer_id eq \"&IF(ISBLANK(AW12),\"null\",AW12)),\"\")"
+    "13,10": "IFERROR(ODATA(\"m_customer?$select=customer_name&$filter=customer_id eq \"&IF(ISBLANK(AW12),\"null\",AW12)),\"\")",
+    "20,48": "IF(AW6=1,1,0)",
+    "23,48": "IFERROR(ODATA(\"m_customer?$select=purchase_required_flg&$filter=customer_id eq \"&IF(ISBLANK(AW9),\"null\",AW9)),0)"
   },
   "AttachInfos": {
     "1,10": {
@@ -285,6 +305,24 @@
       "BindingInfo": {
         "TableName": "t_object_product",
         "ColumnName": "register_date"
+      },
+      "ConditionFormatRulesCollection": {
+        "Rules": [
+          {
+            "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
+            "Formula": {
+              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+              "SerializeProperty": "=商品登録・編集!$AW$21=1"
+            },
+            "StyleInfo": {
+              "Underline": null,
+              "Strikethrough": null
+            },
+            "IsDisabled": true,
+            "IsInvisible": false,
+            "IsReadOnly": false
+          }
+        ]
       }
     },
     "1,27": {
@@ -295,37 +333,136 @@
             "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
             "ConditionAndCommandPairList": [
               {
+                "Condition": {
+                  "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                  "param": {
+                    "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+                    "cellLocations": [
+                      {
+                        "SerializeProperty": "=商品登録・編集!AW27"
+                      }
+                    ]
+                  },
+                  "value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=TODAY()"
+                  },
+                  "compareType": 4
+                },
+                "CommandList": [
+                  {
+                    "$type": "Forguncy.Model.ShowMessageCommand, ServerDesignerCommon",
+                    "MessageFormula": "請求締日を過ぎているため確定解除できません"
+                  },
+                  {
+                    "$type": "Forguncy.Model.StopCommand, ServerDesignerCommon"
+                  }
+                ],
+                "ID": "e6aa623c-876a-4879-a1a3-4f29d84dd1ec"
+              }
+            ]
+          },
+          {
+            "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+            "ConditionAndCommandPairList": [
+              {
                 "ConfirmDialogSettings": {
                   "Title": "確認",
-                  "FormulaText": "確定を解除します。よろしいですか？",
+                  "FormulaText": "確定を解除します。よろしいですか？\r\n※解除した場合は、請求データも取消となります",
                   "YesButtonText": "はい",
                   "NoButtonText": "いいえ",
                   "ConfirmIcon": 4
                 },
                 "CommandList": [
                   {
-                    "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
-                    "TableName": "t_object_analysis",
-                    "ShowConfirm": false,
-                    "CheckDataValidation": false,
-                    "ConfirmText": "本当に更新してもよろしいですか？",
-                    "UpdateValues": [
-                      {
-                        "ColumnName": "analysis_confirm_flg",
-                        "Value": "0"
-                      },
-                      {
-                        "ColumnName": "analysis_status_id",
-                        "Value": "1"
-                      }
-                    ]
+                    "$type": "LoadingCommand.StartLoadingCommand, LoadingCommand",
+                    "LoadingText": "お待ちください",
+                    "LoadingTextColor": "Background 1 0"
                   },
                   {
-                    "$type": "Forguncy.Model.ClosePopupCommand, ServerDesignerCommon",
-                    "ReloadData": true
+                    "$type": "Forguncy.Model.RequestServerCommand, ServerDesignerCommon",
+                    "ServerCommandName": "計上データ解除処理",
+                    "Parameters": [
+                      {
+                        "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                        "Value": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=商品登録・編集!AW3"
+                        },
+                        "ParamName": "P_物件商品ID"
+                      }
+                    ],
+                    "ResultErrorCodeTo": {
+                      "SerializeProperty": "リターンコード"
+                    },
+                    "ResultMessageTo": {
+                      "SerializeProperty": "リターンメッセージ"
+                    },
+                    "CheckDataValidation": false
+                  },
+                  {
+                    "$type": "LoadingCommand.EndLoadingCommand, LoadingCommand"
+                  },
+                  {
+                    "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+                    "ConditionAndCommandPairList": [
+                      {
+                        "Condition": {
+                          "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                          "param": {
+                            "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+                            "cellLocations": [
+                              {
+                                "SerializeProperty": "=商品登録・編集!リターンコード"
+                              }
+                            ]
+                          },
+                          "value": "0"
+                        },
+                        "CommandList": [
+                          {
+                            "$type": "Forguncy.Model.SetCellPropertyCommand, ServerDesignerCommon",
+                            "PropertyItemsList": [
+                              {
+                                "TargetCells": {
+                                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                  "SerializeProperty": "=商品登録・編集!BI3"
+                                },
+                                "Value": "計上確定を解除しました"
+                              },
+                              {
+                                "TargetCells": {
+                                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                  "SerializeProperty": "=商品登録・編集!BI6"
+                                },
+                                "Value": "1"
+                              }
+                            ]
+                          },
+                          {
+                            "$type": "Forguncy.Model.ClosePopupCommand, ServerDesignerCommon",
+                            "PassValueBack": true,
+                            "ReloadData": true
+                          }
+                        ],
+                        "ID": "1b54ba52-2223-47f5-9775-3e39ed1b4609"
+                      },
+                      {
+                        "CommandList": [
+                          {
+                            "$type": "Forguncy.Model.ShowMessageCommand, ServerDesignerCommon",
+                            "MessageFormula": {
+                              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                              "SerializeProperty": "=商品登録・編集!リターンメッセージ"
+                            }
+                          }
+                        ],
+                        "ID": "1d1e351b-144c-4e71-a883-fd9c7f34c012"
+                      }
+                    ]
                   }
                 ],
-                "ID": "2afcab7e-6494-40b1-976c-5ddd186b921b"
+                "ID": "3608b30a-0111-4ac5-a3b9-f8c57f43769e"
               }
             ]
           }
@@ -377,6 +514,87 @@
         "$type": "Forguncy.ButtonCellType, ServerDesignerCommon",
         "CommandList": [
           {
+            "$type": "Forguncy.Model.ShareCommand, ServerDesignerCommon",
+            "ShareCommandContainerRefer": {
+              "ShareCommandContainerID": "636fdad8-64ee-4696-baf8-41039d5b1da3"
+            },
+            "Params": [
+              {
+                "ParamReferObject": {
+                  "ParamID": "bd957547-93d9-4690-925a-eaf4a0a1a5e8",
+                  "ShareCommandContainerReferObject": {
+                    "ShareCommandContainerID": "636fdad8-64ee-4696-baf8-41039d5b1da3"
+                  }
+                },
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=商品登録・編集!K4"
+                }
+              },
+              {
+                "ParamReferObject": {
+                  "ParamID": "5761073b-3823-4a13-89ef-93329ad4b153",
+                  "ShareCommandContainerReferObject": {
+                    "ShareCommandContainerID": "636fdad8-64ee-4696-baf8-41039d5b1da3"
+                  }
+                },
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=商品登録・編集!K6"
+                }
+              },
+              {
+                "ParamReferObject": {
+                  "ParamID": "7f6c166d-8c32-4e48-9456-09d8a457f81c",
+                  "ShareCommandContainerReferObject": {
+                    "ShareCommandContainerID": "636fdad8-64ee-4696-baf8-41039d5b1da3"
+                  }
+                },
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=商品登録・編集!AW9"
+                }
+              },
+              {
+                "ParamReferObject": {
+                  "ParamID": "0e95911e-fd08-4ba5-b111-4932ec18f608",
+                  "ShareCommandContainerReferObject": {
+                    "ShareCommandContainerID": "636fdad8-64ee-4696-baf8-41039d5b1da3"
+                  }
+                },
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=商品登録・編集!R16"
+                }
+              },
+              {
+                "ParamReferObject": {
+                  "ParamID": "ce012753-2da1-4484-a630-443cfdf50390",
+                  "ShareCommandContainerReferObject": {
+                    "ShareCommandContainerID": "636fdad8-64ee-4696-baf8-41039d5b1da3"
+                  }
+                },
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=商品登録・編集!AW12"
+                }
+              },
+              {
+                "ParamReferObject": {
+                  "ParamID": "cde21969-2e8c-448b-8528-8a4126750c73",
+                  "ShareCommandContainerReferObject": {
+                    "ShareCommandContainerID": "636fdad8-64ee-4696-baf8-41039d5b1da3"
+                  }
+                },
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=商品登録・編集!R18"
+                }
+              }
+            ],
+            "ReturnPropertiesTo": []
+          },
+          {
             "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
             "ConditionAndCommandPairList": [
               {
@@ -404,6 +622,102 @@
                           "SerializeProperty": "=商品登録・編集!AW3"
                         },
                         "ParamName": "P_物件商品ID"
+                      },
+                      {
+                        "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                        "Value": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=商品登録・編集!申込ID"
+                        },
+                        "ParamName": "P_申込ID"
+                      },
+                      {
+                        "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                        "Value": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=商品登録・編集!K2"
+                        },
+                        "ParamName": "P_登録日"
+                      },
+                      {
+                        "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                        "Value": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=商品登録・編集!K4"
+                        },
+                        "ParamName": "P_計上区分"
+                      },
+                      {
+                        "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                        "Value": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=商品登録・編集!K6"
+                        },
+                        "ParamName": "P_商品ID"
+                      },
+                      {
+                        "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                        "Value": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=商品登録・編集!AW18"
+                        },
+                        "ParamName": "P_商品名"
+                      },
+                      {
+                        "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                        "Value": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=商品登録・編集!K10"
+                        },
+                        "ParamName": "P_備考"
+                      },
+                      {
+                        "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                        "Value": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=商品登録・編集!AW9"
+                        },
+                        "ParamName": "P_請求先ID"
+                      },
+                      {
+                        "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                        "Value": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=商品登録・編集!R16"
+                        },
+                        "ParamName": "P_売上金額"
+                      },
+                      {
+                        "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                        "Value": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=商品登録・編集!AW12"
+                        },
+                        "ParamName": "P_支払先ID"
+                      },
+                      {
+                        "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                        "Value": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=商品登録・編集!R18"
+                        },
+                        "ParamName": "P_仕入金額"
+                      },
+                      {
+                        "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                        "Value": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=商品登録・編集!K22"
+                        },
+                        "ParamName": "P_発注書必要フラグ"
+                      },
+                      {
+                        "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                        "Value": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=商品登録・編集!K24"
+                        },
+                        "ParamName": "P_発注書受領日"
                       }
                     ],
                     "ResultErrorCodeTo": {
@@ -435,11 +749,31 @@
                         },
                         "CommandList": [
                           {
+                            "$type": "Forguncy.Model.SetCellPropertyCommand, ServerDesignerCommon",
+                            "PropertyItemsList": [
+                              {
+                                "TargetCells": {
+                                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                  "SerializeProperty": "=商品登録・編集!BI3"
+                                },
+                                "Value": "計上確定しました"
+                              },
+                              {
+                                "TargetCells": {
+                                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                  "SerializeProperty": "=商品登録・編集!BI6"
+                                },
+                                "Value": "1"
+                              }
+                            ]
+                          },
+                          {
                             "$type": "Forguncy.Model.ClosePopupCommand, ServerDesignerCommon",
+                            "PassValueBack": true,
                             "ReloadData": true
                           }
                         ],
-                        "ID": "ff833393-e8b2-4e79-b30c-feb8f7d8790a"
+                        "ID": "1fe11ad0-5b5e-47b5-8d7d-983c09619f97"
                       },
                       {
                         "CommandList": [
@@ -451,12 +785,12 @@
                             }
                           }
                         ],
-                        "ID": "f5c46280-8db2-419c-958a-d205a786c643"
+                        "ID": "9596b767-7fb6-47fa-a2b8-e95af5c430fc"
                       }
                     ]
                   }
                 ],
-                "ID": "deb79abe-d398-4b9e-b8da-00bd3f6afde2"
+                "ID": "04197b83-a659-4f10-b010-00e076ebca1d"
               }
             ]
           }
@@ -568,7 +902,7 @@
                   }
                 ],
                 "Comments": "売上のみの場合",
-                "ID": "4b5c0bbd-c06d-43df-99e3-443bdf546990"
+                "ID": "bc86aac4-c050-439e-9a35-38dd72cc5737"
               },
               {
                 "Condition": {
@@ -598,7 +932,7 @@
                   }
                 ],
                 "Comments": "仕入のみの場合",
-                "ID": "bfc2cbc7-b955-48a8-b361-77bf7f5ec86c"
+                "ID": "1d6bdeed-96dd-41a7-acc2-5c29915a88cb"
               }
             ]
           }
@@ -607,6 +941,24 @@
       "BindingInfo": {
         "TableName": "t_object_product",
         "ColumnName": "accounting_type"
+      },
+      "ConditionFormatRulesCollection": {
+        "Rules": [
+          {
+            "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
+            "Formula": {
+              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+              "SerializeProperty": "=商品登録・編集!$AW$21=1"
+            },
+            "StyleInfo": {
+              "Underline": null,
+              "Strikethrough": null
+            },
+            "IsDisabled": true,
+            "IsInvisible": false,
+            "IsReadOnly": false
+          }
+        ]
       }
     },
     "5,10": {
@@ -706,7 +1058,7 @@
                         }
                       }
                     },
-                    "ID": "0413ccd3d4f44b2f8c51401eeebb82ac"
+                    "ID": "aa24b3b8d43345e9bd0d8024a6aad04b"
                   },
                   {
                     "$type": "Forguncy.Model.SetCellPropertyCommand, ServerDesignerCommon",
@@ -783,7 +1135,7 @@
                         }
                       }
                     },
-                    "ID": "ab757d0fceaf400ea22a27b89629a687"
+                    "ID": "a6aeb5cb7cc84b9a9609566a7d0a2cff"
                   },
                   {
                     "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
@@ -873,7 +1225,7 @@
                                 }
                               }
                             },
-                            "ID": "7833b29232d746059fdc2bb45b855cc4"
+                            "ID": "a717dcc2197f40e3a048a3f47b286415"
                           },
                           {
                             "$type": "Forguncy.Model.SetCellPropertyCommand, ServerDesignerCommon",
@@ -891,7 +1243,7 @@
                             ]
                           }
                         ],
-                        "ID": "6bfe5b04-f28c-4541-b77d-b03bd51c2bde"
+                        "ID": "183e1e20-599b-4f1c-9f2f-9f89e7508bd5"
                       },
                       {
                         "CommandList": [
@@ -911,7 +1263,7 @@
                             ]
                           }
                         ],
-                        "ID": "1ea66461-d624-4f19-9981-d7f21a66b59b"
+                        "ID": "d94be41c-3cc2-4fd0-aea9-2b0f82097cd5"
                       }
                     ]
                   },
@@ -931,7 +1283,7 @@
                     ]
                   }
                 ],
-                "ID": "553900fa-a2a6-451e-a6b1-d914a16a2d98"
+                "ID": "164b15c7-4615-4ba9-abfc-db107c0838ae"
               }
             ]
           }
@@ -940,6 +1292,24 @@
       "BindingInfo": {
         "TableName": "t_object_product",
         "ColumnName": "product_id"
+      },
+      "ConditionFormatRulesCollection": {
+        "Rules": [
+          {
+            "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
+            "Formula": {
+              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+              "SerializeProperty": "=商品登録・編集!$AW$21=1"
+            },
+            "StyleInfo": {
+              "Underline": null,
+              "Strikethrough": null
+            },
+            "IsDisabled": true,
+            "IsInvisible": false,
+            "IsReadOnly": false
+          }
+        ]
       }
     },
     "5,48": {
@@ -975,11 +1345,29 @@
           }
         ],
         "TemplateKey": "_RS_LightLine_Translucent_SmallRoundCorner_Normal1",
-        "WaterMark": "この情報は請求に記載されます"
+        "WaterMark": "この情報は請求書に記載されます"
       },
       "BindingInfo": {
         "TableName": "t_object_product",
         "ColumnName": "remarks"
+      },
+      "ConditionFormatRulesCollection": {
+        "Rules": [
+          {
+            "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
+            "Formula": {
+              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+              "SerializeProperty": "=商品登録・編集!$AW$21=1"
+            },
+            "StyleInfo": {
+              "Underline": null,
+              "Strikethrough": null
+            },
+            "IsDisabled": true,
+            "IsInvisible": false,
+            "IsReadOnly": false
+          }
+        ]
       }
     },
     "11,3": {
@@ -1125,6 +1513,20 @@
       },
       "ConditionFormatRulesCollection": {
         "Rules": [
+          {
+            "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
+            "Formula": {
+              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+              "SerializeProperty": "=商品登録・編集!$AW$21=1"
+            },
+            "StyleInfo": {
+              "Underline": null,
+              "Strikethrough": null
+            },
+            "IsDisabled": true,
+            "IsInvisible": false,
+            "IsReadOnly": false
+          },
           {
             "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
             "Formula": {
@@ -1301,6 +1703,20 @@
             "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
             "Formula": {
               "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+              "SerializeProperty": "=商品登録・編集!$AW$21=1"
+            },
+            "StyleInfo": {
+              "Underline": null,
+              "Strikethrough": null
+            },
+            "IsDisabled": true,
+            "IsInvisible": false,
+            "IsReadOnly": false
+          },
+          {
+            "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
+            "Formula": {
+              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
               "SerializeProperty": "=商品登録・編集!$K$4=2"
             },
             "StyleInfo": {
@@ -1361,6 +1777,20 @@
             "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
             "Formula": {
               "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+              "SerializeProperty": "=商品登録・編集!$AW$21=1"
+            },
+            "StyleInfo": {
+              "Underline": null,
+              "Strikethrough": null
+            },
+            "IsDisabled": true,
+            "IsInvisible": false,
+            "IsReadOnly": false
+          },
+          {
+            "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
+            "Formula": {
+              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
               "SerializeProperty": "=商品登録・編集!$K$4=3"
             },
             "StyleInfo": {
@@ -1405,6 +1835,20 @@
       },
       "ConditionFormatRulesCollection": {
         "Rules": [
+          {
+            "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
+            "Formula": {
+              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+              "SerializeProperty": "=商品登録・編集!$AW$21=1"
+            },
+            "StyleInfo": {
+              "Underline": null,
+              "Strikethrough": null
+            },
+            "IsDisabled": true,
+            "IsInvisible": false,
+            "IsReadOnly": false
+          },
           {
             "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
             "Formula": {
@@ -1456,6 +1900,142 @@
         "ColumnName": "warranty_id"
       }
     },
+    "21,10": {
+      "CellType": {
+        "$type": "Forguncy.RadioGroupCellType, ServerDesignerCommon",
+        "NoneItemText": "＜なし＞",
+        "Style": 1,
+        "PrimaryColor": "#FF005B47",
+        "CellDefaultValue": {
+          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+          "SerializeProperty": "=商品登録・編集!AW24"
+        },
+        "Items": [
+          {
+            "Value": "0",
+            "DisplayValue": "不要"
+          },
+          {
+            "Value": "1",
+            "DisplayValue": "必要"
+          }
+        ],
+        "CommandList": [
+          {
+            "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+            "ConditionAndCommandPairList": [
+              {
+                "Condition": {
+                  "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                  "param": {
+                    "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+                    "cellLocations": [
+                      {
+                        "SerializeProperty": "=商品登録・編集!K22"
+                      }
+                    ]
+                  },
+                  "value": "0"
+                },
+                "CommandList": [
+                  {
+                    "$type": "Forguncy.Model.SetCellPropertyCommand, ServerDesignerCommon",
+                    "PropertyItemsList": [
+                      {
+                        "TargetCells": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=商品登録・編集!K24"
+                        },
+                        "Value": "%Null%"
+                      }
+                    ]
+                  }
+                ],
+                "Comments": "売上のみの場合",
+                "ID": "495096cb-ae4b-4ac4-9d15-2bf8fd615c4f"
+              }
+            ]
+          }
+        ]
+      },
+      "BindingInfo": {
+        "TableName": "t_sales",
+        "ColumnName": "purchase_required_flg"
+      }
+    },
+    "21,17": {
+      "CellType": {
+        "$type": "Forguncy.ImageCellType, ServerDesignerCommon",
+        "ToolTip": "専用発注書が必要な場合は、発注書受領日の登録が可能となります",
+        "TemplateKey": "余白2",
+        "ImagePath": "Mobile/452_help_1.svg",
+        "BuiltIn": true,
+        "Color": "#FF005B47",
+        "UseCellForeColor": true
+      }
+    },
+    "23,3": {
+      "ConditionFormatRulesCollection": {
+        "Rules": [
+          {
+            "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
+            "Formula": {
+              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+              "SerializeProperty": "=VALUE(商品登録・編集!$K$22)=0"
+            },
+            "StyleInfo": {
+              "Underline": null,
+              "Strikethrough": null
+            },
+            "IsDisabled": false,
+            "IsInvisible": true,
+            "IsReadOnly": false
+          }
+        ]
+      }
+    },
+    "23,10": {
+      "CellType": {
+        "$type": "Forguncy.DateCellType, ServerDesignerCommon",
+        "TemplateKey": "_RS_LightLine_Translucent_SmallRoundCorner_Normal1"
+      },
+      "BindingInfo": {
+        "TableName": "t_object_product",
+        "ColumnName": "purchase_receipt_date"
+      },
+      "ConditionFormatRulesCollection": {
+        "Rules": [
+          {
+            "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
+            "Formula": {
+              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+              "SerializeProperty": "=VALUE(商品登録・編集!$K$22)=0"
+            },
+            "StyleInfo": {
+              "Underline": null,
+              "Strikethrough": null
+            },
+            "IsDisabled": false,
+            "IsInvisible": true,
+            "IsReadOnly": false
+          },
+          {
+            "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
+            "Formula": {
+              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+              "SerializeProperty": "=商品登録・編集!$AW$21=1"
+            },
+            "StyleInfo": {
+              "Underline": null,
+              "Strikethrough": null
+            },
+            "IsDisabled": true,
+            "IsInvisible": false,
+            "IsReadOnly": false
+          }
+        ]
+      }
+    },
     "23,55": {
       "BindingInfo": {
         "TableName": "t_object_product",
@@ -1464,6 +2044,17 @@
           "RelatedTable": "t_object_order",
           "RelatedColumn": "object_order_id",
           "DisplayColumn": "builder_id"
+        }
+      }
+    },
+    "26,48": {
+      "BindingInfo": {
+        "TableName": "t_object_product",
+        "ColumnName": "object_product_id",
+        "RelationBinding": {
+          "RelatedTable": "t_sales",
+          "RelatedColumn": "object_product_id",
+          "DisplayColumn": "billing_date"
         }
       }
     },
@@ -1519,7 +2110,7 @@
                     "ReloadData": true
                   }
                 ],
-                "ID": "c13d90a4-f919-4281-81fa-c7d445d48fba"
+                "ID": "21481281-e334-4c9d-bde4-f69d5c7c35d0"
               }
             ]
           }
@@ -1529,6 +2120,20 @@
       },
       "ConditionFormatRulesCollection": {
         "Rules": [
+          {
+            "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
+            "Formula": {
+              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+              "SerializeProperty": "=商品登録・編集!$AW$21=1"
+            },
+            "StyleInfo": {
+              "Underline": null,
+              "Strikethrough": null
+            },
+            "IsDisabled": false,
+            "IsInvisible": true,
+            "IsReadOnly": false
+          },
           {
             "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
             "Formula": {
@@ -1551,40 +2156,85 @@
         "$type": "Forguncy.ButtonCellType, ServerDesignerCommon",
         "CommandList": [
           {
-            "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
-            "ConditionAndCommandPairList": [
+            "$type": "Forguncy.Model.ShareCommand, ServerDesignerCommon",
+            "ShareCommandContainerRefer": {
+              "ShareCommandContainerID": "636fdad8-64ee-4696-baf8-41039d5b1da3"
+            },
+            "Params": [
               {
-                "Condition": {
-                  "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
-                  "Condition1": {
-                    "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
-                    "param": {
-                      "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
-                      "cellLocations": [
-                        {
-                          "SerializeProperty": "=商品登録・編集!K4"
-                        }
-                      ]
-                    },
-                    "value": "1,2"
-                  },
-                  "Condition2": {
-                    "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
-                    "param": {
-                      "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
-                      "cellLocations": [
-                        {
-                          "SerializeProperty": "=商品登録・編集!AW9"
-                        }
-                      ]
-                    },
-                    "value": "%Null%"
+                "ParamReferObject": {
+                  "ParamID": "bd957547-93d9-4690-925a-eaf4a0a1a5e8",
+                  "ShareCommandContainerReferObject": {
+                    "ShareCommandContainerID": "636fdad8-64ee-4696-baf8-41039d5b1da3"
                   }
                 },
-                "CommandList": [],
-                "ID": "ad4410ec-0567-46b4-a3a9-562c9e2aa262"
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=商品登録・編集!K4"
+                }
+              },
+              {
+                "ParamReferObject": {
+                  "ParamID": "5761073b-3823-4a13-89ef-93329ad4b153",
+                  "ShareCommandContainerReferObject": {
+                    "ShareCommandContainerID": "636fdad8-64ee-4696-baf8-41039d5b1da3"
+                  }
+                },
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=商品登録・編集!K6"
+                }
+              },
+              {
+                "ParamReferObject": {
+                  "ParamID": "7f6c166d-8c32-4e48-9456-09d8a457f81c",
+                  "ShareCommandContainerReferObject": {
+                    "ShareCommandContainerID": "636fdad8-64ee-4696-baf8-41039d5b1da3"
+                  }
+                },
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=商品登録・編集!AW9"
+                }
+              },
+              {
+                "ParamReferObject": {
+                  "ParamID": "0e95911e-fd08-4ba5-b111-4932ec18f608",
+                  "ShareCommandContainerReferObject": {
+                    "ShareCommandContainerID": "636fdad8-64ee-4696-baf8-41039d5b1da3"
+                  }
+                },
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=商品登録・編集!R16"
+                }
+              },
+              {
+                "ParamReferObject": {
+                  "ParamID": "ce012753-2da1-4484-a630-443cfdf50390",
+                  "ShareCommandContainerReferObject": {
+                    "ShareCommandContainerID": "636fdad8-64ee-4696-baf8-41039d5b1da3"
+                  }
+                },
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=商品登録・編集!AW12"
+                }
+              },
+              {
+                "ParamReferObject": {
+                  "ParamID": "cde21969-2e8c-448b-8528-8a4126750c73",
+                  "ShareCommandContainerReferObject": {
+                    "ShareCommandContainerID": "636fdad8-64ee-4696-baf8-41039d5b1da3"
+                  }
+                },
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=商品登録・編集!R18"
+                }
               }
-            ]
+            ],
+            "ReturnPropertiesTo": []
           },
           {
             "$type": "Forguncy.Model.ShareCommand, ServerDesignerCommon",
@@ -1619,6 +2269,179 @@
             }
           },
           {
+            "$type": "LoadingCommand.StartLoadingCommand, LoadingCommand",
+            "LoadingText": "お待ちください",
+            "LoadingTextColor": "Background 1 0"
+          },
+          {
+            "$type": "Forguncy.Model.RequestServerCommand, ServerDesignerCommon",
+            "ServerCommandName": "計上データ更新処理",
+            "Parameters": [
+              {
+                "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=商品登録・編集!AW3"
+                },
+                "ParamName": "P_物件商品ID"
+              },
+              {
+                "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=商品登録・編集!申込ID"
+                },
+                "ParamName": "P_申込ID"
+              },
+              {
+                "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=商品登録・編集!K2"
+                },
+                "ParamName": "P_登録日"
+              },
+              {
+                "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=商品登録・編集!K4"
+                },
+                "ParamName": "P_計上区分"
+              },
+              {
+                "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=商品登録・編集!K6"
+                },
+                "ParamName": "P_商品ID"
+              },
+              {
+                "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=商品登録・編集!AW18"
+                },
+                "ParamName": "P_商品名"
+              },
+              {
+                "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=商品登録・編集!K10"
+                },
+                "ParamName": "P_備考"
+              },
+              {
+                "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=商品登録・編集!AW9"
+                },
+                "ParamName": "P_請求先ID"
+              },
+              {
+                "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=商品登録・編集!R16"
+                },
+                "ParamName": "P_売上金額"
+              },
+              {
+                "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=商品登録・編集!AW12"
+                },
+                "ParamName": "P_支払先ID"
+              },
+              {
+                "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=商品登録・編集!R18"
+                },
+                "ParamName": "P_仕入金額"
+              },
+              {
+                "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=商品登録・編集!K22"
+                },
+                "ParamName": "P_発注書必要フラグ"
+              },
+              {
+                "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=商品登録・編集!K24"
+                },
+                "ParamName": "P_発注書受領日"
+              },
+              {
+                "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=商品登録・編集!調査ID"
+                },
+                "ParamName": "P_調査ID"
+              },
+              {
+                "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=商品登録・編集!測量ID"
+                },
+                "ParamName": "P_測量ID"
+              },
+              {
+                "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=商品登録・編集!BD12"
+                },
+                "ParamName": "P_解析ID"
+              },
+              {
+                "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=商品登録・編集!転圧ID"
+                },
+                "ParamName": "P_転圧ID"
+              },
+              {
+                "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=商品登録・編集!工事ID"
+                },
+                "ParamName": "P_工事ID"
+              },
+              {
+                "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=商品登録・編集!保証ID"
+                },
+                "ParamName": "P_保証ID"
+              }
+            ],
+            "ResultErrorCodeTo": {
+              "SerializeProperty": "リターンコード"
+            },
+            "ResultMessageTo": {
+              "SerializeProperty": "リターンメッセージ"
+            },
+            "CheckDataValidation": false
+          },
+          {
+            "$type": "LoadingCommand.EndLoadingCommand, LoadingCommand"
+          },
+          {
             "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
             "ConditionAndCommandPairList": [
               {
@@ -1628,224 +2451,75 @@
                     "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
                     "cellLocations": [
                       {
-                        "SerializeProperty": "=商品登録・編集!AW3"
+                        "SerializeProperty": "=商品登録・編集!リターンコード"
                       }
                     ]
                   },
-                  "value": "%Null%"
+                  "value": "0"
                 },
                 "CommandList": [
                   {
-                    "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
-                    "TableName": "t_object_product",
-                    "UpdateType": "add",
-                    "ShowConfirm": false,
-                    "CheckDataValidation": false,
-                    "ReloadAfterSucceed": false,
-                    "ConfirmText": "本当に追加してもよろしいですか？",
-                    "UpdateValues": [
+                    "$type": "Forguncy.Model.SetCellPropertyCommand, ServerDesignerCommon",
+                    "PropertyItemsList": [
                       {
-                        "ColumnName": "object_order_id",
-                        "Value": {
+                        "TargetCells": {
                           "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                          "SerializeProperty": "=商品登録・編集!申込ID"
-                        }
+                          "SerializeProperty": "=商品登録・編集!BI3"
+                        },
+                        "Value": "更新しました"
                       },
                       {
-                        "ColumnName": "register_date",
-                        "Value": {
+                        "TargetCells": {
                           "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                          "SerializeProperty": "=NOW()"
-                        }
-                      },
-                      {
-                        "ColumnName": "accounting_type",
-                        "Value": {
-                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                          "SerializeProperty": "=商品登録・編集!K4"
-                        }
-                      },
-                      {
-                        "ColumnName": "product_id",
-                        "Value": {
-                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                          "SerializeProperty": "=商品登録・編集!K6"
-                        }
-                      },
-                      {
-                        "ColumnName": "product_name",
-                        "Value": {
-                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                          "SerializeProperty": "=商品登録・編集!AW18"
-                        }
-                      },
-                      {
-                        "ColumnName": "remarks",
-                        "Value": {
-                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                          "SerializeProperty": "=商品登録・編集!K10"
-                        }
-                      },
-                      {
-                        "ColumnName": "billing_comp_id",
-                        "Value": {
-                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                          "SerializeProperty": "=商品登録・編集!AW9"
-                        }
-                      },
-                      {
-                        "ColumnName": "sales_amount",
-                        "Value": {
-                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                          "SerializeProperty": "=商品登録・編集!R16"
-                        }
-                      },
-                      {
-                        "ColumnName": "payment_comp_id",
-                        "Value": {
-                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                          "SerializeProperty": "=商品登録・編集!AW12"
-                        }
-                      },
-                      {
-                        "ColumnName": "purchase_amount",
-                        "Value": {
-                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                          "SerializeProperty": "=商品登録・編集!R18"
-                        }
-                      },
-                      {
-                        "ColumnName": "survey_id",
-                        "Value": {
-                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                          "SerializeProperty": "=商品登録・編集!調査ID"
-                        }
-                      },
-                      {
-                        "ColumnName": "surveying_id",
-                        "Value": {
-                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                          "SerializeProperty": "=商品登録・編集!測量ID"
-                        }
-                      },
-                      {
-                        "ColumnName": "compaction_id",
-                        "Value": {
-                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                          "SerializeProperty": "=商品登録・編集!転圧ID"
-                        }
-                      },
-                      {
-                        "ColumnName": "construction_id",
-                        "Value": {
-                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                          "SerializeProperty": "=商品登録・編集!工事ID"
-                        }
+                          "SerializeProperty": "=商品登録・編集!BI6"
+                        },
+                        "Value": "1"
                       }
                     ]
+                  },
+                  {
+                    "$type": "Forguncy.Model.ClosePopupCommand, ServerDesignerCommon",
+                    "PassValueBack": true,
+                    "ReloadData": true
                   }
                 ],
-                "ID": "3e1f40d7-8183-4035-a767-07073edf4d94"
+                "ID": "695a8eb8-af08-4083-9952-ae9a4873c078"
               },
               {
                 "CommandList": [
                   {
-                    "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
-                    "TableName": "t_object_product",
-                    "ShowConfirm": false,
-                    "CheckDataValidation": false,
-                    "ReloadAfterSucceed": false,
-                    "ConfirmText": "本当に更新してもよろしいですか？",
-                    "RowsToUpdate": 1,
-                    "RowsToUpdateCondition": {
-                      "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
-                      "ColumnBindingInfo": {
-                        "TableName": "t_object_product",
-                        "ColumnName": "object_product_id"
-                      },
-                      "Value": {
-                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                        "SerializeProperty": "=商品登録・編集!AW3"
-                      }
-                    },
-                    "UpdateValues": [
-                      {
-                        "ColumnName": "object_order_id",
-                        "Value": {
-                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                          "SerializeProperty": "=商品登録・編集!申込ID"
-                        }
-                      },
-                      {
-                        "ColumnName": "accounting_type",
-                        "Value": {
-                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                          "SerializeProperty": "=商品登録・編集!K4"
-                        }
-                      },
-                      {
-                        "ColumnName": "product_id",
-                        "Value": {
-                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                          "SerializeProperty": "=商品登録・編集!K6"
-                        }
-                      },
-                      {
-                        "ColumnName": "product_name",
-                        "Value": {
-                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                          "SerializeProperty": "=商品登録・編集!AW18"
-                        }
-                      },
-                      {
-                        "ColumnName": "remarks",
-                        "Value": {
-                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                          "SerializeProperty": "=商品登録・編集!K10"
-                        }
-                      },
-                      {
-                        "ColumnName": "billing_comp_id",
-                        "Value": {
-                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                          "SerializeProperty": "=商品登録・編集!AW9"
-                        }
-                      },
-                      {
-                        "ColumnName": "sales_amount",
-                        "Value": {
-                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                          "SerializeProperty": "=商品登録・編集!R16"
-                        }
-                      },
-                      {
-                        "ColumnName": "payment_comp_id",
-                        "Value": {
-                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                          "SerializeProperty": "=商品登録・編集!AW12"
-                        }
-                      },
-                      {
-                        "ColumnName": "purchase_amount",
-                        "Value": {
-                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                          "SerializeProperty": "=商品登録・編集!R18"
-                        }
-                      }
-                    ]
+                    "$type": "Forguncy.Model.ShowMessageCommand, ServerDesignerCommon",
+                    "MessageFormula": {
+                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                      "SerializeProperty": "=商品登録・編集!リターンメッセージ"
+                    }
                   }
                 ],
-                "ID": "3ecd8f98-4e41-44b7-9eda-d5dbd272882f"
+                "ID": "b65a36a1-1c18-4474-8a3c-20cef409af79"
               }
             ]
-          },
-          {
-            "$type": "Forguncy.Model.ClosePopupCommand, ServerDesignerCommon",
-            "ReloadData": true
           }
         ],
         "Text": "更新する",
         "TemplateKey": "_RS_RoundCorner_Style1"
+      },
+      "ConditionFormatRulesCollection": {
+        "Rules": [
+          {
+            "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
+            "Formula": {
+              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+              "SerializeProperty": "=商品登録・編集!$AW$21=1"
+            },
+            "StyleInfo": {
+              "Underline": null,
+              "Strikethrough": null
+            },
+            "IsDisabled": true,
+            "IsInvisible": false,
+            "IsReadOnly": false
+          }
+        ]
       }
     }
   },
@@ -1957,8 +2631,14 @@
       "1,55": 4,
       "1,56": 2,
       "1,57": 2,
+      "1,60": 2,
+      "1,61": 2,
+      "1,62": 2,
       "2,48": 5,
       "2,55": 6,
+      "2,60": 6,
+      "2,61": 2,
+      "2,62": 2,
       "3,3": 4,
       "3,4": 2,
       "3,5": 2,
@@ -1972,14 +2652,23 @@
       "3,55": 2,
       "3,56": 2,
       "3,57": 2,
+      "3,60": 2,
+      "3,61": 2,
+      "3,62": 2,
       "4,55": 4,
       "4,56": 2,
       "4,57": 2,
+      "4,60": 2,
+      "4,61": 2,
+      "4,62": 2,
       "5,10": 2,
       "5,48": 8,
       "5,55": 6,
       "5,56": 2,
       "5,57": 2,
+      "5,60": 6,
+      "5,61": 2,
+      "5,62": 2,
       "7,10": 9,
       "7,11": 10,
       "7,12": 10,
@@ -2026,6 +2715,12 @@
       "7,58": 2,
       "7,59": 2,
       "7,60": 2,
+      "7,61": 2,
+      "7,62": 2,
+      "7,63": 2,
+      "7,64": 2,
+      "7,65": 2,
+      "7,66": 2,
       "8,48": 8,
       "8,55": 6,
       "9,10": 11,
@@ -2305,15 +3000,39 @@
       "20,40": 2,
       "20,41": 2,
       "20,42": 2,
+      "20,48": 5,
       "20,55": 6,
       "20,56": 2,
       "20,57": 2,
+      "21,3": 4,
+      "21,4": 2,
+      "21,5": 2,
+      "21,6": 2,
+      "21,7": 2,
+      "21,8": 2,
+      "21,9": 2,
+      "21,10": 7,
+      "21,17": 2,
       "21,55": 2,
       "21,56": 2,
       "21,57": 2,
       "22,55": 4,
       "22,56": 2,
       "22,57": 2,
+      "23,3": 2,
+      "23,4": 2,
+      "23,5": 2,
+      "23,6": 2,
+      "23,7": 2,
+      "23,8": 2,
+      "23,9": 2,
+      "23,10": 0,
+      "23,11": 2,
+      "23,12": 2,
+      "23,13": 2,
+      "23,14": 2,
+      "23,15": 2,
+      "23,48": 5,
       "23,55": 6,
       "23,56": 2,
       "23,57": 2,
@@ -2323,6 +3042,7 @@
       "25,55": 4,
       "25,56": 2,
       "25,57": 2,
+      "26,48": 5,
       "26,55": 6,
       "26,56": 2,
       "26,57": 2,
@@ -2382,7 +3102,14 @@
     "11,39,1,2",
     "11,10,1,28",
     "13,10,1,28",
-    "13,39,1,2"
+    "13,39,1,2",
+    "20,48,1,3",
+    "23,48,1,3",
+    "2,60,1,3",
+    "5,60,1,3",
+    "26,48,1,3",
+    "23,10,1,6",
+    "21,10,1,6"
   ],
   "PageInfo": {
     "$type": "Forguncy.Model.Pages.NormalPage, ServerDesignerCommon",
@@ -2417,7 +3144,7 @@
                 ]
               }
             ],
-            "ID": "e810679b-9991-40fa-b369-9f16e4416f47"
+            "ID": "3386d7ac-ccdd-4059-bc38-b9fbb32bb4cd"
           }
         ]
       }
@@ -2460,4 +3187,4 @@
       "Formula": "商品登録・編集!$BD$21"
     }
   ]
-}//ehh3+hmcmhXhSHHLS72DyEC3133oMy9hNGF9nlbOR723Jt2iSLSdDRL57WMjU1MQPd35wcB3zfk3L+OOMtlHWRhVOTU2rm92dnkkt6KjKG8NEYWv4h0aAcJwp+UmhsWzGn7fqZfdQHsXKNgaLnbJdRV+0rnCU0B20nhxU9NCf7KU4KR2uH8jbh/9xO15rNjotzCImDlk0wRVr756IbbfV3isekwKnOPq3q3CLcRXuQ5MqIK/fscfMwVpQ0pUumJG/iJagITmi9yckFh5dtVwbgj2pJNBSrdivek+ZoncifblP4KgIZF88VZ/YznUGsWhGtjG/jzWTWrCYVgasKCwXje+8psW2FJKZKmIaMv+Xo2YzMXP7aL+iki6OEE0pJi2B5a7pL+VTE9VM0WkAhizFN5J69P2+tCyZQuJAHLqJfW+ppeGUtaTfdGsJz9ldLiht+yC9MJmwgDRIiZWrzljahk5k9x4ufjlJDM8sqDWC2ZWzjDec1jenbizU0JINLhgTXnqvwrYtqarCoQDMKK9TNnhQ7TVp18WBG+BNn5wel/gcOagZkDY3Nwe9yyxkd42DivqoYE3sGCuQlOdE7H1CfrBUl7XrjDL8y+Y3Z5eV1x/kjqzmo2uu2lbam3whu5fVd+8q0Gxo9EyYalo8gfPyfeOinHGemOk0Bj7cUYBzSD4x3+c2967lSpCUZZqrO7skGRGv3porkXfGse9+NvEuf0o5Joi8xtsrc2AvwejYM26bFuAW+2ZZYRw/gOfCCHF89PO4/G+LJayWoWQN0PJfObTdvauAk9xt5D1xskErDFuPfKY5/lJPjfcmJr95zZBwGkEAR8Sgv6UfADZjnpc3RvIWjY/DFEZ7nxvb2PiN59UgWbiATZx64mFP8VXl1PwxfyV3L3zPgKCxB40CyDT5Q==|920
+}//S+y2LMU/gMxmE9rQPhWi4rRIkyQyq1v+P3NTw0VFVHjlqZdGdh0zeyca/QBShdYFp0WEoGb0anXDQ0TwjHz8KGYEzO8XSieBd7LXA4yHVtO1GY5ZnZ4B6gbJhtq/zaGcjnfZptd1vfHlY5Kt7abjRYR9i1PumlxgGPUtnZsr5RoPUCzkLLU0Or9itZBmXTl3KIm8cP5BSxnTwn1l+PcdqShTqNFPc9vwQR+HzVITwymj8DaisBT298z/1WEET3O3indb4rgoDR30Z1NZAE/ejkgaCGsXquvWansjHuqUECtUp2+wcYDmk5Wi52jG78rwIRus71j30ScRE/X0pzdbcjOuO+hHA65mCs8jh224K3bBSl2GPMRpdnRoYBaRWKAyvPWD37/2QOnnplMJRg40+LMlar/vu4u2dXZzGxtp8ItfgfV2mxvf7jgAdgD9MqdIZ8CtoPhuKg7p7oWyz4rAYCOnfrSFDwC3k3VsWBe8H1EgsPeG9+wxVAwP0tGPlP5dsLEWOYPnd9ZfvWfilVrpbPz0kwHwQ0QoawMjDLAukEXeox5m0lJ7fKJfd/Y4LwyduSx/VbmHJfs8iwauazXpM9+zH8CeCgaeGh/kOiersoADmoV73GMMhfgCkKhBig7hvP8rmT7xHGFYno76KXMOvHoQbC09cFEpuj3GZ/PdJ8khgkJ7dB5mGZCBRf15WHuWWOXlOLQnTh4i2nDqjjMV0KtxYoehVFpUmuzUHFulzKEft44lYN8pOKaKm43Nl0URv6aQlfH6vUHwFeVMINFYrIrL7gXGpnz6Tjfe34i3DhpSFpEGpd0bEKD7axb432f1JrW6MCauRYNY5Asq6v8epJF6Y7Nywvp9w5I+iIsyeCej2N/qEs1c11Ge4P+LmhjDoQ1D9PKaY+Hk/0EEVZNmXw==|920

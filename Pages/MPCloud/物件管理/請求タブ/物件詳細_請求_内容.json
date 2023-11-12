@@ -48,6 +48,23 @@
           "DesignLengthInPixel": 5.0
         }
       },
+      "16": {
+        "GridRowColumnDefinition": {
+          "DesignLengthInPixel": 25.0,
+          "Mode": 1
+        }
+      },
+      "17": {
+        "GridRowColumnDefinition": {
+          "DesignLengthInPixel": 25.0,
+          "Mode": 1
+        }
+      },
+      "18": {
+        "GridRowColumnDefinition": {
+          "DesignLengthInPixel": 15.0
+        }
+      },
       "20": {
         "GridRowColumnDefinition": {
           "DesignLengthInPixel": 25.0
@@ -403,6 +420,7 @@
     "5,11": "備考",
     "5,35": "支払先名",
     "5,59": "仕入金額",
+    "5,69": "発注書受日",
     "7,96": "▼物件商品ビュー",
     "9,22": "売上合計",
     "9,42": "仕入合計",
@@ -412,16 +430,24 @@
     "9,91": "▼利益合計",
     "11,1": "請求予定リスト",
     "11,13": "請求確定した商品リストを表示しています",
-    "14,1": "登録日",
+    "11,68": "新規登録する",
+    "14,1": "売上日",
     "14,11": "商品名",
     "14,35": "請求先名",
-    "14,59": "請求金額",
+    "14,59": "税抜金額",
     "14,69": "請求日",
-    "15,1": "計上区分",
+    "15,1": "売上区分",
     "15,11": "備考",
-    "15,35": "支払先名",
-    "15,59": "支払金額",
-    "15,69": "支払日"
+    "15,35": "住宅事業者名",
+    "15,59": "消費税額",
+    "15,69": "回収予定日",
+    "15,96": "▼売上ビュー",
+    "19,22": "税抜合計",
+    "19,41": "消費税合計",
+    "19,62": "請求合計",
+    "19,81": "▼税抜合計",
+    "19,86": "▼消費税計",
+    "19,91": "▼請求合計"
   },
   "Formulas": {
     "10,81": "SUM(CY10)",
@@ -429,13 +455,25 @@
     "10,91": "CD11-CI11",
     "9,49": "CI11",
     "9,69": "CN11",
-    "10,86": "SUM(DA10)"
+    "10,86": "SUM(DA10)",
+    "17,98": "IF(CT18=1,\"売上\",IF(CT18=2,\"取消\",\"\"))",
+    "19,29": "CD21",
+    "19,49": "CI21",
+    "19,69": "CN21",
+    "20,91": "CD21+CI21",
+    "20,86": "SUM(DA18)",
+    "20,81": "SUM(CZ18)"
   },
   "AttachInfos": {
     "1,68": {
       "CellType": {
         "$type": "Forguncy.ButtonCellType, ServerDesignerCommon",
         "CommandList": [
+          {
+            "$type": "LoadingCommand.StartLoadingCommand, LoadingCommand",
+            "LoadingText": "お待ちください",
+            "LoadingTextColor": "Background 1 0"
+          },
           {
             "$type": "Forguncy.Model.RequestServerCommand, ServerDesignerCommon",
             "ServerCommandName": "請求先ID取得",
@@ -541,7 +579,26 @@
               "ShowDrawerHeader": true,
               "CloseWhenClickGrayArea": false,
               "PageName": "商品登録・編集",
-              "PassValues": [],
+              "PassValues": [
+                {
+                  "Source": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=物件詳細_請求_内容!ポップアップメッセージ"
+                  },
+                  "TargetCell": {
+                    "SerializeProperty": "=商品登録・編集!BI3"
+                  }
+                },
+                {
+                  "Source": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=物件詳細_請求_内容!ポップアップ表示フラグ"
+                  },
+                  "TargetCell": {
+                    "SerializeProperty": "=商品登録・編集!BI6"
+                  }
+                }
+              ],
               "LoadBindingDataOption": 1
             }
           ],
@@ -561,7 +618,7 @@
         },
         "NoItemSetting": {
           "ImageForNoItem": {
-            "Name": "Navigation/256_notice_6.svg",
+            "Name": "Mobile/411_notice_1.svg",
             "BuiltIn": true,
             "Color": "#FF005B47"
           },
@@ -715,6 +772,275 @@
         "ColumnName": "accounting_confirm_date"
       },
       "NameUsedInJavaScript": "計上確定日"
+    },
+    "11,68": {
+      "CellType": {
+        "$type": "Forguncy.ButtonCellType, ServerDesignerCommon",
+        "CommandList": [
+          {
+            "$type": "LoadingCommand.StartLoadingCommand, LoadingCommand",
+            "LoadingText": "お待ちください",
+            "LoadingTextColor": "Background 1 0"
+          },
+          {
+            "$type": "Forguncy.Model.RequestServerCommand, ServerDesignerCommon",
+            "ServerCommandName": "請求先ID取得",
+            "Parameters": [
+              {
+                "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=物件詳細_請求_内容!CN5"
+                },
+                "ParamName": "P_グループID"
+              },
+              {
+                "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=物件詳細_請求_内容!CT5"
+                },
+                "ParamName": "P_住宅事業者ID"
+              }
+            ],
+            "ReturnPropertiesTo": [
+              {
+                "ResultPropertyName": "R_請求先ID",
+                "ResultTo": {
+                  "SerializeProperty": "請求先ID"
+                }
+              }
+            ],
+            "RefreshAfterFinish": true,
+            "CheckDataValidation": true
+          },
+          {
+            "$type": "Forguncy.Model.ShowPopupCommand, ServerDesignerCommon",
+            "PopupDisplayMode": 3,
+            "DrawerDirection": 3,
+            "ShowDrawerHeader": true,
+            "CloseWhenClickGrayArea": false,
+            "PageName": "請求登録・編集",
+            "PassValues": [
+              {
+                "Source": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=物件詳細_請求_内容!請求先ID"
+                },
+                "TargetCell": {
+                  "SerializeProperty": "=請求登録・編集!AW9"
+                }
+              }
+            ],
+            "LoadBindingDataOption": 2
+          }
+        ],
+        "Text": "新規登録する",
+        "TemplateKey": "_RS_Outline_RoundCorner_Style3",
+        "Icon": {
+          "Name": "Application/005_add_5.svg",
+          "BuiltIn": true,
+          "Color": "Background 1",
+          "UseCellTypeForeColor": true
+        }
+      }
+    },
+    "16,1": {
+      "CellType": {
+        "$type": "Forguncy.RepeaterCellType, ServerDesignerCommon",
+        "ListviewName": "売上ビュー",
+        "TemplatePageName": "e094a54a0d6b4a7e93a549eed584223",
+        "Command": {
+          "$type": "GrapeCity.Forguncy.Commands.CustomCommandObject, Forguncy.Commands",
+          "Commands": [
+            {
+              "$type": "Forguncy.Model.ShowPopupCommand, ServerDesignerCommon",
+              "PopupDisplayMode": 3,
+              "DrawerDirection": 3,
+              "ShowDrawerHeader": true,
+              "CloseWhenClickGrayArea": false,
+              "PageName": "請求登録・編集",
+              "PassValues": [
+                {
+                  "Source": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=物件詳細_請求_内容!ポップアップメッセージ"
+                  },
+                  "TargetCell": {
+                    "SerializeProperty": "=請求登録・編集!BF9"
+                  }
+                },
+                {
+                  "Source": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=物件詳細_請求_内容!ポップアップ表示フラグ"
+                  },
+                  "TargetCell": {
+                    "SerializeProperty": "=請求登録・編集!BF12"
+                  }
+                }
+              ],
+              "LoadBindingDataOption": 1
+            }
+          ],
+          "ParamProperties": {
+            "売上日": "売上日",
+            "売上区分": "売上区分",
+            "請求商品名": "請求商品名",
+            "請求備考": "請求備考",
+            "請求先名": "請求先名",
+            "住宅事業者名": "住宅事業者名",
+            "税抜金額": "税抜金額",
+            "消費税額": "消費税額",
+            "請求日": "請求日",
+            "発注書受領日": "発注書受領日"
+          }
+        },
+        "NoItemSetting": {
+          "ImageForNoItem": {
+            "Name": "Mobile/411_notice_1.svg",
+            "BuiltIn": true,
+            "Color": "#FF005B47"
+          },
+          "NoItemImageSize": 16.0,
+          "TextForNoItem": "請求確定データはありません"
+        },
+        "TemplateKey": "スタイル1"
+      }
+    },
+    "16,96": {
+      "ListViewInfo": {
+        "ShowColumnHeaderInDesigner": true,
+        "TableName": "t_sales",
+        "RowIndex": 16,
+        "ColumnIndex": 96,
+        "ColumnCount": 12,
+        "RowCount": 3,
+        "ColumnOperation": 2,
+        "ShowEditStatusIcon": true,
+        "UseSimpleBar": true,
+        "Name": "売上ビュー",
+        "SqlCondition": {
+          "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+          "Condition1": {
+            "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+            "ColumnBindingInfo": {
+              "TableName": "t_sales",
+              "ColumnName": "object_order_id"
+            },
+            "Value": {
+              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+              "SerializeProperty": "=物件詳細_請求_内容!CD5"
+            }
+          },
+          "Condition2": {
+            "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+            "ColumnBindingInfo": {
+              "TableName": "t_sales",
+              "ColumnName": "delete_flg"
+            },
+            "Value": "0"
+          }
+        },
+        "TopCondition": null,
+        "OrderByCondition": {
+          "OrderByColumns": [
+            {
+              "ColumnBindingInfo": {
+                "TableName": "t_sales",
+                "ColumnName": "sales_id"
+              },
+              "Order": 0
+            }
+          ]
+        },
+        "CommitType": 1,
+        "DoNotLoadDataWhenLoadPage": true,
+        "ListViewStyleName": "_RS_Medium1"
+      }
+    },
+    "17,96": {
+      "BindingInfo": {
+        "TableName": "t_sales",
+        "ColumnName": "sales_date"
+      },
+      "NameUsedInJavaScript": "売上日"
+    },
+    "17,97": {
+      "BindingInfo": {
+        "TableName": "t_sales",
+        "ColumnName": "sales_type"
+      },
+      "NameUsedInJavaScript": ""
+    },
+    "17,98": {
+      "NameUsedInJavaScript": "売上区分"
+    },
+    "17,99": {
+      "BindingInfo": {
+        "TableName": "t_sales",
+        "ColumnName": "billing_product_name"
+      },
+      "NameUsedInJavaScript": "請求商品名"
+    },
+    "17,100": {
+      "BindingInfo": {
+        "TableName": "t_sales",
+        "ColumnName": "billing_remarks"
+      },
+      "NameUsedInJavaScript": "請求備考"
+    },
+    "17,101": {
+      "BindingInfo": {
+        "TableName": "t_sales",
+        "ColumnName": "billing_comp_id",
+        "RelationBinding": {
+          "RelatedTable": "m_customer",
+          "RelatedColumn": "customer_id",
+          "DisplayColumn": "customer_abbr"
+        }
+      },
+      "NameUsedInJavaScript": "請求先名"
+    },
+    "17,102": {
+      "BindingInfo": {
+        "TableName": "t_sales",
+        "ColumnName": "builder_id",
+        "RelationBinding": {
+          "RelatedTable": "m_customer",
+          "RelatedColumn": "customer_id",
+          "DisplayColumn": "customer_abbr"
+        }
+      },
+      "NameUsedInJavaScript": "住宅事業者名"
+    },
+    "17,103": {
+      "BindingInfo": {
+        "TableName": "t_sales",
+        "ColumnName": "excluding_tax_amount"
+      },
+      "NameUsedInJavaScript": "税抜金額"
+    },
+    "17,104": {
+      "BindingInfo": {
+        "TableName": "t_sales",
+        "ColumnName": "tax_amount"
+      },
+      "NameUsedInJavaScript": "消費税額"
+    },
+    "17,105": {
+      "BindingInfo": {
+        "TableName": "t_sales",
+        "ColumnName": "billing_date"
+      },
+      "NameUsedInJavaScript": "請求日"
+    },
+    "17,106": {
+      "BindingInfo": {
+        "TableName": "t_sales",
+        "ColumnName": "collect_scheduled_date"
+      },
+      "NameUsedInJavaScript": "回収予定日"
     }
   },
   "StyleDatas": {
@@ -854,19 +1180,6 @@
         "BorderLeft": 1
       },
       {
-        "Background": 6,
-        "BorderBottom": 1
-      },
-      {
-        "Background": 6,
-        "FontFamily": 3,
-        "FontSize": 12.0,
-        "Foreground": 2,
-        "Formatter": 5,
-        "HorizontalAlignment": 7,
-        "BorderBottom": 1
-      },
-      {
         "FontFamily": 3,
         "FontSize": 12.0,
         "Foreground": 2,
@@ -961,8 +1274,17 @@
         "Formatter": 5,
         "HorizontalAlignment": 7,
         "BorderBottom": 1,
-        "BorderTop": 1,
         "BorderLeft": 1
+      },
+      {
+        "FontSize": 12.0,
+        "Foreground": 2,
+        "HorizontalAlignment": 7
+      },
+      {
+        "FontFamily": 3,
+        "FontSize": 14.666666666666666,
+        "Formatter": 5
       }
     ],
     "Types": {
@@ -1273,19 +1595,19 @@
       "5,66": 23,
       "5,67": 23,
       "5,68": 24,
-      "5,69": 26,
-      "5,70": 26,
-      "5,71": 26,
-      "5,72": 26,
-      "5,73": 26,
-      "5,74": 26,
-      "5,75": 26,
-      "5,76": 26,
-      "5,77": 26,
-      "5,78": 27,
+      "5,69": 25,
+      "5,70": 23,
+      "5,71": 23,
+      "5,72": 23,
+      "5,73": 23,
+      "5,74": 23,
+      "5,75": 23,
+      "5,76": 23,
+      "5,77": 23,
+      "5,78": 24,
       "5,79": 17,
       "6,0": 9,
-      "6,1": 28,
+      "6,1": 26,
       "6,79": 17,
       "7,0": 9,
       "7,79": 17,
@@ -1311,104 +1633,104 @@
       "7,112": 7,
       "7,113": 7,
       "7,114": 7,
-      "8,1": 29,
-      "8,2": 29,
-      "8,3": 29,
-      "8,4": 29,
-      "8,5": 29,
-      "8,6": 29,
-      "8,7": 29,
-      "8,8": 29,
-      "8,9": 29,
-      "8,10": 29,
-      "8,11": 29,
-      "8,12": 29,
-      "8,13": 29,
-      "8,14": 29,
-      "8,15": 29,
-      "8,16": 29,
-      "8,17": 29,
-      "8,18": 29,
-      "8,19": 29,
-      "8,20": 29,
-      "8,21": 29,
-      "8,22": 29,
-      "8,23": 29,
-      "8,24": 29,
-      "8,25": 29,
-      "8,26": 29,
-      "8,27": 29,
-      "8,28": 29,
-      "8,29": 29,
-      "8,30": 29,
-      "8,31": 29,
-      "8,32": 29,
-      "8,33": 29,
-      "8,34": 29,
-      "8,35": 29,
-      "8,36": 29,
-      "8,37": 29,
-      "8,38": 29,
-      "8,39": 29,
-      "8,40": 29,
-      "8,41": 29,
-      "8,42": 29,
-      "8,43": 29,
-      "8,44": 29,
-      "8,45": 29,
-      "8,46": 29,
-      "8,47": 29,
-      "8,48": 29,
-      "8,49": 29,
-      "8,50": 29,
-      "8,51": 29,
-      "8,52": 29,
-      "8,53": 29,
-      "8,54": 29,
-      "8,55": 29,
-      "8,56": 29,
-      "8,57": 29,
-      "8,58": 29,
-      "8,59": 29,
-      "8,60": 29,
-      "8,61": 29,
-      "8,62": 29,
-      "8,63": 29,
-      "8,64": 29,
-      "8,65": 29,
-      "8,66": 29,
-      "8,67": 29,
-      "8,68": 29,
-      "8,69": 29,
-      "8,70": 29,
-      "8,71": 29,
-      "8,72": 29,
-      "8,73": 29,
-      "8,74": 29,
-      "8,75": 29,
-      "8,76": 29,
-      "8,77": 29,
-      "8,78": 29,
-      "8,96": 30,
-      "8,97": 31,
-      "8,98": 32,
-      "8,99": 31,
-      "8,100": 31,
-      "8,101": 31,
-      "8,102": 31,
-      "8,103": 31,
-      "8,104": 31,
-      "8,105": 31,
-      "8,106": 31,
-      "8,107": 31,
-      "9,22": 33,
+      "8,1": 27,
+      "8,2": 27,
+      "8,3": 27,
+      "8,4": 27,
+      "8,5": 27,
+      "8,6": 27,
+      "8,7": 27,
+      "8,8": 27,
+      "8,9": 27,
+      "8,10": 27,
+      "8,11": 27,
+      "8,12": 27,
+      "8,13": 27,
+      "8,14": 27,
+      "8,15": 27,
+      "8,16": 27,
+      "8,17": 27,
+      "8,18": 27,
+      "8,19": 27,
+      "8,20": 27,
+      "8,21": 27,
+      "8,22": 27,
+      "8,23": 27,
+      "8,24": 27,
+      "8,25": 27,
+      "8,26": 27,
+      "8,27": 27,
+      "8,28": 27,
+      "8,29": 27,
+      "8,30": 27,
+      "8,31": 27,
+      "8,32": 27,
+      "8,33": 27,
+      "8,34": 27,
+      "8,35": 27,
+      "8,36": 27,
+      "8,37": 27,
+      "8,38": 27,
+      "8,39": 27,
+      "8,40": 27,
+      "8,41": 27,
+      "8,42": 27,
+      "8,43": 27,
+      "8,44": 27,
+      "8,45": 27,
+      "8,46": 27,
+      "8,47": 27,
+      "8,48": 27,
+      "8,49": 27,
+      "8,50": 27,
+      "8,51": 27,
+      "8,52": 27,
+      "8,53": 27,
+      "8,54": 27,
+      "8,55": 27,
+      "8,56": 27,
+      "8,57": 27,
+      "8,58": 27,
+      "8,59": 27,
+      "8,60": 27,
+      "8,61": 27,
+      "8,62": 27,
+      "8,63": 27,
+      "8,64": 27,
+      "8,65": 27,
+      "8,66": 27,
+      "8,67": 27,
+      "8,68": 27,
+      "8,69": 27,
+      "8,70": 27,
+      "8,71": 27,
+      "8,72": 27,
+      "8,73": 27,
+      "8,74": 27,
+      "8,75": 27,
+      "8,76": 27,
+      "8,77": 27,
+      "8,78": 27,
+      "8,96": 28,
+      "8,97": 29,
+      "8,98": 30,
+      "8,99": 29,
+      "8,100": 29,
+      "8,101": 29,
+      "8,102": 29,
+      "8,103": 29,
+      "8,104": 29,
+      "8,105": 29,
+      "8,106": 29,
+      "8,107": 29,
+      "9,22": 31,
       "9,23": 7,
       "9,24": 7,
       "9,25": 7,
       "9,26": 7,
       "9,27": 7,
       "9,28": 7,
-      "9,29": 34,
+      "9,29": 32,
       "9,30": 23,
       "9,31": 23,
       "9,32": 23,
@@ -1418,14 +1740,14 @@
       "9,36": 23,
       "9,37": 23,
       "9,38": 24,
-      "9,42": 33,
+      "9,42": 31,
       "9,43": 7,
       "9,44": 7,
       "9,45": 7,
       "9,46": 7,
       "9,47": 7,
       "9,48": 7,
-      "9,49": 34,
+      "9,49": 32,
       "9,50": 23,
       "9,51": 23,
       "9,52": 23,
@@ -1435,8 +1757,8 @@
       "9,56": 23,
       "9,57": 23,
       "9,58": 24,
-      "9,62": 33,
-      "9,69": 35,
+      "9,62": 31,
+      "9,69": 33,
       "9,70": 13,
       "9,71": 13,
       "9,72": 13,
@@ -1460,7 +1782,7 @@
       "9,92": 7,
       "9,93": 7,
       "9,96": 7,
-      "9,97": 36,
+      "9,97": 34,
       "9,98": 7,
       "9,99": 7,
       "9,100": 7,
@@ -1496,7 +1818,7 @@
       "10,105": 7,
       "10,106": 7,
       "10,107": 7,
-      "11,1": 37,
+      "11,1": 35,
       "11,2": 7,
       "11,3": 7,
       "11,4": 7,
@@ -1508,8 +1830,8 @@
       "11,10": 7,
       "11,11": 7,
       "11,12": 7,
-      "11,13": 38,
-      "11,14": 38,
+      "11,13": 36,
+      "11,14": 36,
       "11,15": 7,
       "11,16": 7,
       "11,17": 7,
@@ -1563,7 +1885,7 @@
       "11,65": 7,
       "11,66": 7,
       "11,67": 7,
-      "11,68": 7,
+      "11,68": 2,
       "11,69": 7,
       "11,70": 7,
       "11,71": 7,
@@ -1574,84 +1896,84 @@
       "11,76": 7,
       "11,77": 7,
       "11,78": 7,
-      "12,1": 39,
-      "12,2": 39,
-      "12,3": 39,
-      "12,4": 39,
-      "12,5": 39,
-      "12,6": 39,
-      "12,7": 39,
-      "12,8": 39,
-      "12,9": 39,
-      "12,10": 39,
-      "12,11": 39,
-      "12,12": 39,
-      "12,13": 39,
-      "12,14": 39,
-      "12,15": 39,
-      "12,16": 39,
-      "12,17": 39,
-      "12,18": 39,
-      "12,19": 39,
-      "12,20": 39,
-      "12,21": 39,
-      "12,22": 39,
-      "12,23": 39,
-      "12,24": 39,
-      "12,25": 39,
-      "12,26": 39,
-      "12,27": 39,
-      "12,28": 39,
-      "12,29": 39,
-      "12,30": 39,
-      "12,31": 39,
-      "12,32": 39,
-      "12,33": 39,
-      "12,34": 39,
-      "12,35": 39,
-      "12,36": 39,
-      "12,37": 39,
-      "12,38": 39,
-      "12,39": 39,
-      "12,40": 39,
-      "12,41": 39,
-      "12,42": 39,
-      "12,43": 39,
-      "12,44": 39,
-      "12,45": 39,
-      "12,46": 39,
-      "12,47": 39,
-      "12,48": 39,
-      "12,49": 39,
-      "12,50": 39,
-      "12,51": 39,
-      "12,52": 39,
-      "12,53": 39,
-      "12,54": 39,
-      "12,55": 39,
-      "12,56": 39,
-      "12,57": 39,
-      "12,58": 39,
-      "12,59": 39,
-      "12,60": 39,
-      "12,61": 39,
-      "12,62": 39,
-      "12,63": 39,
-      "12,64": 39,
-      "12,65": 39,
-      "12,66": 39,
-      "12,67": 39,
-      "12,68": 39,
-      "12,69": 40,
-      "12,70": 40,
-      "12,71": 40,
-      "12,72": 40,
-      "12,73": 40,
-      "12,74": 40,
-      "12,75": 40,
-      "12,76": 40,
-      "12,77": 40,
-      "12,78": 40,
+      "12,1": 37,
+      "12,2": 37,
+      "12,3": 37,
+      "12,4": 37,
+      "12,5": 37,
+      "12,6": 37,
+      "12,7": 37,
+      "12,8": 37,
+      "12,9": 37,
+      "12,10": 37,
+      "12,11": 37,
+      "12,12": 37,
+      "12,13": 37,
+      "12,14": 37,
+      "12,15": 37,
+      "12,16": 37,
+      "12,17": 37,
+      "12,18": 37,
+      "12,19": 37,
+      "12,20": 37,
+      "12,21": 37,
+      "12,22": 37,
+      "12,23": 37,
+      "12,24": 37,
+      "12,25": 37,
+      "12,26": 37,
+      "12,27": 37,
+      "12,28": 37,
+      "12,29": 37,
+      "12,30": 37,
+      "12,31": 37,
+      "12,32": 37,
+      "12,33": 37,
+      "12,34": 37,
+      "12,35": 37,
+      "12,36": 37,
+      "12,37": 37,
+      "12,38": 37,
+      "12,39": 37,
+      "12,40": 37,
+      "12,41": 37,
+      "12,42": 37,
+      "12,43": 37,
+      "12,44": 37,
+      "12,45": 37,
+      "12,46": 37,
+      "12,47": 37,
+      "12,48": 37,
+      "12,49": 37,
+      "12,50": 37,
+      "12,51": 37,
+      "12,52": 37,
+      "12,53": 37,
+      "12,54": 37,
+      "12,55": 37,
+      "12,56": 37,
+      "12,57": 37,
+      "12,58": 37,
+      "12,59": 37,
+      "12,60": 37,
+      "12,61": 37,
+      "12,62": 37,
+      "12,63": 37,
+      "12,64": 37,
+      "12,65": 37,
+      "12,66": 37,
+      "12,67": 37,
+      "12,68": 37,
+      "12,69": 38,
+      "12,70": 38,
+      "12,71": 38,
+      "12,72": 38,
+      "12,73": 38,
+      "12,74": 38,
+      "12,75": 38,
+      "12,76": 38,
+      "12,77": 38,
+      "12,78": 38,
       "14,1": 25,
       "14,2": 23,
       "14,3": 23,
@@ -1662,7 +1984,7 @@
       "14,8": 23,
       "14,9": 23,
       "14,10": 23,
-      "14,11": 41,
+      "14,11": 39,
       "14,12": 23,
       "14,13": 23,
       "14,14": 23,
@@ -1730,7 +2052,7 @@
       "14,76": 23,
       "14,77": 23,
       "14,78": 24,
-      "15,1": 42,
+      "15,1": 40,
       "15,2": 20,
       "15,3": 20,
       "15,4": 20,
@@ -1788,26 +2110,207 @@
       "15,56": 23,
       "15,57": 23,
       "15,58": 24,
-      "15,59": 43,
-      "15,60": 23,
-      "15,61": 23,
-      "15,62": 23,
-      "15,63": 23,
-      "15,64": 23,
-      "15,65": 23,
-      "15,66": 23,
-      "15,67": 23,
-      "15,68": 24,
-      "15,69": 43,
-      "15,70": 23,
-      "15,71": 23,
-      "15,72": 23,
-      "15,73": 23,
-      "15,74": 23,
-      "15,75": 23,
-      "15,76": 23,
-      "15,77": 23,
-      "15,78": 24
+      "15,59": 41,
+      "15,60": 20,
+      "15,61": 20,
+      "15,62": 20,
+      "15,63": 20,
+      "15,64": 20,
+      "15,65": 20,
+      "15,66": 20,
+      "15,67": 20,
+      "15,68": 21,
+      "15,69": 41,
+      "15,70": 20,
+      "15,71": 20,
+      "15,72": 20,
+      "15,73": 20,
+      "15,74": 20,
+      "15,75": 20,
+      "15,76": 20,
+      "15,77": 20,
+      "15,78": 21,
+      "16,0": 9,
+      "16,1": 42,
+      "16,79": 17,
+      "16,99": 7,
+      "16,100": 7,
+      "16,101": 7,
+      "16,102": 7,
+      "16,103": 7,
+      "16,104": 7,
+      "16,105": 7,
+      "16,106": 7,
+      "17,0": 9,
+      "17,79": 17,
+      "17,99": 7,
+      "17,100": 7,
+      "17,101": 7,
+      "17,102": 7,
+      "17,103": 7,
+      "17,104": 7,
+      "17,105": 7,
+      "17,106": 7,
+      "18,1": 27,
+      "18,2": 27,
+      "18,3": 27,
+      "18,4": 27,
+      "18,5": 27,
+      "18,6": 27,
+      "18,7": 27,
+      "18,8": 27,
+      "18,9": 27,
+      "18,10": 27,
+      "18,11": 27,
+      "18,12": 27,
+      "18,13": 27,
+      "18,14": 27,
+      "18,15": 27,
+      "18,16": 27,
+      "18,17": 27,
+      "18,18": 27,
+      "18,19": 27,
+      "18,20": 27,
+      "18,21": 27,
+      "18,22": 27,
+      "18,23": 27,
+      "18,24": 27,
+      "18,25": 27,
+      "18,26": 27,
+      "18,27": 27,
+      "18,28": 27,
+      "18,29": 27,
+      "18,30": 27,
+      "18,31": 27,
+      "18,32": 27,
+      "18,33": 27,
+      "18,34": 27,
+      "18,35": 27,
+      "18,36": 27,
+      "18,37": 27,
+      "18,38": 27,
+      "18,39": 27,
+      "18,40": 27,
+      "18,41": 27,
+      "18,42": 27,
+      "18,43": 27,
+      "18,44": 27,
+      "18,45": 27,
+      "18,46": 27,
+      "18,47": 27,
+      "18,48": 27,
+      "18,49": 27,
+      "18,50": 27,
+      "18,51": 27,
+      "18,52": 27,
+      "18,53": 27,
+      "18,54": 27,
+      "18,55": 27,
+      "18,56": 27,
+      "18,57": 27,
+      "18,58": 27,
+      "18,59": 27,
+      "18,60": 27,
+      "18,61": 27,
+      "18,62": 27,
+      "18,63": 27,
+      "18,64": 27,
+      "18,65": 27,
+      "18,66": 27,
+      "18,67": 27,
+      "18,68": 27,
+      "18,69": 27,
+      "18,70": 27,
+      "18,71": 27,
+      "18,72": 27,
+      "18,73": 27,
+      "18,74": 27,
+      "18,75": 27,
+      "18,76": 27,
+      "18,77": 27,
+      "18,78": 27,
+      "19,22": 31,
+      "19,23": 7,
+      "19,24": 7,
+      "19,25": 7,
+      "19,26": 7,
+      "19,27": 7,
+      "19,28": 7,
+      "19,29": 32,
+      "19,30": 23,
+      "19,31": 23,
+      "19,32": 23,
+      "19,33": 23,
+      "19,34": 23,
+      "19,35": 23,
+      "19,36": 23,
+      "19,37": 23,
+      "19,38": 24,
+      "19,39": 7,
+      "19,40": 7,
+      "19,41": 43,
+      "19,43": 7,
+      "19,44": 7,
+      "19,45": 7,
+      "19,46": 7,
+      "19,47": 7,
+      "19,48": 7,
+      "19,49": 32,
+      "19,50": 23,
+      "19,51": 23,
+      "19,52": 23,
+      "19,53": 23,
+      "19,54": 23,
+      "19,55": 23,
+      "19,56": 23,
+      "19,57": 23,
+      "19,58": 24,
+      "19,59": 7,
+      "19,60": 7,
+      "19,61": 7,
+      "19,62": 31,
+      "19,63": 7,
+      "19,64": 7,
+      "19,65": 7,
+      "19,66": 7,
+      "19,67": 7,
+      "19,68": 7,
+      "19,69": 32,
+      "19,70": 23,
+      "19,71": 23,
+      "19,72": 23,
+      "19,73": 23,
+      "19,74": 23,
+      "19,75": 23,
+      "19,76": 23,
+      "19,77": 23,
+      "19,78": 24,
+      "19,81": 7,
+      "19,82": 7,
+      "19,83": 7,
+      "19,84": 7,
+      "19,85": 7,
+      "19,86": 8,
+      "19,87": 7,
+      "19,88": 7,
+      "19,89": 7,
+      "19,90": 7,
+      "19,91": 7,
+      "19,92": 7,
+      "19,93": 7,
+      "20,81": 18,
+      "20,82": 7,
+      "20,83": 7,
+      "20,84": 7,
+      "20,85": 7,
+      "20,86": 18,
+      "20,87": 7,
+      "20,88": 7,
+      "20,89": 7,
+      "20,90": 7,
+      "20,91": 18,
+      "20,92": 7,
+      "20,93": 7
     },
     "SheetStyle": {
       "FontFamily": 3
@@ -1998,7 +2501,17 @@
     "1,68,1,11",
     "10,96,1,12",
     "4,91,1,3",
-    "4,97,1,3"
+    "4,97,1,3",
+    "18,96,1,12",
+    "16,1,2,78",
+    "19,69,1,10",
+    "19,49,1,10",
+    "19,29,1,10",
+    "5,69,1,10",
+    "20,81,1,3",
+    "20,86,1,3",
+    "20,91,1,3",
+    "11,68,1,11"
   ],
   "PageInfo": {
     "$type": "Forguncy.Model.Pages.NormalPage, ServerDesignerCommon",
@@ -2007,11 +2520,11 @@
     },
     "RowBreakLines": [],
     "RepeatRangeSettings": [],
-    "RelatedDataTableName": "t_object_order",
+    "RelatedDataTableName": "t_sales",
     "PageResponsiveMode": 2
   },
   "PrintInfo": {
     "Margin": {},
     "PaperSize": {}
   }
-}//9Zfv8pxgpaVrkzkyT/XLswFGvzP0QmzS63fmFWK/QU8PmFOGZWch+FPxNRcwVOeZWnu2iHt3r/FCj+38VWCAbwFVfb+eycfqCJIqNBmBRQrFa9n7HOMTh5/9wBMiylw41oLGza52XLaePnt/km3TLH/uY333cfRIq2pPjIGbjO8KlvHvtAwOysFpjKJ2l15hVVHiYApaSJzn9+ZPF4sBDPxtl6G7otGWrWHEzOqPCf/uKw5P5+YSxIBinqRT4knpa2zUSfA/gG3yjzCtgj/HJScV7uUSKjgmAM3akLec3A6RZMLag1mRUutT9aE213tOJoccTuO+qvm+chLhfm7n2QEVIhDUuBLjO7pW+DnRccda65Fx/AWTiCJopcELWGrLhPpYCIK8gutUJIwhIz0+YzyXzudSzVRWrH5J1W0Megy1mAkZ0udJeoeKQWUruipa3ZjYd+WLjYs9UrYorBbVkAA9Mxrh2gG0DOvkS5O7t0wKKFRIFN9lfGK2axtviiHa856TsM2kSyr/frS+qQf0WlOL488cCh7SP5BhwGISB8pJ+H8yKmpNj7zDKhS5GJughKsMDVyLB/cS4rRZ7iAaO6KX+r4hmGpZGf8Cz/57JLf9H2sX73hykPg07wDzr4Dfq2ENnC4HHjUCZPPv/92jwzfsFzwkcJrBPmgtjKzFhGG0xm7+ISHF0C35QCXREIcakoimRAAdKb0dKw8CgjPZt+x4FURDOLDKOYpEbbQuucVEjGOeOH79BwQ1v5aFu803PccurjHQfnLMGCDndj8CeliPXz+WOF09WLWE2lVj3Y7i6PBsRTC64SRWirXdIwPFKcjmu3AOsBT1w3iy1oI/szu0gp7ZnKAq9BxcZRf3K9qYZ4vmZnzrGhzTzzCRAKRYfyIuCUZiHI2uNpfu5YRpjQ==|920
+}//RBh6C+a1xiAG6gWCyPiCcZdWNLuChJXokMNuQx4+4cIEfvWWuTSdnoLGWkbstqGUhtpBVahfoKhx4p/6Vw2XNXeOjNLOx0eysTKFHuDcE8pg2Z+UaOYLHt3y+lgbY+ftWzEYIP8Al+T45JBygyxKFP6ivbAv9HBg46B1+UflLjMQm0o8XQKquO3yZ02zvlvIxTCUBBAKcEwvi2wpAj8hOxreUOuqJIEy7fNuy2Li5DlJLWZ57R56mxh7jSNAn+9Yu3o/4WkOtPYciIJsHTWI7QZrHbR1/MKVY9+GD0OCyEbZ17zMIP6F9MBsPnfMtHIBHqy57xtroopT5bLzed0eB7XHM6iTJUIKJs6IVgJOu2+iYnsnpQ68MCuEgm19oCPmmZB5/mOcm7ju0swGEP3rzUUnPmQJGLzyfWq/aWN1LUFTCTNDhHGUIHD5Yr+7qaIB9RlUgfqZUwer+UXsmmqHUR8R/KqZol/bXQdRm8EpMLuCX1Gy458FPKvZaxMYde3IZMSBIL6BhpHoXOFe4UgXsLsqHVwd+t80SLmiuOkXX+mYCb4P//286DH585NRZkMTtJVIKCGP5Dr2h5QVLoY+tLjR4TuxqnGVk/9WUCT8/gxKC0R5bFxoDQFzFonB3BM4ONZ5jIpTdryMuWk6TFjuYYwzOT1eJcVroiy9p+PsaAkHEgwBQHBsGNKJ4F5WBhM+K0m/ORxyJqfRhACjQVU3vFooqywzWsUEOlfVB8dqqtysE9APQ/ZGAk4jbpC0mO0QEaEAEzHUhx+VnEIl9si/PtJvN2pZXVp8rO+Ac0lfgRL4sND76YVTLO/jjrf2DrNENw4flTMI+k5BuG5HaotiIzglutRHuu/GYLk4Eu9h/aEOcj/IttExVp9xQfa1ESUJQr9wfJ+UUZ4xZojcoVUDrA==|920
