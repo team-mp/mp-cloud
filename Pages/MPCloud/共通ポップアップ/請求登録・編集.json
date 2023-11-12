@@ -301,8 +301,8 @@
     },
     "2,48": {
       "BindingInfo": {
-        "TableName": "t_object_product",
-        "ColumnName": "object_product_id"
+        "TableName": "t_sales",
+        "ColumnName": "sales_id"
       }
     },
     "2,57": {
@@ -326,73 +326,6 @@
           {
             "Value": "2",
             "DisplayValue": "取消"
-          }
-        ],
-        "CommandList": [
-          {
-            "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
-            "ConditionAndCommandPairList": [
-              {
-                "Condition": {
-                  "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
-                  "param": {
-                    "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
-                    "cellLocations": [
-                      {
-                        "SerializeProperty": "=請求登録・編集!K4"
-                      }
-                    ]
-                  },
-                  "value": "2"
-                },
-                "CommandList": [
-                  {
-                    "$type": "Forguncy.Model.SetCellPropertyCommand, ServerDesignerCommon",
-                    "PropertyItemsList": [
-                      {
-                        "TargetCells": {
-                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                          "SerializeProperty": "=請求登録・編集!R18"
-                        },
-                        "Value": "%Null%"
-                      }
-                    ]
-                  }
-                ],
-                "Comments": "売上のみの場合",
-                "ID": "aa4a4b5f-4095-4927-b2b2-cf39bc2a451e"
-              },
-              {
-                "Condition": {
-                  "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
-                  "param": {
-                    "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
-                    "cellLocations": [
-                      {
-                        "SerializeProperty": "=請求登録・編集!K4"
-                      }
-                    ]
-                  },
-                  "value": "3"
-                },
-                "CommandList": [
-                  {
-                    "$type": "Forguncy.Model.SetCellPropertyCommand, ServerDesignerCommon",
-                    "PropertyItemsList": [
-                      {
-                        "TargetCells": {
-                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                          "SerializeProperty": "=請求登録・編集!R14"
-                        },
-                        "Value": "%Null%"
-                      }
-                    ]
-                  }
-                ],
-                "Comments": "仕入のみの場合",
-                "ID": "bb71a281-a7f4-4ed3-904b-3bb73e72f392"
-              }
-            ]
           }
         ],
         "ReadOnly": true
@@ -545,8 +478,8 @@
     },
     "5,48": {
       "BindingInfo": {
-        "TableName": "t_object_product",
-        "ColumnName": "product_id"
+        "TableName": "t_sales",
+        "ColumnName": "billing_product_id"
       }
     },
     "7,10": {
@@ -566,7 +499,7 @@
     },
     "8,48": {
       "BindingInfo": {
-        "TableName": "t_object_product",
+        "TableName": "t_sales",
         "ColumnName": "billing_comp_id"
       }
     },
@@ -1176,63 +1109,101 @@
               {
                 "ConfirmDialogSettings": {
                   "Title": "確認",
-                  "FormulaText": "このデータを削除します。よろしいですか？",
+                  "FormulaText": "このデータを取消します。よろしいですか？\r\n※取消した場合、取消の請求データが作成されます",
                   "YesButtonText": "はい",
                   "NoButtonText": "いいえ",
                   "ConfirmIcon": 4
                 },
                 "CommandList": [
                   {
-                    "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
-                    "TableName": "t_sales",
-                    "ShowConfirm": false,
-                    "ReloadAfterSucceed": false,
-                    "ConfirmText": "本当に更新してもよろしいですか？",
-                    "RowsToUpdate": 1,
-                    "RowsToUpdateCondition": {
-                      "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
-                      "ColumnBindingInfo": {
-                        "TableName": "t_sales",
-                        "ColumnName": "sales_id"
-                      },
-                      "Value": {
-                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                        "SerializeProperty": "=請求登録・編集!AJ2"
+                    "$type": "LoadingCommand.StartLoadingCommand, LoadingCommand",
+                    "LoadingText": "お待ちください",
+                    "LoadingTextColor": "Background 1 0"
+                  },
+                  {
+                    "$type": "Forguncy.Model.RequestServerCommand, ServerDesignerCommon",
+                    "ServerCommandName": "請求データ取消処理",
+                    "Parameters": [
+                      {
+                        "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                        "Value": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=請求登録・編集!AW3"
+                        },
+                        "ParamName": "P_売上ID"
                       }
+                    ],
+                    "ResultErrorCodeTo": {
+                      "SerializeProperty": "リターンコード"
                     },
-                    "UpdateValues": [
-                      {
-                        "ColumnName": "delete_flg",
-                        "Value": "1"
-                      }
-                    ]
+                    "ResultMessageTo": {
+                      "SerializeProperty": "リターンメッセージ"
+                    },
+                    "CheckDataValidation": false
                   },
                   {
-                    "$type": "Forguncy.Model.SetCellPropertyCommand, ServerDesignerCommon",
-                    "PropertyItemsList": [
+                    "$type": "LoadingCommand.EndLoadingCommand, LoadingCommand"
+                  },
+                  {
+                    "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+                    "ConditionAndCommandPairList": [
                       {
-                        "TargetCells": {
-                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                          "SerializeProperty": "=請求登録・編集!AS8"
+                        "Condition": {
+                          "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                          "param": {
+                            "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+                            "cellLocations": [
+                              {
+                                "SerializeProperty": "=請求登録・編集!リターンコード"
+                              }
+                            ]
+                          },
+                          "value": "0"
                         },
-                        "Value": "請求データを削除しました"
+                        "CommandList": [
+                          {
+                            "$type": "Forguncy.Model.SetCellPropertyCommand, ServerDesignerCommon",
+                            "PropertyItemsList": [
+                              {
+                                "TargetCells": {
+                                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                  "SerializeProperty": "=請求登録・編集!BF9"
+                                },
+                                "Value": "請求データを取消しました"
+                              },
+                              {
+                                "TargetCells": {
+                                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                  "SerializeProperty": "=請求登録・編集!BF12"
+                                },
+                                "Value": "1"
+                              }
+                            ]
+                          },
+                          {
+                            "$type": "Forguncy.Model.ClosePopupCommand, ServerDesignerCommon",
+                            "PassValueBack": true,
+                            "ReloadData": true
+                          }
+                        ],
+                        "ID": "3d07bea8-64a6-4e10-b0e1-9317d93d69f1"
                       },
                       {
-                        "TargetCells": {
-                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                          "SerializeProperty": "=請求登録・編集!AS11"
-                        },
-                        "Value": "1"
+                        "CommandList": [
+                          {
+                            "$type": "Forguncy.Model.ShowMessageCommand, ServerDesignerCommon",
+                            "MessageFormula": {
+                              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                              "SerializeProperty": "=請求登録・編集!リターンメッセージ"
+                            }
+                          }
+                        ],
+                        "ID": "d0987180-7820-4950-b5cc-8954390e323f"
                       }
                     ]
-                  },
-                  {
-                    "$type": "Forguncy.Model.ClosePopupCommand, ServerDesignerCommon",
-                    "PassValueBack": true,
-                    "ReloadData": true
                   }
                 ],
-                "ID": "25320c9b-5d4d-4f65-8b44-d351717adcfc"
+                "ID": "c47c7c81-898a-4139-b4ff-680579f7038d"
               }
             ]
           }
@@ -1242,6 +1213,20 @@
       },
       "ConditionFormatRulesCollection": {
         "Rules": [
+          {
+            "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
+            "Formula": {
+              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+              "SerializeProperty": "=VALUE(請求登録・編集!$K$4)=2"
+            },
+            "StyleInfo": {
+              "Underline": null,
+              "Strikethrough": null
+            },
+            "IsDisabled": false,
+            "IsInvisible": true,
+            "IsReadOnly": false
+          },
           {
             "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
             "Formula": {
@@ -1325,7 +1310,7 @@
                     "ReloadData": true
                   }
                 ],
-                "ID": "c936e1ce-0216-4ef6-a92f-a9f0abc8a8fd"
+                "ID": "c5bf969c-e7ba-474d-b06a-1d5ec03a64f6"
               }
             ]
           }
@@ -1423,12 +1408,24 @@
                         "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
                         "Value": {
                           "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=請求登録・編集!K4"
+                        },
+                        "ParamName": "P_売上区分"
+                      },
+                      {
+                        "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                        "Value": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
                           "SerializeProperty": "=請求登録・編集!AW9"
                         },
                         "ParamName": "P_請求先ID"
                       },
                       {
                         "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                        "Value": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=請求登録・編集!K6"
+                        },
                         "ParamName": "P_請求商品ID"
                       },
                       {
@@ -1459,6 +1456,22 @@
                         "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
                         "Value": {
                           "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=請求登録・編集!R16"
+                        },
+                        "ParamName": "P_消費税額"
+                      },
+                      {
+                        "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                        "Value": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=請求登録・編集!AH16"
+                        },
+                        "ParamName": "P_消費税率"
+                      },
+                      {
+                        "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                        "Value": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
                           "SerializeProperty": "=請求登録・編集!K25"
                         },
                         "ParamName": "P_発注書必要フラグ"
@@ -1470,6 +1483,10 @@
                           "SerializeProperty": "=請求登録・編集!AA25"
                         },
                         "ParamName": "P_発注書受領日"
+                      },
+                      {
+                        "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                        "ParamName": "P_取消売上ID"
                       }
                     ],
                     "ResultErrorCodeTo": {
@@ -1481,7 +1498,7 @@
                     "CheckDataValidation": false
                   }
                 ],
-                "ID": "bb4083e3-5102-47c4-8265-b5e86b8a4741"
+                "ID": "0c965dab-6489-4f96-a718-d2513a12c361"
               },
               {
                 "CommandList": [
@@ -1603,7 +1620,7 @@
                     "CheckDataValidation": false
                   }
                 ],
-                "ID": "098fbd7e-9c91-46af-b980-6a42e70fcd8e"
+                "ID": "2d39c9b6-abf2-4156-9e75-51fcb3d7caba"
               }
             ]
           },
@@ -1652,7 +1669,7 @@
                     "ReloadData": true
                   }
                 ],
-                "ID": "b1e23329-ae3a-42b7-9831-14765f265beb"
+                "ID": "849944cd-67b8-4656-82af-cfed1db52e14"
               },
               {
                 "CommandList": [
@@ -1664,7 +1681,7 @@
                     }
                   }
                 ],
-                "ID": "f7c40533-a576-4d30-af59-5faee91f0aab"
+                "ID": "31b4373c-1eec-488c-8ffd-ce852b3322d3"
               }
             ]
           }
@@ -2587,8 +2604,6 @@
     }
   },
   "Spans": [
-    "8,48,1,3",
-    "2,48,1,3",
     "31,35,1,8",
     "31,27,1,7",
     "1,10,1,6",
@@ -2598,7 +2613,6 @@
     "11,57,1,3",
     "2,57,1,3",
     "17,48,1,3",
-    "5,48,1,3",
     "11,39,1,2",
     "11,10,1,28",
     "9,10,1,33",
@@ -2613,7 +2627,10 @@
     "24,26,1,9",
     "19,10,1,6",
     "21,10,1,6",
-    "24,10,1,6"
+    "24,10,1,6",
+    "2,48,1,3",
+    "8,48,1,3",
+    "5,48,1,3"
   ],
   "PageInfo": {
     "$type": "Forguncy.Model.Pages.NormalPage, ServerDesignerCommon",
@@ -2687,4 +2704,4 @@
       "Formula": "請求登録・編集!$BD$15"
     }
   ]
-}//ooi59kjplYZyBbBzoEIQLpd5Io2fkFLK856c+gbN+W0V6qS0f1vbOHUHqHdvzf6B78gjqkP2ISZtrhHuef3t4JXuxf50XhzimTy5VVDYLHonlRM8wj8CxUHXTw31+7LuVrvbm3IBxxKVF5a+tdG8QykGbW1VPECzTYBN0f3I78wqPY86hg303KT7lOkSLt+V77K7XN4rYaxY4TqpdvHRTLSRaoKKODxlnQUON5eulXbdyKaAiGFepFr9bpou7Aw1np/Ns5zUMK9hQ0v/hsetxSG96HtLoz0HzbNpTqJshAZ7rg3Jgm/NZdVbyo0rSeHyu3cn+25CdrP+yIGNYPa5V7BS0FuvrHFApFT/IJ4nomGcvlTc3UeTdiChBSfL62e1g8IRdej4V+fqt1K/wJ8Vi2QWsYz78Uds0D+fPmg3t1ZUmF9nqWqIkXwgiAEDwwQTlTUicaFp6LWasuLkVEMieOHZdC2rwCdt5vxppaDfgQC0YgGBxriXKxkzR5UJQ4sMkHni5ZDBqDL7TtGHU5r47v/8WbFoTHqr4qux2ZPMCV2vAi+Bs/DfAzgFjbNoktoYuBs1Gv5yvAoHI5DjENey8DF3CiE+hKsj1sjv8/9sNaI+p+KyncwdJOcAMFC9bZRJQW6pZ0Cl8WjPteHwDXfxgZllt4TUs/8k+ih1qTZ5h/OzjWfHmw3uIzrD9qgrubWT0cl64K2F0vgFmdTcKVYLazjaI5IDEOTk9F8WpMY0ahkzA11jeoWHulhfM/dX6iP+vV1yTOgGNfM1XYzIbpUGoiqeowDI7Z3jrAtXX8sNDpjVESoNDM2gGilA5rd9fRnQGC7O5bbNzbGJls5pjKiFCsDL8RwpYkj5L6MblDB+i8/IRQl0Vew9H4W4GUDkcjYNYTarcEmdV+pH6vqdYgYJHg==|920
+}//66G5BYo4W6JZ34VV0HYep388HplwiNCu1h4Ql67xT2lavbmpmNyA49GZtaNxGyrqwj0DkcJQH1CAum4RP4cS3JVYYVjSIU6Ys1I4PZNuI+IYLKEL6dzfUN2h/uxiRgW8ahuQNiqLqR/PxK4j28D+3i1SgUv6sCjzDfBvGaBkjnCkTkpSjXWqQ3IwAiaGPwHmGSkvuqLS/ywZg1fEbOJi2Np5buE6Igyh8drbCxD4SG5zQ55VqJbYcADU8tc14co/3ecS8fV+Kmm9WbXI1M6CBbMN48HyShBUtt6hIDE5OtSq2ZF9KSR2ZGXllNsBV6wo1tlHHIzt49GDS1SArZxiX3Omba4iPXW5Xp3VXlyuFyKBvLCg9wLfg7VFnv1oaht5MjgmmOY4G4NYm1bn/vR4wM6Wh5Hv5rSIamm9WcCKmOoxStGv7XAPDUXEdxYLkH3HqdZI0XmEfQu19V4p1WXEy77Wu8GwOR5vQTCdgzXqUxmRs5JYX5ZynDdqQVOUVfNvahZBRmD0gEl8v2wFe8IJljqdQIioTjCy/iSrDe41wmC5upo2GnPEFsZEccTzxGCp+3x/ob5QRpiWTAFZXrYMKA52srEeoCGJRkuFI5XHZI/Do8wRrpiB6DsQei/zFIW7iXOwZj4LXFAfUfvpBV/RWU38StAApPFR0X3hHXX67UYDYvxJ1mhsFrqsZVtZCwHyVio9XFlR+8i8qjvD8gvjozTLH8Izngc1G9yXVMZngWcV5AC8ITOwkmeYdv8wX+SJwQz5r2nd/xkdkiOaXSG2XTcxb9Hi1XHpaJbpa38GnOYWYDdDsEe2VqpD6xv1c16YcB3RA4rSHnXriQW3QxNtzFlzYM19u8VrVDuRGSvTCHYCTQEazNwzIfMbwcgCzkHU8852N9Mua0MlFEWc/aUrxA==|920
