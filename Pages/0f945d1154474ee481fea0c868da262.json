@@ -381,8 +381,9 @@
     "15,24": "～",
     "15,54": "調査売上合計",
     "17,2": "調査実施日",
-    "17,26": "調査原価",
     "17,54": "調査仕入合計",
+    "17,77": "▼調査ステータス順",
+    "17,84": "▼申込ステータス順",
     "19,2": "報告書受領日",
     "19,26": "報告書納品日"
   },
@@ -645,7 +646,7 @@
             "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
             "Formula": {
               "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-              "SerializeProperty": "=OR('0f945d1154474ee481fea0c868da262'!$BZ$10=\"\",'0f945d1154474ee481fea0c868da262'!$M$18=\"\")"
+              "SerializeProperty": "='0f945d1154474ee481fea0c868da262'!$M$20=\"\""
             },
             "StyleInfo": {
               "Underline": null,
@@ -733,7 +734,7 @@
               "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
               "SerializeProperty": "='0f945d1154474ee481fea0c868da262'!CG4"
             },
-            "ID": "7ab31138bff140099bd72735c10d5da1"
+            "ID": "c4c1df2019944444aedbbe41ad731e6a"
           },
           {
             "$type": "Forguncy.Model.SetCellPropertyCommand, ServerDesignerCommon",
@@ -799,7 +800,7 @@
                 "Value": "地盤調査依頼ボタン"
               }
             },
-            "ID": "481f7d038ab74c168fb23f09b9cff915"
+            "ID": "798d49b3e10846aaa23ee82d8bf5e372"
           },
           {
             "$type": "Forguncy.Model.ShareCommand, ServerDesignerCommon",
@@ -981,6 +982,93 @@
         ],
         "CommandList": [
           {
+            "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+            "ParameterName": "調査承諾待ちST",
+            "TableValue": {
+              "TableName": "m_survey_status",
+              "TableValueType": 1,
+              "BindingInfos": [
+                {
+                  "BindingInfo": {
+                    "TableName": "m_survey_status",
+                    "ColumnName": "survey_status_id"
+                  },
+                  "ColumnName": "調査ステータスID"
+                },
+                {
+                  "BindingInfo": {
+                    "TableName": "m_survey_status",
+                    "ColumnName": "sort_no"
+                  },
+                  "ColumnName": "並び順"
+                }
+              ],
+              "SqlCondition": {
+                "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                "ColumnBindingInfo": {
+                  "TableName": "m_survey_status",
+                  "ColumnName": "survey_consent_wait_flg"
+                },
+                "Value": "1"
+              }
+            },
+            "ID": "f6427d7ceab9478f97a194e68122be45"
+          },
+          {
+            "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+            "ConditionAndCommandPairList": [
+              {
+                "Condition": {
+                  "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                  "param": {
+                    "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+                    "cellLocations": [
+                      {
+                        "SerializeProperty": "='0f945d1154474ee481fea0c868da262'!BZ20"
+                      }
+                    ]
+                  },
+                  "value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "='0f945d1154474ee481fea0c868da262'!調査承諾待ちST.並び順"
+                  },
+                  "compareType": 4
+                },
+                "CommandList": [
+                  {
+                    "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+                    "TableName": "t_object_survey",
+                    "ShowConfirm": false,
+                    "CheckDataValidation": false,
+                    "ConfirmText": "本当に更新してもよろしいですか？",
+                    "RowsToUpdate": 1,
+                    "RowsToUpdateCondition": {
+                      "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                      "ColumnBindingInfo": {
+                        "TableName": "t_object_survey",
+                        "ColumnName": "survey_id"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "='0f945d1154474ee481fea0c868da262'!BZ13"
+                      }
+                    },
+                    "UpdateValues": [
+                      {
+                        "ColumnName": "survey_status_id",
+                        "Value": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "='0f945d1154474ee481fea0c868da262'!調査承諾待ちST.調査ステータスID"
+                        }
+                      }
+                    ]
+                  }
+                ],
+                "ID": "cf42b85f-c846-4a3f-8afb-553f407fae07"
+              }
+            ]
+          },
+          {
             "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
             "ConditionAndCommandPairList": [
               {
@@ -1026,7 +1114,7 @@
                     ]
                   }
                 ],
-                "ID": "89dda4b0-8753-4c71-a87d-191a6ad8293b"
+                "ID": "4d0b489e-77c2-4fd8-9679-c95f900898de"
               }
             ]
           },
@@ -1159,7 +1247,7 @@
               "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
               "SerializeProperty": "='0f945d1154474ee481fea0c868da262'!CG7"
             },
-            "ID": "c7121dba7808494f82a4e773130e8b3e"
+            "ID": "a2d0a4e540aa481ea529387d9f6e585a"
           },
           {
             "$type": "Forguncy.Model.SetCellPropertyCommand, ServerDesignerCommon",
@@ -1199,7 +1287,7 @@
                 "Value": "地盤調査日程通知ボタン"
               }
             },
-            "ID": "dc9d50139fa94251bbb2726aaec7874e"
+            "ID": "f3f42a1c2eb24d0694ef36a04bb133f9"
           },
           {
             "$type": "Forguncy.Model.ShareCommand, ServerDesignerCommon",
@@ -1381,6 +1469,168 @@
         ],
         "CommandList": [
           {
+            "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+            "ParameterName": "調査結果待ちST",
+            "TableValue": {
+              "TableName": "m_survey_status",
+              "TableValueType": 1,
+              "BindingInfos": [
+                {
+                  "BindingInfo": {
+                    "TableName": "m_survey_status",
+                    "ColumnName": "survey_status_id"
+                  },
+                  "ColumnName": "調査ステータスID"
+                },
+                {
+                  "BindingInfo": {
+                    "TableName": "m_survey_status",
+                    "ColumnName": "sort_no"
+                  },
+                  "ColumnName": "並び順"
+                }
+              ],
+              "SqlCondition": {
+                "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                "ColumnBindingInfo": {
+                  "TableName": "m_survey_status",
+                  "ColumnName": "survey_result_wait_flg"
+                },
+                "Value": "1"
+              }
+            },
+            "ID": "c769a2df05864cb6872b37e295a4a0f0"
+          },
+          {
+            "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+            "ParameterName": "申込調査結果待ちST",
+            "TableValue": {
+              "TableName": "m_order_status",
+              "TableValueType": 1,
+              "BindingInfos": [
+                {
+                  "BindingInfo": {
+                    "TableName": "m_order_status",
+                    "ColumnName": "order_status_id"
+                  },
+                  "ColumnName": "申込ステータスID"
+                },
+                {
+                  "BindingInfo": {
+                    "TableName": "m_order_status",
+                    "ColumnName": "sort_no"
+                  },
+                  "ColumnName": "並び順"
+                }
+              ],
+              "SqlCondition": {
+                "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                "ColumnBindingInfo": {
+                  "TableName": "m_order_status",
+                  "ColumnName": "survey_result_wait_flg"
+                },
+                "Value": "1"
+              }
+            },
+            "ID": "413fdfb06d8c4dbc940d1de5a174afca"
+          },
+          {
+            "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+            "ConditionAndCommandPairList": [
+              {
+                "Condition": {
+                  "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                  "param": {
+                    "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+                    "cellLocations": [
+                      {
+                        "SerializeProperty": "='0f945d1154474ee481fea0c868da262'!CG20"
+                      }
+                    ]
+                  },
+                  "value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "='0f945d1154474ee481fea0c868da262'!申込調査結果待ちST.並び順"
+                  },
+                  "compareType": 4
+                },
+                "CommandList": [
+                  {
+                    "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+                    "TableName": "t_object_order",
+                    "ShowConfirm": false,
+                    "CheckDataValidation": false,
+                    "ConfirmText": "本当に更新してもよろしいですか？",
+                    "UpdateValues": [
+                      {
+                        "ColumnName": "order_status_id",
+                        "Value": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "='0f945d1154474ee481fea0c868da262'!申込調査結果待ちST.申込ステータスID"
+                        }
+                      }
+                    ]
+                  }
+                ],
+                "ID": "475f2cf7-16a9-41ee-bdc0-a60f2ef0d1c4"
+              }
+            ]
+          },
+          {
+            "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+            "ConditionAndCommandPairList": [
+              {
+                "Condition": {
+                  "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                  "param": {
+                    "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+                    "cellLocations": [
+                      {
+                        "SerializeProperty": "='0f945d1154474ee481fea0c868da262'!BZ20"
+                      }
+                    ]
+                  },
+                  "value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "='0f945d1154474ee481fea0c868da262'!調査結果待ちST.並び順"
+                  },
+                  "compareType": 4
+                },
+                "CommandList": [
+                  {
+                    "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+                    "TableName": "t_object_survey",
+                    "ShowConfirm": false,
+                    "CheckDataValidation": false,
+                    "ConfirmText": "本当に更新してもよろしいですか？",
+                    "RowsToUpdate": 1,
+                    "RowsToUpdateCondition": {
+                      "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                      "ColumnBindingInfo": {
+                        "TableName": "t_object_survey",
+                        "ColumnName": "survey_id"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "='0f945d1154474ee481fea0c868da262'!BZ13"
+                      }
+                    },
+                    "UpdateValues": [
+                      {
+                        "ColumnName": "survey_status_id",
+                        "Value": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "='0f945d1154474ee481fea0c868da262'!調査結果待ちST.調査ステータスID"
+                        }
+                      }
+                    ]
+                  }
+                ],
+                "ID": "5c0fee92-a312-448d-a66d-ce3b278f73e8"
+              }
+            ]
+          },
+          {
             "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
             "ConditionAndCommandPairList": [
               {
@@ -1426,7 +1676,7 @@
                     ]
                   }
                 ],
-                "ID": "e4f80459-c97b-4c2f-a077-a1204984cf30"
+                "ID": "f4a7ed4f-7137-4d8e-85b6-a14cb1bcb07c"
               }
             ]
           },
@@ -1681,7 +1931,7 @@
               "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
               "SerializeProperty": "='0f945d1154474ee481fea0c868da262'!CG10"
             },
-            "ID": "e2e3a81a475949b89ec876e6296636c9"
+            "ID": "6d8016d95a814dbcafe644d03351c9bb"
           },
           {
             "$type": "Forguncy.Model.SetCellPropertyCommand, ServerDesignerCommon",
@@ -1738,7 +1988,7 @@
                         "Value": "地盤調査報告書納品ボタン"
                       }
                     },
-                    "ID": "9f33c68ba4734233920307a6fb91963a"
+                    "ID": "b2779ca2ceb14e329d8a51abc2e1237e"
                   },
                   {
                     "$type": "Forguncy.Model.ShareCommand, ServerDesignerCommon",
@@ -1911,7 +2161,7 @@
                     "ReturnPropertiesTo": []
                   }
                 ],
-                "ID": "ae7411b3-ba37-4146-ac78-a5f6813df58d"
+                "ID": "0ec07e96-0b3b-44f6-be36-110bc290183e"
               },
               {
                 "CommandList": [
@@ -1926,7 +2176,7 @@
                     "$type": "LoadingCommand.EndLoadingCommand, LoadingCommand"
                   }
                 ],
-                "ID": "50197b92-1a1d-4667-ba81-0bf8bb07c771"
+                "ID": "35bc38d8-04fb-45bd-afe8-64f46905a921"
               }
             ]
           }
@@ -1977,7 +2227,7 @@
                     ]
                   }
                 ],
-                "ID": "318f4007-da79-481d-8419-1b5fa3596e52"
+                "ID": "09724214-14a4-4625-b0b3-39ef0be0140b"
               }
             ]
           },
@@ -2156,7 +2406,7 @@
                     ]
                   }
                 ],
-                "ID": "831e583e-a7fe-41b3-964a-b41203499454"
+                "ID": "18215c4d-2408-4bcd-a1f2-64dca49d102d"
               }
             ]
           },
@@ -2233,9 +2483,6 @@
     "17,12": {
       "TemplateCellSource": "調査実施開始日"
     },
-    "17,36": {
-      "TemplateCellSource": "調査原価"
-    },
     "17,64": {
       "TemplateCellSource": "仕入合計"
     },
@@ -2255,6 +2502,12 @@
         "Color": "Accent 1",
         "UseCellForeColor": true
       }
+    },
+    "19,77": {
+      "TemplateCellSource": "調査ステータス順"
+    },
+    "19,84": {
+      "TemplateCellSource": "申込ステータス順"
     }
   },
   "StyleDatas": {
@@ -2382,13 +2635,11 @@
       },
       {
         "FontFamily": 1,
-        "Formatter": 15,
-        "HorizontalAlignment": 12,
-        "BorderBottom": 0
+        "HorizontalAlignment": 8
       },
       {
         "FontFamily": 1,
-        "HorizontalAlignment": 8
+        "HorizontalAlignment": 5
       },
       {
         "FontFamily": 1,
@@ -2402,6 +2653,11 @@
       {
         "FontFamily": 1,
         "FontWeight": 7,
+        "HorizontalAlignment": 8
+      },
+      {
+        "Background": 9,
+        "FontFamily": 1,
         "HorizontalAlignment": 8
       },
       {
@@ -3236,27 +3492,6 @@
       "17,23": 5,
       "17,24": 2,
       "17,25": 2,
-      "17,26": 19,
-      "17,27": 19,
-      "17,28": 2,
-      "17,29": 2,
-      "17,30": 2,
-      "17,31": 2,
-      "17,32": 2,
-      "17,33": 2,
-      "17,34": 2,
-      "17,35": 2,
-      "17,36": 26,
-      "17,37": 6,
-      "17,38": 6,
-      "17,39": 6,
-      "17,40": 6,
-      "17,41": 6,
-      "17,42": 6,
-      "17,43": 6,
-      "17,44": 6,
-      "17,45": 6,
-      "17,46": 6,
       "17,48": 2,
       "17,54": 19,
       "17,55": 19,
@@ -3278,27 +3513,27 @@
       "17,73": 2,
       "17,74": 2,
       "17,75": 25,
-      "17,76": 27,
+      "17,76": 26,
       "17,77": 27,
-      "17,78": 27,
-      "17,79": 27,
-      "17,80": 27,
-      "17,81": 27,
-      "17,82": 27,
-      "17,83": 27,
+      "17,78": 26,
+      "17,79": 26,
+      "17,80": 26,
+      "17,81": 26,
+      "17,82": 26,
+      "17,83": 26,
       "17,84": 27,
-      "17,85": 27,
-      "17,86": 27,
-      "17,87": 27,
-      "17,88": 27,
-      "17,89": 27,
-      "17,90": 27,
-      "17,91": 27,
-      "17,92": 27,
-      "17,93": 27,
-      "17,94": 27,
-      "17,95": 27,
-      "17,96": 27,
+      "17,85": 26,
+      "17,86": 26,
+      "17,87": 26,
+      "17,88": 26,
+      "17,89": 26,
+      "17,90": 26,
+      "17,91": 26,
+      "17,92": 26,
+      "17,93": 26,
+      "17,94": 26,
+      "17,95": 26,
+      "17,96": 26,
       "18,0": 0,
       "18,2": 21,
       "18,3": 21,
@@ -3337,33 +3572,33 @@
       "18,44": 28,
       "18,45": 28,
       "18,46": 2,
-      "18,68": 27,
-      "18,69": 27,
-      "18,72": 27,
-      "18,73": 27,
-      "18,74": 27,
-      "18,75": 27,
-      "18,76": 27,
-      "18,77": 27,
-      "18,78": 27,
-      "18,79": 27,
-      "18,80": 27,
-      "18,81": 27,
-      "18,82": 27,
-      "18,83": 27,
-      "18,84": 27,
-      "18,85": 27,
-      "18,86": 27,
-      "18,87": 27,
-      "18,88": 27,
-      "18,89": 27,
-      "18,90": 27,
-      "18,91": 27,
-      "18,92": 27,
-      "18,93": 27,
-      "18,94": 27,
-      "18,95": 27,
-      "18,96": 27,
+      "18,68": 26,
+      "18,69": 26,
+      "18,72": 26,
+      "18,73": 26,
+      "18,74": 26,
+      "18,75": 26,
+      "18,76": 26,
+      "18,77": 26,
+      "18,78": 26,
+      "18,79": 26,
+      "18,80": 26,
+      "18,81": 26,
+      "18,82": 26,
+      "18,83": 26,
+      "18,84": 26,
+      "18,85": 26,
+      "18,86": 26,
+      "18,87": 26,
+      "18,88": 26,
+      "18,89": 26,
+      "18,90": 26,
+      "18,91": 26,
+      "18,92": 26,
+      "18,93": 26,
+      "18,94": 26,
+      "18,95": 26,
+      "18,96": 26,
       "19,0": 0,
       "19,2": 4,
       "19,3": 4,
@@ -3405,28 +3640,26 @@
       "19,74": 30,
       "19,75": 30,
       "19,76": 2,
-      "19,77": 27,
-      "19,78": 27,
-      "19,79": 27,
-      "19,80": 27,
-      "19,81": 27,
-      "19,82": 27,
-      "19,83": 27,
-      "19,84": 27,
-      "19,85": 27,
-      "19,86": 27,
-      "19,87": 27,
-      "19,88": 27,
-      "19,89": 27,
-      "19,90": 27,
-      "19,91": 27,
-      "19,92": 27,
-      "19,93": 27,
-      "19,94": 27,
-      "19,95": 27,
-      "19,96": 27,
-      "20,0": 31,
-      "20,1": 32,
+      "19,77": 31,
+      "19,80": 26,
+      "19,81": 26,
+      "19,82": 26,
+      "19,83": 26,
+      "19,84": 31,
+      "19,85": 2,
+      "19,86": 2,
+      "19,87": 26,
+      "19,88": 26,
+      "19,89": 26,
+      "19,90": 26,
+      "19,91": 26,
+      "19,92": 26,
+      "19,93": 26,
+      "19,94": 26,
+      "19,95": 26,
+      "19,96": 26,
+      "20,0": 32,
+      "20,1": 33,
       "20,2": 14,
       "20,3": 14,
       "20,4": 14,
@@ -3525,7 +3758,7 @@
       "20,97": 14
     },
     "ColStyles": {
-      "0": 33
+      "0": 34
     },
     "SheetStyle": {
       "FontFamily": 1
@@ -3593,7 +3826,6 @@
     "17,12,1,12",
     "19,12,1,12",
     "19,36,1,11",
-    "17,36,1,11",
     "3,25,1,26",
     "19,74,1,2",
     "20,74,1,2",
@@ -3614,7 +3846,9 @@
     "6,91,1,3",
     "9,91,1,3",
     "13,64,1,12",
-    "12,84,1,3"
+    "12,84,1,3",
+    "19,77,1,3",
+    "19,84,1,3"
   ],
   "PageInfo": {
     "$type": "Forguncy.Model.Pages.TemplatePage, ServerDesignerCommon",
@@ -3624,4 +3858,4 @@
     "Margin": {},
     "PaperSize": {}
   }
-}//RgpWDNnUjlRiziD4X+RPAjTF/RNGk0VsDflJ808VLiwJXntLOOK4eNBheSPjMfiVhqhcBgvCBRQykJNf1DacQxVkguyU+r1kkIhfX3iomxrpC8GW9cR5lWpt9aFm6JF5LeBrVIfONel1lPZ6UfVrYmKtvPL+n9hTNInUP0WRhZXdSgoV64PXAr98BUuRndCcTvHXTwbpUwnC8sgaLJY3xJV0SZATmSyNymmq6ALgPQHpXCZ6Cp949cV717ehsrFQWQE0LLp+NLhpvT/wXljqh9vaWUFl0qpXalLrpC6lmBO3mblqPUYm66Fawd/wMu4GRR6KkuttX09+toPpBvrA+DvXD4TXnwO6smLarwt0T8xtmtD2geAj5z2Tvw4uxFjo7BPuUQuoLZviLAwdSY0Tu2yAX2MTcxd4kHdqc6k45qXDZ6aP8G4anYZ+vdbk3q7wTpZ/Gkp8bovZvSJ/1sghyr+qx4xOQWFaJG2/CV0EfopihoL668D/zmz3ZV/V8O78388ReKaL+Wmo+/9HVoGpTEbhlw+wUch7X3L4KrBKZlNCT+OAKXBWXWPtWeDclIhAlXTo4vjeFPl943UM/0OgN+jhIV4nupxVBYP/tUGd/w0xwcl2CtODr5xYCzcLNcoD2fbqdqrU3zzWx4YKihXiwBlCc/ABAHEytJ0/kqXt4FIf4Ba8jPdGaVD5FLy2MthJv+4BY06NgRD5TktxM9Q9lwUPtyiiUtaFU+MsRKsfJalLl31hUnPZPS1SH1J84r3Fcsfus9mOg7IjgU3QbHBt+lpmwjGG03Ddnq4ChLpSt/JY/YPX6GSqJnFAABWAKcPSnD9tL74y2WNJwXcPpPml4q0L/0JLrjVjxSAjC/jSodWOZy2uWzeRU0OCY3PY5ncEZ/jUEyV1kpgTTGk97oBzrw==|920
+}//NVZK09jT9cqU2mH41vHhaFlNsdQoxVBSdQM2woxgp/MYPjwOhcJwwYtqSel4v9EvITCkgOJt7mfufuMJWfsGQl1wydOviy7KOHUn0g/uIsE5PGYU0zHC+KDLPKeGMxdL/vxPL+/PejSxzC/ULsoFLGjNFsSYrSPsR1fXzOfsNK2ddBa2T9vCb0S6JABt+7fJKubT+yc3of1PL7i/ROCtyfuQsuXrk+WP05OIvD07wY5amLAroMEgOLot5zhBWwOp/9VeOzsjjiMIObKQKc32Svwt6dSKteL8YrdrUJbxcuM/lkch9Is8Ku3velJGvQ+ojgPt3TNkM1MFqciNKqCRqXILXPBg29S14FpRDM8BXRGsQaEIuE61epyJBDn6U9YUiLINYjDa+kYFtO9BRXTPwD+I7mIEB6tE1+IiQWTvrDx/Ot0cNe2qSMwFuZAN3lmV/kuYl2fCx8BXtK7dMuh9L7cp5WXBB0p3KpCG1LzokfZDjgJmWic2/alsPREBEUbkevIyUgagflsiH55uHcCI9A4iYDg/a+LwjIbA9mN7NyHH2uvfOo+pVtjEx0Qn9TCfs0DpFnhR2duBtIQ3i22BzicmCq8EiUkHvz+utpfyIKQj54h+aPXmAlNLSP5/kWKh5O4lq5TtkpffJikNfOebs9On7j3aro1P0z/UTKJ384lS+d8rXjPb8fUbxfG6e2zAMIm1Rxg50juBXnp+tsdz+Jhj/aGmHIG9t+x+8OcGh4Eo1kuZG69UbWrI3OJ0Xyk1p20bdy7h+hJ6a1x4d5oSltsPn+kVpUMnTLIWZw/Mex8Zi1vGVbFgB38Fyh3HYXCsiw7+nNekII8fjlKIsZYHoBqQofDTzUydLmLICWTtFSwRUdYvCnt7G5UkSWScXo9pkuvX7B2wgk6g+6qrb9BF+A==|920
