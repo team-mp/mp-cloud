@@ -95,6 +95,9 @@
         },
         {
           "Name": "P_業務対応者ID"
+        },
+        {
+          "Name": "P_業務対応フラグ"
         }
       ]
     }
@@ -103,33 +106,6 @@
     {
       "$type": "Forguncy.Model.ServerTransactionCommand, ServerDesignerCommon",
       "CommandList": [
-        {
-          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
-          "ParameterName": "解析確定ステータスID",
-          "TableValue": {
-            "TableName": "m_analysis_status",
-            "OnlyGetValue": true,
-            "TableValueType": 0,
-            "BindingInfos": [
-              {
-                "BindingInfo": {
-                  "TableName": "m_analysis_status",
-                  "ColumnName": "analysis_status_id"
-                },
-                "ColumnName": "analysis_status_id"
-              }
-            ],
-            "SqlCondition": {
-              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
-              "ColumnBindingInfo": {
-                "TableName": "m_analysis_status",
-                "ColumnName": "analysis_complete_flg"
-              },
-              "Value": "1"
-            }
-          },
-          "ID": "7ab09794142844b5ad66a7aaf6ae36b9"
-        },
         {
           "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
           "ParameterName": "解析結果",
@@ -171,7 +147,7 @@
               }
             }
           },
-          "ID": "32d7bcbe056944888ec0f052c720447b"
+          "ID": "5689853b7aa146b18a669ebc9f0c1607"
         },
         {
           "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
@@ -221,6 +197,30 @@
                   "ColumnName": "order_type_id"
                 },
                 "ColumnName": "申込タイプID"
+              },
+              {
+                "BindingInfo": {
+                  "TableName": "t_object_order",
+                  "ColumnName": "order_type_id",
+                  "RelationBinding": {
+                    "RelatedTable": "m_order_type",
+                    "RelatedColumn": "order_type_id",
+                    "DisplayColumn": "analyze_flg"
+                  }
+                },
+                "ColumnName": "地盤解析フラグ"
+              },
+              {
+                "BindingInfo": {
+                  "TableName": "t_object_order",
+                  "ColumnName": "order_type_id",
+                  "RelationBinding": {
+                    "RelatedTable": "m_order_type",
+                    "RelatedColumn": "order_type_id",
+                    "DisplayColumn": "warranty_flg"
+                  }
+                },
+                "ColumnName": "地盤保証フラグ"
               }
             ],
             "SqlCondition": {
@@ -235,7 +235,7 @@
               }
             }
           },
-          "ID": "69e118d25eff46049b5e3e450f575004"
+          "ID": "a45335608f6145b2a14f760953b36abd"
         },
         {
           "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
@@ -302,7 +302,7 @@
               }
             }
           },
-          "ID": "e962632518a345cd8b42ca9157972d42"
+          "ID": "bed31d4c9eba465b9410d4ea767ce59d"
         },
         {
           "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
@@ -370,7 +370,7 @@
             },
             "TopCount": "1"
           },
-          "ID": "9ce33cd9e7cc4af3afcdde974f1dcd99"
+          "ID": "475679cc526a459a9c8f6b18622e0648"
         },
         {
           "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
@@ -418,12 +418,94 @@
             },
             "TopCount": "1"
           },
-          "ID": "ef9c27d73f3845ceaabded9d164dcfb7"
+          "ID": "789b86c746ff491a87a42260e92a6fa8"
         },
         {
           "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
           "ParameterName": "保証書発行依頼日",
-          "ID": "30b3abb3ffa74f1aba7390de2e1285be"
+          "ID": "822d61336b9647dfb1d955f51c8102a0"
+        },
+        {
+          "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+          "ConditionAndCommandPairList": [
+            {
+              "Condition": {
+                "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                "param": {
+                  "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                  "ParamObject": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=P_業務対応フラグ"
+                  }
+                },
+                "value": "1"
+              },
+              "CommandList": [
+                {
+                  "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                  "ParameterName": "更新後解析ステータスID",
+                  "TableValue": {
+                    "TableName": "m_analysis_status",
+                    "OnlyGetValue": true,
+                    "TableValueType": 0,
+                    "BindingInfos": [
+                      {
+                        "BindingInfo": {
+                          "TableName": "m_analysis_status",
+                          "ColumnName": "analysis_status_id"
+                        },
+                        "ColumnName": "analysis_status_id"
+                      }
+                    ],
+                    "SqlCondition": {
+                      "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                      "ColumnBindingInfo": {
+                        "TableName": "m_analysis_status",
+                        "ColumnName": "office_work_flg"
+                      },
+                      "Value": "1"
+                    }
+                  },
+                  "ID": "a12932f3fa374dcf8b5a504819bcbbd9",
+                  "Comments": "業務対応中"
+                }
+              ],
+              "ID": "9ff17baa-6483-4382-a5bd-88e297ae6d3f"
+            },
+            {
+              "CommandList": [
+                {
+                  "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                  "ParameterName": "更新後解析ステータスID",
+                  "TableValue": {
+                    "TableName": "m_analysis_status",
+                    "OnlyGetValue": true,
+                    "TableValueType": 0,
+                    "BindingInfos": [
+                      {
+                        "BindingInfo": {
+                          "TableName": "m_analysis_status",
+                          "ColumnName": "analysis_status_id"
+                        },
+                        "ColumnName": "analysis_status_id"
+                      }
+                    ],
+                    "SqlCondition": {
+                      "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                      "ColumnBindingInfo": {
+                        "TableName": "m_analysis_status",
+                        "ColumnName": "analysis_complete_flg"
+                      },
+                      "Value": "1"
+                    }
+                  },
+                  "ID": "f2c971e89cb740e48ceaf4036e903d26",
+                  "Comments": "解析完了"
+                }
+              ],
+              "ID": "58a816a6-0ecc-4334-a494-bcb84cbe880f"
+            }
+          ]
         },
         {
           "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
@@ -619,7 +701,7 @@
               "ColumnName": "analysis_status_id",
               "Value": {
                 "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                "SerializeProperty": "=解析確定ステータスID"
+                "SerializeProperty": "=更新後解析ステータスID"
               }
             },
             {
@@ -693,7 +775,7 @@
                       "Value": "1"
                     }
                   },
-                  "ID": "d8380cf6b31c4e0c93b2c5c4c48e6a83",
+                  "ID": "2c3d5d9d2d4945b09abbca68e0cc8179",
                   "Comments": "仮判定終了"
                 },
                 {
@@ -721,7 +803,7 @@
                       "Value": "1"
                     }
                   },
-                  "ID": "4d58df712ad44b01ac9cf878b8950e76",
+                  "ID": "3b2b6689593e457ba8050406772ec746",
                   "Comments": "キャンセル終了"
                 },
                 {
@@ -749,7 +831,7 @@
                       "Value": "1"
                     }
                   },
-                  "ID": "a30a4f0da8a94e99961d2249622be724",
+                  "ID": "1efe825f0a4641139f5d1345fa476dbf",
                   "Comments": "キャンセル終了"
                 },
                 {
@@ -777,11 +859,11 @@
                       "Value": "1"
                     }
                   },
-                  "ID": "4bb9ef2e403847ac95db291a3c0ed3b6",
+                  "ID": "2fd1c311bb124f31ad26c07b5aade368",
                   "Comments": "キャンセル終了"
                 }
               ],
-              "ID": "d6e537da-245d-47b8-98bc-f036f1d4eb08"
+              "ID": "e71da4e4-4b18-4307-a35b-020ef8fe04aa"
             },
             {
               "Condition": {
@@ -821,7 +903,7 @@
                       "Value": "1"
                     }
                   },
-                  "ID": "cba985eea1c9435697dfc9868cfaa5d8",
+                  "ID": "2a6d83914e084e68970fd20798cd53f1",
                   "Comments": "保証不可"
                 },
                 {
@@ -849,7 +931,7 @@
                       "Value": "1"
                     }
                   },
-                  "ID": "da16522c6ce341a082effe3fa31f2527",
+                  "ID": "1c930e2c399a47938b4a2678dedd536b",
                   "Comments": "キャンセル終了"
                 },
                 {
@@ -877,7 +959,7 @@
                       "Value": "1"
                     }
                   },
-                  "ID": "822f1167870a4f5196657a9935b57803",
+                  "ID": "7dfe70ae1e5c4756a6c1ad7b55ba6dd3",
                   "Comments": "キャンセル終了"
                 },
                 {
@@ -905,11 +987,153 @@
                       "Value": "1"
                     }
                   },
-                  "ID": "0884dc2ed3bc416186cfbc382489b1d0",
+                  "ID": "1988d174a89e4ab7b70256d9cae9dca4",
                   "Comments": "キャンセル終了"
                 }
               ],
-              "ID": "eb2ec00b-c02f-4fb1-b4fa-322a7aea7ceb"
+              "ID": "3bff4427-3c9e-4342-98de-cd6a1f5456cf"
+            },
+            {
+              "Condition": {
+                "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                "Condition1": {
+                  "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                  "param": {
+                    "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                    "ParamObject": {
+                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                      "SerializeProperty": "=物件申込.地盤解析フラグ"
+                    }
+                  },
+                  "value": "1"
+                },
+                "Condition2": {
+                  "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                  "param": {
+                    "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                    "ParamObject": {
+                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                      "SerializeProperty": "=物件申込.地盤保証フラグ"
+                    }
+                  },
+                  "value": "0"
+                }
+              },
+              "CommandList": [
+                {
+                  "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                  "ParameterName": "メインステータス",
+                  "TableValue": {
+                    "TableName": "m_order_status",
+                    "OnlyGetValue": true,
+                    "TableValueType": 0,
+                    "BindingInfos": [
+                      {
+                        "BindingInfo": {
+                          "TableName": "m_order_status",
+                          "ColumnName": "order_status_id"
+                        },
+                        "ColumnName": "order_status_id"
+                      }
+                    ],
+                    "SqlCondition": {
+                      "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                      "ColumnBindingInfo": {
+                        "TableName": "m_order_status",
+                        "ColumnName": "delivery_complete_flg"
+                      },
+                      "Value": "1"
+                    }
+                  },
+                  "ID": "d066ed27469f4ea8b67c51344f0980ee",
+                  "Comments": "保証不可"
+                },
+                {
+                  "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                  "ParameterName": "転圧ステータス",
+                  "TableValue": {
+                    "TableName": "m_compaction_status",
+                    "OnlyGetValue": true,
+                    "TableValueType": 0,
+                    "BindingInfos": [
+                      {
+                        "BindingInfo": {
+                          "TableName": "m_compaction_status",
+                          "ColumnName": "compaction_status_id"
+                        },
+                        "ColumnName": "compaction_status_id"
+                      }
+                    ],
+                    "SqlCondition": {
+                      "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                      "ColumnBindingInfo": {
+                        "TableName": "m_compaction_status",
+                        "ColumnName": "cancel_flg"
+                      },
+                      "Value": "1"
+                    }
+                  },
+                  "ID": "6d7a909006614680a71dbdfd8349156f",
+                  "Comments": "キャンセル終了"
+                },
+                {
+                  "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                  "ParameterName": "工事ステータス",
+                  "TableValue": {
+                    "TableName": "m_construction_status",
+                    "OnlyGetValue": true,
+                    "TableValueType": 0,
+                    "BindingInfos": [
+                      {
+                        "BindingInfo": {
+                          "TableName": "m_construction_status",
+                          "ColumnName": "construction_status_id"
+                        },
+                        "ColumnName": "construction_status_id"
+                      }
+                    ],
+                    "SqlCondition": {
+                      "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                      "ColumnBindingInfo": {
+                        "TableName": "m_construction_status",
+                        "ColumnName": "cancel_flg"
+                      },
+                      "Value": "1"
+                    }
+                  },
+                  "ID": "57d1f148e0dc4f508b4c9349c4fd5cc7",
+                  "Comments": "キャンセル終了"
+                },
+                {
+                  "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                  "ParameterName": "保証ステータス",
+                  "TableValue": {
+                    "TableName": "m_warranty_status",
+                    "OnlyGetValue": true,
+                    "TableValueType": 0,
+                    "BindingInfos": [
+                      {
+                        "BindingInfo": {
+                          "TableName": "m_warranty_status",
+                          "ColumnName": "warranty_status_id"
+                        },
+                        "ColumnName": "warranty_status_id"
+                      }
+                    ],
+                    "SqlCondition": {
+                      "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                      "ColumnBindingInfo": {
+                        "TableName": "m_warranty_status",
+                        "ColumnName": "cancel_flg"
+                      },
+                      "Value": "1"
+                    }
+                  },
+                  "ID": "ffd3140218db4f94b8d7a4661bf5a856",
+                  "Comments": "キャンセル終了"
+                }
+              ],
+              "ID": "bbbe9156-2849-468a-a4b5-7d438e6da297"
             },
             {
               "Condition": {
@@ -949,7 +1173,7 @@
                       "Value": "1"
                     }
                   },
-                  "ID": "abd652f9118843ae80402ad5412a5fce",
+                  "ID": "7e79b1d6704f47949beaa8099a336eb9",
                   "Comments": "地業転圧確認中"
                 },
                 {
@@ -977,7 +1201,7 @@
                       "Value": "1"
                     }
                   },
-                  "ID": "c08cf516a13f472280d76f60f7a612b8",
+                  "ID": "6dd49fd7150845148596fdbf2d6a7163",
                   "Comments": "キャンセル終了"
                 },
                 {
@@ -1005,7 +1229,7 @@
                       "Value": "1"
                     }
                   },
-                  "ID": "ba09d90fe4bb4ca08510234ae40ec820",
+                  "ID": "42a1999931b74f9a81b20fa4f330e737",
                   "Comments": "キャンセル終了"
                 },
                 {
@@ -1033,11 +1257,11 @@
                       "Value": "1"
                     }
                   },
-                  "ID": "54d2c30656954a30b73fd813ad58f87b",
+                  "ID": "5a76e38558d647d89ace1731055778ab",
                   "Comments": "転圧結果待ち"
                 }
               ],
-              "ID": "7897102e-618b-4bb0-ba2d-84e679084565"
+              "ID": "df29fc5a-4929-4d5d-847c-ec80db4cfeed"
             },
             {
               "Condition": {
@@ -1077,7 +1301,7 @@
                       "Value": "1"
                     }
                   },
-                  "ID": "898b3bc7852b4ef6990ca2b513998143",
+                  "ID": "a8d3f881038f488ebaf070b0bdd73c15",
                   "Comments": "改良工事確認中"
                 },
                 {
@@ -1105,7 +1329,7 @@
                       "Value": "1"
                     }
                   },
-                  "ID": "fa156f18891e4db8a217b8aad3eee9d0",
+                  "ID": "da488c0ffbdc49daa585c4095ebefc9e",
                   "Comments": "キャンセル終了"
                 },
                 {
@@ -1133,7 +1357,7 @@
                       "Value": "1"
                     }
                   },
-                  "ID": "5c25f9c2505b446989baf815441ad412",
+                  "ID": "8bba10c917664541aede8e69fc981023",
                   "Comments": "キャンセル終了"
                 },
                 {
@@ -1161,11 +1385,11 @@
                       "Value": "1"
                     }
                   },
-                  "ID": "d9fe9960613e41958c486cdefe3783be",
+                  "ID": "91b0b359dd7542eeae9a42350c5f2e34",
                   "Comments": "工事結果待ち"
                 }
               ],
-              "ID": "477d2b76-24c5-453b-9504-7d094f0b624c"
+              "ID": "ad727f21-d7aa-4a21-8075-b5bb3f86de51"
             },
             {
               "Condition": {
@@ -1205,7 +1429,7 @@
                       "Value": "1"
                     }
                   },
-                  "ID": "bfd3807d863e4492afd87f308e793bd2",
+                  "ID": "dab5c50951544b929f2950988fe1bfcc",
                   "Comments": "再調査待ち"
                 },
                 {
@@ -1233,7 +1457,7 @@
                       "Value": "1"
                     }
                   },
-                  "ID": "4eff2f9a9c8a4d049d78a3bac014b593",
+                  "ID": "55a816ae0ac044c18e5a7bd00f5b7168",
                   "Comments": "キャンセル終了"
                 },
                 {
@@ -1261,7 +1485,7 @@
                       "Value": "1"
                     }
                   },
-                  "ID": "7464b82d18a441e0b241793bfe3c612d",
+                  "ID": "bc737981596d4f8ab0823966b86b7323",
                   "Comments": "キャンセル終了"
                 },
                 {
@@ -1289,11 +1513,11 @@
                       "Value": "1"
                     }
                   },
-                  "ID": "e96d1bcca28a45ddb187756c0a402f53",
+                  "ID": "f03eb07545344ddfb197317158657d68",
                   "Comments": "再調査待ち"
                 }
               ],
-              "ID": "7c811bc4-2ccc-4016-bee4-4ed94f2228ef"
+              "ID": "1c0dab1f-67c0-4591-9b54-8420580b9d28"
             },
             {
               "Condition": {
@@ -1363,7 +1587,7 @@
                       "Value": "1"
                     }
                   },
-                  "ID": "485c8488b0f941f6aba6b8fb02224dac",
+                  "ID": "550a6e28764e43d39814be7b55b55c4b",
                   "Comments": "保証発行待ち"
                 },
                 {
@@ -1391,7 +1615,7 @@
                       "Value": "1"
                     }
                   },
-                  "ID": "b5ed0bba94d94c7a9a8f019c80cf2f90",
+                  "ID": "bdb5b11f102c4a75a440d16b4a37abd4",
                   "Comments": "キャンセル終了"
                 },
                 {
@@ -1419,7 +1643,7 @@
                       "Value": "1"
                     }
                   },
-                  "ID": "7798e82309ee4670a5d710f2bb99d9cf",
+                  "ID": "3a9071c45d4f4e7fab7cdea154268191",
                   "Comments": "キャンセル終了"
                 },
                 {
@@ -1447,7 +1671,7 @@
                       "Value": "1"
                     }
                   },
-                  "ID": "0490aa9efb01458dbb5777413488dbfc",
+                  "ID": "e5b4085d86334d8cb1e19e4ceed9aa31",
                   "Comments": "保証発行待ち"
                 },
                 {
@@ -1457,11 +1681,11 @@
                     "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
                     "SerializeProperty": "=P_解析確定日"
                   },
-                  "ID": "7ebcc339cef24eb7a933e676385b2d37",
+                  "ID": "d41c8f420c714e4b82eb50bd50560552",
                   "Comments": "ここで発行依頼日をセット"
                 }
               ],
-              "ID": "ec16fa3f-0f44-42ab-a61f-de5a3314ea6f"
+              "ID": "a5a2b1e7-eb73-4832-9e20-2ae0cd25a1b4"
             },
             {
               "CommandList": [
@@ -1490,7 +1714,7 @@
                       "Value": "1"
                     }
                   },
-                  "ID": "64d7d940ca8e4a659930ec07cd8b7db0",
+                  "ID": "2bf42914db9d43db98516444c0e171ab",
                   "Comments": "保証確認中"
                 },
                 {
@@ -1518,7 +1742,7 @@
                       "Value": "1"
                     }
                   },
-                  "ID": "97689cfae05a43febf96c32aa13eba97",
+                  "ID": "de2178daa9034941ba96e788540a24db",
                   "Comments": "キャンセル終了"
                 },
                 {
@@ -1546,7 +1770,7 @@
                       "Value": "1"
                     }
                   },
-                  "ID": "963ca48eecc04be687572dc2cd02a571",
+                  "ID": "a4e0df77b00f438392411d434d40be15",
                   "Comments": "キャンセル終了"
                 },
                 {
@@ -1574,11 +1798,11 @@
                       "Value": "1"
                     }
                   },
-                  "ID": "1c265b8d51714dd090805cb4e931355b",
+                  "ID": "004a9f8228f345f984f723a43eaf44b9",
                   "Comments": "保証確認中"
                 }
               ],
-              "ID": "440f84d0-40e1-40b0-91cd-846138b3ebe8"
+              "ID": "b48c2c4d-2fe5-43ea-9860-3de2d805befb"
             }
           ]
         },
@@ -1671,7 +1895,7 @@
                   ]
                 }
               ],
-              "ID": "eead9805-4859-445c-94f4-12e74d918b6e"
+              "ID": "4e5c0a64-3d3e-4f5a-a173-8c87c6f29b43"
             },
             {
               "Condition": {
@@ -1759,7 +1983,7 @@
                   ]
                 }
               ],
-              "ID": "0b7ac8d0-6c93-42a5-94ff-408254274b43"
+              "ID": "e39558cb-3bf2-4c74-819e-8e7df384a73c"
             }
           ],
           "Comments": "転圧判定の場合"
@@ -1814,7 +2038,7 @@
                       }
                     }
                   },
-                  "ID": "5fe19ef351f64965b2097375ec6d72e5"
+                  "ID": "4346abfca4b5422db6d3cff8f91d4df1"
                 },
                 {
                   "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
@@ -1860,12 +2084,12 @@
                           ]
                         }
                       ],
-                      "ID": "71ff43c3-62ae-4ee3-9ac6-5dab86e9ab2a"
+                      "ID": "71ebf050-43da-44b9-9d96-70ac2db19791"
                     }
                   ]
                 }
               ],
-              "ID": "6ddb9c9a-8f1b-4bf5-8503-7be89a28ae72"
+              "ID": "4097ab43-8780-4ecb-9061-b72ca30a9d36"
             }
           ],
           "Comments": "転圧IDがあれば"
@@ -1920,7 +2144,7 @@
                       }
                     }
                   },
-                  "ID": "5f26157b9481471db8876c8bbe061379"
+                  "ID": "e64eb31d30274b32afdd29cca0733089"
                 },
                 {
                   "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
@@ -1966,12 +2190,12 @@
                           ]
                         }
                       ],
-                      "ID": "2d04f4bf-28ea-4aa7-b352-67325ef7f27a"
+                      "ID": "d2551a79-7b29-48f1-8209-0f4149b5dbfe"
                     }
                   ]
                 }
               ],
-              "ID": "57f3e078-0fb6-4230-b4b8-93ddbf17d1fe"
+              "ID": "1cc79247-27a0-4e96-8e57-7f52de1418a0"
             }
           ],
           "Comments": "工事IDがあれば"
@@ -2026,7 +2250,7 @@
                       }
                     }
                   },
-                  "ID": "c2a80e4c8d83465ba615869f4fa24235"
+                  "ID": "cba7bb1ba9e243a89f8e1f30e7105436"
                 },
                 {
                   "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
@@ -2079,12 +2303,12 @@
                           ]
                         }
                       ],
-                      "ID": "04d0d9a7-2baf-44d3-9174-d2487b5f0833"
+                      "ID": "9d0356b3-ea8f-490c-8097-823cbc2aaee3"
                     }
                   ]
                 }
               ],
-              "ID": "fe3d6cd7-6ded-4a1d-9500-f534e8460332"
+              "ID": "1e8b62d2-6a09-45b3-b7dc-e6a9694d8ec7"
             }
           ],
           "Comments": "保証IDがあれば"
@@ -2138,7 +2362,7 @@
                       }
                     }
                   },
-                  "ID": "f31db01be43a4e40b99baffb67623f46"
+                  "ID": "d169687b2a5243de988c4bd792f429a2"
                 },
                 {
                   "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
@@ -2230,7 +2454,7 @@
                               }
                             }
                           },
-                          "ID": "0560daeb72dc416a8e37a60e41e244bd"
+                          "ID": "209cfe0cf46a48459f6819a58b73d58c"
                         },
                         {
                           "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
@@ -2255,7 +2479,7 @@
                                   "CustomReturns": []
                                 }
                               ],
-                              "ID": "9a1bee90-2586-460c-a4c5-b909c7c0ae38"
+                              "ID": "2cb991f0-669a-43d7-b76e-c2273ceb5f73"
                             },
                             {
                               "CommandList": [
@@ -2298,7 +2522,7 @@
                                     "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
                                     "SerializeProperty": "=P_解析確定日"
                                   },
-                                  "ID": "1590dadebdab4e278d1de8766112327b",
+                                  "ID": "be560b28653a436ea39ef0ccea3febc0",
                                   "Comments": "ここで発行依頼日をセット"
                                 },
                                 {
@@ -2392,17 +2616,17 @@
                                   ]
                                 }
                               ],
-                              "ID": "7e203165-03b9-4f0a-bf15-699a8b333b8f"
+                              "ID": "db06ffe1-f86f-4101-a51e-f551ba4b1245"
                             }
                           ]
                         }
                       ],
-                      "ID": "16463d59-9e3b-49dc-ba47-9434849964cd"
+                      "ID": "ae80770f-3200-4113-8775-a521521105cd"
                     }
                   ]
                 }
               ],
-              "ID": "58842032-385a-4c85-96ee-3ec617544ae8"
+              "ID": "8472ce27-b274-438b-b609-c5096d2312b8"
             }
           ],
           "Comments": "直接基礎即保証"
@@ -2519,7 +2743,7 @@
                       }
                     }
                   },
-                  "ID": "5876a6f2fbd7401c834275bfa66da812"
+                  "ID": "b6582f232ec64c738a7313b330bef687"
                 },
                 {
                   "$type": "Forguncy.Model.LoopCommand, ServerDesignerCommon",
@@ -2584,7 +2808,7 @@
                               "CustomReturns": []
                             }
                           ],
-                          "ID": "bc0d0e9c-761c-4aa0-87c5-a0aa6c501e6e"
+                          "ID": "bd039683-5f97-4a44-b25f-cc739d5892a1"
                         }
                       ]
                     }
@@ -2686,7 +2910,7 @@
                       }
                     }
                   },
-                  "ID": "3d165eb3706348cc9516975c9b8ec67b"
+                  "ID": "d23397b0d0884bb386654590c88b2ad3"
                 },
                 {
                   "$type": "Forguncy.Model.LoopCommand, ServerDesignerCommon",
@@ -2751,7 +2975,7 @@
                               "CustomReturns": []
                             }
                           ],
-                          "ID": "4b4cd0cb-2f79-44fe-bde5-fea49d1e1ddc"
+                          "ID": "e36a5b3d-3a0d-41c7-becd-ab38819200ab"
                         }
                       ]
                     }
@@ -2759,9 +2983,156 @@
                 }
               ],
               "Comments": "調査保証セットの場合",
-              "ID": "dd72c0a4-9cb3-4593-b973-d4ada6920509"
+              "ID": "2f0047b5-16cb-4b5d-be1c-421d7c58a370"
             }
           ]
+        },
+        {
+          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+          "ParameterName": "解析商品",
+          "TableValue": {
+            "TableName": "t_object_product",
+            "BindingInfos": [
+              {
+                "BindingInfo": {
+                  "TableName": "t_object_product",
+                  "ColumnName": "object_product_id"
+                },
+                "ColumnName": "物件商品ID"
+              }
+            ],
+            "SqlCondition": {
+              "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+              "Condition1": {
+                "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                "Condition1": {
+                  "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                  "ColumnBindingInfo": {
+                    "TableName": "t_object_product",
+                    "ColumnName": "analysis_id"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=P_解析ID"
+                  }
+                },
+                "Condition2": {
+                  "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                  "ColumnBindingInfo": {
+                    "TableName": "t_object_product",
+                    "ColumnName": "accounting_complete_flg"
+                  },
+                  "Value": "0"
+                }
+              },
+              "Condition2": {
+                "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                "Condition1": {
+                  "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                  "ColumnBindingInfo": {
+                    "TableName": "t_object_product",
+                    "ColumnName": "purchase_required_flg"
+                  },
+                  "Value": "0",
+                  "LeftBracket": 1
+                },
+                "Condition2": {
+                  "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                  "Condition1": {
+                    "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                    "ColumnBindingInfo": {
+                      "TableName": "t_object_product",
+                      "ColumnName": "purchase_required_flg"
+                    },
+                    "Value": "1",
+                    "LeftBracket": 1
+                  },
+                  "Condition2": {
+                    "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                    "CompareType": 1,
+                    "ColumnBindingInfo": {
+                      "TableName": "t_object_product",
+                      "ColumnName": "purchase_receipt_date"
+                    },
+                    "Value": "%Null%",
+                    "RightBracket": 2
+                  }
+                },
+                "RelationType": 1
+              }
+            }
+          },
+          "ID": "6c23522c34df4fe789735dc8e69457a0"
+        },
+        {
+          "$type": "Forguncy.Model.LoopCommand, ServerDesignerCommon",
+          "LoopInfo": {
+            "$type": "Forguncy.Model.CountLoopInfo, ServerDesignerCommon",
+            "LoopCount": {
+              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+              "SerializeProperty": "=解析商品"
+            },
+            "LoopItemParamName": "Item"
+          },
+          "CommandList": [
+            {
+              "$type": "Forguncy.Model.RequestServerCommand, ServerDesignerCommon",
+              "ServerCommandName": "計上データ確定処理（物件商品ID）",
+              "Parameters": [
+                {
+                  "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=Item.物件商品ID"
+                  },
+                  "ParamName": "P_物件商品ID"
+                }
+              ],
+              "ResultErrorCodeTo": {
+                "SerializeProperty": "リターンコード"
+              },
+              "ResultMessageTo": {
+                "SerializeProperty": "リターンメッセージ"
+              },
+              "RefreshAfterFinish": true,
+              "CheckDataValidation": true
+            },
+            {
+              "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+              "ConditionAndCommandPairList": [
+                {
+                  "Condition": {
+                    "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                    "param": {
+                      "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                      "ParamObject": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=リターンコード"
+                      }
+                    },
+                    "value": "0",
+                    "compareType": 1
+                  },
+                  "CommandList": [
+                    {
+                      "$type": "Forguncy.Model.ReturnCommand, ServerDesignerCommon",
+                      "ErrorCode": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=リターンコード"
+                      },
+                      "Message": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=リターンメッセージ"
+                      },
+                      "CustomReturns": []
+                    }
+                  ],
+                  "ID": "d59dbb60-8d8c-4afd-ac61-e4bb31c0deaa"
+                }
+              ]
+            }
+          ],
+          "Comments": "解析商品を確定する"
         },
         {
           "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
