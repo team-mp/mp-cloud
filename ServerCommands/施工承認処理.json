@@ -1,0 +1,56 @@
+{
+  "Enabled": true,
+  "Triggers": [
+    {
+      "$type": "Forguncy.ServerCommands.Models.PostRequestTrigger, ServerDesignerCommon",
+      "Permission": {
+        "AllowRoles": [
+          "FGC_LoginUser"
+        ]
+      },
+      "Parameters": [
+        {
+          "Name": "P_工事ID"
+        }
+      ]
+    }
+  ],
+  "Commands": [
+    {
+      "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+      "TableName": "t_object_construction",
+      "ShowConfirm": false,
+      "ConfirmText": "本当に更新してもよろしいですか？",
+      "RowsToUpdate": 1,
+      "RowsToUpdateCondition": {
+        "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+        "ColumnBindingInfo": {
+          "TableName": "t_object_construction",
+          "ColumnName": "construction_id"
+        },
+        "Value": {
+          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+          "SerializeProperty": "=P_工事ID"
+        }
+      },
+      "UpdateValues": [
+        {
+          "ColumnName": "construction_approval_flg",
+          "Value": "1"
+        },
+        {
+          "ColumnName": "construction_approval_date",
+          "Value": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=NOW()"
+          }
+        },
+        {
+          "ColumnName": "construction_approval_user_id",
+          "Value": "%CurrentUser.user_id%"
+        }
+      ]
+    }
+  ],
+  "Name": "施工承認処理"
+}
