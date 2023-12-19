@@ -285,13 +285,11 @@
     "7,38": "kN/㎡",
     "7,72": "▼解析至急期限日",
     "9,1": "解析条件",
-    "9,6": "解析時工事見積書添付",
-    "9,18": "工事判定時自動見積",
-    "9,30": "地業転圧判定",
     "9,43": "▼既定値参照",
     "10,72": "▼解析至急期限時刻",
     "11,1": "解析履歴",
     "11,35": "新規登録する",
+    "11,43": "{=IFERROR(ODATA(\"m_customer_default?$select=construction_estimate_set_flg,auto_construction_estimate_flg,no_compaction_judge_flg&$filter=customer_id eq \"&IF(ISBLANK(BF4),\"null\",BF4)),\"\")}",
     "13,72": "▼解析至急コメント",
     "14,43": "▼申込ID",
     "14,50": "▼申込タイプID",
@@ -311,18 +309,19 @@
     "7,49": "IFERROR(ODATA(\"m_customer_notice?$select=content&$filter=customer_id eq \"&IF(ISBLANK(AX4),\"null\",AX4)&\" and tab_id eq \"&IF(ISBLANK(AR4),\"null\",AR4)),\"\")",
     "7,57": "IFERROR(ODATA(\"m_customer_notice?$select=content&$filter=customer_id eq \"&IF(ISBLANK(BF4),\"null\",BF4)&\" and tab_id eq \"&IF(ISBLANK(AR4),\"null\",AR4)),\"\")",
     "7,65": "IF(BF8<>\"\",BF8,AX8)",
-    "9,14": "IF(VALUE(AR12)=1,\"必要\",\"不要\")",
-    "9,26": "IF(VALUE(AS12)=1,\"あり\",\"なし\")",
-    "9,35": "IF(VALUE(AT12)=1,\"不可\",\"可\")",
+    "9,24": "AT12",
+    "9,16": "AS12",
+    "9,6": "AR12",
     "11,6": "\"解析至急　期限：\"&TEXT(BU9,\"yyyy/mm/dd\")&\" \"&TEXT(BU12,\"hh:mm\")&\"まで\"",
     "21,84": "COUNT(AS23)",
     "22,45": "$CG$22-ROW(AR23)+1",
     "22,75": "IF(BV23<>\"\",BW23,\"\")",
     "22,81": "IFERROR(ODATA(\"v_analysis_product_summary?$select=売上合計&$filter=解析ID eq \"&IF(ISBLANK(AS23),\"null\",AS23)),\"\")",
-    "22,82": "IFERROR(ODATA(\"v_analysis_product_summary?$select=仕入合計&$filter=解析ID eq \"&IF(ISBLANK(AS23),\"null\",AS23)),\"\")"
+    "22,82": "IFERROR(ODATA(\"v_analysis_product_summary?$select=仕入合計&$filter=解析ID eq \"&IF(ISBLANK(AS23),\"null\",AS23)),\"\")",
+    "9,32": "AU12"
   },
   "ArrayFormulas": {
-    "11,43,1,3": "IFERROR(ODATA(\"m_customer_default?$select=construction_estimate_set_flg,auto_construction_estimate_flg,no_compaction_judge_flg&$filter=customer_id eq \"&IF(ISBLANK(BF4),\"null\",BF4)),\"\")"
+    "11,43,1,4": "IFERROR(ODATA(\"m_customer_default?$select=construction_estimate_set_flg,sutudy_paper_request_flg,auto_construction_estimate_flg,no_compaction_judge_flg&$filter=customer_id eq \"&IF(ISBLANK(BF4),\"null\",BF4)),\"\")"
   },
   "AttachInfos": {
     "3,49": {
@@ -386,17 +385,115 @@
         "ColumnName": "analysis_limite_date"
       }
     },
-    "9,35": {
+    "9,6": {
+      "CellType": {
+        "$type": "Forguncy.CheckBoxCellType, ServerDesignerCommon",
+        "Caption": "工事判定時見積添付必要",
+        "Style": 1,
+        "PrimaryColor": "#FF005B47",
+        "ReadOnly": true
+      },
+      "BindingInfo": {
+        "TableName": "m_customer_default",
+        "ColumnName": "no_compaction_estimate_flg"
+      },
       "ConditionFormatRulesCollection": {
         "Rules": [
           {
             "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
             "Formula": {
               "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-              "SerializeProperty": "=VALUE(物件詳細_解析!$AT$12)=1"
+              "SerializeProperty": "=NOT(物件詳細_解析!G10)"
             },
             "StyleInfo": {
-              "Foreground": "#FFFF0000",
+              "Foreground": "Background 1 -35",
+              "Underline": null,
+              "Strikethrough": null
+            }
+          }
+        ]
+      }
+    },
+    "9,16": {
+      "CellType": {
+        "$type": "Forguncy.CheckBoxCellType, ServerDesignerCommon",
+        "Caption": "沈下量検討書必要",
+        "Style": 1,
+        "PrimaryColor": "#FF005B47",
+        "ReadOnly": true
+      },
+      "BindingInfo": {
+        "TableName": "m_customer_default",
+        "ColumnName": "no_compaction_estimate_flg"
+      },
+      "ConditionFormatRulesCollection": {
+        "Rules": [
+          {
+            "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
+            "Formula": {
+              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+              "SerializeProperty": "=NOT(物件詳細_解析!Q10)"
+            },
+            "StyleInfo": {
+              "Foreground": "Background 1 -35",
+              "Underline": null,
+              "Strikethrough": null
+            }
+          }
+        ]
+      }
+    },
+    "9,24": {
+      "CellType": {
+        "$type": "Forguncy.CheckBoxCellType, ServerDesignerCommon",
+        "Caption": "工事自動見積あり",
+        "Style": 1,
+        "PrimaryColor": "#FF005B47",
+        "ReadOnly": true
+      },
+      "BindingInfo": {
+        "TableName": "m_customer_default",
+        "ColumnName": "no_compaction_estimate_flg"
+      },
+      "ConditionFormatRulesCollection": {
+        "Rules": [
+          {
+            "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
+            "Formula": {
+              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+              "SerializeProperty": "=NOT(物件詳細_解析!Y10)"
+            },
+            "StyleInfo": {
+              "Foreground": "Background 1 -35",
+              "Underline": null,
+              "Strikethrough": null
+            }
+          }
+        ]
+      }
+    },
+    "9,32": {
+      "CellType": {
+        "$type": "Forguncy.CheckBoxCellType, ServerDesignerCommon",
+        "Caption": "地業転圧判定不可",
+        "Style": 1,
+        "PrimaryColor": "#FF005B47",
+        "ReadOnly": true
+      },
+      "BindingInfo": {
+        "TableName": "m_customer_default",
+        "ColumnName": "no_compaction_estimate_flg"
+      },
+      "ConditionFormatRulesCollection": {
+        "Rules": [
+          {
+            "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
+            "Formula": {
+              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+              "SerializeProperty": "=NOT(物件詳細_解析!AG10)"
+            },
+            "StyleInfo": {
+              "Foreground": "Background 1 -35",
               "Underline": null,
               "Strikethrough": null
             }
@@ -462,7 +559,7 @@
                 }
               }
             },
-            "ID": "43d9cbe81b984683807c6ca9c038c85c"
+            "ID": "d92f99185732471b92b8408d84cd03f1"
           },
           {
             "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
@@ -490,7 +587,7 @@
                     "$type": "Forguncy.Model.StopCommand, ServerDesignerCommon"
                   }
                 ],
-                "ID": "648ed474-d3e1-4666-ac75-29ada56bf47d"
+                "ID": "2aca4ca6-7eea-416a-ad81-ca74b90b13bc"
               }
             ]
           },
@@ -1239,24 +1336,11 @@
         "BorderRight": null
       },
       {
-        "Foreground": 8,
-        "BorderBottom": null,
-        "BorderTop": null,
-        "BorderLeft": null,
-        "BorderRight": null
+        "FontFamily": 3
       },
       {
-        "Background": 12,
-        "HorizontalAlignment": 11,
-        "BorderBottom": null,
-        "BorderTop": null,
-        "BorderLeft": null,
-        "BorderRight": null
-      },
-      {
-        "Background": 12,
         "FontFamily": 3,
-        "HorizontalAlignment": 11,
+        "Foreground": 10,
         "BorderBottom": null,
         "BorderTop": null,
         "BorderLeft": null,
@@ -1283,6 +1367,9 @@
         "BorderTop": null,
         "BorderLeft": null,
         "BorderRight": null
+      },
+      {
+        "Background": 14
       },
       {
         "BorderBottom": 1,
@@ -1569,21 +1656,32 @@
       "8,74": 21,
       "9,1": 22,
       "9,6": 23,
-      "9,14": 24,
-      "9,18": 23,
-      "9,26": 24,
-      "9,30": 17,
-      "9,35": 25,
+      "9,16": 23,
+      "9,24": 8,
+      "9,25": 8,
+      "9,26": 8,
+      "9,27": 8,
+      "9,28": 8,
+      "9,29": 8,
+      "9,30": 8,
+      "9,31": 8,
+      "9,32": 24,
+      "9,33": 8,
+      "9,34": 8,
+      "9,35": 8,
       "9,36": 8,
       "9,37": 8,
+      "9,38": 8,
+      "9,39": 8,
       "10,72": 7,
       "11,1": 15,
-      "11,6": 26,
-      "11,35": 27,
-      "11,41": 27,
-      "11,43": 28,
-      "11,44": 28,
-      "11,45": 28,
+      "11,6": 25,
+      "11,35": 26,
+      "11,41": 26,
+      "11,43": 27,
+      "11,44": 27,
+      "11,45": 27,
+      "11,46": 28,
       "11,72": 11,
       "11,73": 21,
       "11,74": 21,
@@ -1672,8 +1770,8 @@
       "16,73": 21,
       "16,74": 21,
       "17,43": 32,
-      "17,44": 27,
-      "17,45": 27,
+      "17,44": 26,
+      "17,45": 26,
       "17,57": 7,
       "17,58": 8,
       "17,59": 8,
@@ -1924,9 +2022,6 @@
     "7,57,1,3",
     "7,65,1,3",
     "8,72,1,3",
-    "9,14,1,3",
-    "9,26,1,3",
-    "9,35,1,3",
     "11,6,1,16",
     "11,35,1,7",
     "11,72,1,3",
@@ -1942,7 +2037,11 @@
     "18,57,1,3",
     "18,63,1,3",
     "21,84,1,3",
-    "23,43,2,40"
+    "23,43,2,40",
+    "9,6,1,10",
+    "9,16,1,8",
+    "9,24,1,8",
+    "9,32,1,8"
   ],
   "PageInfo": {
     "$type": "Forguncy.Model.Pages.NormalPage, ServerDesignerCommon",
@@ -1982,4 +2081,4 @@
     "Margin": {},
     "PaperSize": {}
   }
-}//zszsGDO6YG6PoS8KuoqYD+jIHRsGZFOqW5zBHHsA5LNIMIciPTuoji0rF/+VdF43vpwYTgKnt/hpQJEo6BMp32ajDBu5l4Th3GzdzJteZ5xbt9nLmjq1kNAaL2lQDPKCK7a8CHL8Yt4pKaI6ItiKOsVnl/Inf8vJsoTrMvzaXYitllRU8a0MlXFLgbcXFeJUnU+lkGLU3mUrXoXnBhd6a0VbTY+TTuBqekSVq1cWYeytbI4THDr5s5OHqhUDm8MyG2tkDaasNDyS3ZZFe2zrkUjjW10L+RG2bR+MX2iMO2L01pnr0NZBcJxRLPDtT0AYs+1qtBJsUfYqA7nkDhiHpB8BdE2iR12CqvpNuhpEvIVudh85rQWl6iEtTHwd2p+C73iq7hI4WtU5gAa3t1Ieeju2zSp8Ct/wcE/R9SYNLau/63YBwQ8yDz1D7pR2rfWYgy8vcBnGUGmxLWObMZ34qrMvt7VRBPsrG2RBwDhR9syDQkfQhf+jE/EUZvU3IBeqQCY7o/XlxOHKBRMKBfMMt1LHLJFEuBuDm6pAi2lpc8GAL2ONMtpDaCaPQtJE6rLYzNyROHeDZrR6t/vO1EZ7to7q6+BeMkjkMYO4W7QhVQ3FJcMDwJ53mo2T+uSqca7twY1T5Zs7978fgXd2tKUYhsVpPF1NX8Pz+e3UTdbknUmXQr9rjIXYSNWbactkz1uHb/BLkhGoPlsN9ZpYnrmkYDkbFrNzH0wB7NXzIvex49l9+32YHpDQatl09gxrOmr1kIPP7rp1Bx0Qcto2qf/5oqzCB+NmZRPqNJfvZavFqV/2X6ZNAF2gXBgIhU1vXgqItqUldmRR8IhPesyYPQTLT7Vnk1C1w4oxMGAqF5ep2DiKKlff1qjqA2R4QTIG/TcWNqLW567mq3lurUm9+ITLLQ==|920
+}//oBzAKtfPE/HaSd1WCmunRyiNIi2W+nT47Rdei+bmRsJhDCcFNd36bTjOM2OjCQxvBdLYLspqTkMwFtOmZKqcRwKUO6APxwKlXq2HVXUm/TNSgHJjvTAFPmMwzkQxIApx1fl6y2psu4fj0szKRqxzqvasnL3fx+hl8nyzwDbVPZz8/MA5zxDKqE340DtZ5JHO4w7LXS1+t4AdlN/XZeVfHDDHql2j5/akte7+Oj1uZSVuniabzDGcLBoc3MBND9lHg6Qiqi6cBTEw3k1W4arp6TLg7792ijAW4vckcJvF1DJCHzLiiM3KXuwMowjIPRLqIITszfS7mGxPyPsYc7AvkAaQfRuvvqQ3XMw62wRacMgk+VekfXqosaDQ/vE/n09YCursleskLba0IOTSRhz4SB879Sq30CFGJHT8EMGxuzinl7jD/yPrWHB9dWBDd9eGG58VZm2i60rfytk+0SQrZBLlO++DYzj3DXT0fYq1PDk6vi6+rkCT65JI8oYDoznOHm74PJZJ+0aOSP23O1dqTWDK9/m+6R58tfGD59thDSsL7wBDKURM4/aj7euL/t/yhpCUT3/ITk28+NK1apdJCL5mMXzke16ZZm0oZ9xvUskYs5KH3+8up2NINVsPeJW3GBsBAgyp5QLoLfPEbNs5lco5UMCabTCMraihz7Y5gO/x2u7UW7uqljkOAaLvFENErW5sSzioLS34tl/FtZXM3AghYlDWYyV9uKQOYKv5EMz9VyoJEPU7Demm3j+4BRv6sZLy7xPrLXNCrXAush5vOfAWozyd0EyNrgmIs5FNF61uhyi9bV7ETxrUs7esIcQB7QcVEdcBiluCY5hxkJHVxbjW0hnty0zJ/GhOiFJuGqqFuRPWzqanxmoeq3Q+DQnro2W8UHlVk2V79UrGwkcp1w==|920
