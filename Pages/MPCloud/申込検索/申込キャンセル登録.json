@@ -53,16 +53,21 @@
       },
       "11": {
         "GridRowColumnDefinition": {
+          "DesignLengthInPixel": 28.0
+        }
+      },
+      "12": {
+        "GridRowColumnDefinition": {
           "DesignLengthInPixel": 25.0
         }
       },
-      "14": {
+      "15": {
         "GridRowColumnDefinition": {
           "DesignLengthInPixel": 25.0
         }
       }
     },
-    "Count": 15,
+    "Count": 16,
     "DefaultSize": 25.0
   },
   "Cols": {
@@ -202,11 +207,10 @@
   },
   "Values": {
     "1,26": "▼申込ID",
-    "4,2": "期限",
-    "4,19": "まで",
-    "11,2": "解析至急依頼します。よろしいですか？",
-    "13,11": "はい",
-    "13,18": "いいえ"
+    "4,2": "キャンセル理由",
+    "12,2": "この申込をキャンセルします。よろしいですか？",
+    "14,11": "はい",
+    "14,18": "いいえ"
   },
   "AttachInfos": {
     "1,2": {
@@ -231,49 +235,20 @@
         }
       }
     },
-    "2,26": {
+    "3,26": {
       "BindingInfo": {
         "TableName": "t_object_order",
         "ColumnName": "object_order_id"
-      }
-    },
-    "4,5": {
-      "CellType": {
-        "$type": "Forguncy.DateCellType, ServerDesignerCommon",
-        "CellDefaultValue": {
-          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-          "SerializeProperty": "=TODAY()"
-        },
-        "ShowCalendarScrollBar": true,
-        "TemplateKey": "_RS_LightLine_Translucent_SmallRoundCorner_Normal1"
-      },
-      "BindingInfo": {
-        "TableName": "t_object_order",
-        "ColumnName": "analysis_urgent_date"
-      }
-    },
-    "4,13": {
-      "CellType": {
-        "$type": "Forguncy.TimeCellType, ServerDesignerCommon",
-        "TemplateKey": "_RS_LightLine_Translucent_SmallRoundCorner_Normal1"
-      },
-      "BindingInfo": {
-        "TableName": "t_object_order",
-        "ColumnName": "analysis_limite_time"
       }
     },
     "6,2": {
       "CellType": {
         "$type": "Forguncy.MultilineTextBox, ServerDesignerCommon",
         "TemplateKey": "_RS_LightLine_Translucent_SmallRoundCorner_Normal1",
-        "WaterMark": "コメントがあれば入力してください"
-      },
-      "BindingInfo": {
-        "TableName": "t_object_order",
-        "ColumnName": "analysis_comment"
+        "WaterMark": "キャンセル理由を入力してください"
       }
     },
-    "13,11": {
+    "14,11": {
       "CellType": {
         "$type": "Forguncy.ButtonCellType, ServerDesignerCommon",
         "CommandList": [
@@ -287,7 +262,7 @@
                     "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
                     "cellLocations": [
                       {
-                        "SerializeProperty": "=解析至急依頼!F5"
+                        "SerializeProperty": "=申込キャンセル登録!C7"
                       }
                     ]
                   },
@@ -296,22 +271,56 @@
                 "CommandList": [
                   {
                     "$type": "Forguncy.Model.ShowMessageCommand, ServerDesignerCommon",
-                    "MessageFormula": "期限日入力してください"
+                    "MessageFormula": "キャンセル理由を入力してください"
                   },
                   {
                     "$type": "SetFocusCommand.SetFocusCommand, SetFocusCommand",
                     "TargetCell": {
                       "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                      "SerializeProperty": "=解析至急依頼!F5"
+                      "SerializeProperty": "=申込キャンセル登録!C7"
                     }
                   },
                   {
                     "$type": "Forguncy.Model.StopCommand, ServerDesignerCommon"
                   }
                 ],
-                "ID": "d65727c7-a168-4600-955e-19907d7fdf07"
+                "ID": "4ae76a10-df1f-49e5-aae3-3cfcc1d783f4"
               }
             ]
+          },
+          {
+            "$type": "LoadingCommand.StartLoadingCommand, LoadingCommand",
+            "LoadingText": "お待ちください",
+            "LoadingTextColor": "Background 1 0"
+          },
+          {
+            "$type": "Forguncy.Model.RequestServerCommand, ServerDesignerCommon",
+            "ServerCommandName": "申込キャンセル登録処理",
+            "Parameters": [
+              {
+                "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=申込キャンセル登録!AA4"
+                },
+                "ParamName": "P_申込ID"
+              },
+              {
+                "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=申込キャンセル登録!C7"
+                },
+                "ParamName": "P_申込キャンセル理由"
+              }
+            ],
+            "ResultErrorCodeTo": {
+              "SerializeProperty": "リターンコード"
+            },
+            "ResultMessageTo": {
+              "SerializeProperty": "リターンメッセージ"
+            },
+            "CheckDataValidation": false
           },
           {
             "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
@@ -323,146 +332,40 @@
                     "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
                     "cellLocations": [
                       {
-                        "SerializeProperty": "=解析至急依頼!N5"
+                        "SerializeProperty": "=申込キャンセル登録!リターンコード"
                       }
                     ]
                   },
-                  "value": "%Null%"
+                  "value": "0"
                 },
                 "CommandList": [
                   {
-                    "$type": "Forguncy.Model.ShowMessageCommand, ServerDesignerCommon",
-                    "MessageFormula": "期限時間入力してください"
-                  },
-                  {
-                    "$type": "SetFocusCommand.SetFocusCommand, SetFocusCommand",
-                    "TargetCell": {
-                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                      "SerializeProperty": "=解析至急依頼!N5"
-                    }
-                  },
-                  {
-                    "$type": "Forguncy.Model.StopCommand, ServerDesignerCommon"
+                    "$type": "Forguncy.Model.ClosePopupCommand, ServerDesignerCommon",
+                    "ReloadData": true
                   }
                 ],
-                "ID": "128c37eb-6fa2-4cbb-a087-5c592eb943cc"
+                "ID": "5fa19a0d-eb4a-4a20-928e-de5744767c7a"
+              },
+              {
+                "CommandList": [
+                  {
+                    "$type": "Forguncy.Model.ShowMessageCommand, ServerDesignerCommon",
+                    "MessageFormula": {
+                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                      "SerializeProperty": "=申込キャンセル登録!リターンメッセージ"
+                    }
+                  }
+                ],
+                "ID": "306be741-17b2-40fd-86d4-bfe587e98128"
               }
             ]
-          },
-          {
-            "$type": "LoadingCommand.StartLoadingCommand, LoadingCommand",
-            "LoadingText": "お待ちください",
-            "LoadingTextColor": "Background 1 0"
-          },
-          {
-            "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
-            "TableName": "t_object_order",
-            "ShowConfirm": false,
-            "CheckDataValidation": false,
-            "ReloadAfterSucceed": false,
-            "ConfirmText": "本当に更新してもよろしいですか？",
-            "RowsToUpdate": 1,
-            "RowsToUpdateCondition": {
-              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
-              "ColumnBindingInfo": {
-                "TableName": "t_object_order",
-                "ColumnName": "object_order_id"
-              },
-              "Value": {
-                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                "SerializeProperty": "=解析至急依頼!AA3"
-              }
-            },
-            "UpdateValues": [
-              {
-                "ColumnName": "analysis_urgent_flg",
-                "Value": "1"
-              },
-              {
-                "ColumnName": "analysis_limite_date",
-                "Value": {
-                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=解析至急依頼!F5"
-                }
-              },
-              {
-                "ColumnName": "analysis_limite_time",
-                "Value": {
-                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=解析至急依頼!N5"
-                }
-              },
-              {
-                "ColumnName": "analysis_comment",
-                "Value": {
-                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=解析至急依頼!C7"
-                }
-              },
-              {
-                "ColumnName": "analysis_urgent_user_id",
-                "Value": "%CurrentUser.user_id%"
-              },
-              {
-                "ColumnName": "analysis_urgent_date",
-                "Value": {
-                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=NOW()"
-                }
-              }
-            ],
-            "NextUpdateDataTableCommand": {
-              "TableName": "t_object_notice",
-              "UpdateType": "add",
-              "ShowConfirm": false,
-              "ConfirmText": "本当に追加してもよろしいですか？",
-              "UpdateValues": [
-                {
-                  "ColumnName": "object_order_id",
-                  "Value": {
-                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                    "SerializeProperty": "=解析至急依頼!AA3"
-                  }
-                },
-                {
-                  "ColumnName": "tab_id",
-                  "Value": "4"
-                },
-                {
-                  "ColumnName": "content",
-                  "Value": {
-                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                    "SerializeProperty": "=\"解析至急\"&CHAR(10)&解析至急依頼!C7"
-                  }
-                },
-                {
-                  "ColumnName": "release_public_flg",
-                  "Value": "1"
-                },
-                {
-                  "ColumnName": "created_user_id",
-                  "Value": "%CurrentUser.user_id%"
-                },
-                {
-                  "ColumnName": "updated_date",
-                  "Value": {
-                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                    "SerializeProperty": "=NOW()"
-                  }
-                }
-              ]
-            }
-          },
-          {
-            "$type": "Forguncy.Model.ClosePopupCommand, ServerDesignerCommon",
-            "ReloadData": true
           }
         ],
         "Text": "はい",
         "TemplateKey": "_RS_RoundCorner_Style1"
       }
     },
-    "13,18": {
+    "14,18": {
       "CellType": {
         "$type": "Forguncy.ButtonCellType, ServerDesignerCommon",
         "CommandList": [
@@ -501,17 +404,11 @@
       {
         "FontFamily": 2,
         "Formatter": 5,
-        "TextIndent": 4,
-        "HorizontalAlignment": 6
-      },
-      {
-        "FontFamily": 2,
-        "Formatter": 7,
-        "VerticalAlignment": 8,
+        "VerticalAlignment": 6,
         "WordWrap": true
       },
       {
-        "HorizontalAlignment": 6
+        "HorizontalAlignment": 7
       },
       {
         "FontFamily": 2,
@@ -530,10 +427,9 @@
         "Body",
         "[AUTO]General",
         "#FFFFFF00",
-        "yyyy/MM/dd",
-        "Left",
         "@",
-        "Top"
+        "Top",
+        "Left"
       ]
     },
     "CellStyles": {
@@ -546,7 +442,7 @@
       "2,2": 4,
       "2,23": 1,
       "2,24": 1,
-      "2,26": 5,
+      "2,26": 2,
       "2,27": 3,
       "2,28": 3,
       "3,14": 3,
@@ -560,12 +456,26 @@
       "3,22": 3,
       "3,23": 1,
       "3,24": 1,
+      "3,26": 5,
+      "3,27": 3,
+      "3,28": 3,
       "4,2": 2,
       "4,3": 3,
       "4,4": 3,
-      "4,5": 6,
+      "4,5": 3,
+      "4,6": 3,
+      "4,7": 3,
+      "4,8": 3,
+      "4,9": 3,
+      "4,10": 3,
+      "4,11": 3,
+      "4,12": 3,
       "4,13": 3,
-      "4,18": 6,
+      "4,14": 3,
+      "4,15": 3,
+      "4,16": 3,
+      "4,17": 3,
+      "4,18": 3,
       "4,19": 3,
       "4,20": 3,
       "4,21": 3,
@@ -595,47 +505,121 @@
       "5,22": 3,
       "5,23": 1,
       "5,24": 1,
-      "6,2": 7,
+      "6,2": 6,
+      "6,3": 3,
+      "6,4": 3,
+      "6,5": 3,
+      "6,6": 3,
+      "6,7": 3,
+      "6,8": 3,
+      "6,9": 3,
+      "6,10": 3,
+      "6,12": 3,
+      "6,13": 3,
+      "6,14": 3,
+      "6,20": 3,
+      "6,21": 3,
+      "6,22": 3,
       "6,23": 1,
       "6,24": 1,
+      "7,2": 3,
+      "7,3": 3,
+      "7,4": 3,
+      "7,5": 3,
+      "7,6": 3,
+      "7,7": 3,
+      "7,8": 3,
+      "7,9": 3,
+      "7,10": 3,
+      "7,12": 3,
+      "7,13": 3,
+      "7,14": 3,
+      "7,20": 3,
+      "7,21": 3,
+      "7,22": 3,
       "7,23": 1,
       "7,24": 1,
+      "8,2": 3,
+      "8,3": 3,
+      "8,4": 3,
+      "8,5": 3,
+      "8,6": 3,
+      "8,7": 3,
+      "8,8": 3,
+      "8,9": 3,
+      "8,10": 3,
+      "8,12": 3,
+      "8,13": 3,
+      "8,14": 3,
+      "8,20": 3,
+      "8,21": 3,
+      "8,22": 3,
       "8,23": 1,
       "8,24": 1,
+      "9,2": 3,
+      "9,3": 3,
+      "9,4": 3,
+      "9,5": 3,
+      "9,6": 3,
+      "9,7": 3,
+      "9,8": 3,
+      "9,9": 3,
+      "9,10": 3,
+      "9,12": 3,
+      "9,13": 3,
+      "9,14": 3,
+      "9,20": 3,
+      "9,21": 3,
+      "9,22": 3,
       "9,23": 1,
       "9,24": 1,
+      "10,2": 3,
+      "10,3": 3,
+      "10,4": 3,
+      "10,5": 3,
+      "10,6": 3,
+      "10,7": 3,
+      "10,8": 3,
+      "10,9": 3,
+      "10,10": 3,
+      "10,12": 3,
+      "10,13": 3,
+      "10,14": 3,
+      "10,20": 3,
+      "10,21": 3,
+      "10,22": 3,
       "10,23": 1,
       "10,24": 1,
-      "11,2": 8,
-      "11,23": 9,
-      "11,24": 9,
-      "12,22": 10,
-      "12,23": 9,
-      "12,24": 9,
-      "13,11": 10,
-      "13,17": 3,
-      "13,18": 10,
-      "13,19": 3,
-      "13,20": 3,
-      "13,21": 3,
-      "13,22": 3,
-      "13,23": 9,
-      "13,24": 9
+      "11,23": 1,
+      "11,24": 1,
+      "12,2": 7,
+      "12,23": 8,
+      "12,24": 8,
+      "13,22": 9,
+      "13,23": 8,
+      "13,24": 8,
+      "14,11": 9,
+      "14,17": 3,
+      "14,18": 9,
+      "14,19": 3,
+      "14,20": 3,
+      "14,21": 3,
+      "14,22": 3,
+      "14,23": 8,
+      "14,24": 8
     },
     "SheetStyle": {
       "FontFamily": 2
     }
   },
   "Spans": [
+    "6,2,5,21",
     "1,2,1,5",
-    "11,2,1,21",
-    "13,18,1,5",
-    "13,11,1,6",
-    "2,26,1,3",
-    "2,2,1,21",
-    "4,5,1,7",
-    "4,13,1,5",
-    "6,2,4,21"
+    "3,26,1,3",
+    "12,2,1,21",
+    "14,18,1,5",
+    "14,11,1,6",
+    "2,2,1,21"
   ],
   "PageInfo": {
     "$type": "Forguncy.Model.Pages.NormalPage, ServerDesignerCommon",
@@ -650,4 +634,4 @@
     "Margin": {},
     "PaperSize": {}
   }
-}//URrs3+qs9gkRO5Bx/3POZlDb9y4ZqYSZuFb1cj+Wy1iqzkJlsuMUHtLhIuODAACvw3MNCZY1oK+t8uc9O/6tBjnGRx7OdF12HU48+Sdid7Yq9QHaqfgvL7eGtGqhJWb90YClKpa2Q+4vsYIiPPRdPk+FJz95BxVkQERiTSintrDZ6kIWDNyN/fKlf7G+RrIcwogIhb2C6zr+XaT8hwfzpZcYt6v4N0WL7a3Q1Kw4dREfTxz6TXZTHhsh/N+nKQcYKidhYm/8wkQAtX8BbsaF737FpIKaJiLbJg24brZDBwCojpk28zHqaYK8D84onkVq42/DcNu3eHie621RXVgInngAAHHETNUTMvJghW5kI/ojJxLrUsbGi82cMbbTiiDB3WgTWo64njaAD8PkTcML9Xc3DTDgLI/DGr1bbpKewy+W/HM5s02cAzT6k7xxHIrGURGeVEx5SL5IWdoiZZxw48R13nhN477ioJ4g7UjpO8up2Xp2NG4AkzzyWTGYB+Ja7rpP48dgihmW1kcEldFZFHd5m7pMBk1VG9e9ElsWGdAcmlUkvm5+xskvbU8v+cDuOmP266RCNhYWDzpf/MLbiDVu9FZTWvPadnfY7tdy6s3g5e/FbG9Wi2fQJmGNhL6n5e5BgzySuEvLFdUBJhXyg42b0Cj82nz9h5MitNk8ILiin0ndEWJzzqavpAg9tvIdRJLeTSE5Q/gHze9gENjBe86yl4etr1d0wjqiAd+tuEFwRai17t3ZSNMdPheOr2O7eMzmbTVvAfC9RMAhfa+du0DVebBOtyRKjn0dZ5muQtQvC7UVA3hAAMypp0EygRNm4r93r6cUCT+vt5TV9kXLADa/AsjmlzeqXeHDSGPwAUcCaDrS1T1uSYYYj+HnkxQM+YRFaN5RRIIXbnqVxNydeA==|920
+}//zeupSmRwejXAWsi43f9fibkqF7TM5ocd3Eu+ktyeah60ih0sFgoEHF6D14phCUxZ4vwKNCk26PUxeSGX+x9bxHIahz3bgddMEDuUXnZqH85AW/lCDhRXtFts5qRD3cGNtePWsRV/6Aya6jlAlpybzVX26YNIvwjJHA53t+A9Pl4+gjevBPu66lNKOPV7C+GJjxIShUWuZSWh/1v3aRUKZDjSSjkXZDRh8hRTB3u4UsRIe/MoWmoOA9AHWY9PWtQOyBBVgdZz6/ip9+S21X5yF6OBVnJbcHX0kzBJUGyYo2dQVF3PH7s2xFEgc4I4strh20oqT4n4dmdKYTVE2LTMsq1FGCxtwKj3YQXmO6ZnvBkJI55VST/wvG1xYhLmXSRimfnLQqhMWcWZL1FYffozwNOXpYGh14GUkJgJfgBOYEBwiWrtIZ7BGqfcVdpTt+TxXsh13E7NeEOC5ShOvo6bEPDdCyeIQUxEag/JW5ReFMtnNnlTz3DX0V/uNf0oTRhyMWFN2WyEw6VRfxH/QcHBr4F66XLvOiyieq3wq4ttHzqBwTKFz6dpwT80rVigL63ET/SGaOklzQ5UuYK4fMHXWeqlmwL4Ocn7zEJ4NeTkkjr1z4lNrUFCUao/7X0jwzzpsO2nXoJAV0LcPHk/XKaP3DSJ1xO2uwvwxCmzitP80/voi5lUK9FNE40CpUS/kIqTtiF2D9M4lkG97rWAJwyl+zOyIEyAIiZTmI0aLphehWXUEUxhAA3Jof2DuJX99FUost18oiGMGt4cMbCx4ogD/3QF+m8YKHLZ7mivEZAIclbN60dpDfz4O4xrwvQKrOWV/ZFfMDyCCKy3UIlKe3aihu3Ln0nkV06Ajgdj9puBwtHfDf8m4C2F8u+3IZQZM/Ml/OZtZcd8+M2lreHwgz6avg==|920

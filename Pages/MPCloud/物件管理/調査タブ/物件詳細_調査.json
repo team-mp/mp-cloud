@@ -297,13 +297,15 @@
     "17,44": "▼申込キャンセル日時",
     "20,44": "▼調査ビュー",
     "21,47": "調査履歴番号",
-    "21,74": "売上",
-    "21,75": "仕入",
-    "26,44": "▼登録件数"
+    "21,75": "売上",
+    "21,76": "仕入",
+    "26,44": "▼登録件数",
+    "26,49": "▼調査ビューリロードフラグ",
+    "27,49": "0"
   },
   "Formulas": {
-    "22,77": "IFERROR(ODATA(\"v_survey_product_summary?$select=仕入合計&$filter=調査ID eq \"&IF(ISBLANK(AU23),\"null\",AU23)),\"\")",
-    "22,76": "IFERROR(ODATA(\"v_survey_product_summary?$select=売上合計&$filter=調査ID eq \"&IF(ISBLANK(AU23),\"null\",AU23)),\"\")",
+    "22,78": "IFERROR(ODATA(\"v_survey_product_summary?$select=仕入合計&$filter=調査ID eq \"&IF(ISBLANK(AU23),\"null\",AU23)),\"\")",
+    "22,77": "IFERROR(ODATA(\"v_survey_product_summary?$select=売上合計&$filter=調査ID eq \"&IF(ISBLANK(AU23),\"null\",AU23)),\"\")",
     "2,2": "IF(BQ6=0,\"\",BQ6)",
     "22,52": "IF(AX23=1,\"以降\",\"～\")",
     "5,68": "IF(BH6<>\"\",BH6,AY6)",
@@ -577,7 +579,7 @@
                 }
               }
             },
-            "ID": "bf98c634195141d8a69864f937d44d13"
+            "ID": "c3cae14e372344ec9147ada4c301a264"
           },
           {
             "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
@@ -605,7 +607,7 @@
                     "$type": "Forguncy.Model.StopCommand, ServerDesignerCommon"
                   }
                 ],
-                "ID": "348951ae-87f9-4a76-88e9-a9e604d4d9ce"
+                "ID": "d95e1ade-7b81-4b4e-bea4-54fc506190f3"
               }
             ]
           },
@@ -794,7 +796,7 @@
         "TableName": "t_object_survey",
         "RowIndex": 21,
         "ColumnIndex": 44,
-        "ColumnCount": 36,
+        "ColumnCount": 37,
         "RowCount": 4,
         "ColumnOperation": 2,
         "ShowEditStatusIcon": true,
@@ -1073,30 +1075,102 @@
         "RelationBinding": {
           "RelatedTable": "m_survey_status",
           "RelatedColumn": "survey_status_id",
+          "DisplayColumn": "confirm_flg"
+        }
+      },
+      "NameUsedInJavaScript": "完了フラグ"
+    },
+    "22,75": {
+      "BindingInfo": {
+        "TableName": "t_object_survey",
+        "ColumnName": "survey_status_id",
+        "RelationBinding": {
+          "RelatedTable": "m_survey_status",
+          "RelatedColumn": "survey_status_id",
           "DisplayColumn": "survey_status_name"
         }
       },
       "NameUsedInJavaScript": "調査ステータス名"
     },
-    "22,75": {
+    "22,76": {
       "BindingInfo": {
         "TableName": "t_object_survey",
         "ColumnName": "survey_complete_flg"
       },
-      "NameUsedInJavaScript": "調査確定フラグ"
-    },
-    "22,76": {
-      "NameUsedInJavaScript": "売上合計"
+      "NameUsedInJavaScript": "調査完了フラグ"
     },
     "22,77": {
-      "NameUsedInJavaScript": "仕入合計"
+      "NameUsedInJavaScript": "売上合計"
     },
     "22,78": {
+      "NameUsedInJavaScript": "仕入合計"
+    },
+    "22,79": {
       "BindingInfo": {
         "TableName": "t_object_survey",
         "ColumnName": "調査番号"
       },
       "NameUsedInJavaScript": "調査番号"
+    },
+    "27,49": {
+      "CellType": {
+        "$type": "Forguncy.TextCellType, ServerDesignerCommon",
+        "SavedValidators": [
+          {
+            "$type": "Forguncy.CellTypes.Models.UniqueValidadator, ServerDesignerCommon"
+          }
+        ],
+        "CommandList": [
+          {
+            "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+            "ConditionAndCommandPairList": [
+              {
+                "Condition": {
+                  "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                  "param": {
+                    "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+                    "cellLocations": [
+                      {
+                        "SerializeProperty": "=物件詳細_調査!調査ビューリロードフラグ"
+                      }
+                    ]
+                  },
+                  "value": "1"
+                },
+                "CommandList": [
+                  {
+                    "$type": "Forguncy.Model.UpdateListviewCommand, ServerDesignerCommon",
+                    "UpdateType": 6,
+                    "ListviewName": "調査ビュー",
+                    "UpdateListviewCommandRunTimeMethodSetting": {
+                      "MethodName": "Reload",
+                      "ParameterValues": {
+                        "clearFilter": false,
+                        "clearSort": false
+                      },
+                      "RetrunParamNames": {}
+                    }
+                  },
+                  {
+                    "$type": "Forguncy.Model.SetCellPropertyCommand, ServerDesignerCommon",
+                    "PropertyItemsList": [
+                      {
+                        "TargetCells": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=物件詳細_調査!調査ビューリロードフラグ"
+                        },
+                        "Value": "0"
+                      }
+                    ]
+                  }
+                ],
+                "ID": "684e127b-be2c-48f2-8c56-ff94f7430ee4"
+              }
+            ]
+          }
+        ],
+        "CellDefaultValue": "0"
+      }
     }
   },
   "StyleDatas": {
@@ -1195,6 +1269,11 @@
         "FontFamily": 2,
         "FontSize": 14.666666666666666,
         "Formatter": 3
+      },
+      {
+        "Background": 9,
+        "Formatter": 10,
+        "HorizontalAlignment": 8
       }
     ],
     "Types": {
@@ -1207,7 +1286,9 @@
         "Bold",
         "#FF005B47",
         "Text 1 50",
-        "Right"
+        "Right",
+        "Accent 1 80",
+        "@"
       ],
       "Borders": [
         {
@@ -1574,8 +1655,11 @@
       "21,71": 7,
       "21,72": 7,
       "21,73": 7,
-      "21,74": 7,
       "21,75": 7,
+      "21,76": 7,
+      "21,77": 7,
+      "21,78": 7,
+      "21,79": 7,
       "22,46": 7,
       "22,47": 7,
       "22,48": 7,
@@ -1604,10 +1688,11 @@
       "22,71": 7,
       "22,72": 7,
       "22,73": 7,
-      "22,74": 7,
       "22,75": 7,
       "22,76": 7,
       "22,77": 7,
+      "22,78": 7,
+      "22,79": 7,
       "23,44": 7,
       "23,45": 7,
       "23,46": 7,
@@ -1675,7 +1760,8 @@
       "26,46": 7,
       "27,44": 9,
       "27,45": 7,
-      "27,46": 7
+      "27,46": 7,
+      "27,49": 24
     },
     "SheetStyle": {
       "FontFamily": 2
@@ -1706,7 +1792,8 @@
     "15,51,1,3",
     "15,57,1,3",
     "27,44,1,3",
-    "23,44,2,36"
+    "27,49,1,3",
+    "23,44,2,37"
   ],
   "PageInfo": {
     "$type": "Forguncy.Model.Pages.NormalPage, ServerDesignerCommon",
@@ -1721,5 +1808,11 @@
   "PrintInfo": {
     "Margin": {},
     "PaperSize": {}
-  }
-}//gmzdpnnguRp2jnyxDIX9vWLLUy45dIBcUYw7KilgTb+t3QVYCl9BKurs0ll0C3qDAu+Il32hZrrmw1AJJAr0tk3nKcC/50ljctcW1C7gKWTyyL0Mt2zcQBj2n8iSmFWHIe52rDCZW292xj6wCfVGmq/kw+ybSdd3t4zD2EHUQnUfJV2tDlAXI3S8YdLljcrhSitjvCPiT45B8BqBXR39JrjcdpWYE59d2zYF4e6bing06Ky/7ZNyl7rlQG/TswCriRbNMzFPLZ0LCmDLNcHev8gt5gKhDIJOwPJrMS2WmG/R6DLB9QopGXgM7vYbtAWyLKEwwp5ESjT1voMn5wubjrXZhSSZYObdAvkHAyGou++SY2GIvYObsXRV4hhBQ63D/TEzwYohiFTiMSW+wS/i/t2Eh32SekBZLIX1Ys82DRqomQGkQz1bNkqscJi7xp7Qo/3irrCekEWI0mqls/eHRNJV+F5G//3PX4L9QDIz4iDi4YYtZSpCO9F3x/Rq44HNPo/YuRKqD+qo1l24XbFr4QagyfsDNVX+HTylxCDIQ7inLjl9i3F505y7SPFMLKZCq7+ZTjNLRpWRd9/ZIgFnd/8cX8flbMc3hhuySiuaYQJvbRW1INbXcFynYT1BRtF/A5zbP29c3oLv/HH4+bOSyd2skqrC83PeFtWWwqPCa6Z8zsuPRGMCuwLfYxVyeVzmt14cW+QA091h+uQacE2zWCZro0K57Qn1Ov3JfG0gFE8N7zSzj7318sr6zyjmq1rMmHjAzoyebf1hAjSg0Gfnruqo+dOIN1nPEQzqEA0MbL5RKgI1tc09doWkKllEcufzIAH6ZRl9/Xd4iNuUonzk5Oac0oLiDOgO2z2YEv9li7XDUgEXZytKZqnZGTeziFNUZWUtckjL6pkLfqGISOPeCg==|920
+  },
+  "CustomNames": [
+    {
+      "Name": "調査ビューリロードフラグ",
+      "Formula": "物件詳細_調査!$AX$28"
+    }
+  ]
+}//wbJK+5EVqxsdQY0NMOnMLF/BO4My/zbPTfw+B0tXHYqHwvKTl4V2lx/vrQvxPl8daHrisKHF4cu4QZO13z09cO//lgO3NfXZCnm093iL/9hkx+RtiNsqAF9h9Mvk6FhuVPTGZ46bGKDjq/tEpM7m1Y07ZShmaRSjcPEctC2uKAUYcDULyddxev9ggQTVNo3HhEViuRxmMPSBF96HXZFHQZd5/sfY3EtLMpVZnm5yU6RhJzJjEDrCl5vYz3FIy6w1pkjuLkzUiYji+2DEHy56aOHWz5yHuGM5DNLYqJr5rE+ImGfI7iGyiX4brtcsWIzrXomAdIj0fueAF/3it84xRPWH0C7sNKbxeq3OgFRXy3WNZM6P99Oj56Oc1/fyRzc+KDS0dWfkzQAoH3ijEaAQylRwDoKeALW4VLx2D5igBi+UZmKgJ8DlgpstUX0r/Hg0BLPfQfZy+R67O/DaVV7M27nYrB1DuZxJQLjK8rSjn46xC6/c6e+CJxj/88F00R97K3S7XR6uVFtzG+QjHdePArKv8F99sSZeLzI9cUihroP4UqKEQ1wnSiAIkbWBSMdBo/jjf3+tDPx2s6wjEaRrxy9+k/ELzAExjfaacwEW6pl5bD2CiS6PQf6IpqOk5aT5cvWwMVYgWd/Rb4chPetkmxu6v6ip3i6F/TaNGgudnpJ4d9/qDAwXP/MB5G9yHq5XhgdJp34uZsHUEoQV8seipSh/XFgOl0Oqp7SRQE7CPNz2YbchClO+mkJYe7GLazIUZKvi7W5w0AUMnylyJNXmZkEUVzrc33G235HsZCUOZgvUssESQp8+uV7cnyG0MtskAnfubi8OgNI65QzEKd0c+QPZZGyhuP5BOqXeS+VzwLxIlCovhwPA/NPvrKhphGAModlKehwvrv4MNg7ZE93UuA==|920

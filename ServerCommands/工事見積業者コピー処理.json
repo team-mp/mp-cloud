@@ -46,6 +46,13 @@
                   "ColumnName": "construction_customer_id"
                 },
                 "ColumnName": "工事会社ID"
+              },
+              {
+                "BindingInfo": {
+                  "TableName": "t_object_construction_estimate",
+                  "ColumnName": "object_order_id"
+                },
+                "ColumnName": "申込ID"
               }
             ],
             "SqlCondition": {
@@ -60,7 +67,7 @@
               }
             }
           },
-          "ID": "92efadc1ecdc4b5a8fa3ca6d98fc42d3"
+          "ID": "cd59ff0c7ad04809871abf24ec8a3e09"
         },
         {
           "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
@@ -87,7 +94,42 @@
               "Value": "1"
             }
           },
-          "ID": "003712575a3340c79471edfdb66c764d"
+          "ID": "50af59637d2447fd90f1ea07c564e954"
+        },
+        {
+          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+          "ParameterName": "元工事ステータスID",
+          "TableValue": {
+            "TableName": "t_object_order",
+            "OnlyGetValue": true,
+            "TableValueType": 0,
+            "BindingInfos": [
+              {
+                "BindingInfo": {
+                  "TableName": "t_object_order",
+                  "ColumnName": "latest_contruction_id",
+                  "RelationBinding": {
+                    "RelatedTable": "t_object_construction",
+                    "RelatedColumn": "construction_id",
+                    "DisplayColumn": "construction_status_id"
+                  }
+                },
+                "ColumnName": "construction_status_id"
+              }
+            ],
+            "SqlCondition": {
+              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+              "ColumnBindingInfo": {
+                "TableName": "t_object_order",
+                "ColumnName": "object_order_id"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_申込ID"
+              }
+            }
+          },
+          "ID": "59e7c7d7710148dba65d0a1d33bd6742"
         },
         {
           "$type": "Forguncy.Model.LoopCommand, ServerDesignerCommon",
@@ -129,18 +171,24 @@
                       "CommandList": [
                         {
                           "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
-                          "ParameterName": "更新先申込ID",
+                          "ParameterName": "申込情報",
                           "TableValue": {
                             "TableName": "t_object_order",
-                            "OnlyGetValue": true,
-                            "TableValueType": 0,
+                            "TableValueType": 1,
                             "BindingInfos": [
                               {
                                 "BindingInfo": {
                                   "TableName": "t_object_order",
-                                  "ColumnName": "object_order_id"
+                                  "ColumnName": "latest_contruction_id"
                                 },
-                                "ColumnName": "object_order_id"
+                                "ColumnName": "最新工事ID"
+                              },
+                              {
+                                "BindingInfo": {
+                                  "TableName": "t_object_order",
+                                  "ColumnName": "builder_id"
+                                },
+                                "ColumnName": "住宅事業者ID"
                               }
                             ],
                             "SqlCondition": {
@@ -167,7 +215,7 @@
                               ]
                             }
                           },
-                          "ID": "c51198a5d160423fb0e414fe4d55be92"
+                          "ID": "5f7fd1d113ea49f6b5d089ba9a0c2bf8"
                         },
                         {
                           "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
@@ -185,7 +233,7 @@
                                 },
                                 "Value": {
                                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                                  "SerializeProperty": "=更新先申込ID"
+                                  "SerializeProperty": "=申込情報"
                                 }
                               },
                               "Condition2": {
@@ -201,7 +249,7 @@
                               }
                             }
                           },
-                          "ID": "62e2814feb894316a2fbe0210ce41e39"
+                          "ID": "2d1cdcb575bf4a7e9c6b291dc2e69aa8"
                         },
                         {
                           "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
@@ -237,7 +285,7 @@
                                       "ColumnName": "object_order_id",
                                       "Value": {
                                         "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                                        "SerializeProperty": "=更新先申込ID"
+                                        "SerializeProperty": "=申込情報"
                                       }
                                     },
                                     {
@@ -257,12 +305,128 @@
                                   ]
                                 }
                               ],
-                              "ID": "e290151a-e6b7-429c-a66c-8db8f169cf5c"
+                              "ID": "057d3c9d-d36b-46ad-9084-acd9e711a0d0"
+                            }
+                          ]
+                        },
+                        {
+                          "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+                          "ConditionAndCommandPairList": [
+                            {
+                              "Condition": {
+                                "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                                "param": {
+                                  "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                                  "ParamObject": {
+                                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                    "SerializeProperty": "=申込情報.最新工事ID"
+                                  }
+                                },
+                                "value": "%Null%"
+                              },
+                              "CommandList": [
+                                {
+                                  "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                                  "ParameterName": "工事請負フラグ",
+                                  "TableValue": {
+                                    "TableName": "m_customer_default",
+                                    "OnlyGetValue": true,
+                                    "TableValueType": 0,
+                                    "BindingInfos": [
+                                      {
+                                        "BindingInfo": {
+                                          "TableName": "m_customer_default",
+                                          "ColumnName": "construction_cotract_flg"
+                                        },
+                                        "ColumnName": "construction_cotract_flg"
+                                      }
+                                    ],
+                                    "SqlCondition": {
+                                      "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                                      "ColumnBindingInfo": {
+                                        "TableName": "m_customer_default",
+                                        "ColumnName": "customer_id"
+                                      },
+                                      "Value": {
+                                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                        "SerializeProperty": "=申込情報.住宅事業者ID"
+                                      }
+                                    }
+                                  },
+                                  "ID": "c133fa53b9d84a2380ae9a052f386253"
+                                },
+                                {
+                                  "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+                                  "TableName": "t_object_construction",
+                                  "UpdateType": "add",
+                                  "ShowConfirm": false,
+                                  "ConfirmText": "本当に追加してもよろしいですか？",
+                                  "UpdateValues": [
+                                    {
+                                      "ColumnName": "object_order_id",
+                                      "Value": {
+                                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                        "SerializeProperty": "=Item_工事会社.申込ID"
+                                      }
+                                    },
+                                    {
+                                      "ColumnName": "construction_register_date",
+                                      "Value": {
+                                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                        "SerializeProperty": "=NOW()"
+                                      }
+                                    },
+                                    {
+                                      "ColumnName": "construction_type",
+                                      "Value": {
+                                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                        "SerializeProperty": "=IF(工事請負フラグ=1,1,2)"
+                                      }
+                                    },
+                                    {
+                                      "ColumnName": "construction_status_id",
+                                      "Value": {
+                                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                        "SerializeProperty": "=元工事ステータスID"
+                                      }
+                                    }
+                                  ],
+                                  "ParamNameToSaveNewRowValue": "New工事情報"
+                                },
+                                {
+                                  "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+                                  "TableName": "t_object_order",
+                                  "ShowConfirm": false,
+                                  "ConfirmText": "本当に更新してもよろしいですか？",
+                                  "RowsToUpdate": 1,
+                                  "RowsToUpdateCondition": {
+                                    "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                                    "ColumnBindingInfo": {
+                                      "TableName": "t_object_order",
+                                      "ColumnName": "object_order_id"
+                                    },
+                                    "Value": {
+                                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                      "SerializeProperty": "=Item_工事会社.申込ID"
+                                    }
+                                  },
+                                  "UpdateValues": [
+                                    {
+                                      "ColumnName": "latest_contruction_id",
+                                      "Value": {
+                                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                        "SerializeProperty": "=New工事情報.工事ID"
+                                      }
+                                    }
+                                  ]
+                                }
+                              ],
+                              "ID": "37346fa7-d3b2-4342-b1bd-c2720b33173c"
                             }
                           ]
                         }
                       ],
-                      "ID": "b64e2dff-0ed0-4f8f-920c-f5c5eae38b66"
+                      "ID": "4678d764-1da4-404e-9add-2ed2c6d0f8e3"
                     }
                   ]
                 }

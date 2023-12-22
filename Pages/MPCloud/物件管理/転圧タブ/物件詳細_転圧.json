@@ -520,7 +520,7 @@
     "7,86": "▼申込事業者共有事項",
     "7,95": "▼住宅事業者共有事項",
     "7,104": "▼表示する共有事項",
-    "9,1": "転圧工事進捗状況",
+    "9,1": "転圧施工進捗状況",
     "9,69": "新規登録する",
     "12,80": "▼申込ID",
     "12,88": "▼申込タイプID",
@@ -530,13 +530,15 @@
     "15,95": "▼転圧会社ID",
     "18,80": "▼転圧ビュー",
     "19,82": "転圧履歴番号",
-    "24,80": "▼登録件数"
+    "24,80": "▼登録件数",
+    "24,85": "▼転圧ビューリロードフラグ",
+    "25,85": "0"
   },
   "Formulas": {
     "9,95": "IFERROR(ODATA(\"m_customer_notice?$select=content&$filter=customer_id eq \"&IF(ISBLANK(CR4),\"null\",CR4)&\" and tab_id eq \"&IF(ISBLANK(CC4),\"null\",CC4)),\"\")",
     "2,2": "IF(DA10=0,\"\",DA10)",
-    "20,107": "IFERROR(ODATA(\"v_compaction_product_summary?$select=仕入合計&$filter=転圧ID eq \"&IF(ISBLANK(CD21),\"null\",CD21)),\"\")",
-    "20,106": "IFERROR(ODATA(\"v_compaction_product_summary?$select=売上合計&$filter=転圧ID eq \"&IF(ISBLANK(CD21),\"null\",CD21)),\"\")",
+    "20,111": "IFERROR(ODATA(\"v_compaction_product_summary?$select=仕入合計&$filter=転圧ID eq \"&IF(ISBLANK(CD21),\"null\",CD21)),\"\")",
+    "20,110": "IFERROR(ODATA(\"v_compaction_product_summary?$select=売上合計&$filter=転圧ID eq \"&IF(ISBLANK(CD21),\"null\",CD21)),\"\")",
     "20,82": "$CC$26-ROW(CC21)+1",
     "9,86": "IFERROR(ODATA(\"m_customer_notice?$select=content&$filter=customer_id eq \"&IF(ISBLANK(CI4),\"null\",CI4)&\" and tab_id eq \"&IF(ISBLANK(CC4),\"null\",CC4)),\"\")",
     "9,104": "IF(CR10<>\"\",CR10,CI10)",
@@ -544,7 +546,8 @@
     "7,10": "DA4",
     "7,25": "DB4",
     "7,39": "DC4",
-    "7,55": "DD4"
+    "7,55": "DD4",
+    "20,112": "ODATA(\"t_object_attachment/$count?$filter=compaction_id eq \"&IF(ISBLANK(CD21),\"null\",CD21)&\" and file_attribute_id eq 17 and active_flg eq 1\")"
   },
   "ArrayFormulas": {
     "3,104,1,4": "ODATA(\"m_customer_default?$select=no_compaction_estimate_flg,comaction_other_construction_flg,compaction_re_survey_flg,surplus_soil_disposal_flg&$filter=customer_id eq \"&IF(ISBLANK(CR4),\"null\",CR4))"
@@ -716,7 +719,7 @@
                 }
               }
             },
-            "ID": "e2f652fa5bf3464c8482c2752540b9ae"
+            "ID": "4d325720767c4125a679c5f4a807b5ab"
           },
           {
             "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
@@ -744,7 +747,7 @@
                     "$type": "Forguncy.Model.StopCommand, ServerDesignerCommon"
                   }
                 ],
-                "ID": "6e3a3303-82c5-4301-9636-fd32e8431649"
+                "ID": "4c5aca42-f66d-4009-b59e-33389a394fb7"
               }
             ]
           },
@@ -939,7 +942,7 @@
         "TableName": "t_object_compaction",
         "RowIndex": 19,
         "ColumnIndex": 80,
-        "ColumnCount": 29,
+        "ColumnCount": 34,
         "RowCount": 4,
         "ColumnOperation": 2,
         "ShowEditStatusIcon": true,
@@ -1129,6 +1132,13 @@
     "20,102": {
       "BindingInfo": {
         "TableName": "t_object_compaction",
+        "ColumnName": "compaction_status_id"
+      },
+      "NameUsedInJavaScript": "転圧ステータスID"
+    },
+    "20,103": {
+      "BindingInfo": {
+        "TableName": "t_object_compaction",
         "ColumnName": "compaction_status_id",
         "RelationBinding": {
           "RelatedTable": "m_compaction_status",
@@ -1138,7 +1148,7 @@
       },
       "NameUsedInJavaScript": "転圧ステータス順"
     },
-    "20,103": {
+    "20,104": {
       "BindingInfo": {
         "TableName": "t_object_compaction",
         "ColumnName": "compaction_status_id",
@@ -1150,7 +1160,14 @@
       },
       "NameUsedInJavaScript": "転圧ステータス名"
     },
-    "20,104": {
+    "20,105": {
+      "BindingInfo": {
+        "TableName": "t_object_compaction",
+        "ColumnName": "survey_id"
+      },
+      "NameUsedInJavaScript": "調査ID"
+    },
+    "20,106": {
       "BindingInfo": {
         "TableName": "t_object_compaction",
         "ColumnName": "survey_id",
@@ -1162,18 +1179,105 @@
       },
       "NameUsedInJavaScript": "調査番号"
     },
-    "20,105": {
+    "20,107": {
+      "BindingInfo": {
+        "TableName": "t_object_compaction",
+        "ColumnName": "survey_id",
+        "RelationBinding": {
+          "RelatedTable": "t_object_survey",
+          "RelatedColumn": "survey_id",
+          "DisplayColumn": "scheduled_survey_sttdate"
+        }
+      },
+      "NameUsedInJavaScript": "再調査予定日"
+    },
+    "20,108": {
       "BindingInfo": {
         "TableName": "t_object_compaction",
         "ColumnName": "compaction_complete_flg"
       },
       "NameUsedInJavaScript": "転圧完了フラグ"
     },
-    "20,106": {
+    "20,109": {
+      "BindingInfo": {
+        "TableName": "t_object_compaction",
+        "ColumnName": "compaction_status_id",
+        "RelationBinding": {
+          "RelatedTable": "m_compaction_status",
+          "RelatedColumn": "compaction_status_id",
+          "DisplayColumn": "complete_flg"
+        }
+      },
+      "NameUsedInJavaScript": "完了フラグ"
+    },
+    "20,110": {
       "NameUsedInJavaScript": "転圧売上合計"
     },
-    "20,107": {
+    "20,111": {
       "NameUsedInJavaScript": "転圧仕入合計"
+    },
+    "20,112": {
+      "NameUsedInJavaScript": "施工報告書添付カウント"
+    },
+    "25,85": {
+      "CellType": {
+        "$type": "Forguncy.TextCellType, ServerDesignerCommon",
+        "SavedValidators": [
+          {
+            "$type": "Forguncy.CellTypes.Models.UniqueValidadator, ServerDesignerCommon"
+          }
+        ],
+        "CommandList": [
+          {
+            "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+            "ConditionAndCommandPairList": [
+              {
+                "Condition": {
+                  "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                  "param": {
+                    "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+                    "cellLocations": [
+                      {
+                        "SerializeProperty": "=物件詳細_転圧!転圧ビューリロードフラグ"
+                      }
+                    ]
+                  },
+                  "value": "1"
+                },
+                "CommandList": [
+                  {
+                    "$type": "Forguncy.Model.UpdateListviewCommand, ServerDesignerCommon",
+                    "UpdateType": 6,
+                    "ListviewName": "転圧ビュー",
+                    "UpdateListviewCommandRunTimeMethodSetting": {
+                      "MethodName": "Reload",
+                      "ParameterValues": {
+                        "clearFilter": false,
+                        "clearSort": false
+                      },
+                      "RetrunParamNames": {}
+                    }
+                  },
+                  {
+                    "$type": "Forguncy.Model.SetCellPropertyCommand, ServerDesignerCommon",
+                    "PropertyItemsList": [
+                      {
+                        "TargetCells": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=物件詳細_転圧!転圧ビューリロードフラグ"
+                        },
+                        "Value": "0"
+                      }
+                    ]
+                  }
+                ],
+                "ID": "540f218d-879c-4ba8-91ab-b9049ed4ccb4"
+              }
+            ]
+          }
+        ],
+        "CellDefaultValue": "0"
+      }
     }
   },
   "StyleDatas": {
@@ -1274,6 +1378,11 @@
       {
         "FontFamily": 3,
         "FontSize": 12.0
+      },
+      {
+        "Background": 10,
+        "Formatter": 2,
+        "HorizontalAlignment": 11
       }
     ],
     "Types": {
@@ -1287,7 +1396,9 @@
         "Accent 4 80",
         "Bold",
         "#FF005B47",
-        "Center"
+        "Center",
+        "Accent 1 80",
+        "Right"
       ],
       "Borders": [
         {
@@ -1769,6 +1880,10 @@
       "19,104": 7,
       "19,106": 7,
       "19,107": 7,
+      "19,108": 7,
+      "19,109": 7,
+      "19,110": 7,
+      "19,111": 7,
       "20,81": 7,
       "20,82": 7,
       "20,83": 7,
@@ -1792,6 +1907,10 @@
       "20,104": 7,
       "20,106": 7,
       "20,107": 7,
+      "20,108": 7,
+      "20,109": 7,
+      "20,110": 7,
+      "20,111": 7,
       "21,80": 7,
       "21,81": 7,
       "21,82": 7,
@@ -1848,6 +1967,7 @@
       "25,80": 9,
       "25,81": 7,
       "25,82": 7,
+      "25,85": 24,
       "28,80": 7,
       "28,81": 7,
       "28,82": 7
@@ -1946,7 +2066,6 @@
     "16,88,1,3",
     "16,95,1,3",
     "25,80,1,3",
-    "21,80,2,29",
     "7,10,1,12",
     "7,25,1,12",
     "7,39,1,14",
@@ -1954,7 +2073,9 @@
     "1,65,1,2",
     "5,65,1,2",
     "10,65,1,2",
-    "11,1,21,78"
+    "11,1,21,78",
+    "21,80,2,34",
+    "25,85,1,3"
   ],
   "PageInfo": {
     "$type": "Forguncy.Model.Pages.NormalPage, ServerDesignerCommon",
@@ -1969,5 +2090,11 @@
   "PrintInfo": {
     "Margin": {},
     "PaperSize": {}
-  }
-}//6deOz83HG1ZCHeckVh/onqTSzAfBppQtJFKeOPyKz9hxnVDLyDe7otYAqdwuY5cobtMCBOdJ6SxO/BXtCHIDF9f0eG9wnxZLa5GaQHadTF0kpMtEqql18qShJVPAqC9pJI1KvJNuSsUKUJ02zJJ3TpDyG3rq/HMrQI3vjPCoqKb1INR//jMbA6gglgkEclUmtDmC8btGq8up//bwiKrRCaduY8fSFGtnETg8TY7xW2NlvWuDnJMl68AadvlOuVVWwGEZr4sB7fk2UzMja24mAEOcqI0Z7lLMagl0Fhl3aTUkMRrX5F5MM7I+bMlLlCdznWL0uvdL8vvgpJvpczwYtWfs0nhRPmGfvl9F0TpqBO6uFWaaXixtIUagwrLkrDki83DRr5yNkfJZtvM85GQh3VUbQwckAvX4KBlncV4gZoWUWqj8gc2g6gF8cHVjySYvn+ZAG/w5gDk8GPFkH+4llaso1LS+nIrG4wZ+1t5KOOMwuU2nJjdVLM6lO+hAekiVwbXc0p00PViVvoce4PJA5Vqpjk+cXM/uOnRoEajlAnHPHJKhb+Me+EAVEd6cbM390WTNHhkvUrQltV91hL6+4599z4KqfnQ1xCfXboMMklbky3/nuQFIuQf7y1e6TtIXFTxRw7Yhu3HldnSslgUQiRYn4wmvzhGxjtZ+U7xls1lkNSdy1iArQjJQ7D/96HjNNNZbqHmasxQ6SFAsKIDj/XBdOiUAMnsfzKkLRII692n3dq/W1RxcVGdUr1TUzIAjm4bt0h1/flDbJNH88Bx5UR7aGBx23W1B7mdn7Oaod3Yk9ICCf2jt332jdCPqxWfVhOvQpSEYayNi3LbrwTZj0TCfrbF+yGHmEPiUCuUp7ZbT/iFfNuX6hRVnIm55jwemIuIXLarvVrqrcT/7AU39Tg==|920
+  },
+  "CustomNames": [
+    {
+      "Name": "転圧ビューリロードフラグ",
+      "Formula": "物件詳細_転圧!$CH$26"
+    }
+  ]
+}//97nhGjZyK3ziSDDCx1c0aXGEE7zcqFoKn+9XsidoI4oKI7OfLhOthfinW3NHBgkLSJe6Wt+7qqVTDOgT0GMt1N50taKcBe9ErunyyMrjjZDLCzb6R02SVdsxVnbtXbdb5X63BWyP8o4cbB0jN8is6NbHftJHm+E3gb/E5GsgI1wT/s06/MVWBenBdTzFRrZRbeugv6BcuRy9Q07TOnNMCsoLTPtuudVj7w5kHeupALcXsUs3hk/l8YH8DtY8jypLQKuG8epB7Rq2snKhhT2UGDJD91SY3EqGsFvwFvweY/rG8MgR+9TZaNkzo6R5jJLtQ+Xaq32F3WOIpAyAlvS33RajPZlwC4r8IcHuXs8k4gVAhNfDnG0LGAQYoYmQdDMP4ZdoI2bL+z9e+ljL24qC+m2Vym5S0AhtxFz0d92EYLFYVfSYvSxU9J5qWaOnIj+1LsOdwYVye9x0NU/ge2d9afOzqCsC3UGBuPzjKCJq3iT++YLL6MfNp/3Eqc/++oy+OcSWIBXpggn2mY1bEvSlHT8odPAHDG9XQF9gYFtu2QKagF1ZVkz3uh6CrgtW+JipjkEIlyJS5qVQJMTUawJQZbKVraCFJD2KKWzIWUgIwweHhwp4fZk8z3XqmyjeaGwKgEyYxM/TtSVvtnjDdPU77gysLN44CYX9N7YPD0cOKjpWK8+FWsNSKFeQsj6cVrixaVqyntZSEzmQn46WDiQl3+3zQ/+gH+cGNlCp2uOl/WBPdkMTfDROHVtiHIEDF3ipf0xfQGPbHuDETzzE34PU2VP+XzSND7wUXhFWUHR6eyjx5oM9pgfa7cIZFWC1vr6Ab81zAvI5OSS2OEjiHV5x5tO7itKvmqRmNINyPpnHPHHVumxORLRH6I8dlGRc2JGyLxX3V7IIgqcMMnRaFSEzxg==|920
