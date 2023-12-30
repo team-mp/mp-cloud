@@ -214,6 +214,11 @@
           "DesignLengthInPixel": 10.0
         }
       },
+      "40": {
+        "GridRowColumnDefinition": {
+          "DesignLengthInPixel": 10.0
+        }
+      },
       "41": {
         "GridRowColumnDefinition": {
           "DesignLengthInPixel": 10.0
@@ -228,10 +233,14 @@
         "GridRowColumnDefinition": {
           "DesignLengthInPixel": 10.0
         }
+      },
+      "44": {
+        "GridRowColumnDefinition": {
+          "DesignLengthInPixel": 10.0
+        }
       }
     },
     "InLogicalVisibleIndexes": [
-      44,
       45,
       46,
       47,
@@ -270,18 +279,21 @@
       80,
       81,
       82,
-      83
+      83,
+      84
     ],
-    "Count": 84
+    "Count": 85
   },
   "Values": {
-    "2,44": "▼タブID",
-    "2,50": "▼申込事業者ID",
-    "2,59": "▼住宅事業者ID",
-    "3,44": 2,
-    "4,50": "▼申込事業者共有事項",
-    "4,59": "▼住宅事業者共有事項",
-    "4,68": "▼表示する共有事項",
+    "2,45": "▼タブID",
+    "2,51": "▼申込事業者ID",
+    "2,60": "▼申込事業者共有事項",
+    "2,69": "▼参照する顧客連絡ID",
+    "3,45": 2,
+    "4,45": "▼事業者区分",
+    "4,51": "▼住宅事業者ID",
+    "4,60": "▼住宅事業者共有事項",
+    "4,69": "▼表示する共有事項",
     "8,1": "搬入条件",
     "8,6": "前面道路幅",
     "8,20": "搬入障害高低差",
@@ -290,40 +302,299 @@
     "9,20": "スロープ",
     "9,40": "mm",
     "11,1": "調査履歴",
-    "11,35": "新規登録する",
-    "14,44": "▼申込ID",
-    "14,51": "▼申込タイプID",
-    "14,57": "▼グループID",
-    "17,44": "▼申込キャンセル日時",
-    "20,44": "▼調査ビュー",
-    "21,47": "調査履歴番号",
-    "21,77": "売上",
-    "21,78": "仕入",
-    "26,44": "▼登録件数",
-    "26,49": "▼調査ビューリロードフラグ",
-    "27,49": "0"
+    "11,36": "新規登録",
+    "14,45": "▼申込ID",
+    "14,52": "▼申込タイプID",
+    "14,58": "▼グループID",
+    "17,45": "▼申込キャンセル日時",
+    "20,45": "▼調査ビュー",
+    "21,48": "調査履歴番号",
+    "21,78": "売上",
+    "21,79": "仕入",
+    "26,45": "▼登録件数",
+    "26,50": "▼調査ビューリロードフラグ",
+    "27,50": "0"
   },
   "Formulas": {
-    "22,82": "ODATA(\"t_object_attachment/$count?$filter=file_attribute_id eq \"&IF(ISBLANK(AX23),\"null\",AX23)&\" and survey_id eq \"&IF(ISBLANK(AU23),\"null\",AU23)&\" and active_flg eq 1\")",
-    "22,80": "IFERROR(ODATA(\"v_survey_product_summary?$select=仕入合計&$filter=調査ID eq \"&IF(ISBLANK(AU23),\"null\",AU23)),\"\")",
-    "2,2": "IF(BQ6=0,\"\",BQ6)",
-    "22,79": "IFERROR(ODATA(\"v_survey_product_summary?$select=売上合計&$filter=調査ID eq \"&IF(ISBLANK(AU23),\"null\",AU23)),\"\")",
-    "5,68": "IF(BH6<>\"\",BH6,AY6)",
-    "5,59": "IFERROR(ODATA(\"m_customer_notice?$select=content&$filter=customer_id eq \"&IF(ISBLANK(BH4),\"null\",BH4)&\" and tab_id eq \"&IF(ISBLANK(AS4),\"null\",AS4)),\"\")",
-    "5,50": "IFERROR(ODATA(\"m_customer_notice?$select=content&$filter=customer_id eq \"&IF(ISBLANK(AY4),\"null\",AY4)&\" and tab_id eq \"&IF(ISBLANK(AS4),\"null\",AS4)),\"\")",
-    "27,44": "COUNT(AU23)",
-    "22,47": "$AS$28-ROW(AS23)+1",
-    "22,54": "IF(AZ23=1,\"以降\",\"～\")",
-    "22,49": "IF(AW23=1,18,6)"
+    "22,55": "IF(BA23=1,\"以降\",\"～\")",
+    "27,45": "COUNT(AV23)",
+    "2,2": "IF(BR6=0,\"\",BR6)",
+    "22,80": "IFERROR(ODATA(\"v_survey_product_summary?$select=売上合計&$filter=調査ID eq \"&IF(ISBLANK(AV23),\"null\",AV23)),\"\")",
+    "5,69": "IF(BJ6<>\"\",BJ6,BJ4)",
+    "22,81": "IFERROR(ODATA(\"v_survey_product_summary?$select=仕入合計&$filter=調査ID eq \"&IF(ISBLANK(AV23),\"null\",AV23)),\"\")",
+    "22,50": "IF(AX23=1,18,6)",
+    "22,83": "ODATA(\"t_object_attachment/$count?$filter=file_attribute_id eq \"&IF(ISBLANK(AY23),\"null\",AY23)&\" and survey_id eq \"&IF(ISBLANK(AV23),\"null\",AV23)&\" and active_flg eq 1\")",
+    "22,48": "$AT$28-ROW(AT23)+1",
+    "3,69": "IF(BI6<>\"\",BI6,BI4)"
+  },
+  "ArrayFormulas": {
+    "5,60,1,2": "IFERROR(ODATA(\"m_customer_notice?$select=customer_notice_id,content&$filter=customer_id eq \"&IF(ISBLANK(AZ6),\"null\",AZ6)&\" and tab_id eq \"&IF(ISBLANK(AT4),\"null\",AT4)),\"\")",
+    "3,60,1,2": "IFERROR(ODATA(\"m_customer_notice?$select=customer_notice_id,content&$filter=customer_id eq \"&IF(ISBLANK(AZ4),\"null\",AZ4)&\" and tab_id eq \"&IF(ISBLANK(AT4),\"null\",AT4)),\"\")"
   },
   "AttachInfos": {
-    "3,50": {
+    "2,41": {
+      "CellType": {
+        "$type": "Forguncy.ImageCellType, ServerDesignerCommon",
+        "CommandList": [
+          {
+            "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+            "ConditionAndCommandPairList": [
+              {
+                "Condition": {
+                  "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                  "param": {
+                    "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+                    "cellLocations": [
+                      {
+                        "SerializeProperty": "=物件詳細_調査!BR4"
+                      }
+                    ]
+                  },
+                  "value": "%Null%",
+                  "compareType": 1
+                },
+                "CommandList": [
+                  {
+                    "$type": "SetCurrentRowCommand.SetCurrentRowCommand, SetCurrentRowCommand",
+                    "CurrentRowInfo": {
+                      "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                      "ColumnBindingInfo": {
+                        "TableName": "m_customer_notice",
+                        "ColumnName": "customer_notice_id"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=物件詳細_調査!BR4"
+                      }
+                    }
+                  },
+                  {
+                    "$type": "Forguncy.Model.ShowPopupCommand, ServerDesignerCommon",
+                    "PopupDisplayMode": 3,
+                    "DrawerDirection": 3,
+                    "ShowDrawerHeader": true,
+                    "PageName": "共有事項_登録編集",
+                    "PassValues": [],
+                    "LoadBindingDataOption": 1
+                  }
+                ],
+                "ID": "2b03f307-12d5-4cd5-ae3d-1dc91629f465"
+              },
+              {
+                "CommandList": [
+                  {
+                    "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+                    "ConditionAndCommandPairList": [
+                      {
+                        "Condition": {
+                          "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                          "param": {
+                            "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+                            "cellLocations": [
+                              {
+                                "SerializeProperty": "=物件詳細_調査!AZ4"
+                              }
+                            ]
+                          },
+                          "value": "0",
+                          "compareType": 2
+                        },
+                        "CommandList": [
+                          {
+                            "$type": "Forguncy.Model.ShowPopupCommand, ServerDesignerCommon",
+                            "PageName": "事業者区分選択",
+                            "PassValues": [
+                              {
+                                "Source": {
+                                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                  "SerializeProperty": "=物件詳細_調査!AT6"
+                                },
+                                "TargetCell": {
+                                  "SerializeProperty": "=事業者区分選択!T4"
+                                }
+                              }
+                            ]
+                          }
+                        ],
+                        "ID": "bb02b410-1bb3-49b4-8409-123392f5f164"
+                      },
+                      {
+                        "CommandList": [
+                          {
+                            "$type": "Forguncy.Model.ShowPopupCommand, ServerDesignerCommon",
+                            "PopupDisplayMode": 3,
+                            "DrawerDirection": 3,
+                            "ShowDrawerHeader": true,
+                            "PageName": "共有事項_登録編集",
+                            "PassValues": [
+                              {
+                                "Source": {
+                                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                  "SerializeProperty": "=物件詳細_調査!AT4"
+                                },
+                                "TargetCell": {
+                                  "SerializeProperty": "=共有事項_登録編集!L4"
+                                }
+                              },
+                              {
+                                "Source": {
+                                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                  "SerializeProperty": "=物件詳細_調査!住宅事業者ID"
+                                },
+                                "TargetCell": {
+                                  "SerializeProperty": "=共有事項_登録編集!AR5"
+                                }
+                              }
+                            ],
+                            "LoadBindingDataOption": 2
+                          }
+                        ],
+                        "ID": "cf7efb31-9e69-4615-83dc-7d1ec1b95eed"
+                      }
+                    ]
+                  }
+                ],
+                "ID": "db92c8ae-4eb6-4726-9a39-67401b6aa519"
+              }
+            ]
+          }
+        ],
+        "ToolTip": "共有事項を編集できます",
+        "TemplateKey": "余白2グレー",
+        "ImagePath": "Application/023_edit_3.svg",
+        "BuiltIn": true,
+        "Color": "Accent 1",
+        "UseCellForeColor": true
+      }
+    },
+    "3,51": {
       "BindingInfo": {
         "TableName": "t_object_order",
         "ColumnName": "order_customer_id"
       }
     },
-    "3,59": {
+    "5,45": {
+      "CellType": {
+        "$type": "Forguncy.TextCellType, ServerDesignerCommon",
+        "SavedValidators": [
+          {
+            "$type": "Forguncy.CellTypes.Models.UniqueValidadator, ServerDesignerCommon"
+          }
+        ],
+        "CommandList": [
+          {
+            "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+            "ConditionAndCommandPairList": [
+              {
+                "Condition": {
+                  "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                  "param": {
+                    "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+                    "cellLocations": [
+                      {
+                        "SerializeProperty": "=物件詳細_調査!AT6"
+                      }
+                    ]
+                  },
+                  "value": "1"
+                },
+                "CommandList": [
+                  {
+                    "$type": "Forguncy.Model.SetCellPropertyCommand, ServerDesignerCommon",
+                    "PropertyItemsList": [
+                      {
+                        "TargetCells": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=物件詳細_調査!AT6"
+                        },
+                        "Value": "%Null%"
+                      }
+                    ]
+                  },
+                  {
+                    "$type": "Forguncy.Model.ShowPopupCommand, ServerDesignerCommon",
+                    "PopupDisplayMode": 3,
+                    "DrawerDirection": 3,
+                    "ShowDrawerHeader": true,
+                    "PageName": "共有事項_登録編集",
+                    "PassValues": [
+                      {
+                        "Source": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=物件詳細_調査!AT4"
+                        },
+                        "TargetCell": {
+                          "SerializeProperty": "=共有事項_登録編集!L4"
+                        }
+                      },
+                      {
+                        "Source": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=物件詳細_調査!AZ4"
+                        },
+                        "TargetCell": {
+                          "SerializeProperty": "=共有事項_登録編集!AR5"
+                        }
+                      }
+                    ],
+                    "LoadBindingDataOption": 2
+                  }
+                ],
+                "Comments": "申込事業者の場合",
+                "ID": "d54834ad-1239-465a-8eb9-d9e878a6c2d3"
+              },
+              {
+                "CommandList": [
+                  {
+                    "$type": "Forguncy.Model.SetCellPropertyCommand, ServerDesignerCommon",
+                    "PropertyItemsList": [
+                      {
+                        "TargetCells": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=物件詳細_調査!AT6"
+                        },
+                        "Value": "%Null%"
+                      }
+                    ]
+                  },
+                  {
+                    "$type": "Forguncy.Model.ShowPopupCommand, ServerDesignerCommon",
+                    "PopupDisplayMode": 3,
+                    "DrawerDirection": 3,
+                    "ShowDrawerHeader": true,
+                    "PageName": "共有事項_登録編集",
+                    "PassValues": [
+                      {
+                        "Source": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=物件詳細_調査!AT4"
+                        },
+                        "TargetCell": {
+                          "SerializeProperty": "=共有事項_登録編集!L4"
+                        }
+                      },
+                      {
+                        "Source": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=物件詳細_調査!住宅事業者ID"
+                        },
+                        "TargetCell": {
+                          "SerializeProperty": "=共有事項_登録編集!AR5"
+                        }
+                      }
+                    ],
+                    "LoadBindingDataOption": 2
+                  }
+                ],
+                "Comments": "住宅事業者の場合",
+                "ID": "d081fd6d-00e0-41b0-88a6-54f21d788702"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "5,51": {
       "BindingInfo": {
         "TableName": "t_object_order",
         "ColumnName": "builder_id"
@@ -543,7 +814,7 @@
         ]
       }
     },
-    "11,35": {
+    "11,36": {
       "CellType": {
         "$type": "Forguncy.ButtonCellType, ServerDesignerCommon",
         "CommandList": [
@@ -563,7 +834,7 @@
                   },
                   "Value": {
                     "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                    "SerializeProperty": "=物件詳細_調査!AS16"
+                    "SerializeProperty": "=物件詳細_調査!AT16"
                   }
                 },
                 "Condition2": {
@@ -581,7 +852,7 @@
                 }
               }
             },
-            "ID": "46e238388beb4d15b85d2b3f3971a197"
+            "ID": "6afc2947080f480592024cdd79486735"
           },
           {
             "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
@@ -609,7 +880,7 @@
                     "$type": "Forguncy.Model.StopCommand, ServerDesignerCommon"
                   }
                 ],
-                "ID": "dded7765-5682-4aa5-bef0-febb4c525f16"
+                "ID": "b568e7c9-1236-4bfe-9d2e-075927b9e73b"
               }
             ]
           },
@@ -624,7 +895,7 @@
               {
                 "Source": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=物件詳細_調査!AS16"
+                  "SerializeProperty": "=物件詳細_調査!AT16"
                 },
                 "TargetCell": {
                   "SerializeProperty": "=調査登録・編集!申込ID"
@@ -633,7 +904,7 @@
               {
                 "Source": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=物件詳細_調査!BH4"
+                  "SerializeProperty": "=物件詳細_調査!AZ6"
                 },
                 "TargetCell": {
                   "SerializeProperty": "=調査登録・編集!住宅事業者ID"
@@ -642,7 +913,7 @@
               {
                 "Source": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=物件詳細_調査!BF16"
+                  "SerializeProperty": "=物件詳細_調査!BG16"
                 },
                 "TargetCell": {
                   "SerializeProperty": "=調査登録・編集!グループID"
@@ -651,7 +922,7 @@
               {
                 "Source": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=物件詳細_調査!AZ16"
+                  "SerializeProperty": "=物件詳細_調査!BA16"
                 },
                 "TargetCell": {
                   "SerializeProperty": "=調査登録・編集!申込タイプID"
@@ -661,7 +932,7 @@
             "LoadBindingDataOption": 2
           }
         ],
-        "Text": "新規登録する",
+        "Text": "新規登録",
         "TemplateKey": "_RS_Outline_RoundCorner_Style3",
         "Icon": {
           "Name": "Application/005_add_5.svg",
@@ -676,7 +947,7 @@
             "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
             "Formula": {
               "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-              "SerializeProperty": "=物件詳細_調査!$AS$19<>\"\""
+              "SerializeProperty": "=物件詳細_調査!$AT$19<>\"\""
             },
             "StyleInfo": {
               "Underline": null,
@@ -696,6 +967,7 @@
         "TemplatePageName": "0f945d1154474ee481fea0c868da262",
         "Command": {
           "$type": "GrapeCity.Forguncy.Commands.CustomCommandObject, Forguncy.Commands",
+          "Commands": [],
           "ParamProperties": {
             "申込ID": "申込ID",
             "申込ステータス順": "申込ステータス順",
@@ -739,36 +1011,36 @@
         }
       }
     },
-    "15,44": {
+    "15,45": {
       "BindingInfo": {
         "TableName": "t_object_order",
         "ColumnName": "object_order_id"
       }
     },
-    "15,51": {
+    "15,52": {
       "BindingInfo": {
         "TableName": "t_object_order",
         "ColumnName": "order_type_id"
       }
     },
-    "15,57": {
+    "15,58": {
       "BindingInfo": {
         "TableName": "t_object_order",
         "ColumnName": "group_id"
       }
     },
-    "18,44": {
+    "18,45": {
       "BindingInfo": {
         "TableName": "t_object_order",
         "ColumnName": "order_cancel_date"
       }
     },
-    "21,44": {
+    "21,45": {
       "ListViewInfo": {
         "ShowColumnHeaderInDesigner": true,
         "TableName": "t_object_survey",
         "RowIndex": 21,
-        "ColumnIndex": 44,
+        "ColumnIndex": 45,
         "ColumnCount": 39,
         "RowCount": 4,
         "ColumnOperation": 2,
@@ -783,7 +1055,7 @@
           },
           "Value": {
             "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-            "SerializeProperty": "=物件詳細_調査!AS16"
+            "SerializeProperty": "=物件詳細_調査!AT16"
           }
         },
         "TopCondition": null,
@@ -803,14 +1075,14 @@
         "ListViewStyleName": "_RS_Medium1"
       }
     },
-    "22,44": {
+    "22,45": {
       "BindingInfo": {
         "TableName": "t_object_survey",
         "ColumnName": "object_order_id"
       },
       "NameUsedInJavaScript": "申込ID"
     },
-    "22,45": {
+    "22,46": {
       "BindingInfo": {
         "TableName": "t_object_survey",
         "ColumnName": "object_order_id",
@@ -827,17 +1099,17 @@
       },
       "NameUsedInJavaScript": "申込ステータス順"
     },
-    "22,46": {
+    "22,47": {
       "BindingInfo": {
         "TableName": "t_object_survey",
         "ColumnName": "survey_id"
       },
       "NameUsedInJavaScript": "調査ID"
     },
-    "22,47": {
+    "22,48": {
       "NameUsedInJavaScript": "調査履歴番号"
     },
-    "22,48": {
+    "22,49": {
       "BindingInfo": {
         "TableName": "t_object_survey",
         "ColumnName": "object_order_id",
@@ -854,69 +1126,69 @@
       },
       "NameUsedInJavaScript": "地盤解析フラグ"
     },
-    "22,49": {
+    "22,50": {
       "NameUsedInJavaScript": "調査報告書ファイル属性ID"
     },
-    "22,50": {
+    "22,51": {
       "BindingInfo": {
         "TableName": "t_object_survey",
         "ColumnName": "survey_request_date"
       },
       "NameUsedInJavaScript": "調査依頼日"
     },
-    "22,51": {
+    "22,52": {
       "BindingInfo": {
         "TableName": "t_object_survey",
         "ColumnName": "survey_preferred_type"
       },
       "NameUsedInJavaScript": "調査希望区分"
     },
-    "22,52": {
+    "22,53": {
       "BindingInfo": {
         "TableName": "t_object_survey",
         "ColumnName": "survey_preferred_sttdate"
       },
       "NameUsedInJavaScript": "調査希望開始日"
     },
-    "22,53": {
+    "22,54": {
       "BindingInfo": {
         "TableName": "t_object_survey",
         "ColumnName": "survey_preferred_enddate"
       },
       "NameUsedInJavaScript": "調査希望終了日"
     },
-    "22,54": {
+    "22,55": {
       "NameUsedInJavaScript": "調査希望区分表示文字"
     },
-    "22,55": {
+    "22,56": {
       "BindingInfo": {
         "TableName": "t_object_survey",
         "ColumnName": "survey_preferred_time"
       },
       "NameUsedInJavaScript": "調査希望時刻"
     },
-    "22,56": {
+    "22,57": {
       "BindingInfo": {
         "TableName": "t_object_survey",
         "ColumnName": "withness_being_flg"
       },
       "NameUsedInJavaScript": "立会者有無フラグ"
     },
-    "22,57": {
+    "22,58": {
       "BindingInfo": {
         "TableName": "t_object_survey",
         "ColumnName": "withness"
       },
       "NameUsedInJavaScript": "立会者"
     },
-    "22,58": {
+    "22,59": {
       "BindingInfo": {
         "TableName": "t_object_survey",
         "ColumnName": "specify_survey_id"
       },
       "NameUsedInJavaScript": "指定調査会社ID"
     },
-    "22,59": {
+    "22,60": {
       "BindingInfo": {
         "TableName": "t_object_survey",
         "ColumnName": "specify_survey_id",
@@ -928,7 +1200,7 @@
       },
       "NameUsedInJavaScript": "指定調査会社名"
     },
-    "22,60": {
+    "22,61": {
       "CellType": {
         "$type": "Forguncy.DropDownListCellType, ServerDesignerCommon",
         "Items": [
@@ -948,14 +1220,14 @@
       },
       "NameUsedInJavaScript": "調査区分"
     },
-    "22,61": {
+    "22,62": {
       "BindingInfo": {
         "TableName": "t_object_survey",
         "ColumnName": "survey_customer_id"
       },
       "NameUsedInJavaScript": "調査会社ID"
     },
-    "22,62": {
+    "22,63": {
       "BindingInfo": {
         "TableName": "t_object_survey",
         "ColumnName": "survey_customer_id",
@@ -967,35 +1239,35 @@
       },
       "NameUsedInJavaScript": "調査会社名"
     },
-    "22,63": {
+    "22,64": {
       "BindingInfo": {
         "TableName": "t_object_survey",
         "ColumnName": "survey_arrange_date"
       },
       "NameUsedInJavaScript": "調査手配日"
     },
-    "22,64": {
+    "22,65": {
       "BindingInfo": {
         "TableName": "t_object_survey",
         "ColumnName": "survey_accept_date"
       },
       "NameUsedInJavaScript": "調承諾日"
     },
-    "22,65": {
+    "22,66": {
       "BindingInfo": {
         "TableName": "t_object_survey",
         "ColumnName": "survey_notification_date"
       },
       "NameUsedInJavaScript": "調査日程通知日"
     },
-    "22,66": {
+    "22,67": {
       "BindingInfo": {
         "TableName": "t_object_survey",
         "ColumnName": "survey_method_id"
       },
       "NameUsedInJavaScript": "調査方法ID"
     },
-    "22,67": {
+    "22,68": {
       "BindingInfo": {
         "TableName": "t_object_survey",
         "ColumnName": "survey_method_id",
@@ -1007,49 +1279,49 @@
       },
       "NameUsedInJavaScript": "調査方法"
     },
-    "22,68": {
+    "22,69": {
       "BindingInfo": {
         "TableName": "t_object_survey",
         "ColumnName": "scheduled_survey_sttdate"
       },
       "NameUsedInJavaScript": "調査予定開始日"
     },
-    "22,69": {
+    "22,70": {
       "BindingInfo": {
         "TableName": "t_object_survey",
         "ColumnName": "scheduled_survey_enddate"
       },
       "NameUsedInJavaScript": "調査予定終了日"
     },
-    "22,70": {
+    "22,71": {
       "BindingInfo": {
         "TableName": "t_object_survey",
         "ColumnName": "survey_enforcement_date"
       },
       "NameUsedInJavaScript": "調査実施開始日"
     },
-    "22,71": {
+    "22,72": {
       "BindingInfo": {
         "TableName": "t_object_survey",
         "ColumnName": "survey_report_receipt_date"
       },
       "NameUsedInJavaScript": "調査報告書受領日"
     },
-    "22,72": {
+    "22,73": {
       "BindingInfo": {
         "TableName": "t_object_survey",
         "ColumnName": "suvey_report_delivery_date"
       },
       "NameUsedInJavaScript": "調査報告書納品日"
     },
-    "22,74": {
+    "22,75": {
       "BindingInfo": {
         "TableName": "t_object_survey",
         "ColumnName": "survey_status_id"
       },
       "NameUsedInJavaScript": "調査ステータスID"
     },
-    "22,75": {
+    "22,76": {
       "BindingInfo": {
         "TableName": "t_object_survey",
         "ColumnName": "survey_status_id",
@@ -1061,7 +1333,7 @@
       },
       "NameUsedInJavaScript": "調査ステータス順"
     },
-    "22,76": {
+    "22,77": {
       "BindingInfo": {
         "TableName": "t_object_survey",
         "ColumnName": "survey_status_id",
@@ -1073,7 +1345,7 @@
       },
       "NameUsedInJavaScript": "完了フラグ"
     },
-    "22,77": {
+    "22,78": {
       "BindingInfo": {
         "TableName": "t_object_survey",
         "ColumnName": "survey_status_id",
@@ -1085,30 +1357,30 @@
       },
       "NameUsedInJavaScript": "調査ステータス名"
     },
-    "22,78": {
+    "22,79": {
       "BindingInfo": {
         "TableName": "t_object_survey",
         "ColumnName": "survey_complete_flg"
       },
       "NameUsedInJavaScript": "調査完了フラグ"
     },
-    "22,79": {
+    "22,80": {
       "NameUsedInJavaScript": "売上合計"
     },
-    "22,80": {
+    "22,81": {
       "NameUsedInJavaScript": "仕入合計"
     },
-    "22,81": {
+    "22,82": {
       "BindingInfo": {
         "TableName": "t_object_survey",
         "ColumnName": "調査番号"
       },
       "NameUsedInJavaScript": "調査番号"
     },
-    "22,82": {
+    "22,83": {
       "NameUsedInJavaScript": "調査報告書添付カウント"
     },
-    "27,49": {
+    "27,50": {
       "CellType": {
         "$type": "Forguncy.TextCellType, ServerDesignerCommon",
         "SavedValidators": [
@@ -1160,7 +1432,7 @@
                     ]
                   }
                 ],
-                "ID": "d30f7022-7278-4587-b278-640bea11e099"
+                "ID": "94c55deb-634b-400d-91e3-dad6c3123353"
               }
             ]
           }
@@ -1191,6 +1463,9 @@
         "WordWrap": true
       },
       {
+        "FontFamily": 2
+      },
+      {
         "BorderLeft": null,
         "BorderRight": 0
       },
@@ -1199,14 +1474,20 @@
         "Formatter": 3
       },
       {
-        "FontFamily": 2
-      },
-      {
         "Background": 4
       },
       {
         "Background": 4,
         "FontFamily": 2
+      },
+      {
+        "Background": 5,
+        "FontFamily": 2
+      },
+      {
+        "Background": 6,
+        "FontFamily": 2,
+        "Formatter": 7
       },
       {
         "BorderBottom": 0,
@@ -1221,12 +1502,12 @@
         "BorderRight": 0
       },
       {
-        "FontWeight": 5,
-        "Foreground": 6
+        "FontWeight": 8,
+        "Foreground": 9
       },
       {
         "FontFamily": 2,
-        "Foreground": 7,
+        "Foreground": 10,
         "Formatter": 3
       },
       {
@@ -1236,14 +1517,14 @@
       {
         "FontFamily": 2,
         "FontSize": 14.666666666666666,
-        "HorizontalAlignment": 8
+        "HorizontalAlignment": 11
       },
       {
-        "Foreground": 7
+        "Foreground": 10
       },
       {
         "FontFamily": 2,
-        "Foreground": 7
+        "Foreground": 10
       },
       {
         "FontFamily": 2,
@@ -1267,9 +1548,9 @@
         "Formatter": 3
       },
       {
-        "Background": 9,
-        "Formatter": 10,
-        "HorizontalAlignment": 8
+        "Background": 6,
+        "Formatter": 7,
+        "HorizontalAlignment": 11
       }
     ],
     "Types": {
@@ -1279,19 +1560,20 @@
         "Body",
         "[AUTO]General",
         "#FFFFFF00",
+        "Accent 4 80",
+        "Accent 1 80",
+        "@",
         "Bold",
         "#FF005B47",
         "Text 1 50",
-        "Right",
-        "Accent 1 80",
-        "@"
+        "Right"
       ],
       "Borders": [
         {
           "Color": 0
         },
         {
-          "Color": 6
+          "Color": 9
         }
       ]
     },
@@ -1337,432 +1619,450 @@
       "1,39": 1,
       "1,40": 1,
       "1,41": 1,
-      "1,42": 2,
+      "1,42": 1,
+      "1,43": 2,
       "2,1": 3,
       "2,2": 4,
+      "2,41": 5,
       "2,42": 5,
-      "2,50": 6,
+      "2,43": 6,
       "2,51": 7,
-      "2,52": 7,
-      "2,53": 7,
-      "2,54": 7,
-      "2,55": 7,
-      "2,56": 7,
-      "2,57": 7,
-      "2,58": 7,
-      "2,59": 6,
+      "2,52": 5,
+      "2,53": 5,
+      "2,54": 5,
+      "2,55": 5,
+      "2,56": 5,
+      "2,57": 5,
+      "2,58": 5,
+      "2,59": 5,
       "2,60": 7,
-      "2,61": 7,
-      "2,62": 7,
-      "2,63": 7,
-      "2,64": 7,
-      "2,65": 7,
+      "2,61": 5,
+      "2,62": 5,
+      "2,63": 5,
+      "2,64": 5,
+      "2,65": 5,
+      "2,66": 5,
+      "2,69": 7,
+      "2,70": 5,
+      "2,71": 5,
       "3,1": 3,
-      "3,42": 5,
-      "3,44": 8,
-      "3,50": 9,
-      "3,51": 7,
-      "3,52": 7,
-      "3,53": 7,
-      "3,54": 7,
-      "3,55": 7,
-      "3,56": 7,
-      "3,57": 7,
-      "3,58": 7,
-      "3,59": 9,
-      "3,60": 7,
-      "3,61": 7,
-      "3,62": 7,
-      "3,63": 7,
-      "3,64": 7,
-      "3,65": 7,
+      "3,43": 6,
+      "3,45": 8,
+      "3,51": 9,
+      "3,52": 5,
+      "3,53": 5,
+      "3,54": 5,
+      "3,55": 5,
+      "3,56": 5,
+      "3,57": 5,
+      "3,58": 5,
+      "3,59": 5,
+      "3,60": 10,
+      "3,61": 10,
+      "3,62": 5,
+      "3,63": 5,
+      "3,64": 5,
+      "3,65": 5,
+      "3,66": 5,
+      "3,69": 9,
+      "3,70": 5,
+      "3,71": 5,
       "4,1": 3,
-      "4,42": 5,
-      "4,50": 6,
+      "4,43": 6,
+      "4,45": 7,
+      "4,46": 5,
+      "4,47": 5,
       "4,51": 7,
-      "4,52": 7,
-      "4,53": 7,
-      "4,54": 7,
-      "4,55": 7,
-      "4,56": 7,
-      "4,57": 7,
-      "4,58": 7,
-      "4,59": 6,
+      "4,52": 5,
+      "4,53": 5,
+      "4,54": 5,
+      "4,55": 5,
+      "4,56": 5,
+      "4,57": 5,
+      "4,58": 5,
+      "4,59": 5,
       "4,60": 7,
-      "4,61": 7,
-      "4,62": 7,
-      "4,63": 7,
-      "4,64": 7,
-      "4,65": 7,
-      "4,68": 6,
+      "4,61": 5,
+      "4,62": 5,
+      "4,63": 5,
+      "4,64": 5,
+      "4,65": 5,
+      "4,66": 5,
       "4,69": 7,
-      "4,70": 7,
-      "4,71": 7,
-      "4,72": 7,
-      "4,73": 7,
-      "4,74": 7,
-      "4,78": 7,
-      "4,79": 7,
-      "4,80": 7,
-      "4,81": 7,
-      "4,82": 7,
+      "4,70": 5,
+      "4,71": 5,
+      "4,72": 5,
+      "4,73": 5,
+      "4,74": 5,
+      "4,75": 5,
+      "4,79": 5,
+      "4,80": 5,
+      "4,81": 5,
+      "4,82": 5,
+      "4,83": 5,
       "5,1": 3,
-      "5,42": 5,
-      "5,50": 9,
-      "5,51": 7,
-      "5,52": 7,
-      "5,53": 7,
-      "5,54": 7,
-      "5,55": 7,
-      "5,56": 7,
-      "5,57": 7,
-      "5,58": 7,
-      "5,59": 9,
-      "5,60": 7,
-      "5,61": 7,
-      "5,62": 7,
-      "5,63": 7,
-      "5,64": 7,
-      "5,65": 7,
-      "5,66": 7,
-      "5,67": 7,
-      "5,68": 9,
-      "5,69": 7,
-      "5,70": 7,
-      "5,71": 7,
-      "5,72": 7,
-      "5,73": 7,
-      "5,74": 7,
-      "5,78": 7,
-      "5,79": 7,
-      "5,80": 7,
-      "5,81": 7,
-      "5,82": 7,
-      "6,1": 10,
-      "6,2": 11,
-      "6,3": 11,
-      "6,4": 11,
-      "6,5": 11,
-      "6,6": 11,
-      "6,7": 11,
-      "6,8": 11,
-      "6,9": 11,
-      "6,10": 11,
-      "6,11": 11,
-      "6,12": 11,
-      "6,13": 11,
-      "6,14": 11,
-      "6,15": 11,
-      "6,16": 11,
-      "6,17": 11,
-      "6,18": 11,
-      "6,19": 11,
-      "6,20": 11,
-      "6,21": 11,
-      "6,22": 11,
-      "6,23": 11,
-      "6,24": 11,
-      "6,25": 11,
-      "6,26": 11,
-      "6,27": 11,
-      "6,28": 11,
-      "6,29": 11,
-      "6,30": 11,
-      "6,31": 11,
-      "6,32": 11,
-      "6,33": 11,
-      "6,34": 11,
-      "6,35": 11,
-      "6,36": 11,
-      "6,37": 11,
-      "6,38": 11,
-      "6,39": 11,
-      "6,40": 11,
-      "6,41": 11,
-      "6,42": 12,
-      "6,72": 7,
-      "6,73": 7,
-      "6,74": 7,
-      "8,1": 13,
-      "8,6": 14,
-      "8,7": 7,
-      "8,8": 7,
-      "8,9": 7,
-      "8,10": 7,
-      "8,11": 15,
-      "8,20": 14,
-      "8,22": 7,
-      "8,23": 7,
-      "8,24": 7,
-      "8,25": 7,
-      "8,26": 7,
-      "8,27": 15,
-      "8,35": 16,
-      "8,39": 7,
-      "8,40": 6,
+      "5,43": 6,
+      "5,45": 11,
+      "5,46": 5,
+      "5,47": 5,
+      "5,51": 9,
+      "5,52": 5,
+      "5,53": 5,
+      "5,54": 5,
+      "5,55": 5,
+      "5,56": 5,
+      "5,57": 5,
+      "5,58": 5,
+      "5,59": 5,
+      "5,60": 10,
+      "5,61": 10,
+      "5,62": 5,
+      "5,63": 5,
+      "5,64": 5,
+      "5,65": 5,
+      "5,66": 5,
+      "5,67": 5,
+      "5,68": 5,
+      "5,69": 9,
+      "5,70": 5,
+      "5,71": 5,
+      "5,72": 5,
+      "5,73": 5,
+      "5,74": 5,
+      "5,75": 5,
+      "5,79": 5,
+      "5,80": 5,
+      "5,81": 5,
+      "5,82": 5,
+      "5,83": 5,
+      "6,1": 12,
+      "6,2": 13,
+      "6,3": 13,
+      "6,4": 13,
+      "6,5": 13,
+      "6,6": 13,
+      "6,7": 13,
+      "6,8": 13,
+      "6,9": 13,
+      "6,10": 13,
+      "6,11": 13,
+      "6,12": 13,
+      "6,13": 13,
+      "6,14": 13,
+      "6,15": 13,
+      "6,16": 13,
+      "6,17": 13,
+      "6,18": 13,
+      "6,19": 13,
+      "6,20": 13,
+      "6,21": 13,
+      "6,22": 13,
+      "6,23": 13,
+      "6,24": 13,
+      "6,25": 13,
+      "6,26": 13,
+      "6,27": 13,
+      "6,28": 13,
+      "6,29": 13,
+      "6,30": 13,
+      "6,31": 13,
+      "6,32": 13,
+      "6,33": 13,
+      "6,34": 13,
+      "6,35": 13,
+      "6,36": 13,
+      "6,37": 13,
+      "6,38": 13,
+      "6,39": 13,
+      "6,40": 13,
+      "6,41": 13,
+      "6,42": 13,
+      "6,43": 14,
+      "6,73": 5,
+      "6,74": 5,
+      "6,75": 5,
+      "8,1": 15,
+      "8,6": 16,
+      "8,7": 5,
+      "8,8": 5,
+      "8,9": 5,
+      "8,10": 5,
+      "8,11": 17,
+      "8,20": 16,
+      "8,22": 5,
+      "8,23": 5,
+      "8,24": 5,
+      "8,25": 5,
+      "8,26": 5,
+      "8,27": 17,
+      "8,35": 18,
+      "8,39": 5,
+      "8,40": 7,
       "8,41": 7,
-      "8,42": 7,
-      "9,6": 17,
-      "9,11": 15,
-      "9,20": 14,
-      "9,22": 7,
-      "9,23": 7,
-      "9,24": 7,
-      "9,25": 7,
-      "9,26": 7,
-      "9,27": 15,
-      "9,35": 16,
-      "9,39": 7,
-      "9,40": 6,
+      "8,42": 5,
+      "8,43": 5,
+      "9,6": 19,
+      "9,11": 17,
+      "9,20": 16,
+      "9,22": 5,
+      "9,23": 5,
+      "9,24": 5,
+      "9,25": 5,
+      "9,26": 5,
+      "9,27": 17,
+      "9,35": 18,
+      "9,39": 5,
+      "9,40": 7,
       "9,41": 7,
-      "9,42": 7,
-      "10,6": 17,
-      "10,11": 15,
-      "10,12": 15,
-      "10,13": 15,
-      "10,14": 15,
-      "10,15": 15,
-      "10,20": 18,
-      "11,1": 13,
-      "11,35": 19,
-      "11,42": 19,
-      "12,1": 20,
-      "12,2": 20,
-      "12,3": 20,
-      "12,4": 20,
-      "12,5": 20,
-      "12,6": 20,
-      "12,7": 20,
-      "12,8": 20,
-      "12,9": 20,
-      "12,10": 20,
-      "12,11": 20,
-      "12,12": 20,
-      "12,13": 20,
-      "12,14": 20,
-      "12,15": 20,
-      "12,16": 20,
-      "12,17": 20,
-      "12,18": 20,
-      "12,19": 20,
-      "12,20": 20,
-      "12,21": 20,
-      "12,22": 20,
-      "12,23": 20,
-      "12,24": 20,
-      "12,25": 20,
-      "12,26": 20,
-      "12,27": 20,
-      "12,28": 20,
-      "12,29": 20,
-      "12,30": 20,
-      "12,31": 20,
-      "12,32": 20,
-      "12,33": 20,
-      "12,34": 20,
-      "12,35": 20,
-      "12,36": 21,
-      "12,37": 21,
-      "12,38": 21,
-      "12,39": 21,
-      "12,40": 21,
-      "12,41": 21,
-      "12,42": 21,
-      "13,1": 22,
-      "14,44": 7,
-      "14,45": 7,
-      "14,46": 7,
-      "14,47": 7,
-      "14,51": 6,
+      "9,42": 5,
+      "9,43": 5,
+      "10,6": 19,
+      "10,11": 17,
+      "10,12": 17,
+      "10,13": 17,
+      "10,14": 17,
+      "10,15": 17,
+      "10,20": 20,
+      "11,1": 15,
+      "11,36": 21,
+      "12,1": 22,
+      "12,2": 22,
+      "12,3": 22,
+      "12,4": 22,
+      "12,5": 22,
+      "12,6": 22,
+      "12,7": 22,
+      "12,8": 22,
+      "12,9": 22,
+      "12,10": 22,
+      "12,11": 22,
+      "12,12": 22,
+      "12,13": 22,
+      "12,14": 22,
+      "12,15": 22,
+      "12,16": 22,
+      "12,17": 22,
+      "12,18": 22,
+      "12,19": 22,
+      "12,20": 22,
+      "12,21": 22,
+      "12,22": 22,
+      "12,23": 22,
+      "12,24": 22,
+      "12,25": 22,
+      "12,26": 22,
+      "12,27": 22,
+      "12,28": 22,
+      "12,29": 22,
+      "12,30": 22,
+      "12,31": 22,
+      "12,32": 22,
+      "12,33": 22,
+      "12,34": 22,
+      "12,35": 22,
+      "12,36": 23,
+      "12,37": 23,
+      "12,38": 23,
+      "12,39": 23,
+      "12,40": 23,
+      "12,41": 23,
+      "12,42": 23,
+      "12,43": 23,
+      "13,1": 24,
+      "14,45": 5,
+      "14,46": 5,
+      "14,47": 5,
+      "14,48": 5,
       "14,52": 7,
-      "14,53": 7,
-      "14,57": 6,
+      "14,53": 5,
+      "14,54": 5,
       "14,58": 7,
-      "14,59": 7,
-      "15,44": 9,
-      "15,51": 9,
-      "15,52": 7,
-      "15,53": 7,
-      "15,57": 9,
-      "15,58": 7,
-      "15,59": 7,
-      "17,44": 23,
-      "17,45": 19,
-      "17,46": 19,
-      "18,44": 9,
-      "18,45": 7,
-      "18,46": 7,
-      "20,44": 7,
-      "20,45": 7,
-      "20,46": 7,
-      "20,47": 7,
-      "20,48": 7,
-      "20,49": 7,
-      "20,50": 7,
-      "20,51": 7,
-      "20,52": 7,
-      "20,53": 7,
-      "20,54": 7,
-      "20,55": 7,
-      "20,56": 7,
-      "20,57": 7,
-      "20,58": 7,
-      "20,59": 7,
-      "20,60": 7,
-      "20,61": 7,
-      "20,62": 7,
-      "20,63": 7,
-      "20,64": 7,
-      "20,65": 7,
-      "20,66": 7,
-      "20,67": 7,
-      "20,68": 7,
-      "20,69": 7,
-      "20,70": 7,
-      "20,71": 7,
-      "20,72": 7,
-      "20,73": 7,
-      "20,74": 7,
-      "21,45": 7,
-      "21,46": 7,
-      "21,47": 7,
-      "21,50": 7,
-      "21,51": 7,
-      "21,52": 7,
-      "21,53": 7,
-      "21,54": 7,
-      "21,55": 7,
-      "21,56": 7,
-      "21,57": 7,
-      "21,58": 7,
-      "21,59": 7,
-      "21,60": 7,
-      "21,61": 7,
-      "21,62": 7,
-      "21,63": 7,
-      "21,64": 7,
-      "21,65": 7,
-      "21,66": 7,
-      "21,67": 7,
-      "21,68": 7,
-      "21,69": 7,
-      "21,70": 7,
-      "21,71": 7,
-      "21,72": 7,
-      "21,73": 7,
-      "21,74": 7,
-      "21,75": 7,
-      "21,76": 7,
-      "21,77": 7,
-      "21,78": 7,
-      "21,79": 7,
-      "21,80": 7,
-      "21,81": 7,
-      "21,82": 7,
-      "22,46": 7,
-      "22,47": 7,
-      "22,50": 7,
-      "22,51": 7,
-      "22,52": 7,
-      "22,53": 7,
-      "22,54": 7,
-      "22,55": 7,
-      "22,56": 7,
-      "22,57": 7,
-      "22,58": 7,
-      "22,59": 7,
-      "22,60": 7,
-      "22,61": 7,
-      "22,62": 7,
-      "22,63": 7,
-      "22,64": 7,
-      "22,65": 7,
-      "22,66": 7,
-      "22,67": 7,
-      "22,68": 7,
-      "22,69": 7,
-      "22,70": 7,
-      "22,71": 7,
-      "22,72": 7,
-      "22,73": 7,
-      "22,74": 7,
-      "22,75": 7,
-      "22,76": 7,
-      "22,77": 7,
-      "22,78": 7,
-      "22,79": 7,
-      "22,80": 7,
-      "22,81": 7,
-      "22,82": 7,
-      "23,44": 7,
-      "23,45": 7,
-      "23,46": 7,
-      "23,47": 7,
-      "23,48": 7,
-      "23,49": 7,
-      "23,50": 7,
-      "23,51": 7,
-      "23,52": 7,
-      "23,53": 7,
-      "23,54": 7,
-      "23,55": 7,
-      "23,56": 7,
-      "23,57": 7,
-      "23,58": 7,
-      "23,59": 7,
-      "23,60": 7,
-      "23,61": 7,
-      "23,62": 7,
-      "23,63": 7,
-      "23,64": 7,
-      "23,65": 7,
-      "23,66": 7,
-      "23,67": 7,
-      "23,68": 7,
-      "23,69": 7,
-      "23,70": 7,
-      "23,71": 7,
-      "23,72": 7,
-      "23,73": 7,
-      "23,74": 7,
-      "24,44": 7,
-      "24,45": 7,
-      "24,46": 7,
-      "24,47": 7,
-      "24,48": 7,
-      "24,49": 7,
-      "24,50": 7,
-      "24,51": 7,
-      "24,52": 7,
-      "24,53": 7,
-      "24,54": 7,
-      "24,55": 7,
-      "24,56": 7,
-      "24,57": 7,
-      "24,58": 7,
-      "24,59": 7,
-      "24,60": 7,
-      "24,61": 7,
-      "24,62": 7,
-      "24,63": 7,
-      "24,64": 7,
-      "24,65": 7,
-      "24,66": 7,
-      "24,67": 7,
-      "24,68": 7,
-      "24,69": 7,
-      "24,70": 7,
-      "24,71": 7,
-      "24,72": 7,
-      "24,73": 7,
-      "24,74": 7,
-      "26,44": 7,
-      "26,45": 7,
-      "26,46": 7,
-      "27,44": 9,
-      "27,45": 7,
-      "27,46": 7,
-      "27,49": 24
+      "14,59": 5,
+      "14,60": 5,
+      "15,45": 9,
+      "15,52": 9,
+      "15,53": 5,
+      "15,54": 5,
+      "15,58": 9,
+      "15,59": 5,
+      "15,60": 5,
+      "17,45": 25,
+      "17,46": 21,
+      "17,47": 21,
+      "18,45": 9,
+      "18,46": 5,
+      "18,47": 5,
+      "20,45": 5,
+      "20,46": 5,
+      "20,47": 5,
+      "20,48": 5,
+      "20,49": 5,
+      "20,50": 5,
+      "20,51": 5,
+      "20,52": 5,
+      "20,53": 5,
+      "20,54": 5,
+      "20,55": 5,
+      "20,56": 5,
+      "20,57": 5,
+      "20,58": 5,
+      "20,59": 5,
+      "20,60": 5,
+      "20,61": 5,
+      "20,62": 5,
+      "20,63": 5,
+      "20,64": 5,
+      "20,65": 5,
+      "20,66": 5,
+      "20,67": 5,
+      "20,68": 5,
+      "20,69": 5,
+      "20,70": 5,
+      "20,71": 5,
+      "20,72": 5,
+      "20,73": 5,
+      "20,74": 5,
+      "20,75": 5,
+      "21,46": 5,
+      "21,47": 5,
+      "21,48": 5,
+      "21,51": 5,
+      "21,52": 5,
+      "21,53": 5,
+      "21,54": 5,
+      "21,55": 5,
+      "21,56": 5,
+      "21,57": 5,
+      "21,58": 5,
+      "21,59": 5,
+      "21,60": 5,
+      "21,61": 5,
+      "21,62": 5,
+      "21,63": 5,
+      "21,64": 5,
+      "21,65": 5,
+      "21,66": 5,
+      "21,67": 5,
+      "21,68": 5,
+      "21,69": 5,
+      "21,70": 5,
+      "21,71": 5,
+      "21,72": 5,
+      "21,73": 5,
+      "21,74": 5,
+      "21,75": 5,
+      "21,76": 5,
+      "21,77": 5,
+      "21,78": 5,
+      "21,79": 5,
+      "21,80": 5,
+      "21,81": 5,
+      "21,82": 5,
+      "21,83": 5,
+      "22,47": 5,
+      "22,48": 5,
+      "22,51": 5,
+      "22,52": 5,
+      "22,53": 5,
+      "22,54": 5,
+      "22,55": 5,
+      "22,56": 5,
+      "22,57": 5,
+      "22,58": 5,
+      "22,59": 5,
+      "22,60": 5,
+      "22,61": 5,
+      "22,62": 5,
+      "22,63": 5,
+      "22,64": 5,
+      "22,65": 5,
+      "22,66": 5,
+      "22,67": 5,
+      "22,68": 5,
+      "22,69": 5,
+      "22,70": 5,
+      "22,71": 5,
+      "22,72": 5,
+      "22,73": 5,
+      "22,74": 5,
+      "22,75": 5,
+      "22,76": 5,
+      "22,77": 5,
+      "22,78": 5,
+      "22,79": 5,
+      "22,80": 5,
+      "22,81": 5,
+      "22,82": 5,
+      "22,83": 5,
+      "23,45": 5,
+      "23,46": 5,
+      "23,47": 5,
+      "23,48": 5,
+      "23,49": 5,
+      "23,50": 5,
+      "23,51": 5,
+      "23,52": 5,
+      "23,53": 5,
+      "23,54": 5,
+      "23,55": 5,
+      "23,56": 5,
+      "23,57": 5,
+      "23,58": 5,
+      "23,59": 5,
+      "23,60": 5,
+      "23,61": 5,
+      "23,62": 5,
+      "23,63": 5,
+      "23,64": 5,
+      "23,65": 5,
+      "23,66": 5,
+      "23,67": 5,
+      "23,68": 5,
+      "23,69": 5,
+      "23,70": 5,
+      "23,71": 5,
+      "23,72": 5,
+      "23,73": 5,
+      "23,74": 5,
+      "23,75": 5,
+      "24,45": 5,
+      "24,46": 5,
+      "24,47": 5,
+      "24,48": 5,
+      "24,49": 5,
+      "24,50": 5,
+      "24,51": 5,
+      "24,52": 5,
+      "24,53": 5,
+      "24,54": 5,
+      "24,55": 5,
+      "24,56": 5,
+      "24,57": 5,
+      "24,58": 5,
+      "24,59": 5,
+      "24,60": 5,
+      "24,61": 5,
+      "24,62": 5,
+      "24,63": 5,
+      "24,64": 5,
+      "24,65": 5,
+      "24,66": 5,
+      "24,67": 5,
+      "24,68": 5,
+      "24,69": 5,
+      "24,70": 5,
+      "24,71": 5,
+      "24,72": 5,
+      "24,73": 5,
+      "24,74": 5,
+      "24,75": 5,
+      "26,45": 5,
+      "26,46": 5,
+      "26,47": 5,
+      "27,45": 9,
+      "27,46": 5,
+      "27,47": 5,
+      "27,50": 26
     },
     "SheetStyle": {
       "FontFamily": 2
@@ -1770,31 +2070,35 @@
   },
   "Spans": [
     "12,1,1,2",
-    "3,50,1,3",
-    "3,59,1,3",
-    "3,44,1,3",
-    "15,44,1,3",
+    "3,51,1,3",
+    "3,45,1,3",
+    "15,45,1,3",
     "8,11,1,9",
     "1,38,1,2",
     "12,38,1,2",
     "8,35,1,4",
     "9,35,1,4",
-    "11,35,1,8",
     "9,27,1,8",
     "9,11,1,8",
     "8,27,1,8",
-    "5,50,1,3",
-    "5,59,1,3",
-    "5,68,1,3",
-    "12,41,1,2",
-    "2,2,4,40",
-    "13,1,20,42",
-    "18,44,1,3",
-    "15,51,1,3",
-    "15,57,1,3",
-    "27,44,1,3",
-    "27,49,1,3",
-    "23,44,2,39"
+    "5,69,1,3",
+    "12,42,1,2",
+    "13,1,20,43",
+    "18,45,1,3",
+    "15,52,1,3",
+    "15,58,1,3",
+    "27,45,1,3",
+    "27,50,1,3",
+    "23,45,2,39",
+    "11,36,1,8",
+    "1,40,1,2",
+    "6,40,1,2",
+    "12,40,1,2",
+    "2,2,4,39",
+    "2,41,1,2",
+    "5,51,1,3",
+    "3,69,1,3",
+    "5,45,1,3"
   ],
   "PageInfo": {
     "$type": "Forguncy.Model.Pages.NormalPage, ServerDesignerCommon",
@@ -1812,16 +2116,16 @@
   },
   "CustomNames": [
     {
-      "Name": "調査ビューリロードフラグ",
-      "Formula": "物件詳細_調査!$AX$28"
-    },
-    {
       "Name": "グループID",
-      "Formula": "物件詳細_調査!$BF$16"
+      "Formula": "物件詳細_調査!$BG$16"
     },
     {
       "Name": "住宅事業者ID",
-      "Formula": "物件詳細_調査!$BH$4"
+      "Formula": "物件詳細_調査!$AZ$6"
+    },
+    {
+      "Name": "調査ビューリロードフラグ",
+      "Formula": "物件詳細_調査!$AY$28"
     }
   ]
-}//PwTgDTxbOX1ZNmUhwuNJpNyiIz7js+5lFTl53q6jz+I5nv/j/y1h+y1Vhg79Y7OunIinPBuYIleJ9+myI92+mKC5kd4bnAODgyXoRWn1KPa6wNhlMuab3zr2NVr7C3+A56nl7EqJuTr0U5kPaxs57kjUmWdRvIgNbyKjM8/4LknHjxmCPL/X+v99O0fFOybc7WxF0Ib4P9ONEOroMkH08PUDpH18GY1JgKlrZUr9PWvEZf5nXFgN9OjlJLHuhC5rWJ3B6bDDYQmGixoS9T0PTKbUAdpaZr7PetorDefQaDS7Fk95FGWpIvYKUL1Gcf4V9YaFqbAxwJsQCi79rLfEqYofbBv05+GKaXtxGMSydn13w53QGFjnuq+MwJOZkJ/1vKWnjZR0IcSuxxuFgR58lPtM81l7oYYCK5/A5iewickjpEE57r/Da1e01l2VLaQQFvs3lseSpkdQNyWeZ4fTcE4OoZWwEWLBykBWnNfyyq5ftEWYD2fWBIk6CqZNneWYe6SXBBJ6B7qYrbVa5L0eCbkuKQvYL6GXo2txhpQnhLK/P1kHX47bckFKc6ukO9i1bDq8m0lHdvmb8WN/3XOud4/sUwF5racIvBUUKdwtSTC1PDRyO58ayXu5UcrP5jMqEHk4vNG4CGIcATmPLhxt66SH1DL2O2gWvnwLWrzpxKyCdPM55S2YQw4cBzZirwFwQSRC4HsyV+Fw5OpJWKnEziJFUpW7CcnIBjfjx8VNUSnIN5P05xhWcHTzE8J+rPdHLDdRjekl/TFbhU5zVZQgSURF06okk8prguFIdrnriuhRqUI6UCXwTTBxoDhqvO34aFkzf4WwuYrk4QmSSGNiOlkEcbSjSOSDlNgxqTRzUiUTpoRQ0fg752EDkdF9T8dYVvOWyKxRj66RSpZZD5s9HQ==|920
+}//Xh9TQmgGnXjeqiotdnzqx9sDitxfOVt4LNxZ25hYoj2PNCkNZLrPZpJRoEzqDUXnlduH1/MkDFUeMjYQhgTeRBLDP6hWK6GjSSfeYch9Mp2Y/sfwCijqnNo380wWaB4oaokrlRMvLFlBmlFWDIdvBnffNSXcJeooYXY/oVIaH3Xl/iJ26daPmrSbjZAHXepS1jeQt5/xDYAwyrsqFaIm9qyBUqCtOAFSrr91jdN/9ovkuVyksfXLkfq+Y95gL15qfzmhR2nuzJgWSkIATsD179NDdeccrUM+U11qPGo7Ba8akAVezS2xB8Zbj4UY7MYOmSiBxy1E7LEBEfMbql2Bup4jz8CPv4pJo2oczKwJlOJka93ZN55PaC5wPkFw33Whea1JY2aKSgw6J5K1Olya0nwhztjrtnHC/g04mZAZfGzp6/wYUg+yvqYpm1zwrUBaUmjLbRtChnQoLnEw2XhXe+ah0zxNskvxFZZ/pymGYJGtV6/JN0vFTiyJq5Uv47oUiaWGNrtdG3MMJFDGMphLG/Ly7dE4YKq0lAIUQiFhwXut81Zj8S/FPMKMGvHui607ia6DKD4gRrgmFeAgNCQOf2yNks3n0wf1hTVTxbL0hjcqbU8FwZBn1MHMhQUw+qPKPivCWy9vby+6soTw7mhOK3bIy7iGRX1O27gdvoU7IaujpPwiAkvj6aTsC4Kmq03ufEl9kfekPRVsymDRgLqh6Y06f4HPe23/3nMA570MBFJeQMBW/EXmOYHWOo8gk2cE8nRxreIZ9QhTgITBhGiErSG2fuWHTSOtsQYqmGDerbke13F5JAlCCTD4GENLhCFJ4rs5hd5hd9+zIlceQ/Imry15ZUtAO06A249HozcMYZJyXPOkfaZ9YYOhgYFog9QT4EXtE+U61Rd6l1eomWa8YA==|920
