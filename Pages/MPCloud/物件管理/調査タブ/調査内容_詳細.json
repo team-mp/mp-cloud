@@ -586,7 +586,7 @@
                     ]
                   }
                 ],
-                "ID": "94d9dea1-a6d4-4952-acce-23529b2f9fd0"
+                "ID": "8ff52c14-b072-4648-89c6-93d35bb63ccf"
               }
             ]
           }
@@ -639,51 +639,109 @@
               {
                 "ConfirmDialogSettings": {
                   "Title": "確認",
-                  "FormulaText": "完了を解除します。よろしいですか？",
+                  "FormulaText": "完了を解除します。よろしいですか？\r\n※計上商品がある場合、請求データは解除されません。",
                   "YesButtonText": "はい",
                   "NoButtonText": "いいえ",
                   "ConfirmIcon": 4
                 },
                 "CommandList": [
                   {
-                    "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
-                    "TableName": "t_object_survey",
-                    "ShowConfirm": false,
-                    "CheckDataValidation": false,
-                    "ConfirmText": "本当に更新してもよろしいですか？",
-                    "UpdateValues": [
-                      {
-                        "ColumnName": "survey_complete_flg",
-                        "Value": "0"
-                      }
-                    ]
+                    "$type": "LoadingCommand.StartLoadingCommand, LoadingCommand",
+                    "LoadingText": "お待ちください",
+                    "LoadingTextColor": "Background 1 0"
                   },
                   {
-                    "$type": "Forguncy.Model.SetCellPropertyCommand, ServerDesignerCommon",
-                    "PropertyItemsList": [
+                    "$type": "Forguncy.Model.RequestServerCommand, ServerDesignerCommon",
+                    "ServerCommandName": "調査データ解除処理",
+                    "Parameters": [
                       {
-                        "TargetCells": {
+                        "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                        "Value": {
                           "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                          "SerializeProperty": "=調査内容_詳細!ポップアップメッセージ"
+                          "SerializeProperty": "=調査内容_詳細!申込ID"
                         },
-                        "Value": "調査完了を解除しました"
+                        "ParamName": "P_申込ID"
                       },
                       {
-                        "TargetCells": {
+                        "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                        "Value": {
                           "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                          "SerializeProperty": "=調査内容_詳細!ポップアップ表示フラグ"
+                          "SerializeProperty": "=調査内容_詳細!調査ID"
                         },
-                        "Value": "1"
+                        "ParamName": "P_調査ID"
                       }
-                    ]
+                    ],
+                    "ResultErrorCodeTo": {
+                      "SerializeProperty": "リターンコード"
+                    },
+                    "ResultMessageTo": {
+                      "SerializeProperty": "リターンメッセージ"
+                    },
+                    "CheckDataValidation": false
                   },
                   {
-                    "$type": "Forguncy.Model.ClosePopupCommand, ServerDesignerCommon",
-                    "PassValueBack": true,
-                    "ReloadData": true
+                    "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+                    "ConditionAndCommandPairList": [
+                      {
+                        "Condition": {
+                          "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                          "param": {
+                            "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+                            "cellLocations": [
+                              {
+                                "SerializeProperty": "=調査内容_詳細!リターンコード"
+                              }
+                            ]
+                          },
+                          "value": "0"
+                        },
+                        "CommandList": [
+                          {
+                            "$type": "Forguncy.Model.SetCellPropertyCommand, ServerDesignerCommon",
+                            "PropertyItemsList": [
+                              {
+                                "TargetCells": {
+                                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                  "SerializeProperty": "=調査内容_詳細!ポップアップメッセージ"
+                                },
+                                "Value": "調査完了を解除しました"
+                              },
+                              {
+                                "TargetCells": {
+                                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                  "SerializeProperty": "=調査内容_詳細!ポップアップ表示フラグ"
+                                },
+                                "Value": "1"
+                              }
+                            ]
+                          },
+                          {
+                            "$type": "Forguncy.Model.ClosePopupCommand, ServerDesignerCommon",
+                            "PassValueBack": true,
+                            "ReloadData": true
+                          }
+                        ],
+                        "ID": "64c67ebf-df14-4d24-8bde-02c6ec8a2579"
+                      },
+                      {
+                        "CommandList": [
+                          {
+                            "$type": "Forguncy.Model.ShowMessageCommand, ServerDesignerCommon",
+                            "MessageFormula": {
+                              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                              "SerializeProperty": "=調査内容_詳細!リターンメッセージ"
+                            }
+                          },
+                          {
+                            "$type": "LoadingCommand.EndLoadingCommand, LoadingCommand"
+                          }
+                        ],
+                        "ID": "2c35c5a1-c0b9-4a50-9398-97149876f1f9"
+                      }
+                    ]
                   }
                 ],
-                "ID": "3bcb24ef-a873-4e6d-a4cf-b1ea42036887"
+                "ID": "30aebc6a-55aa-449a-9f05-5727085b7690"
               }
             ]
           }
@@ -794,6 +852,14 @@
                 "Value": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
                   "SerializeProperty": "=調査内容_詳細!調査更新ボタン"
+                }
+              },
+              {
+                "ParamReferObject": {
+                  "ParamID": "4e45a06c-bec7-40d2-8c4a-6791285d40d0",
+                  "ShareCommandContainerReferObject": {
+                    "ShareCommandContainerID": "5d1c1cf9-62eb-4916-8c17-cb213a4cec1a"
+                  }
                 }
               }
             ],
@@ -1034,7 +1100,7 @@
                             "ReloadData": true
                           }
                         ],
-                        "ID": "4673444a-2f42-4388-a038-bad41ce6576b"
+                        "ID": "36760020-4885-407b-a9ed-43471582bf11"
                       },
                       {
                         "CommandList": [
@@ -1046,12 +1112,12 @@
                             }
                           }
                         ],
-                        "ID": "f2d475b0-f83e-4e94-8b3c-197d91668287"
+                        "ID": "178014c1-6394-46c4-bbec-46a0901b4d1c"
                       }
                     ]
                   }
                 ],
-                "ID": "5cf6f830-182a-4803-921e-f2f6cdb25961"
+                "ID": "17e10c1a-3f42-4dd4-8f17-ad9f9562ae90"
               }
             ]
           }
@@ -1165,7 +1231,7 @@
                     ]
                   }
                 ],
-                "ID": "c7d65692-d05b-4b2d-9332-8843abfa44ff"
+                "ID": "973727d4-522c-4d15-b3cb-2f95375db415"
               }
             ]
           }
@@ -1462,7 +1528,7 @@
                     ]
                   }
                 ],
-                "ID": "867c3371-e6c9-48c1-a665-9b938b3279e6"
+                "ID": "5b12d6c0-a5f3-4ef1-8d29-5eb390446cc4"
               }
             ]
           }
@@ -2051,7 +2117,7 @@
                     ]
                   }
                 ],
-                "ID": "9aba93d2-c6c4-4065-bf3e-3de62e771e11"
+                "ID": "d1005047-b4a5-4dbf-bb38-a9179da1debe"
               },
               {
                 "Condition": {
@@ -2083,7 +2149,7 @@
                     ]
                   }
                 ],
-                "ID": "46384b95-25b4-498e-b207-c95b6bebeb48"
+                "ID": "6315e056-200e-486b-98a4-106f3e43e013"
               }
             ]
           }
@@ -2296,7 +2362,7 @@
                     ]
                   }
                 ],
-                "ID": "068b0c4d-83bb-477b-a248-6f93b248c5f2"
+                "ID": "2bcf357d-0b1b-42f1-99b9-18bc656c6f0f"
               },
               {
                 "Condition": {
@@ -2328,7 +2394,7 @@
                     ]
                   }
                 ],
-                "ID": "523cbc8d-8d66-4bb1-b716-5c50b311ff8a"
+                "ID": "5052ccef-96b7-4416-975c-59e1c8e4d14e"
               }
             ]
           }
@@ -2442,7 +2508,7 @@
                     ]
                   }
                 ],
-                "ID": "2afc7886-4303-4de1-a4f1-71a792baf528"
+                "ID": "44e1a8d1-2ba7-49ba-be42-06f1d0db0071"
               }
             ]
           }
@@ -2606,7 +2672,7 @@
                     ]
                   }
                 ],
-                "ID": "514a0c37-3c35-4694-9c3a-612542846f53"
+                "ID": "ec381768-2110-4fc7-bd3e-8b97534e8eab"
               },
               {
                 "Condition": {
@@ -2638,7 +2704,7 @@
                     ]
                   }
                 ],
-                "ID": "84160fa9-4977-44b8-9cec-ab123d25dda0"
+                "ID": "f5da8346-46ee-44a6-8ccd-2e796a9f0253"
               }
             ]
           }
@@ -2890,7 +2956,7 @@
                     ]
                   }
                 ],
-                "ID": "3dbc8ffc-74e7-4b5f-a402-8b4e59497f38"
+                "ID": "5dcefa9e-fb37-4ad5-b884-69a9f435e328"
               },
               {
                 "Condition": {
@@ -2922,7 +2988,7 @@
                     ]
                   }
                 ],
-                "ID": "fb9ba847-8439-4daf-b9c6-2e870243b839"
+                "ID": "f1d22e58-7f34-40a8-bc38-f010f06f39c7"
               }
             ]
           }
@@ -3061,7 +3127,7 @@
                     ]
                   }
                 ],
-                "ID": "c06b4e7f-f61b-470b-8982-de8bfefea8c9"
+                "ID": "a3ef482f-0cd6-449b-8ace-6120b862ba23"
               },
               {
                 "Condition": {
@@ -3093,7 +3159,7 @@
                     ]
                   }
                 ],
-                "ID": "76c5ebbe-640e-4241-bab5-da650567e732"
+                "ID": "664012d0-5e38-409f-997f-34af4cb42f0a"
               }
             ]
           }
@@ -3252,7 +3318,7 @@
                             "ReloadData": true
                           }
                         ],
-                        "ID": "1a222cc6-6f5d-467d-adca-cb818659211a"
+                        "ID": "50aa864c-f43d-46c7-aeb3-167ccd94ccbb"
                       },
                       {
                         "CommandList": [
@@ -3267,12 +3333,12 @@
                             "$type": "LoadingCommand.EndLoadingCommand, LoadingCommand"
                           }
                         ],
-                        "ID": "1a509e92-a184-4862-a887-ac3cc461421b"
+                        "ID": "bf2d93e1-6205-4bb5-a408-b3dabc8a5a1d"
                       }
                     ]
                   }
                 ],
-                "ID": "aca2484f-8156-448b-8e37-e62c70272df4"
+                "ID": "e343c3bf-fa1e-4b15-8f76-86d8ed1f58a1"
               }
             ]
           }
@@ -3344,7 +3410,7 @@
                 }
               }
             },
-            "ID": "ad56901972544ea18ff7c61aee52206e"
+            "ID": "0322489ce834490faa6adad9a72e0074"
           },
           {
             "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
@@ -3395,7 +3461,7 @@
                             "$type": "Forguncy.Model.StopCommand, ServerDesignerCommon"
                           }
                         ],
-                        "ID": "3c51c973-0b1f-480b-936f-42b69fd5f6a8"
+                        "ID": "9893431c-7fd5-45ba-b7ca-5beafa29ba4b"
                       }
                     ]
                   },
@@ -3431,7 +3497,7 @@
                             "$type": "Forguncy.Model.StopCommand, ServerDesignerCommon"
                           }
                         ],
-                        "ID": "cb3cec6d-0214-40b0-b658-26bb185d8ea7"
+                        "ID": "b49af9cc-4122-45b3-a6d4-396896b7031e"
                       }
                     ]
                   },
@@ -3467,12 +3533,12 @@
                             "$type": "Forguncy.Model.StopCommand, ServerDesignerCommon"
                           }
                         ],
-                        "ID": "43a7b9c7-18de-4d98-b2b3-9882185dc9cd"
+                        "ID": "9d10e19f-b3dc-43ad-824f-42f1d8713060"
                       }
                     ]
                   }
                 ],
-                "ID": "1bb7fc40-8862-4fcb-9738-e229c3a3509f"
+                "ID": "fe0ddce4-b687-4dac-843b-0e61d049b9df"
               }
             ],
             "Comments": "調査結果待ちステータスの場合"
@@ -3729,7 +3795,7 @@
                     "ReloadData": true
                   }
                 ],
-                "ID": "a2449c85-66e7-455b-ab7f-742e02383ee1"
+                "ID": "72bc3c3a-d75d-4ab0-8390-f22c20df62ad"
               },
               {
                 "CommandList": [
@@ -3741,7 +3807,7 @@
                     }
                   }
                 ],
-                "ID": "565548df-32ba-4345-ac90-51719fb7cb89"
+                "ID": "04c181e2-9b9f-44af-9ddb-97c095df6ab6"
               }
             ]
           }
@@ -4664,7 +4730,7 @@
                 ]
               }
             ],
-            "ID": "9708ce2f-973a-4599-b234-ac517b11fd30"
+            "ID": "8c7a9dcd-94ff-492d-aaab-a5a0b1a4c767"
           }
         ]
       }
@@ -4715,4 +4781,4 @@
       "Formula": "調査内容_詳細!$AV$3"
     }
   ]
-}//OC0fuWZOS+zQW2s6lwjxmcgBwbEKiCzk2NVrcaFUEZkG2x+tnEd6ygb5oBczXA9H1HFmkC52qnit3JBNO17ZUlC0fCFxPvOQWTe1izLcYa8NFaekSb8GykQ9alYlx9pG1SDlINh1RaPmxdgtoFgLd6dffKCBgimkhGOe+RfY/V5yif6+PwKGHPIvYqw+5rEurPQPk5ApUWkmXi/ZrlwNMJjlAjUZRPd1oTtAVcVz+UbvZi/nx1u7eN2Xcf961bSI0oQHj2QpN4TuwcDtS8fH6d8QrzsYF8/UC/T/MTVOp1Mhogw+O4Hgw8F+SLeGveCeyue1C7mqDw0IBJovuSU3COyDquWDQBdMIfOLI07EPVSH4uOyRX5BP91+qof2azlnx9y/rmxAJIvutgJpMBdS6y6rUAPjXbqSkDLDKmlaQB/En6MTYNOoofFdqQW8P4yEneSMsjK5zRuK4rQBRmEcDpLe3vZ7eaiD6zBJj4V5Dz7CbplY6pg+2tx+F8aCADE2qDITg/R7uMU1NxpqyblYTsXWqxtiJAaJCpW4g3dT1JPYqqdiYjqF0dq8TMUXtR3HXZtZPkHYh5IYeKvvPv3SFSlnW1zgr2Ff6l4LV85bWMI3HTYz5nbJ+u3aqLyrcM1qoCKNyT/F2rCwW0BQ3iNVtX3xXH/SgUCAmTYmpdYHimyhfsJ1I2bF5CbAnjM4uvIab+nTZM/LomdO1NbrM0IFazXEO5jr/sHHufp+i/RPH1iDcPL+o3nlNZppOgw71YYZe2glnfxE61q5+OLwg4XehrOuGfy/bwT8H8/BueEWywAQ6paiAw3eNBRWd6dtoGHWXn6aNZJCJj66y91Rh3Cxe8WcMi7CVOHsPpJ+FUbLbhoXmQFTdVJH28Nmm+76rFC/A90OQfsVmkeaqs43fLLq3A==|920
+}//T81uoQ6NWuj4Xef/DogOYm46qlSQhWxY+CL9O+V7WtcpANqyvspX90LNWQJBcVUK5cTasnTmzqdtleqSOg52MG6wlQci+CsOOMvyGshaiK6YKS+j8xEIHu8DGWGpYdH+rC9T6YV7d/JehcK2nlViBcwXE2VFSWgGvZ+wwQDUtx9YoozdJapEx54o9EYg0JmpjsTNUUG+XoMc+drWCawZRZJzoTL2Dok7BtcZIBVpY8KHU/2qaDj1azRkXppeulC26W4i+6BpJ9aa6rmT+zKlrJ699CcP0XFwvVApjgPfE1CTwyc9Xs5td8WitnSnGUeZOkiY/VVTM5j27a0N6p3toKmTgkxCtbzLwJ1V1EFjIVIKFBzdRNVSULr9UzFYsyt2wwpjrUYtVE4YgIn9hG09NNGIiwEwiyxQ5ALReMcnYjnH7mYxski4/C6KZ8Op7jlBtW15/11fJ9rdkIWNz9TKoLZsGOXLRnYL3AqOW7P97XmwDYBTzfb8sVLmVNpN8LeO6afMIkr1J19g71UWwtTnJRk9x0Bojp5/E7Gpj8vF4iNeKDm2loRmIwda1XqtC/7LNcoOLGErrtjLfjosvoX8TNTmlvJvgjBQCrQDBL/9m5WZ5qElE0VB9BcFPmRcuGBR2G6rCOXkRyN5QR+M45703w7dv/pwPZKoM00ivCbCMpdolUeGIT8DktybYWAKzNqim0g8SIjr51hgzr3tOvupTTw/+/bDtnHwUJwxppjwrqi5NAn7TL1YhFtC/ukCosv16fL+2U5iQH3SN39/oGSLPu3beBf/HR2ut4LQ0h/0GdHP7ZLjT55SCfAu9rdwkbXm0ZfPMhgYf6SBquuZEVjIXstMoyTi+yCF4AKzcCXGB8c7YSxKeAZY6kl+X1SmrYpjoV3DMd0oU9emnvLtSDyoiQ==|920

@@ -588,7 +588,7 @@
                     ]
                   }
                 ],
-                "ID": "b21caf13-42f4-4ad4-b80a-d7516aabc89a"
+                "ID": "34c14f11-3397-4e97-ade3-d2cc00c3280e"
               }
             ]
           }
@@ -627,57 +627,110 @@
               {
                 "ConfirmDialogSettings": {
                   "Title": "確認",
-                  "FormulaText": "完了を解除します。よろしいですか？",
+                  "FormulaText": "完了を解除します。よろしいですか？\r\n※計上商品がある場合、請求データは解除されません。",
                   "YesButtonText": "はい",
                   "NoButtonText": "いいえ",
                   "ConfirmIcon": 4
                 },
                 "CommandList": [
                   {
-                    "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
-                    "TableName": "t_object_compaction",
-                    "ShowConfirm": false,
-                    "CheckDataValidation": false,
-                    "ConfirmText": "本当に更新してもよろしいですか？",
-                    "UpdateValues": [
-                      {
-                        "ColumnName": "compaction_complete_flg",
-                        "Value": "0"
-                      },
-                      {
-                        "ColumnName": "compaction_complete_user_id"
-                      },
-                      {
-                        "ColumnName": "compaction_complete_datetime"
-                      }
-                    ]
+                    "$type": "LoadingCommand.StartLoadingCommand, LoadingCommand",
+                    "LoadingText": "お待ちください",
+                    "LoadingTextColor": "Background 1 0"
                   },
                   {
-                    "$type": "Forguncy.Model.SetCellPropertyCommand, ServerDesignerCommon",
-                    "PropertyItemsList": [
+                    "$type": "Forguncy.Model.RequestServerCommand, ServerDesignerCommon",
+                    "ServerCommandName": "転圧データ解除処理",
+                    "Parameters": [
                       {
-                        "TargetCells": {
+                        "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                        "Value": {
                           "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                          "SerializeProperty": "=転圧内容_詳細!ポップアップメッセージ"
+                          "SerializeProperty": "=転圧内容_詳細!申込ID"
                         },
-                        "Value": "転圧完了を更新しました"
+                        "ParamName": "P_申込ID"
                       },
                       {
-                        "TargetCells": {
+                        "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                        "Value": {
                           "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                          "SerializeProperty": "=転圧内容_詳細!ポップアップ表示フラグ"
+                          "SerializeProperty": "=転圧内容_詳細!転圧ID"
                         },
-                        "Value": "1"
+                        "ParamName": "P_転圧ID"
                       }
-                    ]
+                    ],
+                    "ResultErrorCodeTo": {
+                      "SerializeProperty": "リターンコード"
+                    },
+                    "ResultMessageTo": {
+                      "SerializeProperty": "リターンメッセージ"
+                    },
+                    "RefreshAfterFinish": true,
+                    "CheckDataValidation": false
                   },
                   {
-                    "$type": "Forguncy.Model.ClosePopupCommand, ServerDesignerCommon",
-                    "PassValueBack": true,
-                    "ReloadData": true
+                    "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+                    "ConditionAndCommandPairList": [
+                      {
+                        "Condition": {
+                          "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                          "param": {
+                            "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+                            "cellLocations": [
+                              {
+                                "SerializeProperty": "=転圧内容_詳細!リターンコード"
+                              }
+                            ]
+                          },
+                          "value": "0"
+                        },
+                        "CommandList": [
+                          {
+                            "$type": "Forguncy.Model.SetCellPropertyCommand, ServerDesignerCommon",
+                            "PropertyItemsList": [
+                              {
+                                "TargetCells": {
+                                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                  "SerializeProperty": "=転圧内容_詳細!ポップアップメッセージ"
+                                },
+                                "Value": "転圧完了を解除しました"
+                              },
+                              {
+                                "TargetCells": {
+                                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                  "SerializeProperty": "=転圧内容_詳細!ポップアップ表示フラグ"
+                                },
+                                "Value": "1"
+                              }
+                            ]
+                          },
+                          {
+                            "$type": "Forguncy.Model.ClosePopupCommand, ServerDesignerCommon",
+                            "PassValueBack": true,
+                            "ReloadData": true
+                          }
+                        ],
+                        "ID": "46abf847-6ebe-4dd5-ac85-65539bbc6d0b"
+                      },
+                      {
+                        "CommandList": [
+                          {
+                            "$type": "Forguncy.Model.ShowMessageCommand, ServerDesignerCommon",
+                            "MessageFormula": {
+                              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                              "SerializeProperty": "=転圧内容_詳細!リターンメッセージ"
+                            }
+                          },
+                          {
+                            "$type": "LoadingCommand.EndLoadingCommand, LoadingCommand"
+                          }
+                        ],
+                        "ID": "7be6ef64-b19a-45c4-97c4-f4d498328ea7"
+                      }
+                    ]
                   }
                 ],
-                "ID": "b3a5152f-affa-4902-9862-398915c4f443"
+                "ID": "eab71c13-0fc6-4df7-8672-15fa26814433"
               }
             ]
           }
@@ -999,9 +1052,6 @@
                     "CheckDataValidation": false
                   },
                   {
-                    "$type": "LoadingCommand.EndLoadingCommand, LoadingCommand"
-                  },
-                  {
                     "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
                     "ConditionAndCommandPairList": [
                       {
@@ -1043,7 +1093,7 @@
                             "ReloadData": true
                           }
                         ],
-                        "ID": "29331dcc-5e53-41e1-b36f-195bdeed1540"
+                        "ID": "8b5c5a1c-2b37-4683-ae4d-f4d75693f16a"
                       },
                       {
                         "CommandList": [
@@ -1053,14 +1103,17 @@
                               "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
                               "SerializeProperty": "=転圧内容_詳細!リターンメッセージ"
                             }
+                          },
+                          {
+                            "$type": "LoadingCommand.EndLoadingCommand, LoadingCommand"
                           }
                         ],
-                        "ID": "e49ce3af-dccf-40b2-973a-592cac24da81"
+                        "ID": "2f4d5dd3-82ca-4c31-a3af-48d0e96b8231"
                       }
                     ]
                   }
                 ],
-                "ID": "b8b3a09d-2b21-4428-81ea-8af6115b1757"
+                "ID": "73d313b9-4f68-4924-862b-61ab30524866"
               }
             ]
           }
@@ -1158,7 +1211,7 @@
                     ]
                   }
                 ],
-                "ID": "83a1aa2c-beca-456e-b7df-d517e5e1ef47"
+                "ID": "f49d73d1-e22a-48e1-b1f6-bcd8cbc6c78e"
               },
               {
                 "Condition": {
@@ -1190,7 +1243,7 @@
                     ]
                   }
                 ],
-                "ID": "c82993bc-380c-4f7f-b518-42f2d7642609"
+                "ID": "3d093b71-cc6b-4ecb-9e43-adacd8e76c82"
               }
             ]
           }
@@ -1435,7 +1488,7 @@
                     ]
                   }
                 ],
-                "ID": "48596f34-616d-4918-b476-08b54b4cee99"
+                "ID": "d693295f-03e9-4830-86ac-14f44052a0eb"
               },
               {
                 "Condition": {
@@ -1467,7 +1520,7 @@
                     ]
                   }
                 ],
-                "ID": "e4e840d5-44c6-4fb1-bfbe-dac0e932bf9a"
+                "ID": "4f7f9b8c-2ffe-41a3-aca9-000dfc9420a7"
               }
             ]
           }
@@ -1564,7 +1617,7 @@
                     ]
                   }
                 ],
-                "ID": "890c55ad-2e7d-4848-859a-4d51336d61c8"
+                "ID": "92bac83f-6465-4856-8749-5729eb71937e"
               },
               {
                 "Condition": {
@@ -1596,7 +1649,7 @@
                     ]
                   }
                 ],
-                "ID": "459d823f-e850-454f-b43b-7189fdeab0e0"
+                "ID": "584a3b8a-a4ae-41a3-b357-52a3c035ef9c"
               }
             ]
           }
@@ -1727,7 +1780,7 @@
                     ]
                   }
                 ],
-                "ID": "e1c9e60e-a3cb-497d-a5f6-86284048048c"
+                "ID": "744d8884-dbf1-48e7-a691-00527e020930"
               },
               {
                 "Condition": {
@@ -1759,7 +1812,7 @@
                     ]
                   }
                 ],
-                "ID": "ecec2219-4a46-455b-a7ee-6e310e59d55a"
+                "ID": "c4a8e743-e42d-4d14-8289-baf0b89bd85b"
               }
             ]
           }
@@ -1896,7 +1949,7 @@
                     ]
                   }
                 ],
-                "ID": "3e26180d-03d6-493f-8b9b-04e0bcc403ca"
+                "ID": "f1b3face-a6a9-41d6-b46c-2e21c6556998"
               },
               {
                 "Condition": {
@@ -1925,7 +1978,7 @@
                     ]
                   }
                 ],
-                "ID": "0f1bbb9e-b7b1-4a45-a450-4e4f390a2ec4"
+                "ID": "810e67f8-5a1c-48ef-8260-1a4a32bf8634"
               }
             ]
           }
@@ -2129,7 +2182,7 @@
                     ]
                   }
                 ],
-                "ID": "d5210d4c-a504-4cb5-aca8-1583a7c7702f"
+                "ID": "c42f7f7f-8f35-4550-86a9-d98a208bfa04"
               },
               {
                 "Condition": {
@@ -2161,7 +2214,7 @@
                     ]
                   }
                 ],
-                "ID": "32fe8355-2138-476b-9fb1-6340c96d18a2"
+                "ID": "dadd78cc-a885-49ef-9087-d06da0cb32c8"
               }
             ]
           }
@@ -2267,7 +2320,7 @@
                     ]
                   }
                 ],
-                "ID": "be07bb95-8864-45ab-9dfd-c2a05fdf2f73"
+                "ID": "eb745b8d-fb6d-4e04-85c5-37b2585a3d95"
               },
               {
                 "Condition": {
@@ -2296,7 +2349,7 @@
                     ]
                   }
                 ],
-                "ID": "b12eadb0-c6b2-429b-9b92-95783fc92bc4"
+                "ID": "0540da45-7b5e-48cd-80b5-cd9d66429467"
               }
             ]
           }
@@ -2452,7 +2505,7 @@
                     ]
                   }
                 ],
-                "ID": "8360799a-6a37-4342-9f1e-a42a21d2e2f9"
+                "ID": "5c4a35a8-9c3a-4688-8b55-21af6d191e77"
               },
               {
                 "Condition": {
@@ -2484,7 +2537,7 @@
                     ]
                   }
                 ],
-                "ID": "0b8f95f1-db78-4e35-ac3a-1e49e8f0f65f"
+                "ID": "af9e8c9f-a0fb-4485-b28a-0a83156e917c"
               }
             ]
           }
@@ -2584,7 +2637,7 @@
                     ]
                   }
                 ],
-                "ID": "bdcd1446-f749-4607-866a-fd279f048af9"
+                "ID": "6134adb8-5f09-4ed8-aef8-386a63038187"
               },
               {
                 "Condition": {
@@ -2613,7 +2666,7 @@
                     ]
                   }
                 ],
-                "ID": "0f1834dc-e7ae-438e-a580-821224c4fc2a"
+                "ID": "f401a20e-c2c3-4e41-bf2e-54d9e3bf3417"
               }
             ]
           }
@@ -2742,7 +2795,7 @@
                 }
               }
             },
-            "ID": "99a326ae82164ddf9c9bfe22b953c74f"
+            "ID": "b82724a873a4429991d69d8683f6c745"
           },
           {
             "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
@@ -2770,7 +2823,7 @@
                     "$type": "Forguncy.Model.StopCommand, ServerDesignerCommon"
                   }
                 ],
-                "ID": "f1957e2f-cd2f-4a5a-941b-9a13f30a7cb7"
+                "ID": "9680566b-4c51-4f66-a72c-ee3e72b5c985"
               }
             ]
           },
@@ -2902,7 +2955,7 @@
                             "LoadBindingDataOption": 1
                           }
                         ],
-                        "ID": "345d3218-bde8-4ad6-80c5-50d385d3bfd9"
+                        "ID": "f58396ab-de59-4541-ad89-5c1c055a5946"
                       },
                       {
                         "CommandList": [
@@ -2914,12 +2967,12 @@
                             }
                           }
                         ],
-                        "ID": "df58b3ea-9f72-4f8a-bfeb-5c2c8cf39110"
+                        "ID": "14ffe3aa-0394-4163-b203-64a39a4a4eaa"
                       }
                     ]
                   }
                 ],
-                "ID": "791eaa9b-aead-450a-a86c-16d6c5a8966f"
+                "ID": "78698026-883b-4afb-bb92-f8eec0f65fa3"
               }
             ]
           }
@@ -3156,7 +3209,7 @@
                     ]
                   }
                 ],
-                "ID": "6dd9f47a-3518-41fd-b6da-a73538d70fa4"
+                "ID": "b0e4225e-8bca-44d2-a8f1-e962c2431467"
               },
               {
                 "Condition": {
@@ -3188,7 +3241,7 @@
                     ]
                   }
                 ],
-                "ID": "7204171f-cb8b-4d7f-9146-9a7961d2665c"
+                "ID": "185621e9-b9b8-496d-bb27-ff0473d744d8"
               }
             ]
           }
@@ -3361,7 +3414,7 @@
                     ]
                   }
                 ],
-                "ID": "3328a081-6bd1-4e65-9365-57a5eae4204a"
+                "ID": "3323d439-e1ad-425c-8ce2-517950e851d3"
               },
               {
                 "Condition": {
@@ -3393,7 +3446,7 @@
                     ]
                   }
                 ],
-                "ID": "982d5364-83f0-43e4-b812-8457cd5834c7"
+                "ID": "b7e240df-6a86-48d7-92b7-33ed171a7060"
               }
             ]
           }
@@ -3706,7 +3759,7 @@
                     "ReloadData": true
                   }
                 ],
-                "ID": "87158d6b-8ccb-4b22-bc78-862bcc4c21b3"
+                "ID": "73b2c263-e49c-4637-813a-cf291ea1b0f7"
               },
               {
                 "CommandList": [
@@ -3721,7 +3774,7 @@
                     "$type": "LoadingCommand.EndLoadingCommand, LoadingCommand"
                   }
                 ],
-                "ID": "46b8ca81-0d55-4d98-8362-89a4701219dc"
+                "ID": "781332da-6e80-47c4-a86f-c263211158c5"
               }
             ]
           }
@@ -3839,7 +3892,7 @@
                             "ReloadData": true
                           }
                         ],
-                        "ID": "bd511016-404e-4f85-89ca-92c3cfdd01c7"
+                        "ID": "d763bd9c-7739-4cc1-aa53-294e145fb123"
                       },
                       {
                         "CommandList": [
@@ -3854,12 +3907,12 @@
                             "$type": "LoadingCommand.EndLoadingCommand, LoadingCommand"
                           }
                         ],
-                        "ID": "0092e439-8e1f-42e5-a03a-263f09481a84"
+                        "ID": "bd7a8ef3-b316-45fd-979e-c50740feec97"
                       }
                     ]
                   }
                 ],
-                "ID": "1d11ac95-ece7-45a0-b4ce-1511172bba73"
+                "ID": "2a17b072-e355-4e52-8499-e11e14508575"
               }
             ]
           }
@@ -4626,7 +4679,7 @@
                 ]
               }
             ],
-            "ID": "a8d17291-7bcd-40a2-ac1e-cab72a566329"
+            "ID": "a313d458-2b4e-45a8-aaf5-d40c444c56e6"
           }
         ]
       },
@@ -4661,7 +4714,7 @@
                 ]
               }
             ],
-            "ID": "dec1e8c9-a831-48e1-859f-6a7647a4798f"
+            "ID": "80c4c73e-1f3b-400a-9894-f1400d9f0cf9"
           }
         ]
       }
@@ -4712,4 +4765,4 @@
       "Formula": "転圧内容_詳細!$AZ$12"
     }
   ]
-}//vHJqFKM6GyWreZTeWvRQFXoQQ9YmBDQRF3dJp0KyqVGw8Dz0Or9vDu9XpTaXTuP4oYd43PgsaR4+WKZAtIiN2lCnKKAskVPYgllVrlJZRV7wkiVkEj7v7ZCVao+iE+TAGuWKRNpCabQ1lM1Q1g57JuZUha4iILUqZMeNr5uuZQeYzauO2cay8qI3HidcMS/PZoZuiXLu04UxDBqGwSLABMgYWpKOcuCAsdN3P9osO8OWh/viIjwVQ/iPH98BSGmGkW0nGjcLPr92W46l+V5ZNJWv/daM6AliaZUtHp2UhrrMEAYPHwKzuQqFaJNc0qZxPae6kqxpq7mBXxzPt7Tr+BBhtcc419Nwq7PMrMsjDuvHATFLWTTqSP3y+heOs19CcPg4nQSvh3mi0UlwJwMHUNuOQsdPIc+jAKc+24N9BVh1TUH0YlSKbwg5rYsY+KA53b15u3/sy6FiM5G7DkQx7W9I2uq8iGyw/AP64jgVFjhZ6RDVUL73/KM2F8uJZBHrGeY4ORjVhijXecJLLJjDCTu8DM3vTzl67VhRKG/DHuZ8BUBHA/HtbdHzAMui2jYngTpxTq1QicQWh+E3rISxOz7FvV0Yt8ZopXbmVZ2ZIzDOEG7ljh7pQIpEQ1U9ekJx4z9YHWcERHaGpIZIURL4SspAGESarZDorNQOP0JxEPTjUKyVA/91sRH4OgXFz0QYxZ4kE+TMm0kt0aogmfaEDXmxGKtSXB2bm0ZIbOpTD/CCffI99XvdVXfCf1DESW5Xah6jX+M4WLzqiG/M7wg7qwyZK8ZnkLhHUlgGwLRvdtr5q3EoAp+Vx0Rd7Wmn9uIz67D8GN0dWJqfUpvO1e0tnXBYGHLqpSZSpvFhBqE3QZSJywcdp2ak3mUvw8VloeBZFNrqcpg+Bnd8PFzFn8D02A==|920
+}//9a91Io+4uRlRQMMesysyiOmuHur3NKQ3tgpzpjVJMSSWthUdIVDbFc2xk5QvP9mcp3NO7+qAXncfEGs+OeColRz63kxKDXT2d0jtd/VNmFOwtsdPS3idAqJHZx+GnZB075v6uPjgPTXDVDMGW2tssKYsRLHvBF178ym1c/6/mE+reWgKOFSCs36w65WRnPMVHysdwaZDpyQ67omMSSUVmMzADdWNxpfLe0Pl96HwqgvMU5n0GWjh43oo3cUbFtERyNHCzH8v4eh6cJdVm3pzylAgSik+/6aP3LaW2APVScfAvPHTKMOP/aOwnE+lNRkkJR7XGlOQielgMX6PHy9KUwe1xVERrpd/QIukNIZ+wwD8xmuNJP2KRD98BQwc5RIuNkv5yyEEOYcAefjzwOHw0dbUWdvccaQ5YR3fTVdbICXTn+723WCqoG5OqSZ2LkApKSRH3HQZvVNYBBq0enkQ5qqtncRlGgkpnDkzpxYqPIOb0yrBKZNZauJEnYQ57PsUnGXsehhIzfC2w6EJ33jtKmVEcjFdl+4KGqRUn9ZZgDMupbGFYcWJYSn8u/TmtlPCwU6XtIZt63ewwVH//AeKkOgNwQ8ku3qVHmrxV4AKVndewsaCVPs8wnpyAFA5eUH4wm9YEPd/IfD/0Rl54b/2+V+MA3lCurE/0kuyYAHJ+Yt36SFdkXKHl1ZGzDOh949C6ZakrbRMMMSrmIcxqVSu3GEOQlX/VieRKn6frxTpDZSs+bbHFb854+2+YWeSO+ARLELgL0/Th3Nn3eHsLezaLi/1NdDHfzops224vwnNflmjDZgKfNVjoVtNpt+YSWnPUqcHDZBQsWL9HS6hPKevnb+PVlsJFeBzhvqyJFtP7KGarjwtbX0PUCvkYTgmgnCYhi2Hb0nmHqDbauiYuCbIZA==|920

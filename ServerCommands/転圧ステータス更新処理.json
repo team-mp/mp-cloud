@@ -99,6 +99,23 @@
               {
                 "BindingInfo": {
                   "TableName": "t_object_compaction",
+                  "ColumnName": "object_order_id",
+                  "RelationBinding": {
+                    "RelatedTable": "t_object_order",
+                    "RelatedColumn": "object_order_id",
+                    "DisplayColumn": "order_status_id",
+                    "NextRelationBinding": {
+                      "RelatedTable": "m_order_status",
+                      "RelatedColumn": "order_status_id",
+                      "DisplayColumn": "sort_no"
+                    }
+                  }
+                },
+                "ColumnName": "申込ステータス並び順"
+              },
+              {
+                "BindingInfo": {
+                  "TableName": "t_object_compaction",
                   "ColumnName": "compaction_status_id",
                   "RelationBinding": {
                     "RelatedTable": "m_compaction_status",
@@ -184,7 +201,7 @@
               }
             }
           },
-          "ID": "31572ba133e143d59aeb0cb4a20d58b2"
+          "ID": "e6905460ef4044a5a661834de01aedd7"
         },
         {
           "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
@@ -246,12 +263,12 @@
                           ]
                         }
                       ],
-                      "ID": "285e8e5f-e329-4dfb-85b3-2efc318b923b"
+                      "ID": "b20a2388-3150-407d-866e-555d5ae94726"
                     }
                   ]
                 }
               ],
-              "ID": "0250bb92-c19d-4809-83c6-24a8140a3008"
+              "ID": "71e8b440-2206-4b23-a15b-6316a95179c2"
             }
           ]
         },
@@ -290,7 +307,26 @@
                           "TableName": "m_compaction_status",
                           "ColumnName": "sort_no"
                         },
-                        "ColumnName": "並び順"
+                        "ColumnName": "転圧ステータス並び順"
+                      },
+                      {
+                        "BindingInfo": {
+                          "TableName": "m_compaction_status",
+                          "ColumnName": "order_status_id"
+                        },
+                        "ColumnName": "申込ステータスID"
+                      },
+                      {
+                        "BindingInfo": {
+                          "TableName": "m_compaction_status",
+                          "ColumnName": "order_status_id",
+                          "RelationBinding": {
+                            "RelatedTable": "m_order_status",
+                            "RelatedColumn": "order_status_id",
+                            "DisplayColumn": "sort_no"
+                          }
+                        },
+                        "ColumnName": "申込ステータス並び順"
                       }
                     ],
                     "SqlCondition": {
@@ -302,7 +338,7 @@
                       "Value": "1"
                     }
                   },
-                  "ID": "4616156a6f3c41e39e7a848a76b85517"
+                  "ID": "bf64ae9c76574a81bc52c9c4021f5940"
                 },
                 {
                   "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
@@ -348,7 +384,7 @@
                           ]
                         }
                       ],
-                      "ID": "4f695316-de88-4057-becb-befa58b63cea"
+                      "ID": "59d62fea-ae9b-4bc4-bad3-6deea644b2b9"
                     }
                   ]
                 },
@@ -367,7 +403,7 @@
                         },
                         "value": {
                           "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                          "SerializeProperty": "=見積手配中ST.並び順"
+                          "SerializeProperty": "=見積手配中ST.転圧ステータス並び順"
                         },
                         "compareType": 4
                       },
@@ -400,12 +436,64 @@
                           ]
                         }
                       ],
-                      "ID": "1d1dcc7a-629a-4908-88d4-49332c4379ac"
+                      "ID": "1fb8c189-1398-4480-b98a-537813973120"
+                    }
+                  ]
+                },
+                {
+                  "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+                  "ConditionAndCommandPairList": [
+                    {
+                      "Condition": {
+                        "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                        "param": {
+                          "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                          "ParamObject": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=転圧情報.申込ステータス並び順"
+                          }
+                        },
+                        "value": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=見積手配中ST.申込ステータス並び順"
+                        },
+                        "compareType": 4
+                      },
+                      "CommandList": [
+                        {
+                          "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+                          "TableName": "t_object_order",
+                          "ShowConfirm": false,
+                          "ConfirmText": "本当に更新してもよろしいですか？",
+                          "RowsToUpdate": 1,
+                          "RowsToUpdateCondition": {
+                            "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                            "ColumnBindingInfo": {
+                              "TableName": "t_object_order",
+                              "ColumnName": "object_order_id"
+                            },
+                            "Value": {
+                              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                              "SerializeProperty": "=転圧情報.申込ID"
+                            }
+                          },
+                          "UpdateValues": [
+                            {
+                              "ColumnName": "order_status_id",
+                              "Value": {
+                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                "SerializeProperty": "=見積手配中ST.申込ステータスID"
+                              }
+                            }
+                          ]
+                        }
+                      ],
+                      "ID": "205eec7c-304a-4107-a04a-1905c5636df2"
                     }
                   ]
                 }
               ],
-              "ID": "084314e0-3e8c-49f4-a392-42043a019768"
+              "ID": "a0fbe0ef-8cdd-4cc0-ba84-3b0235eb60db"
             }
           ]
         },
@@ -444,7 +532,26 @@
                           "TableName": "m_compaction_status",
                           "ColumnName": "sort_no"
                         },
-                        "ColumnName": "並び順"
+                        "ColumnName": "転圧ステータス並び順"
+                      },
+                      {
+                        "BindingInfo": {
+                          "TableName": "m_compaction_status",
+                          "ColumnName": "order_status_id"
+                        },
+                        "ColumnName": "申込ステータスID"
+                      },
+                      {
+                        "BindingInfo": {
+                          "TableName": "m_compaction_status",
+                          "ColumnName": "order_status_id",
+                          "RelationBinding": {
+                            "RelatedTable": "m_order_status",
+                            "RelatedColumn": "order_status_id",
+                            "DisplayColumn": "sort_no"
+                          }
+                        },
+                        "ColumnName": "申込ステータス並び順"
                       }
                     ],
                     "SqlCondition": {
@@ -456,7 +563,7 @@
                       "Value": "1"
                     }
                   },
-                  "ID": "263541bab3294119830d9e2eb8dcb310"
+                  "ID": "7438cf1fae14475d842036df3c14bc31"
                 },
                 {
                   "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
@@ -502,7 +609,7 @@
                           ]
                         }
                       ],
-                      "ID": "200727bb-f069-4dcf-9f0d-285252ab4f26"
+                      "ID": "81b7bcef-47bd-45f6-9dcc-131c4d1ded5c"
                     }
                   ]
                 },
@@ -521,7 +628,7 @@
                         },
                         "value": {
                           "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                          "SerializeProperty": "=受注確定待ちST.並び順"
+                          "SerializeProperty": "=受注確定待ちST.転圧ステータス並び順"
                         },
                         "compareType": 4
                       },
@@ -554,12 +661,64 @@
                           ]
                         }
                       ],
-                      "ID": "c80b599c-168c-40e9-bba2-917378026742"
+                      "ID": "7c1f9159-d169-4314-866e-f613a2c1ee0e"
+                    }
+                  ]
+                },
+                {
+                  "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+                  "ConditionAndCommandPairList": [
+                    {
+                      "Condition": {
+                        "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                        "param": {
+                          "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                          "ParamObject": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=転圧情報.申込ステータス並び順"
+                          }
+                        },
+                        "value": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=受注確定待ちST.申込ステータス並び順"
+                        },
+                        "compareType": 4
+                      },
+                      "CommandList": [
+                        {
+                          "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+                          "TableName": "t_object_order",
+                          "ShowConfirm": false,
+                          "ConfirmText": "本当に更新してもよろしいですか？",
+                          "RowsToUpdate": 1,
+                          "RowsToUpdateCondition": {
+                            "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                            "ColumnBindingInfo": {
+                              "TableName": "t_object_order",
+                              "ColumnName": "object_order_id"
+                            },
+                            "Value": {
+                              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                              "SerializeProperty": "=転圧情報.申込ID"
+                            }
+                          },
+                          "UpdateValues": [
+                            {
+                              "ColumnName": "order_status_id",
+                              "Value": {
+                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                "SerializeProperty": "=受注確定待ちST.申込ステータスID"
+                              }
+                            }
+                          ]
+                        }
+                      ],
+                      "ID": "95cdab53-9e4e-438f-a16c-c3f8d19036a1"
                     }
                   ]
                 }
               ],
-              "ID": "3c60a2e3-9ea5-4cc6-8593-77a8932d3400"
+              "ID": "db65342c-9ee4-45eb-859d-9da9e7ba5c7c"
             }
           ]
         },
@@ -623,7 +782,7 @@
                           ]
                         }
                       ],
-                      "ID": "a2577062-5845-44cb-b174-257e4f556421"
+                      "ID": "dcc6c0f9-a5d8-4689-9006-bc3045672efc"
                     }
                   ]
                 },
@@ -662,7 +821,26 @@
                                   "TableName": "m_compaction_status",
                                   "ColumnName": "sort_no"
                                 },
-                                "ColumnName": "並び順"
+                                "ColumnName": "転圧ステータス並び順"
+                              },
+                              {
+                                "BindingInfo": {
+                                  "TableName": "m_compaction_status",
+                                  "ColumnName": "order_status_id"
+                                },
+                                "ColumnName": "申込ステータスID"
+                              },
+                              {
+                                "BindingInfo": {
+                                  "TableName": "m_compaction_status",
+                                  "ColumnName": "order_status_id",
+                                  "RelationBinding": {
+                                    "RelatedTable": "m_order_status",
+                                    "RelatedColumn": "order_status_id",
+                                    "DisplayColumn": "sort_no"
+                                  }
+                                },
+                                "ColumnName": "申込ステータス並び順"
                               }
                             ],
                             "SqlCondition": {
@@ -674,7 +852,7 @@
                               "Value": "1"
                             }
                           },
-                          "ID": "6678a378f4144a069d2a0b51f32352d6"
+                          "ID": "18a02d6aa2ea4a3585c561b2c0bc6180"
                         },
                         {
                           "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
@@ -691,7 +869,7 @@
                                 },
                                 "value": {
                                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                                  "SerializeProperty": "=転圧日程確認中ST.並び順"
+                                  "SerializeProperty": "=転圧日程確認中ST.転圧ステータス並び順"
                                 },
                                 "compareType": 4
                               },
@@ -724,13 +902,65 @@
                                   ]
                                 }
                               ],
-                              "ID": "d1edaff2-f14c-4f7d-bb26-7f0e73e12d9b"
+                              "ID": "85fdf3a4-b3d3-4d0c-b9d1-e6bff316bec0"
+                            }
+                          ]
+                        },
+                        {
+                          "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+                          "ConditionAndCommandPairList": [
+                            {
+                              "Condition": {
+                                "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                                "param": {
+                                  "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                                  "ParamObject": {
+                                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                    "SerializeProperty": "=転圧情報.申込ステータス並び順"
+                                  }
+                                },
+                                "value": {
+                                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                  "SerializeProperty": "=転圧日程確認中ST.申込ステータス並び順"
+                                },
+                                "compareType": 4
+                              },
+                              "CommandList": [
+                                {
+                                  "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+                                  "TableName": "t_object_order",
+                                  "ShowConfirm": false,
+                                  "ConfirmText": "本当に更新してもよろしいですか？",
+                                  "RowsToUpdate": 1,
+                                  "RowsToUpdateCondition": {
+                                    "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                                    "ColumnBindingInfo": {
+                                      "TableName": "t_object_order",
+                                      "ColumnName": "object_order_id"
+                                    },
+                                    "Value": {
+                                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                      "SerializeProperty": "=転圧情報.申込ID"
+                                    }
+                                  },
+                                  "UpdateValues": [
+                                    {
+                                      "ColumnName": "order_status_id",
+                                      "Value": {
+                                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                        "SerializeProperty": "=転圧日程確認中ST.申込ステータスID"
+                                      }
+                                    }
+                                  ]
+                                }
+                              ],
+                              "ID": "2a921d8c-a727-4c76-ae00-ff04a603cda7"
                             }
                           ]
                         }
                       ],
                       "Comments": "自社施工の場合",
-                      "ID": "3a1b335a-8609-4041-b1fe-8b4fa3669f3c"
+                      "ID": "1f86d7ab-b7d1-4069-8ec9-9d2278ab31ab"
                     },
                     {
                       "CommandList": [
@@ -753,7 +983,26 @@
                                   "TableName": "m_compaction_status",
                                   "ColumnName": "sort_no"
                                 },
-                                "ColumnName": "並び順"
+                                "ColumnName": "転圧ステータス並び順"
+                              },
+                              {
+                                "BindingInfo": {
+                                  "TableName": "m_compaction_status",
+                                  "ColumnName": "order_status_id"
+                                },
+                                "ColumnName": "申込ステータスID"
+                              },
+                              {
+                                "BindingInfo": {
+                                  "TableName": "m_compaction_status",
+                                  "ColumnName": "order_status_id",
+                                  "RelationBinding": {
+                                    "RelatedTable": "m_order_status",
+                                    "RelatedColumn": "order_status_id",
+                                    "DisplayColumn": "sort_no"
+                                  }
+                                },
+                                "ColumnName": "申込ステータス並び順"
                               }
                             ],
                             "SqlCondition": {
@@ -765,7 +1014,7 @@
                               "Value": "1"
                             }
                           },
-                          "ID": "16c85b74e59547e19d0aad9ff9f1d112"
+                          "ID": "e9a2b36eaac949e88b168b755a97366f"
                         },
                         {
                           "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
@@ -782,7 +1031,7 @@
                                 },
                                 "value": {
                                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                                  "SerializeProperty": "=施工待ちST.並び順"
+                                  "SerializeProperty": "=施工待ちST.転圧ステータス並び順"
                                 },
                                 "compareType": 4
                               },
@@ -815,18 +1064,70 @@
                                   ]
                                 }
                               ],
-                              "ID": "14f7fb22-5674-4457-851d-407e7da3bcd4"
+                              "ID": "a637a8ff-22a7-489c-8bba-1b6bb36c8457"
+                            }
+                          ]
+                        },
+                        {
+                          "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+                          "ConditionAndCommandPairList": [
+                            {
+                              "Condition": {
+                                "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                                "param": {
+                                  "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                                  "ParamObject": {
+                                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                    "SerializeProperty": "=転圧情報.申込ステータス並び順"
+                                  }
+                                },
+                                "value": {
+                                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                  "SerializeProperty": "=施工待ちST.申込ステータス並び順"
+                                },
+                                "compareType": 4
+                              },
+                              "CommandList": [
+                                {
+                                  "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+                                  "TableName": "t_object_order",
+                                  "ShowConfirm": false,
+                                  "ConfirmText": "本当に更新してもよろしいですか？",
+                                  "RowsToUpdate": 1,
+                                  "RowsToUpdateCondition": {
+                                    "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                                    "ColumnBindingInfo": {
+                                      "TableName": "t_object_order",
+                                      "ColumnName": "object_order_id"
+                                    },
+                                    "Value": {
+                                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                      "SerializeProperty": "=転圧情報.申込ID"
+                                    }
+                                  },
+                                  "UpdateValues": [
+                                    {
+                                      "ColumnName": "order_status_id",
+                                      "Value": {
+                                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                        "SerializeProperty": "=施工待ちST.申込ステータスID"
+                                      }
+                                    }
+                                  ]
+                                }
+                              ],
+                              "ID": "256bd39a-5164-43e7-a2c5-43431137282b"
                             }
                           ]
                         }
                       ],
                       "Comments": "他社施工の場合",
-                      "ID": "3a08507e-f832-459b-b66c-b639d6d934d9"
+                      "ID": "f5b32d5d-1d90-4896-b6a4-0fc98134b8a2"
                     }
                   ]
                 }
               ],
-              "ID": "09d0a537-4de6-4eed-8fab-1c4a115943bc"
+              "ID": "33a83c48-603e-49cb-a2b2-94e16f36d9ae"
             }
           ]
         },
@@ -865,7 +1166,26 @@
                           "TableName": "m_compaction_status",
                           "ColumnName": "sort_no"
                         },
-                        "ColumnName": "並び順"
+                        "ColumnName": "転圧ステータス並び順"
+                      },
+                      {
+                        "BindingInfo": {
+                          "TableName": "m_compaction_status",
+                          "ColumnName": "order_status_id"
+                        },
+                        "ColumnName": "申込ステータスID"
+                      },
+                      {
+                        "BindingInfo": {
+                          "TableName": "m_compaction_status",
+                          "ColumnName": "order_status_id",
+                          "RelationBinding": {
+                            "RelatedTable": "m_order_status",
+                            "RelatedColumn": "order_status_id",
+                            "DisplayColumn": "sort_no"
+                          }
+                        },
+                        "ColumnName": "申込ステータス並び順"
                       }
                     ],
                     "SqlCondition": {
@@ -877,7 +1197,7 @@
                       "Value": "1"
                     }
                   },
-                  "ID": "50aa90f38eab423ab9b9c110ea0afbb5"
+                  "ID": "112127db911742daa1762d41b13382ee"
                 },
                 {
                   "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
@@ -923,7 +1243,7 @@
                           ]
                         }
                       ],
-                      "ID": "d34c3568-8855-47eb-9543-310327974e45"
+                      "ID": "4cfa25d8-3c82-4ccb-80ca-626dbf8cf0c6"
                     }
                   ]
                 },
@@ -942,7 +1262,7 @@
                         },
                         "value": {
                           "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                          "SerializeProperty": "=転圧日程確認中ST.並び順"
+                          "SerializeProperty": "=転圧日程確認中ST.転圧ステータス並び順"
                         },
                         "compareType": 4
                       },
@@ -975,12 +1295,64 @@
                           ]
                         }
                       ],
-                      "ID": "f9ce2f7f-be01-4b18-9311-bc6c80c4a527"
+                      "ID": "bde2ee85-f345-43f6-9bbc-86dd11fe7b2e"
+                    }
+                  ]
+                },
+                {
+                  "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+                  "ConditionAndCommandPairList": [
+                    {
+                      "Condition": {
+                        "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                        "param": {
+                          "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                          "ParamObject": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=転圧情報.申込ステータス並び順"
+                          }
+                        },
+                        "value": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=転圧日程確認中ST.申込ステータス並び順"
+                        },
+                        "compareType": 4
+                      },
+                      "CommandList": [
+                        {
+                          "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+                          "TableName": "t_object_order",
+                          "ShowConfirm": false,
+                          "ConfirmText": "本当に更新してもよろしいですか？",
+                          "RowsToUpdate": 1,
+                          "RowsToUpdateCondition": {
+                            "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                            "ColumnBindingInfo": {
+                              "TableName": "t_object_order",
+                              "ColumnName": "object_order_id"
+                            },
+                            "Value": {
+                              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                              "SerializeProperty": "=転圧情報.申込ID"
+                            }
+                          },
+                          "UpdateValues": [
+                            {
+                              "ColumnName": "order_status_id",
+                              "Value": {
+                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                "SerializeProperty": "=転圧日程確認中ST.申込ステータスID"
+                              }
+                            }
+                          ]
+                        }
+                      ],
+                      "ID": "a8998759-0405-4d21-9754-b1bf05ac4850"
                     }
                   ]
                 }
               ],
-              "ID": "499b58ac-5398-4cf8-8d94-1e1ffa1dd038"
+              "ID": "ce6c8c9f-cc8c-41ba-bddb-745ec54c17d1"
             }
           ]
         },
@@ -1019,7 +1391,26 @@
                           "TableName": "m_compaction_status",
                           "ColumnName": "sort_no"
                         },
-                        "ColumnName": "並び順"
+                        "ColumnName": "転圧ステータス並び順"
+                      },
+                      {
+                        "BindingInfo": {
+                          "TableName": "m_compaction_status",
+                          "ColumnName": "order_status_id"
+                        },
+                        "ColumnName": "申込ステータスID"
+                      },
+                      {
+                        "BindingInfo": {
+                          "TableName": "m_compaction_status",
+                          "ColumnName": "order_status_id",
+                          "RelationBinding": {
+                            "RelatedTable": "m_order_status",
+                            "RelatedColumn": "order_status_id",
+                            "DisplayColumn": "sort_no"
+                          }
+                        },
+                        "ColumnName": "申込ステータス並び順"
                       }
                     ],
                     "SqlCondition": {
@@ -1031,7 +1422,7 @@
                       "Value": "1"
                     }
                   },
-                  "ID": "13782c0a30954f1b8f96530c8c2b8cd9"
+                  "ID": "8e6b3529bb104c27aeb9e47ef294b3cb"
                 },
                 {
                   "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
@@ -1077,7 +1468,7 @@
                           ]
                         }
                       ],
-                      "ID": "44958599-58db-4edd-88e8-2203a7788a6f"
+                      "ID": "10e807cc-7719-4cbf-9f8f-01ff1e4f06e5"
                     }
                   ]
                 },
@@ -1096,7 +1487,7 @@
                         },
                         "value": {
                           "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                          "SerializeProperty": "=施工待ちST.並び順"
+                          "SerializeProperty": "=施工待ちST.転圧ステータス並び順"
                         },
                         "compareType": 4
                       },
@@ -1129,12 +1520,64 @@
                           ]
                         }
                       ],
-                      "ID": "a95a1cb4-c50c-4f69-bad5-8e9e69a799a7"
+                      "ID": "313ebef7-403e-4078-886d-b21c60f0a031"
+                    }
+                  ]
+                },
+                {
+                  "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+                  "ConditionAndCommandPairList": [
+                    {
+                      "Condition": {
+                        "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                        "param": {
+                          "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                          "ParamObject": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=転圧情報.申込ステータス並び順"
+                          }
+                        },
+                        "value": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=施工待ちST.申込ステータス並び順"
+                        },
+                        "compareType": 4
+                      },
+                      "CommandList": [
+                        {
+                          "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+                          "TableName": "t_object_order",
+                          "ShowConfirm": false,
+                          "ConfirmText": "本当に更新してもよろしいですか？",
+                          "RowsToUpdate": 1,
+                          "RowsToUpdateCondition": {
+                            "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                            "ColumnBindingInfo": {
+                              "TableName": "t_object_order",
+                              "ColumnName": "object_order_id"
+                            },
+                            "Value": {
+                              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                              "SerializeProperty": "=転圧情報.申込ID"
+                            }
+                          },
+                          "UpdateValues": [
+                            {
+                              "ColumnName": "order_status_id",
+                              "Value": {
+                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                "SerializeProperty": "=施工待ちST.申込ステータスID"
+                              }
+                            }
+                          ]
+                        }
+                      ],
+                      "ID": "071191af-21fa-45ac-8d3b-d200e411b63b"
                     }
                   ]
                 }
               ],
-              "ID": "246dfff4-394c-4ca2-8f79-332c4e6d2705"
+              "ID": "afaef64e-6b74-49f4-8b26-c19aff516521"
             }
           ]
         },
@@ -1198,12 +1641,12 @@
                           ]
                         }
                       ],
-                      "ID": "ff85720e-758a-4477-9418-a1a7eb69be31"
+                      "ID": "aecce4c8-cdb6-4426-a01f-439b6e1789e6"
                     }
                   ]
                 }
               ],
-              "ID": "73bcbded-4d74-4f8f-bde0-c148ceb624d4"
+              "ID": "40ad08ee-c51d-4c7c-8b28-9f15bee99a67"
             }
           ]
         },
@@ -1254,7 +1697,7 @@
                       "Value": "1"
                     }
                   },
-                  "ID": "056a9891589c492695b3c8cd6a90dbaa"
+                  "ID": "ca4566709b674694810683ef7e116dbb"
                 },
                 {
                   "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
@@ -1300,7 +1743,7 @@
                           ]
                         }
                       ],
-                      "ID": "ec7edf2c-bd6d-48f7-925b-8262777205fd"
+                      "ID": "b58d962f-d43d-4ed0-a8ed-76895f0109c1"
                     }
                   ]
                 },
@@ -1352,12 +1795,12 @@
                           ]
                         }
                       ],
-                      "ID": "9c94cc78-b95f-40ad-ac11-0f58eb781a54"
+                      "ID": "1c108216-ba38-480a-bf4c-cee46e01b6a3"
                     }
                   ]
                 }
               ],
-              "ID": "716bd80c-8eed-4887-a825-575fa8168497"
+              "ID": "6504d5ad-b47c-49db-a447-348dca6b04fe"
             }
           ]
         },
@@ -1402,7 +1845,7 @@
                       "Value": "1"
                     }
                   },
-                  "ID": "d082586daa2b4371b5f7583c4345bd63"
+                  "ID": "a89b04c99f4245e9889a27df5599fc66"
                 },
                 {
                   "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
@@ -1456,7 +1899,7 @@
                       "Value": "1"
                     }
                   },
-                  "ID": "d6f10fc6bec54d3bb88ec995dbb4c86e"
+                  "ID": "74c1ac6459994097aca25f69459c5b0a"
                 },
                 {
                   "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
@@ -1614,7 +2057,7 @@
                       }
                     }
                   },
-                  "ID": "f61a54f9e5784839b45c11ba755df112"
+                  "ID": "1d37aec6fc614c7cb07aa873f80c25d1"
                 },
                 {
                   "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
@@ -1709,7 +2152,7 @@
                               }
                             }
                           },
-                          "ID": "f44bcdd4284541f8a84960fa3f4fc003"
+                          "ID": "1d9c472b1cfd40a0b2db195204d12c57"
                         },
                         {
                           "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
@@ -1718,7 +2161,7 @@
                             "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
                             "SerializeProperty": "=特別商品.商品名"
                           },
-                          "ID": "58bb782b989747cba19cb3b9e1de0aae"
+                          "ID": "b2ef1cc6dbb8450e82e2f840e4beb47c"
                         },
                         {
                           "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
@@ -1727,10 +2170,10 @@
                             "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
                             "SerializeProperty": "=特別商品.販売単価"
                           },
-                          "ID": "ac4f617435124f8bae623c88de879e12"
+                          "ID": "bebbc27fd9b24aa0a051f4f7ee0cab40"
                         }
                       ],
-                      "ID": "bd04edd8-ad3d-47f2-b74e-37bcca527f10"
+                      "ID": "39a78b1c-0c4b-4156-aa7e-9169c5b0ecf7"
                     },
                     {
                       "CommandList": [
@@ -1741,7 +2184,7 @@
                             "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
                             "SerializeProperty": "=調査計上商品.商品名"
                           },
-                          "ID": "b664514c5f9f4122b99da4f000bdedb8"
+                          "ID": "eb002d0574bd4c5491cd680b7797ca5e"
                         },
                         {
                           "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
@@ -1750,10 +2193,10 @@
                             "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
                             "SerializeProperty": "=調査計上商品.標準単価"
                           },
-                          "ID": "447c4f339087463e9f74e52eb2c5193e"
+                          "ID": "b24730162eb44067a58392ed3c59eb13"
                         }
                       ],
-                      "ID": "2db6e204-94af-4688-b771-d80fca7cb7d8"
+                      "ID": "73a19434-56a8-41e4-a563-94b5c8b59b83"
                     }
                   ]
                 },
@@ -1865,7 +2308,7 @@
                   ]
                 }
               ],
-              "ID": "83c556eb-861a-417e-9941-48e05b47ebc7"
+              "ID": "c2570ca8-4f3c-496e-9e4d-5d8d7555e1f2"
             }
           ]
         },
