@@ -370,9 +370,11 @@
     "5,2": "保証書区分",
     "5,28": "バージョン",
     "5,78": "▼保証ID",
+    "5,84": "▼保証ステータスID",
     "7,2": "保証物件名",
     "9,2": "保証住所",
     "9,78": "▼保証書区分ID",
+    "9,84": "▼処理前フラグ",
     "11,2": "特記事項",
     "13,78": "▼保証書バージョンID",
     "14,2": "保証開始日",
@@ -382,12 +384,11 @@
     "16,2": "原本郵送",
     "16,28": "原本郵送日",
     "16,78": "▼保証完了フラグ",
-    "16,84": "▼保証ステータスID",
+    "16,84": "▼最終発行フラグ",
     "18,2": "保証キャンセル",
     "18,52": "保証売上合計",
     "20,52": "保証仕入合計",
     "20,78": "▼完了フラグ",
-    "20,84": "▼処理前フラグ",
     "22,11": "元に戻す",
     "22,22": "価格設定",
     "22,33": "保証完了",
@@ -738,112 +739,10 @@
         "$type": "Forguncy.ButtonCellType, ServerDesignerCommon",
         "CommandList": [
           {
-            "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
-            "ConditionAndCommandPairList": [
-              {
-                "ConfirmDialogSettings": {
-                  "Title": "確認",
-                  "FormulaText": "保証をキャンセルします。よろしいですか？",
-                  "YesButtonText": "はい",
-                  "NoButtonText": "いいえ",
-                  "ConfirmIcon": 4
-                },
-                "CommandList": [
-                  {
-                    "$type": "LoadingCommand.StartLoadingCommand, LoadingCommand",
-                    "LoadingText": "お待ちください",
-                    "LoadingTextColor": "Background 1 0"
-                  },
-                  {
-                    "$type": "Forguncy.Model.RequestServerCommand, ServerDesignerCommon",
-                    "ServerCommandName": "保証キャンセル処理",
-                    "Parameters": [
-                      {
-                        "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
-                        "Value": {
-                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                          "SerializeProperty": "='811663b05116468293cb1759dc3ce65'!CA4"
-                        },
-                        "ParamName": "P_申込ID"
-                      },
-                      {
-                        "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
-                        "Value": {
-                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                          "SerializeProperty": "='811663b05116468293cb1759dc3ce65'!CA8"
-                        },
-                        "ParamName": "P_保証ID"
-                      }
-                    ],
-                    "ResultErrorCodeTo": {
-                      "SerializeProperty": "リターンコード"
-                    },
-                    "ResultMessageTo": {
-                      "SerializeProperty": "リターンメッセージ"
-                    },
-                    "RefreshAfterFinish": true,
-                    "CheckDataValidation": false
-                  },
-                  {
-                    "$type": "LoadingCommand.StartLoadingCommand, LoadingCommand",
-                    "LoadingTextColor": "Background 1 0"
-                  },
-                  {
-                    "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
-                    "ConditionAndCommandPairList": [
-                      {
-                        "Condition": {
-                          "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
-                          "param": {
-                            "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
-                            "cellLocations": [
-                              {
-                                "SerializeProperty": "='811663b05116468293cb1759dc3ce65'!リターンコード"
-                              }
-                            ]
-                          },
-                          "value": "0"
-                        },
-                        "CommandList": [
-                          {
-                            "$type": "Forguncy.Model.ShareCommand, ServerDesignerCommon",
-                            "ShareCommandContainerRefer": {
-                              "ShareCommandContainerID": "de66a115-ade0-422c-9d10-db03223efd9b"
-                            },
-                            "Params": [
-                              {
-                                "ParamReferObject": {
-                                  "ParamID": "1163bbdf-62b1-43af-9906-e63bfc780ec3",
-                                  "ShareCommandContainerReferObject": {
-                                    "ShareCommandContainerID": "de66a115-ade0-422c-9d10-db03223efd9b"
-                                  }
-                                },
-                                "Value": "保証をキャンセルしました"
-                              }
-                            ],
-                            "ReturnPropertiesTo": []
-                          }
-                        ],
-                        "ID": "705b2ef5-3118-49fd-b010-c80c41ea48ef"
-                      },
-                      {
-                        "CommandList": [
-                          {
-                            "$type": "Forguncy.Model.ShowMessageCommand, ServerDesignerCommon",
-                            "MessageFormula": {
-                              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                              "SerializeProperty": "='811663b05116468293cb1759dc3ce65'!リターンメッセージ"
-                            }
-                          }
-                        ],
-                        "ID": "43bc6a9d-95b3-45b8-8ecb-c8b871d36a76"
-                      }
-                    ]
-                  }
-                ],
-                "ID": "20f38564-4710-4a58-bf3f-462adb18124a"
-              }
-            ]
+            "$type": "Forguncy.Model.ShowPopupCommand, ServerDesignerCommon",
+            "PageName": "保証キャンセル登録",
+            "PassValues": [],
+            "LoadBindingDataOption": 1
           }
         ],
         "Text": "保証キャンセル",
@@ -860,7 +759,7 @@
             "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
             "Formula": {
               "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-              "SerializeProperty": "=OR('811663b05116468293cb1759dc3ce65'!$BM$15=\"\",'811663b05116468293cb1759dc3ce65'!$M$19<>\"\",'811663b05116468293cb1759dc3ce65'!$M$19<>\"\")"
+              "SerializeProperty": "=OR('811663b05116468293cb1759dc3ce65'!$BM$15=\"\",'811663b05116468293cb1759dc3ce65'!$M$19<>\"\",'811663b05116468293cb1759dc3ce65'!$CA$19=0,'811663b05116468293cb1759dc3ce65'!$CG$19=0)"
             },
             "StyleInfo": {
               "Underline": null,
@@ -937,7 +836,7 @@
             "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
             "Formula": {
               "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-              "SerializeProperty": "=OR('811663b05116468293cb1759dc3ce65'!$CA$22=1,'811663b05116468293cb1759dc3ce65'!$CG$22=1)"
+              "SerializeProperty": "=OR('811663b05116468293cb1759dc3ce65'!$CA$22=1,'811663b05116468293cb1759dc3ce65'!$CG$12=1)"
             },
             "StyleInfo": {
               "Underline": null,
@@ -1033,7 +932,7 @@
               "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
               "SerializeProperty": "='811663b05116468293cb1759dc3ce65'!CG4"
             },
-            "ID": "8404794f03314d47bb10fed565f99f69"
+            "ID": "9ce0c8e0efb8476d9ce73e2cfc1d1edd"
           },
           {
             "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
@@ -1060,7 +959,7 @@
                 "Value": "電子納品ボタン"
               }
             },
-            "ID": "6031f060fd9b42afa4ba3a09cea6d1da"
+            "ID": "45dfaa467f0841f0affef4f483f52ad2"
           },
           {
             "$type": "Forguncy.Model.SetCellPropertyCommand, ServerDesignerCommon",
@@ -1420,7 +1319,7 @@
                         "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
                         "Value": {
                           "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                          "SerializeProperty": "='811663b05116468293cb1759dc3ce65'!CG19"
+                          "SerializeProperty": "='811663b05116468293cb1759dc3ce65'!CG8"
                         },
                         "ParamName": "P_保証ステータスID"
                       }
@@ -1435,7 +1334,7 @@
                     "CheckDataValidation": false
                   }
                 ],
-                "ID": "dccfc45a-8eea-4ca6-a844-9402bf2c3389"
+                "ID": "2fa78fdc-cb30-4cc6-8dc1-42fd2f54f04c"
               }
             ]
           },
@@ -1475,7 +1374,7 @@
                     "ReturnPropertiesTo": []
                   }
                 ],
-                "ID": "ff2054d0-fc09-4a85-9573-050bac85c510"
+                "ID": "6816c766-6b2a-4b37-9659-b99cd79accfe"
               },
               {
                 "CommandList": [
@@ -1490,7 +1389,7 @@
                     "$type": "LoadingCommand.EndLoadingCommand, LoadingCommand"
                   }
                 ],
-                "ID": "fc665ed2-6f6f-4c1b-b9b6-3e6a35174a26"
+                "ID": "40243eeb-f5e7-471f-ab53-6ded39716d90"
               }
             ]
           }
@@ -1552,7 +1451,7 @@
             "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
             "Formula": {
               "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-              "SerializeProperty": "=OR('811663b05116468293cb1759dc3ce65'!$CA$22=1,'811663b05116468293cb1759dc3ce65'!$CG$22=1)"
+              "SerializeProperty": "=OR('811663b05116468293cb1759dc3ce65'!$CA$22=1,'811663b05116468293cb1759dc3ce65'!$CG$12=1)"
             },
             "StyleInfo": {
               "Underline": null,
@@ -1634,7 +1533,7 @@
             "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
             "Formula": {
               "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-              "SerializeProperty": "=OR('811663b05116468293cb1759dc3ce65'!$CA$22=1,'811663b05116468293cb1759dc3ce65'!$CG$22=1)"
+              "SerializeProperty": "=OR('811663b05116468293cb1759dc3ce65'!$CA$22=1,'811663b05116468293cb1759dc3ce65'!$CG$12=1)"
             },
             "StyleInfo": {
               "Underline": null,
@@ -1664,7 +1563,7 @@
             "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
             "Formula": {
               "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-              "SerializeProperty": "=OR('811663b05116468293cb1759dc3ce65'!$CA$22=1,'811663b05116468293cb1759dc3ce65'!$CG$22=1)"
+              "SerializeProperty": "=OR('811663b05116468293cb1759dc3ce65'!$CA$22=1,'811663b05116468293cb1759dc3ce65'!$CG$12=1)"
             },
             "StyleInfo": {
               "Underline": null,
@@ -1680,6 +1579,9 @@
     },
     "7,78": {
       "TemplateCellSource": "保証ID"
+    },
+    "7,84": {
+      "TemplateCellSource": "保証ステータスID"
     },
     "9,12": {
       "CellType": {
@@ -1697,7 +1599,7 @@
             "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
             "Formula": {
               "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-              "SerializeProperty": "=OR('811663b05116468293cb1759dc3ce65'!$CA$22=1,'811663b05116468293cb1759dc3ce65'!$CG$22=1)"
+              "SerializeProperty": "=OR('811663b05116468293cb1759dc3ce65'!$CA$22=1,'811663b05116468293cb1759dc3ce65'!$CG$12=1)"
             },
             "StyleInfo": {
               "Underline": null,
@@ -1722,7 +1624,7 @@
             "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
             "Formula": {
               "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-              "SerializeProperty": "=OR('811663b05116468293cb1759dc3ce65'!$CA$22=1,'811663b05116468293cb1759dc3ce65'!$CG$22=1)"
+              "SerializeProperty": "=OR('811663b05116468293cb1759dc3ce65'!$CA$22=1,'811663b05116468293cb1759dc3ce65'!$CG$12=1)"
             },
             "StyleInfo": {
               "Underline": null,
@@ -1739,6 +1641,9 @@
     "11,78": {
       "TemplateCellSource": "保証書区分ID"
     },
+    "11,84": {
+      "TemplateCellSource": "処理前フラグ"
+    },
     "14,12": {
       "CellType": {
         "$type": "Forguncy.DateCellType, ServerDesignerCommon",
@@ -1750,7 +1655,7 @@
             "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
             "Formula": {
               "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-              "SerializeProperty": "=OR('811663b05116468293cb1759dc3ce65'!$CA$22=1,'811663b05116468293cb1759dc3ce65'!$CG$22=1)"
+              "SerializeProperty": "=OR('811663b05116468293cb1759dc3ce65'!$CA$22=1,'811663b05116468293cb1759dc3ce65'!$CG$12=1)"
             },
             "StyleInfo": {
               "Underline": null,
@@ -1785,7 +1690,7 @@
             "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
             "Formula": {
               "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-              "SerializeProperty": "=OR('811663b05116468293cb1759dc3ce65'!$CA$22=1,'811663b05116468293cb1759dc3ce65'!$CG$22=1)"
+              "SerializeProperty": "=OR('811663b05116468293cb1759dc3ce65'!$CA$22=1,'811663b05116468293cb1759dc3ce65'!$CG$12=1)"
             },
             "StyleInfo": {
               "Underline": null,
@@ -1891,7 +1796,7 @@
             "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
             "Formula": {
               "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-              "SerializeProperty": "=OR('811663b05116468293cb1759dc3ce65'!$CA$22=1,'811663b05116468293cb1759dc3ce65'!$CG$22=1)"
+              "SerializeProperty": "=OR('811663b05116468293cb1759dc3ce65'!$CA$22=1,'811663b05116468293cb1759dc3ce65'!$CG$12=1)"
             },
             "StyleInfo": {
               "Underline": null,
@@ -2094,16 +1999,13 @@
       "TemplateCellSource": "保証完了フラグ"
     },
     "18,84": {
-      "TemplateCellSource": "保証ステータスID"
+      "TemplateCellSource": "最終発行フラグ"
     },
     "20,64": {
       "TemplateCellSource": "保証仕入合計"
     },
     "21,78": {
       "TemplateCellSource": "完了フラグ"
-    },
-    "21,84": {
-      "TemplateCellSource": "処理前フラグ"
     },
     "22,11": {
       "CellType": {
@@ -2138,7 +2040,7 @@
             "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
             "Formula": {
               "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-              "SerializeProperty": "='811663b05116468293cb1759dc3ce65'!$CG$22=1"
+              "SerializeProperty": "='811663b05116468293cb1759dc3ce65'!$CG$12=1"
             },
             "StyleInfo": {
               "Underline": null,
@@ -2487,7 +2389,7 @@
                         "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
                         "Value": {
                           "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                          "SerializeProperty": "='811663b05116468293cb1759dc3ce65'!CG19"
+                          "SerializeProperty": "='811663b05116468293cb1759dc3ce65'!CG8"
                         },
                         "ParamName": "P_保証ステータスID"
                       }
@@ -2540,7 +2442,7 @@
                             "ReturnPropertiesTo": []
                           }
                         ],
-                        "ID": "b32e8949-ef1e-49c8-a268-ef40b8792635"
+                        "ID": "eb6d6dfa-5000-4938-99c8-b1bb18f58867"
                       },
                       {
                         "CommandList": [
@@ -2552,12 +2454,12 @@
                             }
                           }
                         ],
-                        "ID": "c78e3f73-4ae6-4e8b-9e6c-222cab6056cf"
+                        "ID": "bc775e88-671b-41b5-85fb-0fa6d481ba13"
                       }
                     ]
                   }
                 ],
-                "ID": "2cbd7d71-0627-44f4-a2f3-857dd2ec28e5"
+                "ID": "3ab9586e-c40f-4bd6-8129-a59424554b98"
               }
             ]
           }
@@ -2577,7 +2479,7 @@
             "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
             "Formula": {
               "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-              "SerializeProperty": "='811663b05116468293cb1759dc3ce65'!$CG$22=1"
+              "SerializeProperty": "='811663b05116468293cb1759dc3ce65'!$CG$12=1"
             },
             "StyleInfo": {
               "Underline": null,
@@ -2750,7 +2652,7 @@
                     ]
                   }
                 ],
-                "ID": "8cd16d93-6bcf-4cfc-bb8e-8cc1655a6746"
+                "ID": "a28eb265-c91a-43bf-9480-8b6828c418ca"
               }
             ]
           }
@@ -2770,7 +2672,7 @@
             "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
             "Formula": {
               "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-              "SerializeProperty": "='811663b05116468293cb1759dc3ce65'!$CG$22=1"
+              "SerializeProperty": "='811663b05116468293cb1759dc3ce65'!$CG$12=1"
             },
             "StyleInfo": {
               "Underline": null,
@@ -2955,7 +2857,7 @@
                 "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
                 "Value": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "='811663b05116468293cb1759dc3ce65'!CG19"
+                  "SerializeProperty": "='811663b05116468293cb1759dc3ce65'!CG8"
                 },
                 "ParamName": "P_保証ステータスID"
               }
@@ -3005,7 +2907,7 @@
                     "ReturnPropertiesTo": []
                   }
                 ],
-                "ID": "30d7b385-145f-49ef-b9ba-8096b5225e4e"
+                "ID": "3d1539fe-d06e-426b-8efc-12aba1120ef4"
               },
               {
                 "CommandList": [
@@ -3020,7 +2922,7 @@
                     "$type": "LoadingCommand.EndLoadingCommand, LoadingCommand"
                   }
                 ],
-                "ID": "159b1f47-75a0-49e9-a7d1-dcad5c1cac66"
+                "ID": "89917287-3dd3-491d-b02d-10cf1b3fabd5"
               }
             ]
           }
@@ -3040,7 +2942,7 @@
             "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
             "Formula": {
               "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-              "SerializeProperty": "='811663b05116468293cb1759dc3ce65'!$CG$22=1"
+              "SerializeProperty": "='811663b05116468293cb1759dc3ce65'!$CG$12=1"
             },
             "StyleInfo": {
               "Underline": null,
@@ -3127,7 +3029,7 @@
             "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
             "Formula": {
               "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-              "SerializeProperty": "='811663b05116468293cb1759dc3ce65'!$CG$22=1"
+              "SerializeProperty": "=OR('811663b05116468293cb1759dc3ce65'!$CG$12=1,'811663b05116468293cb1759dc3ce65'!$CG$19=0)"
             },
             "StyleInfo": {
               "Underline": null,
@@ -3534,7 +3436,13 @@
       "5,55": 7,
       "5,56": 7,
       "5,78": 18,
+      "5,84": 18,
+      "5,85": 4,
+      "5,86": 4,
       "6,0": 0,
+      "6,84": 4,
+      "6,85": 4,
+      "6,86": 4,
       "7,0": 0,
       "7,2": 9,
       "7,3": 9,
@@ -3605,7 +3513,13 @@
       "7,78": 14,
       "7,79": 4,
       "7,80": 4,
+      "7,84": 14,
+      "7,85": 4,
+      "7,86": 4,
       "8,0": 0,
+      "8,84": 4,
+      "8,85": 4,
+      "8,86": 4,
       "9,0": 0,
       "9,1": 1,
       "9,2": 9,
@@ -3685,6 +3599,9 @@
       "9,78": 18,
       "9,79": 4,
       "9,80": 4,
+      "9,84": 4,
+      "9,85": 4,
+      "9,86": 4,
       "10,0": 0,
       "10,1": 1,
       "10,78": 4,
@@ -3698,6 +3615,9 @@
       "11,78": 14,
       "11,79": 4,
       "11,80": 4,
+      "11,84": 14,
+      "11,85": 4,
+      "11,86": 4,
       "12,0": 0,
       "12,1": 1,
       "12,78": 4,
@@ -3845,11 +3765,8 @@
       "16,48": 7,
       "16,49": 7,
       "16,76": 27,
-      "16,84": 18,
       "17,0": 0,
       "17,76": 27,
-      "17,85": 4,
-      "17,86": 4,
       "18,0": 0,
       "18,2": 9,
       "18,12": 6,
@@ -3867,9 +3784,7 @@
       "18,52": 9,
       "18,64": 30,
       "18,78": 31,
-      "18,84": 14,
-      "18,85": 4,
-      "18,86": 4,
+      "18,84": 31,
       "19,0": 0,
       "20,0": 0,
       "20,3": 9,
@@ -3894,9 +3809,6 @@
       "20,73": 4,
       "20,74": 4,
       "20,75": 4,
-      "20,84": 4,
-      "20,85": 4,
-      "20,86": 4,
       "21,0": 0,
       "21,2": 9,
       "21,3": 9,
@@ -3936,9 +3848,6 @@
       "21,49": 33,
       "21,52": 9,
       "21,78": 31,
-      "21,84": 14,
-      "21,85": 4,
-      "21,86": 4,
       "22,0": 0,
       "22,2": 9,
       "22,3": 9,
@@ -4173,8 +4082,6 @@
     "22,66,1,10",
     "18,64,1,12",
     "20,64,1,12",
-    "18,84,1,3",
-    "21,84,1,3",
     "16,12,1,12",
     "22,22,1,10",
     "22,11,1,10",
@@ -4184,7 +4091,10 @@
     "11,12,2,64",
     "16,38,1,12",
     "14,64,1,12",
-    "18,12,1,12"
+    "18,12,1,12",
+    "7,84,1,3",
+    "11,84,1,3",
+    "18,84,1,3"
   ],
   "PageInfo": {
     "$type": "Forguncy.Model.Pages.TemplatePage, ServerDesignerCommon",
@@ -4194,4 +4104,4 @@
     "Margin": {},
     "PaperSize": {}
   }
-}//1Ou/kSwJw5Ha7MVnoOqJBO1WRpIgn5AnOYdqqyOhyqc77lf9hpuoyWC0vock+NUjkjxgE6LXUAaoSpLY6vFnEfTxnQ74tW8DPN9f5fvtVfpwfUeSRXANSn1Dd5Ph58yUbpon+d5u65tnS76pIzvjpzt/x7OPrYBgEK6UD/6seb08KgOoGbjR7G3zGrALeVhhKTM4vBxv03lZ0U8uvWZpgeMxztRyCC/MyU/X89oXjneSychNjIYDcT6ZzntV9vqxHRgrErkUkSPQuKDzHoogD2MPabK67ht/uAwgX/x4RrfPBeyLPlfYkpLhjLu1nVqPq4yW/kPSp3UmK9XJkTiAdlgH8WRd1SqTQMj/JgabWywx21Jrgdcf8pNtt2DIQjBYC1JPLZK3BypOh0EjfIKLGo3Rd09qE3SqsyMKRpSf1yRh9OeVicCUUXdJ+Wsi4stWd1oA60oIz/K7cDfbSfJdfjNAdarSP7kL6RcQXkK+AuqIhBbwn00EsmMr/NEM88gMIBYO/ok4yeU2Ltb8KW9l8a3ELbPda55Vnpuyj5APrJYSOtTSKj3icmkI7oXH2FbpzL+gGYR9wI+0m99k2l8a51pdRYEEaaydMUMKD7RBo9yjYAnALGZ6AqMl+KOH8Njuot4GyCOZfx9ri7/faIZ5DObzyWb5TOVINKjbvp+d8JMdX/d9pCeXwIFiVJ6C0o4vIX16lPUseU5BAcup4Flm2XZFl1s9GzjT3wL56WPq3c69foahtmEdzc+xb0lJe431UFVl2Ui9NEI8T5hEA1l+G/KwwqHH8eZbMinNG1dGbTFVMy3oySkyo07tFRuX6m0B07hmIeygtKgMTElp59Tj78hAwWAK1iCGpafNqENwZrEeurfOLeXqH6is59woogyfk0gjXFI67V/2ZetJYhQpkQ==|920
+}//rsyNJ70+SXN7aBeC1XWIcFz6ZsadTUD1k3NQNVhvG+TsH9eVuMzUL3LcFpQ5wgqEwLmMw5gWcCrf/qfS0i6oJ3a2osxp+JM0jTnFLxsIKRDIME5hQkmzYeX1pEdWW0NnMYqK+1lsoYIBju23VqngDnJDKXkBqR+ZySya2owU/LXZHtnXHc84CmQgHYF+E+b+1bnkpa5ms6p86RHZseTeH7y2EO0aVF4oKPubo43JO3lwuUhyZAZnpsZp7qvLlllbfHKhFE5y+nsl/oZ9VaidtVeCrewmvlaB5IcweO1EBG/etsQV14Kztvz/vmD+CsKoXT8S0L1Bq/3bqGYo0vyhbi+3lLgLhq6i31OakAlMPC7coJ2lp5WTzT1yiNIeMySobhb+i6meHfX1Mx/uZHBL5EIyG0Ch571kNM2u9peeLqT4Aq7afq0PQ1eWughK8/AZTFvuhTAw9Ar5QNwBqj24tze1yINrvin1vP34qCQonmNj046QmI1wA47DhfG+5NJ6YZx6vUXi96KiuLmfCtGw7pI9Zxknzy5T1IBIoMHuVDPB7QXOP5/lfSg2DqZnx9nIS1E8KV3jhGtC+drxTJfI7NtW5jdzuqKobjMOgW/wdFR+FEKoU0BpoCteCFUJ8nZM+Iybff8j2ZDgek0nutPh0O/0gTV1pYD9aFu4TQmJkDMA36pOTKq69vAuwABqx78FN+lMHs5is+C3U/Hjpaod/SGmqGXfhDelMq3CP8rykEL/Onm43nEfIuoZyFzooWjnytqxlmlWKcv2698HnOfOT528TTdUuNu9RgWj5fjvawcloo+iF5hfCo7qD5pSqjUquPChf8dkbSnxEGDpz9ju32siQ9fs0wCWT96usfYqKm4Q4W1zuaUQKqxwGkdCQ4/9hSW7F1Gbx10SLfjKC9qqGw==|920
