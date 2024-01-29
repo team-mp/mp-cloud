@@ -20,6 +20,9 @@
             },
             {
               "Name": "P_選択フラグ"
+            },
+            {
+              "Name": "P_付保証明書必要フラグ"
             }
           ],
           "OnlySendChangedData": true,
@@ -29,56 +32,17 @@
           "Name": "P_付保申請リスト"
         },
         {
-          "Name": "P_付保済み更新フラグ"
+          "Name": "P_付保申請フラグ"
+        },
+        {
+          "Name": "P_付保解除フラグ"
         }
       ]
     }
   ],
   "Commands": [
     {
-      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
-      "ParameterName": "処理件数",
-      "ParameterValue": "0",
-      "ID": "5860f75f53ed40b7a97b803cd17385a4"
-    },
-    {
-      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
-      "ParameterName": "付保申請済みST",
-      "TableValue": {
-        "TableName": "m_insurance_status_bk",
-        "OnlyGetValue": true,
-        "TableValueType": 0,
-        "BindingInfos": [
-          {
-            "BindingInfo": {
-              "TableName": "m_insurance_status_bk",
-              "ColumnName": "insurance_status_id"
-            },
-            "ColumnName": "insurance_status_id"
-          }
-        ],
-        "SqlCondition": {
-          "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
-          "ColumnBindingInfo": {
-            "TableName": "m_insurance_status_bk",
-            "ColumnName": "application_complete_flg"
-          },
-          "Value": "1"
-        }
-      },
-      "ID": "5e4b12b902a548b8acefc48eb8712f54"
-    },
-    {
-      "$type": "Forguncy.Model.LoopCommand, ServerDesignerCommon",
-      "LoopInfo": {
-        "$type": "Forguncy.Model.CountLoopInfo, ServerDesignerCommon",
-        "LoopCount": {
-          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-          "SerializeProperty": "=P_付保申請リスト.EditRows"
-        },
-        "LoopIndexParamName": "カウンター",
-        "LoopItemParamName": "Item"
-      },
+      "$type": "Forguncy.Model.ServerTransactionCommand, ServerDesignerCommon",
       "CommandList": [
         {
           "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
@@ -90,7 +54,7 @@
                   "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
                   "ParamObject": {
                     "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                    "SerializeProperty": "=Item.P_選択フラグ"
+                    "SerializeProperty": "=P_付保申請フラグ"
                   }
                 },
                 "value": "1"
@@ -98,51 +62,306 @@
               "CommandList": [
                 {
                   "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
-                  "ParameterName": "処理件数",
-                  "ParameterValue": {
-                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                    "SerializeProperty": "=処理件数+1"
-                  },
-                  "ID": "842975950b2743b0a94a18644994a5e0"
-                },
-                {
-                  "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
-                  "TableName": "t_object_insurance_bk",
-                  "ShowConfirm": false,
-                  "ConfirmText": "本当に更新してもよろしいですか？",
-                  "RowsToUpdate": 1,
-                  "RowsToUpdateCondition": {
-                    "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
-                    "ColumnBindingInfo": {
-                      "TableName": "t_object_insurance_bk",
-                      "ColumnName": "insurance_id"
-                    },
-                    "Value": {
-                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                      "SerializeProperty": "=Item.P_付保ID"
+                  "ParameterName": "付保申請済みST",
+                  "TableValue": {
+                    "TableName": "m_insurance_status",
+                    "OnlyGetValue": true,
+                    "TableValueType": 0,
+                    "BindingInfos": [
+                      {
+                        "BindingInfo": {
+                          "TableName": "m_insurance_status",
+                          "ColumnName": "insurance_status_id"
+                        },
+                        "ColumnName": "insurance_status_id"
+                      }
+                    ],
+                    "SqlCondition": {
+                      "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                      "ColumnBindingInfo": {
+                        "TableName": "m_insurance_status",
+                        "ColumnName": "application_complete_flg"
+                      },
+                      "Value": "1"
                     }
                   },
-                  "UpdateValues": [
-                    {
-                      "ColumnName": "insurance_apply_date",
-                      "Value": {
-                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                        "SerializeProperty": "=P_付保申請日"
+                  "ID": "4b729fa155d64ee99faf27e8b5743219"
+                },
+                {
+                  "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                  "ParameterName": "証明書申請待ちST",
+                  "TableValue": {
+                    "TableName": "m_insurance_status",
+                    "OnlyGetValue": true,
+                    "TableValueType": 0,
+                    "BindingInfos": [
+                      {
+                        "BindingInfo": {
+                          "TableName": "m_insurance_status",
+                          "ColumnName": "insurance_status_id"
+                        },
+                        "ColumnName": "insurance_status_id"
                       }
+                    ],
+                    "SqlCondition": {
+                      "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                      "ColumnBindingInfo": {
+                        "TableName": "m_insurance_status",
+                        "ColumnName": "certificate_application_wait_flg"
+                      },
+                      "Value": "1"
+                    }
+                  },
+                  "ID": "cab685742e1842429e6ac03fc3263b1f"
+                },
+                {
+                  "$type": "Forguncy.Model.LoopCommand, ServerDesignerCommon",
+                  "LoopInfo": {
+                    "$type": "Forguncy.Model.CountLoopInfo, ServerDesignerCommon",
+                    "LoopCount": {
+                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                      "SerializeProperty": "=P_付保申請リスト.EditRows"
                     },
+                    "LoopIndexParamName": "カウンター",
+                    "LoopItemParamName": "Item"
+                  },
+                  "CommandList": [
                     {
-                      "ColumnName": "insurance_status_id",
-                      "Value": {
-                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                        "SerializeProperty": "=付保申請済みST"
-                      }
+                      "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+                      "ConditionAndCommandPairList": [
+                        {
+                          "Condition": {
+                            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                            "param": {
+                              "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                              "ParamObject": {
+                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                "SerializeProperty": "=Item.P_選択フラグ"
+                              }
+                            },
+                            "value": "1"
+                          },
+                          "CommandList": [
+                            {
+                              "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+                              "ConditionAndCommandPairList": [
+                                {
+                                  "Condition": {
+                                    "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                                    "param": {
+                                      "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                                      "ParamObject": {
+                                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                        "SerializeProperty": "=Item.P_付保証明書必要フラグ"
+                                      }
+                                    },
+                                    "value": "1"
+                                  },
+                                  "CommandList": [
+                                    {
+                                      "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+                                      "TableName": "t_object_insurance",
+                                      "ShowConfirm": false,
+                                      "ConfirmText": "本当に更新してもよろしいですか？",
+                                      "RowsToUpdate": 1,
+                                      "RowsToUpdateCondition": {
+                                        "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                                        "ColumnBindingInfo": {
+                                          "TableName": "t_object_insurance",
+                                          "ColumnName": "insurance_id"
+                                        },
+                                        "Value": {
+                                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                          "SerializeProperty": "=Item.P_付保ID"
+                                        }
+                                      },
+                                      "UpdateValues": [
+                                        {
+                                          "ColumnName": "insurance_apply_date",
+                                          "Value": {
+                                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                            "SerializeProperty": "=P_付保申請日"
+                                          }
+                                        },
+                                        {
+                                          "ColumnName": "insurance_status_id",
+                                          "Value": {
+                                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                            "SerializeProperty": "=証明書申請待ちST"
+                                          }
+                                        }
+                                      ]
+                                    }
+                                  ],
+                                  "ID": "73a806d0-b537-425c-b1f3-90d7e5a1805a"
+                                },
+                                {
+                                  "CommandList": [
+                                    {
+                                      "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+                                      "TableName": "t_object_insurance",
+                                      "ShowConfirm": false,
+                                      "ConfirmText": "本当に更新してもよろしいですか？",
+                                      "RowsToUpdate": 1,
+                                      "RowsToUpdateCondition": {
+                                        "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                                        "ColumnBindingInfo": {
+                                          "TableName": "t_object_insurance",
+                                          "ColumnName": "insurance_id"
+                                        },
+                                        "Value": {
+                                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                          "SerializeProperty": "=Item.P_付保ID"
+                                        }
+                                      },
+                                      "UpdateValues": [
+                                        {
+                                          "ColumnName": "insurance_apply_date",
+                                          "Value": {
+                                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                            "SerializeProperty": "=P_付保申請日"
+                                          }
+                                        },
+                                        {
+                                          "ColumnName": "insurance_status_id",
+                                          "Value": {
+                                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                            "SerializeProperty": "=付保申請済みST"
+                                          }
+                                        }
+                                      ]
+                                    }
+                                  ],
+                                  "ID": "87e85412-3519-4184-9251-b553256b01aa"
+                                }
+                              ]
+                            }
+                          ],
+                          "ID": "8412c2eb-d38c-4251-97cb-c33cac257db8"
+                        }
+                      ]
                     }
                   ]
                 }
               ],
-              "ID": "edf54075-b08d-4207-a8aa-a801e0dd3cd6"
+              "ID": "56ec3e3a-4be0-4b47-8065-46bc9aa82971"
             }
-          ]
+          ],
+          "Comments": "申請の場合"
+        },
+        {
+          "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+          "ConditionAndCommandPairList": [
+            {
+              "Condition": {
+                "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                "param": {
+                  "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                  "ParamObject": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=P_付保解除フラグ"
+                  }
+                },
+                "value": "1"
+              },
+              "CommandList": [
+                {
+                  "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                  "ParameterName": "付保申請待ちST",
+                  "TableValue": {
+                    "TableName": "m_insurance_status",
+                    "OnlyGetValue": true,
+                    "TableValueType": 0,
+                    "BindingInfos": [
+                      {
+                        "BindingInfo": {
+                          "TableName": "m_insurance_status",
+                          "ColumnName": "insurance_status_id"
+                        },
+                        "ColumnName": "insurance_status_id"
+                      }
+                    ],
+                    "SqlCondition": {
+                      "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                      "ColumnBindingInfo": {
+                        "TableName": "m_insurance_status",
+                        "ColumnName": "application_wait_flg"
+                      },
+                      "Value": "1"
+                    }
+                  },
+                  "ID": "3e402ba7fe5f4c2c8de7dfa51f9edae6"
+                },
+                {
+                  "$type": "Forguncy.Model.LoopCommand, ServerDesignerCommon",
+                  "LoopInfo": {
+                    "$type": "Forguncy.Model.CountLoopInfo, ServerDesignerCommon",
+                    "LoopCount": {
+                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                      "SerializeProperty": "=P_付保申請リスト.EditRows"
+                    },
+                    "LoopIndexParamName": "カウンター",
+                    "LoopItemParamName": "Item"
+                  },
+                  "CommandList": [
+                    {
+                      "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+                      "ConditionAndCommandPairList": [
+                        {
+                          "Condition": {
+                            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                            "param": {
+                              "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                              "ParamObject": {
+                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                "SerializeProperty": "=Item.P_選択フラグ"
+                              }
+                            },
+                            "value": "1"
+                          },
+                          "CommandList": [
+                            {
+                              "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+                              "TableName": "t_object_insurance",
+                              "ShowConfirm": false,
+                              "ConfirmText": "本当に更新してもよろしいですか？",
+                              "RowsToUpdate": 1,
+                              "RowsToUpdateCondition": {
+                                "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                                "ColumnBindingInfo": {
+                                  "TableName": "t_object_insurance",
+                                  "ColumnName": "insurance_id"
+                                },
+                                "Value": {
+                                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                  "SerializeProperty": "=Item.P_付保ID"
+                                }
+                              },
+                              "UpdateValues": [
+                                {
+                                  "ColumnName": "insurance_apply_date"
+                                },
+                                {
+                                  "ColumnName": "insurance_status_id",
+                                  "Value": {
+                                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                    "SerializeProperty": "=付保申請待ちST"
+                                  }
+                                }
+                              ]
+                            }
+                          ],
+                          "ID": "e3b709a8-58db-4bf5-a80d-6805fe1818cc"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ],
+              "ID": "3487438f-2eca-4f7e-a5a1-4ba7442d2ff7"
+            }
+          ],
+          "Comments": "解除の場合"
         }
       ]
     },

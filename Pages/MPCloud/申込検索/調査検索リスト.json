@@ -314,56 +314,11 @@
     "10,29": "IF(参照タブ番号=0,\"\",参照タブ番号)",
     "4,29": "COUNTIF(D2,\"<>\")",
     "13,29": "IF(検索調査ステータスID=0,\"\",検索調査ステータスID)",
-    "1,16": "ODATA(\"t_object_attachment/$count?$filter=object_order_id eq \"&IF(ISBLANK(P2),\"null\",P2)&\" and active_flg eq 1\")",
     "1,5": "IF(AA2=1,\"事前調査\",IF(AA2=2,\"本調査\",IF(AA2=3,\"転圧再調査\",\"\")))"
   },
   "AttachInfos": {
     "0,1": {
       "ListViewInfo": {
-        "DoubleClickCommandList": [
-          {
-            "$type": "Forguncy.Model.ShareCommand, ServerDesignerCommon",
-            "ShareCommandContainerRefer": {
-              "ShareCommandContainerID": "2ddd4852-a0ed-4534-b1b2-3ee6fe2631b3"
-            },
-            "Params": [
-              {
-                "ParamReferObject": {
-                  "ParamID": "b99e9146-4488-4286-aea6-ef1c495ba038",
-                  "ShareCommandContainerReferObject": {
-                    "ShareCommandContainerID": "2ddd4852-a0ed-4534-b1b2-3ee6fe2631b3"
-                  }
-                },
-                "Value": {
-                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=調査検索リスト!P2"
-                }
-              },
-              {
-                "ParamReferObject": {
-                  "ParamID": "c1c93417-2786-4584-884a-23e1756e2c9a",
-                  "ShareCommandContainerReferObject": {
-                    "ShareCommandContainerID": "2ddd4852-a0ed-4534-b1b2-3ee6fe2631b3"
-                  }
-                },
-                "Value": {
-                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=調査検索リスト!AD11"
-                }
-              },
-              {
-                "ParamReferObject": {
-                  "ParamID": "79be217d-d78e-430f-859a-395a9b0083b1",
-                  "ShareCommandContainerReferObject": {
-                    "ShareCommandContainerID": "2ddd4852-a0ed-4534-b1b2-3ee6fe2631b3"
-                  }
-                },
-                "Value": "1"
-              }
-            ],
-            "ReturnPropertiesTo": []
-          }
-        ],
         "ShowColumnHeaderInDesigner": true,
         "TableName": "t_object_order",
         "ColumnIndex": 1,
@@ -420,7 +375,12 @@
                               "CompareType": 3,
                               "ColumnBindingInfo": {
                                 "TableName": "t_object_order",
-                                "ColumnName": "order_date"
+                                "ColumnName": "latest_survey_id",
+                                "RelationBinding": {
+                                  "RelatedTable": "t_object_survey",
+                                  "RelatedColumn": "survey_id",
+                                  "DisplayColumn": "survey_request_date"
+                                }
                               },
                               "Value": {
                                 "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
@@ -434,11 +394,16 @@
                             "CompareType": 6,
                             "ColumnBindingInfo": {
                               "TableName": "t_object_order",
-                              "ColumnName": "order_status_id",
+                              "ColumnName": "latest_survey_id",
                               "RelationBinding": {
-                                "RelatedTable": "m_order_status",
-                                "RelatedColumn": "order_status_id",
-                                "DisplayColumn": "order_status_name"
+                                "RelatedTable": "t_object_survey",
+                                "RelatedColumn": "survey_id",
+                                "DisplayColumn": "survey_status_id",
+                                "NextRelationBinding": {
+                                  "RelatedTable": "m_survey_status",
+                                  "RelatedColumn": "survey_status_id",
+                                  "DisplayColumn": "survey_status_name"
+                                }
                               }
                             },
                             "Value": {
@@ -578,10 +543,15 @@
                             },
                             "Condition2": {
                               "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
-                              "CompareType": 3,
+                              "CompareType": 5,
                               "ColumnBindingInfo": {
                                 "TableName": "t_object_order",
-                                "ColumnName": "order_date"
+                                "ColumnName": "latest_survey_id",
+                                "RelationBinding": {
+                                  "RelatedTable": "t_object_survey",
+                                  "RelatedColumn": "survey_id",
+                                  "DisplayColumn": "survey_request_date"
+                                }
                               },
                               "Value": {
                                 "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
@@ -595,11 +565,16 @@
                             "CompareType": 6,
                             "ColumnBindingInfo": {
                               "TableName": "t_object_order",
-                              "ColumnName": "order_status_id",
+                              "ColumnName": "latest_survey_id",
                               "RelationBinding": {
-                                "RelatedTable": "m_order_status",
-                                "RelatedColumn": "order_status_id",
-                                "DisplayColumn": "order_status_name"
+                                "RelatedTable": "t_object_survey",
+                                "RelatedColumn": "survey_id",
+                                "DisplayColumn": "survey_status_id",
+                                "NextRelationBinding": {
+                                  "RelatedTable": "m_survey_status",
+                                  "RelatedColumn": "survey_status_id",
+                                  "DisplayColumn": "survey_status_name"
+                                }
                               }
                             },
                             "Value": {
@@ -758,7 +733,7 @@
         },
         "CommitType": 1,
         "DoNotLoadDataWhenLoadPage": true,
-        "ListViewStyleName": "_RS_Medium1"
+        "ListViewStyleName": "カスタムスタイル3"
       }
     },
     "1,1": {
@@ -777,6 +752,45 @@
       "NameUsedInJavaScript": "調査依頼日"
     },
     "1,3": {
+      "CellType": {
+        "$type": "Forguncy.HyperlinkCellType, ServerDesignerCommon",
+        "CommandList": [
+          {
+            "$type": "Forguncy.Model.ShareCommand, ServerDesignerCommon",
+            "ShareCommandContainerRefer": {
+              "ShareCommandContainerID": "2ddd4852-a0ed-4534-b1b2-3ee6fe2631b3"
+            },
+            "Params": [
+              {
+                "ParamReferObject": {
+                  "ParamID": "b99e9146-4488-4286-aea6-ef1c495ba038",
+                  "ShareCommandContainerReferObject": {
+                    "ShareCommandContainerID": "2ddd4852-a0ed-4534-b1b2-3ee6fe2631b3"
+                  }
+                },
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=調査検索リスト!P2"
+                }
+              },
+              {
+                "ParamReferObject": {
+                  "ParamID": "c1c93417-2786-4584-884a-23e1756e2c9a",
+                  "ShareCommandContainerReferObject": {
+                    "ShareCommandContainerID": "2ddd4852-a0ed-4534-b1b2-3ee6fe2631b3"
+                  }
+                },
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=調査検索リスト!AD11"
+                }
+              }
+            ],
+            "ReturnPropertiesTo": []
+          }
+        ],
+        "ClickMode": 1
+      },
       "IsCellIgnoreHideInListview": true,
       "BindingInfo": {
         "TableName": "t_object_order",
@@ -873,7 +887,7 @@
                     "LoadBindingDataOption": 1
                   }
                 ],
-                "ID": "1217e622-fe2a-4d31-8371-0e323417ced1"
+                "ID": "f2286756-6f0b-4f9c-8dc2-ca3d34b878db"
               }
             ]
           }
@@ -926,7 +940,7 @@
                     "LoadBindingDataOption": 1
                   }
                 ],
-                "ID": "c028c0f1-bbe0-4c2c-9639-055dad6a8844"
+                "ID": "2e5915ce-1193-4b76-9335-a2373e938bfb"
               },
               {
                 "CommandList": [
@@ -976,12 +990,12 @@
                             "$type": "LoadingCommand.EndLoadingCommand, LoadingCommand"
                           }
                         ],
-                        "ID": "cb04c11c-f916-4a19-a9dc-8ed37da6022a"
+                        "ID": "bca89761-49e4-404a-aa62-64d0ef9b3069"
                       }
                     ]
                   }
                 ],
-                "ID": "3f24303a-d7e8-49e9-a628-cb7cf0f26595"
+                "ID": "5636b6a3-a2ef-4711-8f37-3cca67b713a5"
               }
             ]
           }
@@ -1095,6 +1109,12 @@
       "BindingInfo": {
         "TableName": "t_object_order",
         "ColumnName": "object_order_id"
+      }
+    },
+    "1,16": {
+      "BindingInfo": {
+        "TableName": "t_object_order",
+        "ColumnName": "attachment_file_count"
       }
     },
     "1,17": {
@@ -1264,9 +1284,11 @@
       },
       {
         "FontFamily": 0,
-        "Formatter": 6,
+        "Foreground": 6,
+        "Formatter": 7,
         "TextIndent": 4,
-        "HorizontalAlignment": 4
+        "HorizontalAlignment": 4,
+        "Underline": false
       },
       {
         "FontFamily": 0,
@@ -1283,17 +1305,17 @@
       },
       {
         "FontSize": 16.0,
-        "Foreground": 7,
+        "Foreground": 8,
         "HorizontalAlignment": 4,
         "Underline": false,
         "BorderBottom": 0
       },
       {
-        "Foreground": 8,
+        "Foreground": 9,
         "BorderBottom": 0
       },
       {
-        "Foreground": 9,
+        "Foreground": 10,
         "TextIndent": 4,
         "BorderBottom": 0
       },
@@ -1317,15 +1339,15 @@
         "BorderBottom": 0
       },
       {
-        "Background": 10
+        "Background": 11
       },
       {
-        "Background": 11,
-        "Formatter": 12,
+        "Background": 12,
+        "Formatter": 13,
         "HorizontalAlignment": 2
       },
       {
-        "Background": 10,
+        "Background": 11,
         "FontFamily": 0
       },
       {
@@ -1340,6 +1362,7 @@
         "yyyy/MM/dd",
         "Center",
         "Background 1 0",
+        "Accent 1 -25",
         "General",
         "#FF0070C0",
         "#FFFF0000",
@@ -1494,4 +1517,4 @@
       "Formula": "調査検索リスト!$AD$2"
     }
   ]
-}//LXHFg7S6/8m/m7ZHTALDO5/fhd8cNJRW3rBHnvAumEDsb6nZ1Q7opj615KRX/ib32ZucSH1i/cSt5onpwH+rpZbqn1KVldjBUkFej7Mq3DC4uh7VKjxcFlpGTK6VhycjzImxkk47X1qPJuHiiaBMZtVn5Pz8s51gg430cV0EoF4xWmNF4kwvV3JXKzErdZw3QxoZxCRtwJgZKciUdNIJ7+PbYNZT9/1fWSU/bblqnou/qyPmwreGvcBtOh58cLnYfZ4MntTSIsVvHIfrWftjRRahenKkzlKFlEqzNrfpovuFUfDEkTKKK86A6Z1DhLFwFh68IyL8riL1z9hMiJl7Ug1iylg7QPN3nbGBKc46y/Nb4buhCx9myHfJ7RIwBfFWQD4UWAoQjUpDiXSfEK6Ywg9CMFIaJst6LSgl9/1XF2mEDynifw9+SuFnAiSRcmdLd6blG3jdqGTFleTrPkttwoFvIFD+tdY5HkjbmxTzdRrGhI5VllZVdbChMiHoYYO26uBM9Is7oM4uAPaTyWb6kt/HP99OmoBnG9edE1IwFnNMg60PX7S+CLpWMw4sz5hq9rXdJp26TPHrzcpC72yBpNQ/c8hil4uKqcfdoco+SYmznCDLdiyFx1woKBD2uwRWocjbwikHEE6YFoypGkdPPr0Iqo3XkOzOaAZuD5OD5kmzf2Ydfe309PmFS1aPmIiGYBhMCWERAhvoWIyj16tIB7Kt8IqBBDMjsMhoj2aVYN4UKXQspVAMWTgq8FlpAtxbL0eEEMQzsouXZHtH9P7Z0DCtmKlRygjiry5cLupzY+wsqgjyfiI5bh04HGsxTSACHep9El9SbcMctRFq/0eBIfn6yXrG48WMQN98v2LAKFB4bEsyUUN/zl3OV5k7jkCFbpex5ki1s1n+YMmMQ8Qvyw==|920
+}//aVQlteDNVv0oMB5dVSAIBt4zbmXDaqULphnp7Qws616tOpaOxQKh85lVC7h1zZtq149wTLSl+aVc0bawoYzDYSdo0tbx0jopRH5bbY5koZn8Bdgv4XetJGLcY/v/DbySftElV9ODO1fhqu6Ja7Vqz/AMElCthXiMGVeRmYO1BVw2wG15x3Yj0Sr2CytFTMrvDQ0q7Gu6muu4ZBJ1USXtc1O2QG824vg4qaBT3ZgHqFX/0dlgkx1f4g3iwigjPiSok356QsmJRqdw/MR1+8DwitC/pZiOvOy197GSDtdnwhSbIjDfFrmjPYNZE8N1P/KkbRHOlce2saWx+prjP6+d2/iNsS2Yt7wpwFjii9qhno999LgYe4QWrJYGpu4VvIpFDfMdPIokrgaUZql0cJdqx92hm7GYwxeUS8/OqkKyQJsX/tNgVVS5LSZ0flCFUZwY1IgRFwrMTo0DaqvOktu4il9hy8sfWOTMKj7vwpQZVsDCCgAFwLZhFx2stcDZHRnZZBi+nGPjIaIsWwTxykeI5k1LvFsXFPJ5A620bOkmqSGk/76dTtnUSX4WnRBiiuLUJF7FXujQsyphJu/xsOEsiimInXg6AusezNm2CinsiZ2bRVJhmEL76wUTR1IiGKJl7xApkBoXsrbIWI2+nY0VW8CCws7LB92qLxPbjxRmYSpyqMRtmZAucrQd07XWAn3tPOwKEHAidXeaPxf54tezNkWzui8uALGqg9bgP6Qo5VARC3NFBoRrpaCn1dutHPc+e5OkdzLATbCqxix4+cm/zaeUyZCmA6RxKRENWOrE2kM3160CykEEPvXyttj0Hn5xwRRm/xRACM+TQ4ctL0aSkWNJ1hHceFIE11Aebho6phPzpHTxyPKCb5Wwf+ayDvtWJfl2k77K4xTaUix2is7ZMQ==|920
