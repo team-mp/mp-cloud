@@ -22,7 +22,7 @@
           "Name": "P_次回アクション日"
         },
         {
-          "Name": "P_リマインドメールフラグ"
+          "Name": "P_リマインドフラグ"
         },
         {
           "Name": "P_通知先ユーザーIDリスト"
@@ -90,10 +90,10 @@
                       }
                     },
                     {
-                      "ColumnName": "remaind_mail_flg",
+                      "ColumnName": "remaind_flg",
                       "Value": {
                         "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                        "SerializeProperty": "=P_リマインドメールフラグ"
+                        "SerializeProperty": "=P_リマインドフラグ"
                       }
                     },
                     {
@@ -107,10 +107,125 @@
                   "ParamNameToSaveNewRowValue": "Newフォロー"
                 }
               ],
-              "ID": "a918cd42-d811-4c1e-b549-acdca8fe20d5"
+              "ID": "91dab9f6-6a2b-4219-ac74-3fd604e643a7"
             },
             {
               "CommandList": [
+                {
+                  "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                  "ParameterName": "フォロー情報",
+                  "TableValue": {
+                    "TableName": "t_object_follow",
+                    "TableValueType": 1,
+                    "BindingInfos": [
+                      {
+                        "BindingInfo": {
+                          "TableName": "t_object_follow",
+                          "ColumnName": "remaind_flg"
+                        },
+                        "ColumnName": "リマインドフラグ"
+                      },
+                      {
+                        "BindingInfo": {
+                          "TableName": "t_object_follow",
+                          "ColumnName": "schedule_mail_id"
+                        },
+                        "ColumnName": "スケジュールメールID"
+                      }
+                    ],
+                    "SqlCondition": {
+                      "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                      "ColumnBindingInfo": {
+                        "TableName": "t_object_follow",
+                        "ColumnName": "object_follow_id"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=P_フォローID"
+                      }
+                    }
+                  },
+                  "ID": "49d2a56a894646d0af3c57e88d21efe9"
+                },
+                {
+                  "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+                  "ConditionAndCommandPairList": [
+                    {
+                      "Condition": {
+                        "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                        "Condition1": {
+                          "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                          "param": {
+                            "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                            "ParamObject": {
+                              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                              "SerializeProperty": "=フォロー情報.リマインドフラグ"
+                            }
+                          },
+                          "value": "1"
+                        },
+                        "Condition2": {
+                          "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                          "param": {
+                            "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                            "ParamObject": {
+                              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                              "SerializeProperty": "=P_リマインドフラグ"
+                            }
+                          },
+                          "value": "0"
+                        }
+                      },
+                      "CommandList": [
+                        {
+                          "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+                          "TableName": "t_schedule_mail",
+                          "UpdateType": "delete",
+                          "ShowConfirm": true,
+                          "ConfirmText": "本当に削除してもよろしいですか？",
+                          "RowsToUpdate": 1,
+                          "RowsToUpdateCondition": {
+                            "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                            "ColumnBindingInfo": {
+                              "TableName": "t_schedule_mail",
+                              "ColumnName": "schedule_mail_id"
+                            },
+                            "Value": {
+                              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                              "SerializeProperty": "=フォロー情報.スケジュールメールID"
+                            }
+                          },
+                          "UpdateValues": []
+                        },
+                        {
+                          "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+                          "TableName": "t_object_follow",
+                          "ShowConfirm": false,
+                          "ConfirmText": "本当に更新してもよろしいですか？",
+                          "RowsToUpdate": 1,
+                          "RowsToUpdateCondition": {
+                            "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                            "ColumnBindingInfo": {
+                              "TableName": "t_object_follow",
+                              "ColumnName": "object_follow_id"
+                            },
+                            "Value": {
+                              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                              "SerializeProperty": "=P_フォローID"
+                            }
+                          },
+                          "UpdateValues": [
+                            {
+                              "ColumnName": "schedule_mail_id"
+                            }
+                          ]
+                        }
+                      ],
+                      "ID": "734398c1-1f62-4b89-88bc-549d6bd3d139"
+                    }
+                  ],
+                  "Comments": "リマインド設定がOffの場合、スケジュールメールを削除"
+                },
                 {
                   "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
                   "TableName": "t_object_follow",
@@ -162,10 +277,10 @@
                       }
                     },
                     {
-                      "ColumnName": "remaind_mail_flg",
+                      "ColumnName": "remaind_flg",
                       "Value": {
                         "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                        "SerializeProperty": "=P_リマインドメールフラグ"
+                        "SerializeProperty": "=P_リマインドフラグ"
                       }
                     },
                     {
@@ -178,7 +293,7 @@
                   ]
                 }
               ],
-              "ID": "56c1b925-111a-4ba5-82cd-844ec9b49f3c"
+              "ID": "9672616b-af8f-4499-9ac6-020ddec663ae"
             }
           ]
         },
