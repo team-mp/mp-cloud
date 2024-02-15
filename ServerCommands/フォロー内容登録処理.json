@@ -29,6 +29,18 @@
         },
         {
           "Name": "P_通知先ユーザーIDリスト"
+        },
+        {
+          "Name": "P_タスク設定フラグ"
+        },
+        {
+          "Name": "P_タスクID"
+        },
+        {
+          "Name": "P_処理済フラグ"
+        },
+        {
+          "Name": "P_ユーザーID"
         }
       ]
     }
@@ -112,12 +124,19 @@
                         "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
                         "SerializeProperty": "=P_通知先ユーザーIDリスト"
                       }
+                    },
+                    {
+                      "ColumnName": "task_set_flg",
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=P_タスク設定フラグ"
+                      }
                     }
                   ],
                   "ParamNameToSaveNewRowValue": "Newフォロー"
                 }
               ],
-              "ID": "c66e0b1f-e69d-4efa-a34e-6ffdb9920eb5"
+              "ID": "106cb477-157b-4752-b5fc-0bfdd4a40ade"
             },
             {
               "CommandList": [
@@ -155,7 +174,7 @@
                       }
                     }
                   },
-                  "ID": "d74d9ff090c14fe5b918467d17c4ea42"
+                  "ID": "f9ad42d5859f4e4b9ca8f7870cf8327a"
                 },
                 {
                   "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
@@ -231,7 +250,7 @@
                           ]
                         }
                       ],
-                      "ID": "a1284e87-1002-45c0-8de3-fa375e35fd68"
+                      "ID": "467fafbb-7dd9-43f6-879e-bc09959ac8ba"
                     }
                   ],
                   "Comments": "リマインド設定がOffの場合、スケジュールメールを削除"
@@ -310,9 +329,336 @@
                   ]
                 }
               ],
-              "ID": "b78c60ec-f010-4911-838b-77036351c1bd"
+              "ID": "3293f1a2-38ea-4a5d-9c0a-8e3d5bd5324d"
             }
           ]
+        },
+        {
+          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+          "ParameterName": "フォローID",
+          "ParameterValue": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=IF(P_フォローID<>\"\",P_フォローID,Newフォロー.フォローID)"
+          },
+          "ID": "f853f309df4945608a95856a1e1bab34"
+        },
+        {
+          "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+          "ConditionAndCommandPairList": [
+            {
+              "Condition": {
+                "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                "param": {
+                  "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                  "ParamObject": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=P_タスク設定フラグ"
+                  }
+                },
+                "value": "1"
+              },
+              "CommandList": [
+                {
+                  "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+                  "ConditionAndCommandPairList": [
+                    {
+                      "Condition": {
+                        "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                        "param": {
+                          "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                          "ParamObject": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=P_タスクID"
+                          }
+                        },
+                        "value": "%Null%"
+                      },
+                      "CommandList": [
+                        {
+                          "$type": "Forguncy.Model.RequestServerCommand, ServerDesignerCommon",
+                          "ServerCommandName": "タスク登録処理",
+                          "Parameters": [
+                            {
+                              "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                              "ParamName": "P_タスクID"
+                            },
+                            {
+                              "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                              "Value": "2",
+                              "ParamName": "P_タスク区分"
+                            },
+                            {
+                              "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                              "Value": {
+                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                "SerializeProperty": "=P_ユーザーID"
+                              },
+                              "ParamName": "P_ユーザーID"
+                            },
+                            {
+                              "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                              "Value": {
+                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                "SerializeProperty": "=P_フォロー内容"
+                              },
+                              "ParamName": "P_タスク内容"
+                            },
+                            {
+                              "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                              "Value": {
+                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                "SerializeProperty": "=P_次回アクション日"
+                              },
+                              "ParamName": "P_期限日"
+                            },
+                            {
+                              "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                              "Value": {
+                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                "SerializeProperty": "=P_処理済フラグ"
+                              },
+                              "ParamName": "P_処理済フラグ"
+                            }
+                          ],
+                          "ResultErrorCodeTo": {
+                            "SerializeProperty": "リターンコード"
+                          },
+                          "ResultMessageTo": {
+                            "SerializeProperty": "リターンメッセージ"
+                          },
+                          "ReturnPropertiesTo": [
+                            {
+                              "ResultPropertyName": "R_タスクID",
+                              "ResultTo": {
+                                "SerializeProperty": "タスクID"
+                              }
+                            }
+                          ],
+                          "RefreshAfterFinish": true,
+                          "CheckDataValidation": true
+                        }
+                      ],
+                      "ID": "528c1573-e951-4b77-8820-c3eaadcf8fc3"
+                    },
+                    {
+                      "CommandList": [
+                        {
+                          "$type": "Forguncy.Model.RequestServerCommand, ServerDesignerCommon",
+                          "ServerCommandName": "タスク登録処理",
+                          "Parameters": [
+                            {
+                              "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                              "Value": {
+                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                "SerializeProperty": "=P_タスクID"
+                              },
+                              "ParamName": "P_タスクID"
+                            },
+                            {
+                              "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                              "Value": "2",
+                              "ParamName": "P_タスク区分"
+                            },
+                            {
+                              "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                              "Value": {
+                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                "SerializeProperty": "=P_ユーザーID"
+                              },
+                              "ParamName": "P_ユーザーID"
+                            },
+                            {
+                              "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                              "Value": {
+                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                "SerializeProperty": "=P_フォロー内容"
+                              },
+                              "ParamName": "P_タスク内容"
+                            },
+                            {
+                              "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                              "Value": {
+                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                "SerializeProperty": "=P_次回アクション日"
+                              },
+                              "ParamName": "P_期限日"
+                            },
+                            {
+                              "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                              "Value": {
+                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                "SerializeProperty": "=P_処理済フラグ"
+                              },
+                              "ParamName": "P_処理済フラグ"
+                            }
+                          ],
+                          "ResultErrorCodeTo": {
+                            "SerializeProperty": "リターンコード"
+                          },
+                          "ResultMessageTo": {
+                            "SerializeProperty": "リターンメッセージ"
+                          },
+                          "ReturnPropertiesTo": [
+                            {
+                              "ResultPropertyName": "R_タスクID",
+                              "ResultTo": {
+                                "SerializeProperty": "タスクID"
+                              }
+                            }
+                          ],
+                          "RefreshAfterFinish": true,
+                          "CheckDataValidation": true
+                        }
+                      ],
+                      "ID": "b28ee2f6-907d-4708-80d7-f5738473d0df"
+                    }
+                  ]
+                },
+                {
+                  "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+                  "ConditionAndCommandPairList": [
+                    {
+                      "Condition": {
+                        "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                        "param": {
+                          "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                          "ParamObject": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=リターンコード"
+                          }
+                        },
+                        "value": "0",
+                        "compareType": 1
+                      },
+                      "CommandList": [
+                        {
+                          "$type": "Forguncy.Model.ReturnCommand, ServerDesignerCommon",
+                          "ErrorCode": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=リターンコード"
+                          },
+                          "Message": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=リターンメッセージ"
+                          },
+                          "CustomReturns": [
+                            {
+                              "ReturnPropertyName": "R_フォローID"
+                            }
+                          ]
+                        }
+                      ],
+                      "ID": "e26638d2-db55-47a0-ad71-8c5753b4a77b"
+                    }
+                  ]
+                },
+                {
+                  "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+                  "TableName": "t_object_follow",
+                  "ShowConfirm": false,
+                  "ConfirmText": "本当に更新してもよろしいですか？",
+                  "RowsToUpdate": 1,
+                  "RowsToUpdateCondition": {
+                    "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                    "ColumnBindingInfo": {
+                      "TableName": "t_object_follow",
+                      "ColumnName": "object_follow_id"
+                    },
+                    "Value": {
+                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                      "SerializeProperty": "=フォローID"
+                    }
+                  },
+                  "UpdateValues": [
+                    {
+                      "ColumnName": "task_id",
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=タスクID"
+                      }
+                    }
+                  ],
+                  "ParamNameToSaveNewRowValue": "New連絡事項",
+                  "Comments": "タスクIDをセット"
+                }
+              ],
+              "ID": "64927d54-e634-4d17-a2dc-86b685741d1c"
+            },
+            {
+              "CommandList": [
+                {
+                  "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+                  "ConditionAndCommandPairList": [
+                    {
+                      "Condition": {
+                        "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                        "param": {
+                          "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                          "ParamObject": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=P_タスクID"
+                          }
+                        },
+                        "value": "%Null%",
+                        "compareType": 1
+                      },
+                      "CommandList": [
+                        {
+                          "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+                          "TableName": "t_task",
+                          "UpdateType": "delete",
+                          "ShowConfirm": true,
+                          "ConfirmText": "本当に削除してもよろしいですか？",
+                          "RowsToUpdate": 1,
+                          "RowsToUpdateCondition": {
+                            "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                            "ColumnBindingInfo": {
+                              "TableName": "t_task",
+                              "ColumnName": "task_id"
+                            },
+                            "Value": {
+                              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                              "SerializeProperty": "=P_タスクID"
+                            }
+                          },
+                          "UpdateValues": [],
+                          "Comments": "タスクを削除"
+                        },
+                        {
+                          "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+                          "TableName": "t_object_follow",
+                          "ShowConfirm": false,
+                          "ConfirmText": "本当に更新してもよろしいですか？",
+                          "RowsToUpdate": 1,
+                          "RowsToUpdateCondition": {
+                            "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                            "ColumnBindingInfo": {
+                              "TableName": "t_object_follow",
+                              "ColumnName": "object_follow_id"
+                            },
+                            "Value": {
+                              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                              "SerializeProperty": "=P_フォローID"
+                            }
+                          },
+                          "UpdateValues": [
+                            {
+                              "ColumnName": "task_id"
+                            }
+                          ],
+                          "ParamNameToSaveNewRowValue": "New連絡事項",
+                          "Comments": "タスクIDをクリア"
+                        }
+                      ],
+                      "ID": "d2c31c54-1d79-4fff-88ea-c3b2d1e9728d"
+                    }
+                  ]
+                }
+              ],
+              "ID": "be78052b-7ada-444d-8746-19c1bb5ce389"
+            }
+          ],
+          "Comments": "タスク登録する"
         },
         {
           "$type": "Forguncy.Model.ReturnCommand, ServerDesignerCommon",
@@ -322,7 +668,7 @@
               "ReturnPropertyName": "R_フォローID",
               "Value": {
                 "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                "SerializeProperty": "=IF(P_フォローID<>\"\",P_フォローID,Newフォロー.フォローID)"
+                "SerializeProperty": "=フォローID"
               }
             }
           ]
