@@ -350,6 +350,7 @@
     "1,14": "保証書送信",
     "1,26": "保証キャンセル",
     "1,38": "郵送済みに更新",
+    "1,50": "郵送済みを解除",
     "1,78": "▼申込ID",
     "1,84": "▼保証書送信",
     "1,90": "▼送信完了フラグ",
@@ -849,6 +850,38 @@
     "1,38": {
       "CellType": {
         "$type": "Forguncy.ButtonCellType, ServerDesignerCommon",
+        "CommandList": [
+          {
+            "$type": "Forguncy.Model.ShowPopupCommand, ServerDesignerCommon",
+            "PageName": "日付選択",
+            "PassValues": [
+              {
+                "Source": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "='811663b05116468293cb1759dc3ce65'!CM15"
+                },
+                "TargetCell": {
+                  "SerializeProperty": "=日付選択!選択日付"
+                }
+              },
+              {
+                "Source": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "='811663b05116468293cb1759dc3ce65'!CM19"
+                },
+                "TargetCell": {
+                  "SerializeProperty": "=日付選択!更新開始フラグ"
+                }
+              },
+              {
+                "Source": "保証書郵送日を選択してください",
+                "TargetCell": {
+                  "SerializeProperty": "=日付選択!メッセージ"
+                }
+              }
+            ]
+          }
+        ],
         "Text": "郵送済みに更新",
         "TemplateKey": "スタイル1",
         "Icon": {
@@ -863,7 +896,138 @@
             "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
             "Formula": {
               "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+              "SerializeProperty": "=VALUE('811663b05116468293cb1759dc3ce65'!$CG$15)=1"
+            },
+            "StyleInfo": {
+              "Underline": null,
+              "Strikethrough": null
+            },
+            "IsDisabled": true,
+            "IsInvisible": false,
+            "IsReadOnly": false
+          },
+          {
+            "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
+            "Formula": {
+              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
               "SerializeProperty": "=OR('811663b05116468293cb1759dc3ce65'!$BM$15=\"\",'811663b05116468293cb1759dc3ce65'!$M$19<>\"\",VALUE('811663b05116468293cb1759dc3ce65'!$M$17)=0)"
+            },
+            "StyleInfo": {
+              "Underline": null,
+              "Strikethrough": null
+            },
+            "IsDisabled": false,
+            "IsInvisible": true,
+            "IsReadOnly": false
+          }
+        ]
+      }
+    },
+    "1,50": {
+      "CellType": {
+        "$type": "Forguncy.ButtonCellType, ServerDesignerCommon",
+        "CommandList": [
+          {
+            "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+            "ConditionAndCommandPairList": [
+              {
+                "ConfirmDialogSettings": {
+                  "Title": "確認",
+                  "FormulaText": "郵送済みを解除します。よろしいですか？\r\n※解除した場合、ステータスは郵送待ちに戻ります。",
+                  "YesButtonText": "はい",
+                  "NoButtonText": "いいえ",
+                  "ConfirmIcon": 4
+                },
+                "CommandList": [
+                  {
+                    "$type": "LoadingCommand.StartLoadingCommand, LoadingCommand",
+                    "LoadingText": "お待ちください",
+                    "LoadingTextColor": "Background 1 0"
+                  },
+                  {
+                    "$type": "Forguncy.Model.RequestServerCommand, ServerDesignerCommon",
+                    "ServerCommandName": "郵送済み解除処理",
+                    "Parameters": [
+                      {
+                        "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                        "Value": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "='811663b05116468293cb1759dc3ce65'!CA4"
+                        },
+                        "ParamName": "P_申込ID"
+                      },
+                      {
+                        "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                        "Value": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "='811663b05116468293cb1759dc3ce65'!CA8"
+                        },
+                        "ParamName": "P_保証ID"
+                      }
+                    ],
+                    "ResultErrorCodeTo": {
+                      "SerializeProperty": "リターンコード"
+                    },
+                    "ResultMessageTo": {
+                      "SerializeProperty": "リターンメッセージ"
+                    },
+                    "RefreshAfterFinish": true,
+                    "CheckDataValidation": false
+                  },
+                  {
+                    "$type": "LoadingCommand.EndLoadingCommand, LoadingCommand"
+                  },
+                  {
+                    "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+                    "ConditionAndCommandPairList": [
+                      {
+                        "Condition": {
+                          "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                          "param": {
+                            "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+                            "cellLocations": [
+                              {
+                                "SerializeProperty": "='811663b05116468293cb1759dc3ce65'!リターンコード"
+                              }
+                            ]
+                          },
+                          "value": "0",
+                          "compareType": 1
+                        },
+                        "CommandList": [
+                          {
+                            "$type": "Forguncy.Model.ShowMessageCommand, ServerDesignerCommon",
+                            "MessageFormula": {
+                              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                              "SerializeProperty": "='811663b05116468293cb1759dc3ce65'!リターンメッセージ"
+                            }
+                          }
+                        ],
+                        "ID": "bb791c10-be24-4d5c-9eb2-ac74dc4c0208"
+                      }
+                    ]
+                  }
+                ],
+                "ID": "141404d8-d5d9-48fc-8915-c87225e7bd69"
+              }
+            ]
+          }
+        ],
+        "Text": "郵送済みを解除",
+        "TemplateKey": "スタイル1",
+        "Icon": {
+          "Name": "Application/081_unlock_3.svg",
+          "BuiltIn": true,
+          "Color": "Accent 3 0"
+        }
+      },
+      "ConditionFormatRulesCollection": {
+        "Rules": [
+          {
+            "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
+            "Formula": {
+              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+              "SerializeProperty": "=OR('811663b05116468293cb1759dc3ce65'!$M$19<>\"\",'811663b05116468293cb1759dc3ce65'!$AM$19=\"\",VALUE('811663b05116468293cb1759dc3ce65'!$M$17)=0,VALUE('811663b05116468293cb1759dc3ce65'!$CG$15)=0)"
             },
             "StyleInfo": {
               "Underline": null,
@@ -1036,7 +1200,7 @@
               "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
               "SerializeProperty": "='811663b05116468293cb1759dc3ce65'!CG4"
             },
-            "ID": "0f051a71a9d64e56be1d8ec608791f1f"
+            "ID": "92fdde87c5b24aa6b4829a5d86c8c387"
           },
           {
             "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
@@ -1063,7 +1227,7 @@
                 "Value": "電子納品ボタン"
               }
             },
-            "ID": "1e460bb1329d4a94895e6300bcf687be"
+            "ID": "8b679d54e1cd4cbf8fedc67e019e9aa3"
           },
           {
             "$type": "Forguncy.Model.SetCellPropertyCommand, ServerDesignerCommon",
@@ -1417,7 +1581,7 @@
                           "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
                           "SerializeProperty": "='811663b05116468293cb1759dc3ce65'!AM17"
                         },
-                        "ParamName": "P_郵送方法"
+                        "ParamName": "P_郵送方法ID"
                       },
                       {
                         "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
@@ -1481,7 +1645,7 @@
                             "ReturnPropertiesTo": []
                           }
                         ],
-                        "ID": "a00404b1-1dbd-42eb-a08f-d3b6b50ca6c2"
+                        "ID": "f78fef2b-9a66-499d-a77d-bbe26ca931ed"
                       },
                       {
                         "CommandList": [
@@ -1496,12 +1660,12 @@
                             "$type": "LoadingCommand.EndLoadingCommand, LoadingCommand"
                           }
                         ],
-                        "ID": "a7cfe3c7-afaa-4200-a9b8-c06f6932bba7"
+                        "ID": "a348853c-b035-4071-9dc0-e9664a21891d"
                       }
                     ]
                   }
                 ],
-                "ID": "257cc2e5-af31-4d06-a544-8fec618be124"
+                "ID": "20e1a315-a8aa-4017-bfd3-63d158d13516"
               }
             ]
           }
@@ -2213,6 +2377,118 @@
             "$type": "Forguncy.CellTypes.Models.UniqueValidadator, ServerDesignerCommon"
           }
         ],
+        "CommandList": [
+          {
+            "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+            "ConditionAndCommandPairList": [
+              {
+                "Condition": {
+                  "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                  "param": {
+                    "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+                    "cellLocations": [
+                      {
+                        "SerializeProperty": "='811663b05116468293cb1759dc3ce65'!CM19"
+                      }
+                    ]
+                  },
+                  "value": "1"
+                },
+                "CommandList": [
+                  {
+                    "$type": "Forguncy.Model.SetCellPropertyCommand, ServerDesignerCommon",
+                    "PropertyItemsList": [
+                      {
+                        "TargetCells": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "='811663b05116468293cb1759dc3ce65'!CM19"
+                        },
+                        "Value": "0"
+                      }
+                    ]
+                  },
+                  {
+                    "$type": "LoadingCommand.StartLoadingCommand, LoadingCommand",
+                    "LoadingText": "お待ちください",
+                    "LoadingTextColor": "Background 1 0"
+                  },
+                  {
+                    "$type": "Forguncy.Model.RequestServerCommand, ServerDesignerCommon",
+                    "ServerCommandName": "郵送済み更新処理",
+                    "Parameters": [
+                      {
+                        "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                        "Value": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "='811663b05116468293cb1759dc3ce65'!CA4"
+                        },
+                        "ParamName": "P_申込ID"
+                      },
+                      {
+                        "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                        "Value": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "='811663b05116468293cb1759dc3ce65'!CA8"
+                        },
+                        "ParamName": "P_保証ID"
+                      },
+                      {
+                        "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                        "Value": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "='811663b05116468293cb1759dc3ce65'!CM15"
+                        },
+                        "ParamName": "P_郵送予定日"
+                      }
+                    ],
+                    "ResultErrorCodeTo": {
+                      "SerializeProperty": "リターンコード"
+                    },
+                    "ResultMessageTo": {
+                      "SerializeProperty": "リターンメッセージ"
+                    },
+                    "RefreshAfterFinish": true,
+                    "CheckDataValidation": false
+                  },
+                  {
+                    "$type": "LoadingCommand.EndLoadingCommand, LoadingCommand"
+                  },
+                  {
+                    "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+                    "ConditionAndCommandPairList": [
+                      {
+                        "Condition": {
+                          "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                          "param": {
+                            "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+                            "cellLocations": [
+                              {
+                                "SerializeProperty": "='811663b05116468293cb1759dc3ce65'!リターンコード"
+                              }
+                            ]
+                          },
+                          "value": "0",
+                          "compareType": 1
+                        },
+                        "CommandList": [
+                          {
+                            "$type": "Forguncy.Model.ShowMessageCommand, ServerDesignerCommon",
+                            "MessageFormula": {
+                              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                              "SerializeProperty": "='811663b05116468293cb1759dc3ce65'!リターンメッセージ"
+                            }
+                          }
+                        ],
+                        "ID": "0f7f2ff7-cd6f-43f5-8d23-0539ba8b03b4"
+                      }
+                    ]
+                  }
+                ],
+                "ID": "3fe016a7-6398-4856-aadf-7c507a4969a2"
+              }
+            ]
+          }
+        ],
         "CellDefaultValue": 0
       }
     },
@@ -2235,7 +2511,7 @@
           }
         ],
         "Text": "元に戻す",
-        "TemplateKey": "_RS_Outline_RoundCorner_Style3",
+        "TemplateKey": "角緑",
         "Icon": {
           "Name": "Arrow/310_refresh_2.svg",
           "BuiltIn": true,
@@ -2291,7 +2567,7 @@
           }
         ],
         "Text": "価格設定",
-        "TemplateKey": "_RS_Outline_RoundCorner_Style3",
+        "TemplateKey": "角緑",
         "Icon": {
           "Name": "Application/135_calculator_2.svg",
           "BuiltIn": true,
@@ -2596,7 +2872,7 @@
                           "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
                           "SerializeProperty": "='811663b05116468293cb1759dc3ce65'!AM17"
                         },
-                        "ParamName": "P_郵送方法"
+                        "ParamName": "P_郵送方法ID"
                       },
                       {
                         "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
@@ -2663,7 +2939,7 @@
                             "ReturnPropertiesTo": []
                           }
                         ],
-                        "ID": "e72f51a0-b57c-4d96-8ce7-0068abf344c9"
+                        "ID": "a089ccf8-e201-4864-a41b-1a1514956672"
                       },
                       {
                         "CommandList": [
@@ -2675,18 +2951,18 @@
                             }
                           }
                         ],
-                        "ID": "e0a25426-8d26-4bb8-85ca-4a3e151e5755"
+                        "ID": "973edaa9-c8da-41d9-a6b9-b42fe64b8eb8"
                       }
                     ]
                   }
                 ],
-                "ID": "06347f65-ccdd-4003-a219-7656e53194e8"
+                "ID": "76f5ad53-553c-4112-bd2d-27244c6cde44"
               }
             ]
           }
         ],
         "Text": "保証完了",
-        "TemplateKey": "_RS_Outline_RoundCorner_Style3",
+        "TemplateKey": "角緑",
         "Icon": {
           "Name": "Application/144_check_1.svg",
           "BuiltIn": true,
@@ -2895,13 +3171,13 @@
                     ]
                   }
                 ],
-                "ID": "62136523-09f4-44fa-a554-f6e3a6c4ccb8"
+                "ID": "3e04f1a2-0168-490f-9ea9-989da32e95a1"
               }
             ]
           }
         ],
         "Text": "送信&完了",
-        "TemplateKey": "_RS_Outline_RoundCorner_Style3",
+        "TemplateKey": "角緑",
         "Icon": {
           "Name": "Application/119_mail_3.svg",
           "BuiltIn": true,
@@ -3144,7 +3420,7 @@
                     "ReturnPropertiesTo": []
                   }
                 ],
-                "ID": "634ba8a5-1dee-4369-8ea4-835b4879a1fc"
+                "ID": "3628590f-dab3-4b7d-ac6f-80939c6a17f1"
               },
               {
                 "CommandList": [
@@ -3159,13 +3435,13 @@
                     "$type": "LoadingCommand.EndLoadingCommand, LoadingCommand"
                   }
                 ],
-                "ID": "d24ffada-adeb-4223-85d8-8ac69eb7c1b5"
+                "ID": "65beb279-6df2-4303-a89c-b586555063c4"
               }
             ]
           }
         ],
         "Text": "更新する",
-        "TemplateKey": "_RS_Outline_RoundCorner_Style3",
+        "TemplateKey": "角緑",
         "Icon": {
           "Name": "Navigation/193_download_8.svg",
           "BuiltIn": true,
@@ -3238,7 +3514,7 @@
           }
         ],
         "Text": "編集画面",
-        "TemplateKey": "_RS_Outline_RoundCorner_Style3",
+        "TemplateKey": "角緑",
         "Icon": {
           "Name": "Application/023_edit_3.svg",
           "BuiltIn": true,
@@ -3511,6 +3787,18 @@
       "1,47": 2,
       "1,48": 2,
       "1,49": 2,
+      "1,50": 3,
+      "1,51": 2,
+      "1,52": 2,
+      "1,53": 2,
+      "1,54": 2,
+      "1,55": 2,
+      "1,56": 2,
+      "1,57": 2,
+      "1,58": 2,
+      "1,59": 2,
+      "1,60": 2,
+      "1,61": 2,
       "2,0": 0,
       "3,0": 0,
       "3,1": 1,
@@ -4326,7 +4614,8 @@
     "1,26,1,12",
     "1,38,1,12",
     "14,90,1,3",
-    "18,90,1,3"
+    "18,90,1,3",
+    "1,50,1,12"
   ],
   "PageInfo": {
     "$type": "Forguncy.Model.Pages.TemplatePage, ServerDesignerCommon",
@@ -4336,4 +4625,4 @@
     "Margin": {},
     "PaperSize": {}
   }
-}//xxQ+HJeGDF2/PmqNGD5RZb5WqoB7iOrsd81CXrsRcQvfRWq8yXTPhQ2UsYXp+IW8gho5iznVi149eQWmb5ERXqZ9aEx3OyXGmpReuYwN/bStMR/p/Uvhyr3ffYtU48G+zlzPdM57MfxoxQy7OpAhlBdmdsTYKWFvS1Z6oGaEkROvzoIQXTP+Km5w9ajy/83l8ILIE6qh77AX4rPZiIcN/T2DIG5w23G6u5dPyFP7QLu8EnRZxOJV2HqtsKE7Q0K6SWTa8YoMLc20pHinj331U9VEHFDopfaRSO8scr32X6uWV/eELQMdF0z7Ies83eGatqOUZbG8hnytA9u1fgqTG6JNw8F7X+mn/fSQ1qbd9PKchbSPJMwHiNZvzmtVHapxHOnzjUaIDv/T23b6heJemquV+bQL2PHdivv83zKOuDZyBZmliydEfA53lDiKjN1CG406NBpI+hIBDAkyvf83JyC5eRzdBkHeEA5Qi8c9XqhpQ03IykjeR3UPvCxgRiiwAWHHoTMmGowFtTII9EwJjorbc00xc64ESJ91NZiuPMeBrYfiPxSsl4ZWaGPKMD4pTX0FCEyodowuov9xq2mqUDwjbcHVvH4Bv7mJa1Ur/qC2epeS4XkXVtNUdm8LXhaMoonjSNKIZtICx0z3x0flJdcItauUb9TkG3pxvp2P7vC/8nGNWlDjCYV3Hm4Q8rmtdebjdaC0N67fTEjCNNxeSi7+1gxDgCIO9Vjf+UWSZCWMKlIqTxYu8W8+Vxo0szJpmNzVhEWAg319mDGS+WgAp1Y10WWBDCJpFwdd0ZgJ3YIPJabDLiB9TNqNKJsm5fDXtPo+J7SZ4mRDlYAvnYae/GH14ZD0Ld+6OUNV/KDkiIk4rDTyb11wkq+92FXPSErZpxcJpVrkBLTpeYzdds/ExA==|920
+}//0TkPddofagvzlzcXfWOgt2JiXUEwH0239Aj7126fGyjwu6AxxOfwVaq5bsnBWZLr5kPI+D1e7QhurhOXhmCiH2XR5b7QcLipWdk7TZaDPTrU85a7HjD4OXoTFeC9Aca30tJe3UkAr26djRtb7dhWiGXM8ACUxLpBLbZOrYgw4+f2D4GeLQtAy9iwapHjGm6iegreP+GhWSIChjeisx5L9kIHFVTlABacALwIo5HfbE0JYOumNrnGMQHK9nu9dM7zKRYmv0T5Yd2069KbmCbZPxqsAVJwTB0o6PkT63E2R2ppw0TAkqBegoDlUovzAsg5XetpaTwsxTLQriIv2u7wn0V9Sda68QVZaPqAPHXpGCWDPE38a4C90UZIJ2Yow/nLDeo90sQROs+Amp/RS0aLrxOBXRHiaeUxtacKjKgJ/p/BmmrrDVlIm7307syNCrbvWmbOGoFJ0fGOZv2U/7JwZJFdHRTi2G/DMSeOw7oSA/eahBfd+EWg0n6MoxvdEkEHB5VMh860fXjhlFmikXlZTO1jDt5mE5HC1/UxbL3puUa4upGFJgcJ8/y6zE1mmd3BvTg/DaMZYaVTiKwDzukx2ThtaRkjJvy2IDTxznGDLxeLxGPE3OcvwoO1Bc/ctlohA03J8l/mGBCCdEoQSUGffXhl+epdTG00NSSYB6bpoOgwpGmI9TZ4ZHRPn7VJnf/yazyYCoPOImFsbGi0obe2ZDCyfnC/TJE2+t6Ah5N4bG6SqwMCLR/b93QnNVY72R5gtiOUc/ZDh5iAoT6yHCmkMCu7HUdtIReOfwFtDJ7VDvjpGwgB8oywYMd8Rq7pD3FXJ2WiI/PtlUTeCHoO3tTS5VXqgXkQEeQ/OIGKl/uyMx3Pi9SLMif+1KWQMT9cUX1fMBvx7wOi+NgPTojdybE84w==|920
