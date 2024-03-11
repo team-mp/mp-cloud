@@ -241,21 +241,21 @@
     "0,11": "住宅事業者名",
     "0,15": "添付件数",
     "0,19": "▼ダウンロードボタン",
-    "3,19": "▼データ件数",
-    "6,19": "▼最新化フラグ",
-    "7,19": "0",
-    "9,19": "▼タブ番号",
-    "12,19": "▼測量ステータスID",
-    "15,19": "▼抽出カウント"
+    "0,26": "▼件数取得ボタン",
+    "3,19": "▼最新化フラグ",
+    "3,26": "▼該当カウント",
+    "4,19": "0",
+    "6,19": "▼タブ番号",
+    "9,19": "▼測量ステータスID",
+    "12,19": "▼抽出カウント"
   },
   "Formulas": {
-    "13,19": "IF(検索測量ステータスID=0,\"\",検索測量ステータスID)",
+    "13,19": "COUNT(B2)",
     "1,1": "ROW(B2)",
     "1,6": "IF(Q2=1,\"●\",\"\")",
-    "10,19": "IF(参照タブ番号=0,\"\",参照タブ番号)",
-    "4,19": "COUNTIF(D2,\"<>\")",
-    "16,19": "COUNT(B2)",
-    "20,1": "\"表示データ件数：\"&TEXT(抽出カウント,\"#,##0\")&\"件\""
+    "10,19": "IF(検索測量ステータスID=0,\"\",検索測量ステータスID)",
+    "7,19": "IF(参照タブ番号=0,\"\",参照タブ番号)",
+    "20,1": "\"該当データ件数：\"&TEXT(該当カウント,\"#,##0\")&\"件　　表示データ件数：\"&TEXT(抽出カウント,\"#,##0\")&\"件\""
   },
   "AttachInfos": {
     "0,1": {
@@ -294,15 +294,15 @@
                           "Condition1": {
                             "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
                             "Condition1": {
-                              "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
-                              "CompareType": 6,
+                              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                              "CompareType": 3,
                               "ColumnBindingInfo": {
                                 "TableName": "t_object_order",
-                                "ColumnName": "object_id",
+                                "ColumnName": "latest_surveying_id",
                                 "RelationBinding": {
-                                  "RelatedTable": "t_object",
-                                  "RelatedColumn": "object_id",
-                                  "DisplayColumn": "物件番号"
+                                  "RelatedTable": "t_object_surveying",
+                                  "RelatedColumn": "surveying_id",
+                                  "DisplayColumn": "surveying_request_date"
                                 }
                               },
                               "Value": {
@@ -312,11 +312,21 @@
                               "LeftBracket": 1
                             },
                             "Condition2": {
-                              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
-                              "CompareType": 3,
+                              "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                              "CompareType": 6,
                               "ColumnBindingInfo": {
                                 "TableName": "t_object_order",
-                                "ColumnName": "order_date"
+                                "ColumnName": "latest_surveying_id",
+                                "RelationBinding": {
+                                  "RelatedTable": "t_object_surveying",
+                                  "RelatedColumn": "surveying_id",
+                                  "DisplayColumn": "surveying_status_id",
+                                  "NextRelationBinding": {
+                                    "RelatedTable": "m_surveying_status",
+                                    "RelatedColumn": "surveying_status_id",
+                                    "DisplayColumn": "surveying_status_name"
+                                  }
+                                }
                               },
                               "Value": {
                                 "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
@@ -330,11 +340,11 @@
                             "CompareType": 6,
                             "ColumnBindingInfo": {
                               "TableName": "t_object_order",
-                              "ColumnName": "order_status_id",
+                              "ColumnName": "order_type_id",
                               "RelationBinding": {
-                                "RelatedTable": "m_order_status",
-                                "RelatedColumn": "order_status_id",
-                                "DisplayColumn": "order_status_name"
+                                "RelatedTable": "m_order_type",
+                                "RelatedColumn": "order_type_id",
+                                "DisplayColumn": "ordertype_name"
                               }
                             },
                             "Value": {
@@ -349,11 +359,11 @@
                           "CompareType": 6,
                           "ColumnBindingInfo": {
                             "TableName": "t_object_order",
-                            "ColumnName": "order_type_id",
+                            "ColumnName": "group_id",
                             "RelationBinding": {
-                              "RelatedTable": "m_order_type",
-                              "RelatedColumn": "order_type_id",
-                              "DisplayColumn": "ordertype_name"
+                              "RelatedTable": "m_group",
+                              "RelatedColumn": "group_id",
+                              "DisplayColumn": "group_name"
                             }
                           },
                           "Value": {
@@ -368,11 +378,11 @@
                         "CompareType": 6,
                         "ColumnBindingInfo": {
                           "TableName": "t_object_order",
-                          "ColumnName": "group_id",
+                          "ColumnName": "builder_id",
                           "RelationBinding": {
-                            "RelatedTable": "m_group",
-                            "RelatedColumn": "group_id",
-                            "DisplayColumn": "group_name"
+                            "RelatedTable": "m_customer",
+                            "RelatedColumn": "customer_id",
+                            "DisplayColumn": "customer_abbr"
                           }
                         },
                         "Value": {
@@ -387,11 +397,11 @@
                       "CompareType": 6,
                       "ColumnBindingInfo": {
                         "TableName": "t_object_order",
-                        "ColumnName": "builder_id",
+                        "ColumnName": "object_id",
                         "RelationBinding": {
-                          "RelatedTable": "m_customer",
-                          "RelatedColumn": "customer_id",
-                          "DisplayColumn": "customer_abbr"
+                          "RelatedTable": "t_object",
+                          "RelatedColumn": "object_id",
+                          "DisplayColumn": "物件番号"
                         }
                       },
                       "Value": {
@@ -455,15 +465,15 @@
                           "Condition1": {
                             "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
                             "Condition1": {
-                              "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
-                              "CompareType": 6,
+                              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                              "CompareType": 3,
                               "ColumnBindingInfo": {
                                 "TableName": "t_object_order",
-                                "ColumnName": "object_id",
+                                "ColumnName": "latest_surveying_id",
                                 "RelationBinding": {
-                                  "RelatedTable": "t_object",
-                                  "RelatedColumn": "object_id",
-                                  "DisplayColumn": "物件番号"
+                                  "RelatedTable": "t_object_surveying",
+                                  "RelatedColumn": "surveying_id",
+                                  "DisplayColumn": "surveying_request_date"
                                 }
                               },
                               "Value": {
@@ -473,11 +483,21 @@
                               "LeftBracket": 1
                             },
                             "Condition2": {
-                              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
-                              "CompareType": 3,
+                              "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                              "CompareType": 6,
                               "ColumnBindingInfo": {
                                 "TableName": "t_object_order",
-                                "ColumnName": "order_date"
+                                "ColumnName": "latest_surveying_id",
+                                "RelationBinding": {
+                                  "RelatedTable": "t_object_surveying",
+                                  "RelatedColumn": "surveying_id",
+                                  "DisplayColumn": "surveying_status_id",
+                                  "NextRelationBinding": {
+                                    "RelatedTable": "m_surveying_status",
+                                    "RelatedColumn": "surveying_status_id",
+                                    "DisplayColumn": "surveying_status_name"
+                                  }
+                                }
                               },
                               "Value": {
                                 "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
@@ -491,11 +511,11 @@
                             "CompareType": 6,
                             "ColumnBindingInfo": {
                               "TableName": "t_object_order",
-                              "ColumnName": "order_status_id",
+                              "ColumnName": "order_type_id",
                               "RelationBinding": {
-                                "RelatedTable": "m_order_status",
-                                "RelatedColumn": "order_status_id",
-                                "DisplayColumn": "order_status_name"
+                                "RelatedTable": "m_order_type",
+                                "RelatedColumn": "order_type_id",
+                                "DisplayColumn": "ordertype_name"
                               }
                             },
                             "Value": {
@@ -510,11 +530,11 @@
                           "CompareType": 6,
                           "ColumnBindingInfo": {
                             "TableName": "t_object_order",
-                            "ColumnName": "order_type_id",
+                            "ColumnName": "group_id",
                             "RelationBinding": {
-                              "RelatedTable": "m_order_type",
-                              "RelatedColumn": "order_type_id",
-                              "DisplayColumn": "ordertype_name"
+                              "RelatedTable": "m_group",
+                              "RelatedColumn": "group_id",
+                              "DisplayColumn": "group_name"
                             }
                           },
                           "Value": {
@@ -529,11 +549,11 @@
                         "CompareType": 6,
                         "ColumnBindingInfo": {
                           "TableName": "t_object_order",
-                          "ColumnName": "group_id",
+                          "ColumnName": "builder_id",
                           "RelationBinding": {
-                            "RelatedTable": "m_group",
-                            "RelatedColumn": "group_id",
-                            "DisplayColumn": "group_name"
+                            "RelatedTable": "m_customer",
+                            "RelatedColumn": "customer_id",
+                            "DisplayColumn": "customer_abbr"
                           }
                         },
                         "Value": {
@@ -548,11 +568,11 @@
                       "CompareType": 6,
                       "ColumnBindingInfo": {
                         "TableName": "t_object_order",
-                        "ColumnName": "builder_id",
+                        "ColumnName": "object_id",
                         "RelationBinding": {
-                          "RelatedTable": "m_customer",
-                          "RelatedColumn": "customer_id",
-                          "DisplayColumn": "customer_abbr"
+                          "RelatedTable": "t_object",
+                          "RelatedColumn": "object_id",
+                          "DisplayColumn": "物件番号"
                         }
                       },
                       "Value": {
@@ -615,7 +635,7 @@
               },
               "Value": {
                 "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                "SerializeProperty": "=測量検索リスト!T14"
+                "SerializeProperty": "=測量検索リスト!T11"
               }
             }
           },
@@ -703,7 +723,7 @@
                 },
                 "Value": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=測量検索リスト!T11"
+                  "SerializeProperty": "=測量検索リスト!T8"
                 }
               }
             ],
@@ -808,7 +828,7 @@
                     "LoadBindingDataOption": 1
                   }
                 ],
-                "ID": "aeeef416-2b05-4b07-bcdb-d6e65b46fb14"
+                "ID": "9200a8c5-36d6-4692-9dd2-dfcab8c1692d"
               }
             ]
           }
@@ -963,7 +983,413 @@
         "TemplateKey": "_RS_Normal_Style2"
       }
     },
-    "7,19": {
+    "1,26": {
+      "CellType": {
+        "$type": "Forguncy.ButtonCellType, ServerDesignerCommon",
+        "CommandList": [
+          {
+            "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+            "ParameterName": "取得カウント",
+            "TableValue": {
+              "TableName": "t_object_order",
+              "TableValueType": 3,
+              "SqlCondition": {
+                "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                "Condition1": {
+                  "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                  "Condition1": {
+                    "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                    "Condition1": {
+                      "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                      "Condition1": {
+                        "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                        "Condition1": {
+                          "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                          "Condition1": {
+                            "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                            "Condition1": {
+                              "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                              "Condition1": {
+                                "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                                "Condition1": {
+                                  "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                                  "Condition1": {
+                                    "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                                    "CompareType": 3,
+                                    "ColumnBindingInfo": {
+                                      "TableName": "t_object_order",
+                                      "ColumnName": "latest_surveying_id",
+                                      "RelationBinding": {
+                                        "RelatedTable": "t_object_surveying",
+                                        "RelatedColumn": "surveying_id",
+                                        "DisplayColumn": "surveying_request_date"
+                                      }
+                                    },
+                                    "Value": {
+                                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                      "SerializeProperty": "=測量検索リスト!検索ワード1"
+                                    },
+                                    "LeftBracket": 1
+                                  },
+                                  "Condition2": {
+                                    "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                                    "CompareType": 6,
+                                    "ColumnBindingInfo": {
+                                      "TableName": "t_object_order",
+                                      "ColumnName": "latest_surveying_id",
+                                      "RelationBinding": {
+                                        "RelatedTable": "t_object_surveying",
+                                        "RelatedColumn": "surveying_id",
+                                        "DisplayColumn": "surveying_status_id",
+                                        "NextRelationBinding": {
+                                          "RelatedTable": "m_surveying_status",
+                                          "RelatedColumn": "surveying_status_id",
+                                          "DisplayColumn": "surveying_status_name"
+                                        }
+                                      }
+                                    },
+                                    "Value": {
+                                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                      "SerializeProperty": "=測量検索リスト!検索ワード1"
+                                    }
+                                  },
+                                  "RelationType": 1
+                                },
+                                "Condition2": {
+                                  "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                                  "CompareType": 6,
+                                  "ColumnBindingInfo": {
+                                    "TableName": "t_object_order",
+                                    "ColumnName": "order_type_id",
+                                    "RelationBinding": {
+                                      "RelatedTable": "m_order_type",
+                                      "RelatedColumn": "order_type_id",
+                                      "DisplayColumn": "ordertype_name"
+                                    }
+                                  },
+                                  "Value": {
+                                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                    "SerializeProperty": "=測量検索リスト!検索ワード1"
+                                  }
+                                },
+                                "RelationType": 1
+                              },
+                              "Condition2": {
+                                "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                                "CompareType": 6,
+                                "ColumnBindingInfo": {
+                                  "TableName": "t_object_order",
+                                  "ColumnName": "group_id",
+                                  "RelationBinding": {
+                                    "RelatedTable": "m_group",
+                                    "RelatedColumn": "group_id",
+                                    "DisplayColumn": "group_name"
+                                  }
+                                },
+                                "Value": {
+                                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                  "SerializeProperty": "=測量検索リスト!検索ワード1"
+                                }
+                              },
+                              "RelationType": 1
+                            },
+                            "Condition2": {
+                              "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                              "CompareType": 6,
+                              "ColumnBindingInfo": {
+                                "TableName": "t_object_order",
+                                "ColumnName": "builder_id",
+                                "RelationBinding": {
+                                  "RelatedTable": "m_customer",
+                                  "RelatedColumn": "customer_id",
+                                  "DisplayColumn": "customer_abbr"
+                                }
+                              },
+                              "Value": {
+                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                "SerializeProperty": "=測量検索リスト!検索ワード1"
+                              }
+                            },
+                            "RelationType": 1
+                          },
+                          "Condition2": {
+                            "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                            "CompareType": 6,
+                            "ColumnBindingInfo": {
+                              "TableName": "t_object_order",
+                              "ColumnName": "object_id",
+                              "RelationBinding": {
+                                "RelatedTable": "t_object",
+                                "RelatedColumn": "object_id",
+                                "DisplayColumn": "物件番号"
+                              }
+                            },
+                            "Value": {
+                              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                              "SerializeProperty": "=測量検索リスト!検索ワード1"
+                            }
+                          },
+                          "RelationType": 1
+                        },
+                        "Condition2": {
+                          "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                          "CompareType": 6,
+                          "ColumnBindingInfo": {
+                            "TableName": "t_object_order",
+                            "ColumnName": "object_id",
+                            "RelationBinding": {
+                              "RelatedTable": "t_object",
+                              "RelatedColumn": "object_id",
+                              "DisplayColumn": "物件名"
+                            }
+                          },
+                          "Value": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=測量検索リスト!検索ワード1"
+                          }
+                        },
+                        "RelationType": 1
+                      },
+                      "Condition2": {
+                        "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                        "CompareType": 6,
+                        "ColumnBindingInfo": {
+                          "TableName": "t_object_order",
+                          "ColumnName": "object_id",
+                          "RelationBinding": {
+                            "RelatedTable": "t_object",
+                            "RelatedColumn": "object_id",
+                            "DisplayColumn": "物件住所"
+                          }
+                        },
+                        "Value": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=測量検索リスト!検索ワード1"
+                        },
+                        "RightBracket": 1
+                      },
+                      "RelationType": 1
+                    },
+                    "Condition2": {
+                      "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                      "Condition1": {
+                        "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                        "Condition1": {
+                          "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                          "Condition1": {
+                            "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                            "Condition1": {
+                              "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                              "Condition1": {
+                                "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                                "Condition1": {
+                                  "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                                  "Condition1": {
+                                    "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                                    "CompareType": 5,
+                                    "ColumnBindingInfo": {
+                                      "TableName": "t_object_order",
+                                      "ColumnName": "latest_surveying_id",
+                                      "RelationBinding": {
+                                        "RelatedTable": "t_object_surveying",
+                                        "RelatedColumn": "surveying_id",
+                                        "DisplayColumn": "surveying_request_date"
+                                      }
+                                    },
+                                    "Value": {
+                                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                      "SerializeProperty": "=測量検索リスト!検索ワード2"
+                                    },
+                                    "LeftBracket": 1
+                                  },
+                                  "Condition2": {
+                                    "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                                    "CompareType": 6,
+                                    "ColumnBindingInfo": {
+                                      "TableName": "t_object_order",
+                                      "ColumnName": "latest_surveying_id",
+                                      "RelationBinding": {
+                                        "RelatedTable": "t_object_surveying",
+                                        "RelatedColumn": "surveying_id",
+                                        "DisplayColumn": "surveying_status_id",
+                                        "NextRelationBinding": {
+                                          "RelatedTable": "m_surveying_status",
+                                          "RelatedColumn": "surveying_status_id",
+                                          "DisplayColumn": "surveying_status_name"
+                                        }
+                                      }
+                                    },
+                                    "Value": {
+                                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                      "SerializeProperty": "=測量検索リスト!検索ワード2"
+                                    }
+                                  },
+                                  "RelationType": 1
+                                },
+                                "Condition2": {
+                                  "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                                  "CompareType": 6,
+                                  "ColumnBindingInfo": {
+                                    "TableName": "t_object_order",
+                                    "ColumnName": "order_type_id",
+                                    "RelationBinding": {
+                                      "RelatedTable": "m_order_type",
+                                      "RelatedColumn": "order_type_id",
+                                      "DisplayColumn": "ordertype_name"
+                                    }
+                                  },
+                                  "Value": {
+                                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                    "SerializeProperty": "=測量検索リスト!検索ワード2"
+                                  }
+                                },
+                                "RelationType": 1
+                              },
+                              "Condition2": {
+                                "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                                "CompareType": 6,
+                                "ColumnBindingInfo": {
+                                  "TableName": "t_object_order",
+                                  "ColumnName": "group_id",
+                                  "RelationBinding": {
+                                    "RelatedTable": "m_group",
+                                    "RelatedColumn": "group_id",
+                                    "DisplayColumn": "group_name"
+                                  }
+                                },
+                                "Value": {
+                                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                  "SerializeProperty": "=測量検索リスト!検索ワード2"
+                                }
+                              },
+                              "RelationType": 1
+                            },
+                            "Condition2": {
+                              "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                              "CompareType": 6,
+                              "ColumnBindingInfo": {
+                                "TableName": "t_object_order",
+                                "ColumnName": "builder_id",
+                                "RelationBinding": {
+                                  "RelatedTable": "m_customer",
+                                  "RelatedColumn": "customer_id",
+                                  "DisplayColumn": "customer_abbr"
+                                }
+                              },
+                              "Value": {
+                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                "SerializeProperty": "=測量検索リスト!検索ワード2"
+                              }
+                            },
+                            "RelationType": 1
+                          },
+                          "Condition2": {
+                            "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                            "CompareType": 6,
+                            "ColumnBindingInfo": {
+                              "TableName": "t_object_order",
+                              "ColumnName": "object_id",
+                              "RelationBinding": {
+                                "RelatedTable": "t_object",
+                                "RelatedColumn": "object_id",
+                                "DisplayColumn": "物件番号"
+                              }
+                            },
+                            "Value": {
+                              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                              "SerializeProperty": "=測量検索リスト!検索ワード2"
+                            }
+                          },
+                          "RelationType": 1
+                        },
+                        "Condition2": {
+                          "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                          "CompareType": 6,
+                          "ColumnBindingInfo": {
+                            "TableName": "t_object_order",
+                            "ColumnName": "object_id",
+                            "RelationBinding": {
+                              "RelatedTable": "t_object",
+                              "RelatedColumn": "object_id",
+                              "DisplayColumn": "物件名"
+                            }
+                          },
+                          "Value": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=測量検索リスト!検索ワード2"
+                          }
+                        },
+                        "RelationType": 1
+                      },
+                      "Condition2": {
+                        "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                        "CompareType": 6,
+                        "ColumnBindingInfo": {
+                          "TableName": "t_object_order",
+                          "ColumnName": "object_id",
+                          "RelationBinding": {
+                            "RelatedTable": "t_object",
+                            "RelatedColumn": "object_id",
+                            "DisplayColumn": "物件住所"
+                          }
+                        },
+                        "Value": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=測量検索リスト!検索ワード2"
+                        },
+                        "RightBracket": 1
+                      }
+                    }
+                  },
+                  "Condition2": {
+                    "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                    "ColumnBindingInfo": {
+                      "TableName": "t_object_order",
+                      "ColumnName": "latest_surveying_id",
+                      "RelationBinding": {
+                        "RelatedTable": "t_object_surveying",
+                        "RelatedColumn": "surveying_id",
+                        "DisplayColumn": "surveying_status_id"
+                      }
+                    },
+                    "Value": {
+                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                      "SerializeProperty": "=測量検索リスト!T11"
+                    }
+                  }
+                },
+                "Condition2": {
+                  "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                  "ColumnBindingInfo": {
+                    "TableName": "t_object_order",
+                    "ColumnName": "active_flg"
+                  },
+                  "Value": "1"
+                }
+              }
+            },
+            "ID": "f38d1427d4ff4b268050f1e1684d2dc6"
+          },
+          {
+            "$type": "Forguncy.Model.SetCellPropertyCommand, ServerDesignerCommon",
+            "PropertyItemsList": [
+              {
+                "TargetCells": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=測量検索リスト!該当カウント"
+                },
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=測量検索リスト!取得カウント"
+                }
+              }
+            ]
+          }
+        ],
+        "TemplateKey": "_RS_Normal_Style2"
+      }
+    },
+    "4,19": {
       "CellType": {
         "$type": "Forguncy.TextCellType, ServerDesignerCommon",
         "SavedValidators": [
@@ -976,6 +1402,17 @@
             "$type": "LoadingCommand.StartLoadingCommand, LoadingCommand",
             "LoadingText": "お待ちください",
             "LoadingTextColor": "Background 1 0"
+          },
+          {
+            "$type": "Forguncy.Model.OperateCellTypeCommand, ServerDesignerCommon",
+            "TargetPageElement": {
+              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+              "SerializeProperty": "=測量検索リスト!測量件数取得ボタン"
+            },
+            "TargetType": "Forguncy.ButtonCellType, ServerDesignerCommon, Version=8.0.41.0, Culture=neutral, PublicKeyToken=967100671921c115",
+            "MethodName": "ExecuteCommand",
+            "ParameterValues": {},
+            "RetrunParamNames": {}
           },
           {
             "$type": "Forguncy.Model.UpdateListviewCommand, ServerDesignerCommon",
@@ -1117,15 +1554,13 @@
         "BorderBottom": 0
       },
       {
-        "Background": 9
-      },
-      {
-        "Background": 10,
-        "Formatter": 11,
+        "Background": 9,
+        "FontFamily": 0,
+        "Formatter": 10,
         "HorizontalAlignment": 2
       },
       {
-        "Background": 9,
+        "Background": 11,
         "FontFamily": 0
       },
       {
@@ -1155,9 +1590,9 @@
         "#FF0070C0",
         "General",
         "#FF000000",
-        "#FFFFFF00",
         "Accent 1 80",
         "@",
+        "#FFFFFF00",
         "Background 1 -15"
       ],
       "Borders": [
@@ -1179,6 +1614,9 @@
       "0,14": 0,
       "0,15": 0,
       "0,16": 0,
+      "0,26": 2,
+      "0,27": 0,
+      "0,28": 0,
       "1,1": 3,
       "1,2": 4,
       "1,3": 5,
@@ -1196,60 +1634,82 @@
       "1,15": 13,
       "1,16": 14,
       "1,17": 7,
+      "1,26": 0,
+      "1,27": 0,
+      "1,28": 0,
+      "2,26": 0,
+      "2,27": 0,
+      "2,28": 0,
+      "3,19": 0,
+      "3,20": 0,
+      "3,21": 0,
+      "3,26": 2,
+      "3,27": 0,
+      "3,28": 0,
       "4,19": 15,
+      "4,20": 0,
+      "4,21": 0,
+      "4,26": 16,
+      "4,27": 0,
+      "4,28": 0,
+      "5,19": 0,
+      "5,20": 0,
+      "5,21": 0,
+      "6,19": 0,
+      "6,20": 0,
+      "6,21": 0,
       "7,19": 16,
-      "9,19": 0,
+      "7,20": 0,
+      "7,21": 0,
+      "8,19": 0,
+      "8,20": 0,
+      "8,21": 0,
+      "9,19": 2,
       "9,20": 0,
       "9,21": 0,
-      "10,19": 17,
+      "10,19": 16,
       "10,20": 0,
       "10,21": 0,
+      "11,19": 0,
+      "11,20": 0,
+      "11,21": 0,
       "12,19": 2,
       "12,20": 0,
       "12,21": 0,
-      "13,19": 17,
+      "13,19": 16,
       "13,20": 0,
       "13,21": 0,
-      "15,19": 2,
-      "15,20": 0,
-      "15,21": 0,
-      "16,19": 17,
-      "16,20": 0,
-      "16,21": 0,
-      "19,1": 18,
-      "19,2": 18,
-      "19,3": 18,
-      "19,4": 18,
-      "19,5": 18,
-      "19,6": 18,
-      "19,7": 18,
-      "19,8": 18,
-      "19,9": 18,
-      "19,10": 18,
-      "20,1": 19,
-      "20,2": 19,
-      "20,3": 19,
-      "20,4": 19,
-      "20,10": 20
+      "19,1": 17,
+      "19,2": 17,
+      "19,3": 17,
+      "19,4": 17,
+      "19,5": 17,
+      "19,6": 17,
+      "19,7": 17,
+      "19,8": 17,
+      "19,9": 17,
+      "19,10": 17,
+      "20,1": 18,
+      "20,10": 19
     },
     "ColStyles": {
-      "1": 21,
-      "2": 21,
-      "3": 21,
-      "4": 21,
-      "5": 21,
-      "6": 21,
-      "7": 21,
-      "8": 21,
-      "9": 21,
-      "10": 21,
-      "11": 21,
-      "12": 21,
-      "13": 21,
-      "14": 21,
-      "15": 21,
-      "16": 21,
-      "17": 21
+      "1": 20,
+      "2": 20,
+      "3": 20,
+      "4": 20,
+      "5": 20,
+      "6": 20,
+      "7": 20,
+      "8": 20,
+      "9": 20,
+      "10": 20,
+      "11": 20,
+      "12": 20,
+      "13": 20,
+      "14": 20,
+      "15": 20,
+      "16": 20,
+      "17": 20
     },
     "SheetStyle": {
       "FontFamily": 0
@@ -1257,17 +1717,29 @@
   },
   "Spans": [
     "1,19,1,3",
-    "4,19,1,3",
-    "7,19,1,3",
-    "13,19,1,3",
-    "10,19,1,3",
     "2,1,17,17",
-    "16,19,1,3",
-    "20,1,1,4"
+    "4,26,1,3",
+    "1,26,1,3",
+    "20,1,1,6",
+    "4,19,1,3",
+    "10,19,1,3",
+    "7,19,1,3",
+    "13,19,1,3"
   ],
   "PageInfo": {
     "$type": "Forguncy.Model.Pages.NormalPage, ServerDesignerCommon",
     "PageLoadedCommandList": [
+      {
+        "$type": "Forguncy.Model.OperateCellTypeCommand, ServerDesignerCommon",
+        "TargetPageElement": {
+          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+          "SerializeProperty": "=測量検索リスト!測量件数取得ボタン"
+        },
+        "TargetType": "Forguncy.ButtonCellType, ServerDesignerCommon, Version=8.0.41.0, Culture=neutral, PublicKeyToken=967100671921c115",
+        "MethodName": "ExecuteCommand",
+        "ParameterValues": {},
+        "RetrunParamNames": {}
+      },
       {
         "$type": "LoadingCommand.EndLoadingCommand, LoadingCommand"
       }
@@ -1286,16 +1758,12 @@
   },
   "CustomNames": [
     {
-      "Name": "データ件数",
-      "Formula": "測量検索リスト!$T$5"
-    },
-    {
-      "Name": "リストビュー表示制御",
+      "Name": "測量件数取得ボタン",
       "Formula": "測量検索リスト!$AA$2"
     },
     {
       "Name": "最新化フラグ",
-      "Formula": "測量検索リスト!$T$8"
+      "Formula": "測量検索リスト!$T$5"
     },
     {
       "Name": "物件リストダウンロード",
@@ -1303,7 +1771,11 @@
     },
     {
       "Name": "抽出カウント",
-      "Formula": "測量検索リスト!$T$17"
+      "Formula": "測量検索リスト!$T$14"
+    },
+    {
+      "Name": "該当カウント",
+      "Formula": "測量検索リスト!$AA$5"
     }
   ]
-}//jm4Py1F9yHrrEgHSuUbeqqDRKv5XTAVNMpEF6OHF0JShcrKwwA094rVyZ3YwiZ3wST9Rfbv6tNLRf57NS4AqzFAgJfThjfLmlS5RmYrR6IH5TgHqaGCMaeFZX3TqJKQyeYCGNI5uyIUDA9hF+dNcOB3/f7VBWt5k04rEkJfqe+NciSu5STs2Fde4HenGjNnDy85SgtbKoO8WjgH0LQHBtCSPeKipgGvO/ERTKXB+6wZsC0BL+zxGaVlVptD7mFS23mq3+1T3AeSJq8tuh4noPEvfjpOzyq/uG/XHJTdqO9eots9xPp+LJX3OKQZgUiK9/PP6Sf3WLzlAc5/7J9WUaO105OCoCsCV0b+7YORAMWrAqkZr6wkivCJvw9DaaAGtkgdi15u/pB6riE009CBkn8ZgXCIwMQNw7FhbV5FfGGaQYxsk1N792WI4UZb5wTF/Uuzb6H//ja/SH39HKCaI9uWvHLU3UaSZy/eHsuJGklZ41dgUmbXsokBNcaEv7mY+3Oqml230TC1jTNDWIzQhNmZlRM3bNcIXNew+rp3idr+6YuaHad0ra/7oZ9xMgK7pmGFwcLWYj0tdj1bkrweAyNGxC/Jc5ZfzY97F8R7pfODNHSbeIzouh6vIxcTRzqRldDRIhMD1/vSihtbmmJYdm9pVMZag9qrgAU9omMCG2xlk62QKm2gCSBi7n9IckjoJtCJU9Rj3+A1NtrhHt9Sz6IXJJoz6/6QCqzpgrEdQR0Rm0zHPElFSPYygG9vnj6hcXjkVqXWZ13QqRcymdYA2ElLDNGnausgMbe3RSYnKgsKMTHj+D+MrmMyCm/J0D33mDFfZTWWtDZ7hqE53nRttL1M8iPi7CAjmqEGmafMrDeIdnLvPkqBkhF9kdeMMphwJlmd8nVYnN9wv8mrU90J0GQ==|920
+}//nLZ7Ui1Ih14AIihhG6X2VEkl65eQHxl/6I4x5UCHPN+tSbDODit2aDT/+H61q2PBM7A4b+zU/a6AY+3iTYdgGlkBeVlU34cDJIjo+azADLdD99Bc0GIHQ76AqUjOmeL5AFrsCo/omj995cHhPog0e+bkwv+i49Y25lktp/tQBYEGDfcHdbx4Ddcm6YnDtiHduC2HwkdGxdMBxLb6jtK8LD5kr4gxHDuOxrU1odvAyDx3G8+fXKhGzVt4rHNPegn9Atw2Cm9onziJWSE+Kbo1400OB3/U+tvzApEy/spTu36TdfMYyC24ImMndAiMsn0kwGmNFk4ux2QU5i8kvcZT/uyMTXnUgOoruzTRETShd8cYNvvgG3vLw6RIEvR1fTgSjr0CpctZGm6vRZJZkn4sh7k1cuB+W5vzIonSsrXP6q76Ixp+8mdRdJJ946EUkEEkHBnFL2z+AaZe4YsxQoGJhgpF7qFbMbnlVzQCxCEOLsnmp/+iP5K7zbiCFfKj5j9JFklVp/GKveXzc9JDEy1OIzLM5yPPIIvPaCeh9+zC76d22X500G0lVuwDUzHMBiBwONH+geb6Sw6V4XDqfW71Qq1CGbp+R6JUC1wDGTt13xYwRkrpB49O17q/gmrS8hOCX+M2l0dZVzguaqM2zgqcuSWZ00/XdU+3ohAV46aGACHOkFKB1jX1Ki5uVHIXIO3e/St2Zv1xTPT3ZwpL+YEW3yA6gGUm10bFK0aQjqX7YqhFapw+WEXxXRDLGj9eJd9qXDwXuNEeD8d0ZiWHWFHuJgGamMUQ9W+FMLlJp3E0QhtE1NHxgd/YwuNSxXXBwTDcRLS3ekgt8IT5adAwZBDxuMwEouEAZGAFCVwV/dWTRcF55+bxIUDfJMbI2/jDFwLdLzYQ/qZpT2GA2b3OqVw3ug==|920
