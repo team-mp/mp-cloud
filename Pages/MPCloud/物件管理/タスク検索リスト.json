@@ -259,11 +259,15 @@
     "3,19": "▼選択カウント",
     "3,26": "▼未処理カウント",
     "3,34": "▼変更担当者ID",
+    "3,42": "▼件数取得ボタン",
     "6,19": "▼未処理検索条件",
     "6,26": "▼抽出カウント",
     "6,34": "▼担当者変更フラグ",
+    "6,42": "▼該当カウント",
     "7,34": "0",
     "9,19": "▼期限切れ検索条件1",
+    "9,34": "▼最新化フラグ",
+    "10,34": "0",
     "12,19": "▼期限切れ検索条件2"
   },
   "Formulas": {
@@ -273,7 +277,8 @@
     "10,19": "IF(期限切れフラグ,0,1)",
     "4,19": "COUNTIF(B2,1)",
     "13,19": "IF(期限切れフラグ,TODAY(),\"\")",
-    "7,26": "COUNT(N2)"
+    "7,26": "COUNT(N2)",
+    "20,1": "\"表示データ件数：\"&TEXT(抽出カウント,\"#,##0\")&\"件\""
   },
   "AttachInfos": {
     "0,1": {
@@ -343,33 +348,75 @@
                   "Condition1": {
                     "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
                     "Condition1": {
-                      "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
-                      "CompareType": 6,
-                      "ColumnBindingInfo": {
-                        "TableName": "t_task",
-                        "ColumnName": "oparete_user_id",
-                        "RelationBinding": {
-                          "RelatedTable": "m_user",
-                          "RelatedColumn": "user_id",
-                          "DisplayColumn": "user_name"
+                      "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                      "Condition1": {
+                        "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                        "Condition1": {
+                          "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                          "CompareType": 6,
+                          "ColumnBindingInfo": {
+                            "TableName": "t_task",
+                            "ColumnName": "oparete_user_id",
+                            "RelationBinding": {
+                              "RelatedTable": "m_user",
+                              "RelatedColumn": "user_id",
+                              "DisplayColumn": "user_name"
+                            }
+                          },
+                          "Value": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=タスク検索フレーム!検索ワード1"
+                          },
+                          "LeftBracket": 1
+                        },
+                        "Condition2": {
+                          "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                          "CompareType": 6,
+                          "ColumnBindingInfo": {
+                            "TableName": "t_task",
+                            "ColumnName": "task_type_id",
+                            "RelationBinding": {
+                              "RelatedTable": "m_task_type",
+                              "RelatedColumn": "task_type_id",
+                              "DisplayColumn": "task_type_name"
+                            }
+                          },
+                          "Value": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=タスク検索リスト!検索ワード1"
+                          }
+                        },
+                        "RelationType": 1
+                      },
+                      "Condition2": {
+                        "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                        "CompareType": 6,
+                        "ColumnBindingInfo": {
+                          "TableName": "t_task",
+                          "ColumnName": "task_content"
+                        },
+                        "Value": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=タスク検索リスト!検索ワード1"
                         }
                       },
-                      "Value": {
-                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                        "SerializeProperty": "=タスク検索フレーム!検索ワード1"
-                      },
-                      "LeftBracket": 1
+                      "RelationType": 1
                     },
                     "Condition2": {
                       "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
                       "CompareType": 6,
                       "ColumnBindingInfo": {
                         "TableName": "t_task",
-                        "ColumnName": "task_type_id",
+                        "ColumnName": "object_order_id",
                         "RelationBinding": {
-                          "RelatedTable": "m_task_type",
-                          "RelatedColumn": "task_type_id",
-                          "DisplayColumn": "task_type_name"
+                          "RelatedTable": "t_object_order",
+                          "RelatedColumn": "object_order_id",
+                          "DisplayColumn": "object_id",
+                          "NextRelationBinding": {
+                            "RelatedTable": "t_object",
+                            "RelatedColumn": "object_id",
+                            "DisplayColumn": "物件番号"
+                          }
                         }
                       },
                       "Value": {
@@ -384,7 +431,17 @@
                     "CompareType": 6,
                     "ColumnBindingInfo": {
                       "TableName": "t_task",
-                      "ColumnName": "task_content"
+                      "ColumnName": "object_order_id",
+                      "RelationBinding": {
+                        "RelatedTable": "t_object_order",
+                        "RelatedColumn": "object_order_id",
+                        "DisplayColumn": "object_id",
+                        "NextRelationBinding": {
+                          "RelatedTable": "t_object",
+                          "RelatedColumn": "object_id",
+                          "DisplayColumn": "物件名"
+                        }
+                      }
                     },
                     "Value": {
                       "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
@@ -402,11 +459,11 @@
                     "RelationBinding": {
                       "RelatedTable": "t_object_order",
                       "RelatedColumn": "object_order_id",
-                      "DisplayColumn": "object_id",
+                      "DisplayColumn": "group_id",
                       "NextRelationBinding": {
-                        "RelatedTable": "t_object",
-                        "RelatedColumn": "object_id",
-                        "DisplayColumn": "物件番号"
+                        "RelatedTable": "m_group",
+                        "RelatedColumn": "group_id",
+                        "DisplayColumn": "group_name"
                       }
                     }
                   },
@@ -426,11 +483,11 @@
                   "RelationBinding": {
                     "RelatedTable": "t_object_order",
                     "RelatedColumn": "object_order_id",
-                    "DisplayColumn": "object_id",
+                    "DisplayColumn": "builder_id",
                     "NextRelationBinding": {
-                      "RelatedTable": "t_object",
-                      "RelatedColumn": "object_id",
-                      "DisplayColumn": "物件名"
+                      "RelatedTable": "m_customer",
+                      "RelatedColumn": "customer_id",
+                      "DisplayColumn": "customer_abbr"
                     }
                   }
                 },
@@ -452,33 +509,75 @@
                 "Condition1": {
                   "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
                   "Condition1": {
-                    "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
-                    "CompareType": 6,
-                    "ColumnBindingInfo": {
-                      "TableName": "t_task",
-                      "ColumnName": "oparete_user_id",
-                      "RelationBinding": {
-                        "RelatedTable": "m_user",
-                        "RelatedColumn": "user_id",
-                        "DisplayColumn": "user_name"
+                    "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                    "Condition1": {
+                      "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                      "Condition1": {
+                        "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                        "CompareType": 6,
+                        "ColumnBindingInfo": {
+                          "TableName": "t_task",
+                          "ColumnName": "oparete_user_id",
+                          "RelationBinding": {
+                            "RelatedTable": "m_user",
+                            "RelatedColumn": "user_id",
+                            "DisplayColumn": "user_name"
+                          }
+                        },
+                        "Value": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=タスク検索リスト!検索ワード2"
+                        },
+                        "LeftBracket": 1
+                      },
+                      "Condition2": {
+                        "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                        "CompareType": 6,
+                        "ColumnBindingInfo": {
+                          "TableName": "t_task",
+                          "ColumnName": "task_type_id",
+                          "RelationBinding": {
+                            "RelatedTable": "m_task_type",
+                            "RelatedColumn": "task_type_id",
+                            "DisplayColumn": "task_type_name"
+                          }
+                        },
+                        "Value": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=タスク検索リスト!検索ワード2"
+                        }
+                      },
+                      "RelationType": 1
+                    },
+                    "Condition2": {
+                      "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                      "CompareType": 6,
+                      "ColumnBindingInfo": {
+                        "TableName": "t_task",
+                        "ColumnName": "task_content"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=タスク検索リスト!検索ワード2"
                       }
                     },
-                    "Value": {
-                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                      "SerializeProperty": "=タスク検索リスト!検索ワード2"
-                    },
-                    "LeftBracket": 1
+                    "RelationType": 1
                   },
                   "Condition2": {
                     "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
                     "CompareType": 6,
                     "ColumnBindingInfo": {
                       "TableName": "t_task",
-                      "ColumnName": "task_type_id",
+                      "ColumnName": "object_order_id",
                       "RelationBinding": {
-                        "RelatedTable": "m_task_type",
-                        "RelatedColumn": "task_type_id",
-                        "DisplayColumn": "task_type_name"
+                        "RelatedTable": "t_object_order",
+                        "RelatedColumn": "object_order_id",
+                        "DisplayColumn": "object_id",
+                        "NextRelationBinding": {
+                          "RelatedTable": "t_object",
+                          "RelatedColumn": "object_id",
+                          "DisplayColumn": "物件番号"
+                        }
                       }
                     },
                     "Value": {
@@ -493,7 +592,17 @@
                   "CompareType": 6,
                   "ColumnBindingInfo": {
                     "TableName": "t_task",
-                    "ColumnName": "task_content"
+                    "ColumnName": "object_order_id",
+                    "RelationBinding": {
+                      "RelatedTable": "t_object_order",
+                      "RelatedColumn": "object_order_id",
+                      "DisplayColumn": "object_id",
+                      "NextRelationBinding": {
+                        "RelatedTable": "t_object",
+                        "RelatedColumn": "object_id",
+                        "DisplayColumn": "物件名"
+                      }
+                    }
                   },
                   "Value": {
                     "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
@@ -511,11 +620,11 @@
                   "RelationBinding": {
                     "RelatedTable": "t_object_order",
                     "RelatedColumn": "object_order_id",
-                    "DisplayColumn": "object_id",
+                    "DisplayColumn": "group_id",
                     "NextRelationBinding": {
-                      "RelatedTable": "t_object",
-                      "RelatedColumn": "object_id",
-                      "DisplayColumn": "物件番号"
+                      "RelatedTable": "m_group",
+                      "RelatedColumn": "group_id",
+                      "DisplayColumn": "group_name"
                     }
                   }
                 },
@@ -535,11 +644,11 @@
                 "RelationBinding": {
                   "RelatedTable": "t_object_order",
                   "RelatedColumn": "object_order_id",
-                  "DisplayColumn": "object_id",
+                  "DisplayColumn": "builder_id",
                   "NextRelationBinding": {
-                    "RelatedTable": "t_object",
-                    "RelatedColumn": "object_id",
-                    "DisplayColumn": "物件名"
+                    "RelatedTable": "m_customer",
+                    "RelatedColumn": "customer_id",
+                    "DisplayColumn": "customer_abbr"
                   }
                 }
               },
@@ -647,7 +756,7 @@
                         }
                       }
                     },
-                    "ID": "887ecb40121a461680d27f1a9aadd5ca"
+                    "ID": "343de406001b4ad6b96f902f969a0632"
                   },
                   {
                     "$type": "SetCurrentRowCommand.SetCurrentRowCommand, SetCurrentRowCommand",
@@ -673,7 +782,7 @@
                     "LoadBindingDataOption": 1
                   }
                 ],
-                "ID": "785bc83f-7f24-4f4f-9537-944c46f3c4c5"
+                "ID": "204fbc64-fbe3-462b-9ebb-ee94bc0684f9"
               },
               {
                 "Condition": {
@@ -717,7 +826,7 @@
                         }
                       }
                     },
-                    "ID": "4172eb93e587464b9672be999587fe6a"
+                    "ID": "0e7e368f419449f1a4776aa7e45fa0c1"
                   },
                   {
                     "$type": "SetCurrentRowCommand.SetCurrentRowCommand, SetCurrentRowCommand",
@@ -743,7 +852,7 @@
                     "LoadBindingDataOption": 1
                   }
                 ],
-                "ID": "37f4e203-f7ca-415b-a01f-6a137c4ab942"
+                "ID": "ac84ff69-414e-46f4-84c6-6b6f9bd83adb"
               },
               {
                 "CommandList": [
@@ -757,7 +866,7 @@
                     "LoadBindingDataOption": 1
                   }
                 ],
-                "ID": "5830e36a-f5d6-44de-b840-7799785903c3"
+                "ID": "02546a02-1310-4f08-a22a-ea3cc9d49d00"
               }
             ]
           }
@@ -855,7 +964,7 @@
                                 }
                               }
                             },
-                            "ID": "dfbdbf99119d472981c9db588e7d6c93"
+                            "ID": "1e456113d35640858d58d00c50213b2c"
                           },
                           {
                             "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
@@ -885,7 +994,7 @@
                                 }
                               }
                             },
-                            "ID": "2bffcbf20b9641c59f8f70f3944669b8"
+                            "ID": "db00589dc31c480a8a0ba1ed2e5c1f1e"
                           },
                           {
                             "$type": "Forguncy.Model.ShareCommand, ServerDesignerCommon",
@@ -941,7 +1050,7 @@
                             "ReturnPropertiesTo": []
                           }
                         ],
-                        "ID": "77949f96-759d-4266-8072-f9e4ac16ae30"
+                        "ID": "8bb012f7-e3f5-4102-937d-7e6f9416dd85"
                       },
                       {
                         "Condition": {
@@ -961,7 +1070,7 @@
                             "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
                             "ParameterName": "タブ番号",
                             "ParameterValue": "10",
-                            "ID": "25b3d56bb81a4bebb40d27d0b5ce6a72"
+                            "ID": "47b3fb92886d492daed1602f9c8d4ed5"
                           },
                           {
                             "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
@@ -991,7 +1100,7 @@
                                 }
                               }
                             },
-                            "ID": "e565ef588b0f403da8f729f72327612b"
+                            "ID": "e5ccb63c294b43659f40f32a16d1702b"
                           },
                           {
                             "$type": "Forguncy.Model.ShareCommand, ServerDesignerCommon",
@@ -1047,12 +1156,12 @@
                             "ReturnPropertiesTo": []
                           }
                         ],
-                        "ID": "edcbdbde-3d16-4a96-8023-af99b3339580"
+                        "ID": "fa62ad70-5167-4335-8daf-079cbeb58dd9"
                       }
                     ]
                   }
                 ],
-                "ID": "35845292-a37b-4d21-9212-b3c6a1cd24df"
+                "ID": "8142bc0f-78a5-48eb-90a6-13d45b5a101d"
               }
             ]
           }
@@ -1177,6 +1286,22 @@
             "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
             "Formula": {
               "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+              "SerializeProperty": "=AND(タスク検索リスト!B2=1,タスク検索リスト!H2<TODAY(),VALUE(タスク検索リスト!I2)=0)"
+            },
+            "StyleInfo": {
+              "BorderRight": "Background 1 -15|1",
+              "BorderBottom": "Background 1 -15|1",
+              "Background": "#FFE5FFF0",
+              "Foreground": "#FFFF0000",
+              "Underline": null,
+              "Strikethrough": null
+            },
+            "StopIfTrue": true
+          },
+          {
+            "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
+            "Formula": {
+              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
               "SerializeProperty": "=タスク検索リスト!B2=1"
             },
             "StyleInfo": {
@@ -1224,6 +1349,22 @@
       },
       "ConditionFormatRulesCollection": {
         "Rules": [
+          {
+            "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
+            "Formula": {
+              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+              "SerializeProperty": "=AND(タスク検索リスト!B2=1,VALUE(タスク検索リスト!I2)=0)"
+            },
+            "StyleInfo": {
+              "BorderRight": "Background 1 -15|1",
+              "BorderBottom": "Background 1 -15|1",
+              "Background": "#FFE5FFF0",
+              "Foreground": "Accent 4 0",
+              "Underline": null,
+              "Strikethrough": null
+            },
+            "StopIfTrue": true
+          },
           {
             "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
             "Formula": {
@@ -1527,12 +1668,12 @@
                             }
                           }
                         ],
-                        "ID": "6269ea24-d55d-4fb7-b40a-0e7f5cb9bc14"
+                        "ID": "1176a844-c1f7-4277-8043-e7c082d22dca"
                       }
                     ]
                   }
                 ],
-                "ID": "85bdec1d-d3bd-4cd4-9115-95e23f33e068"
+                "ID": "f655d9e8-2174-4018-959a-fd324ae6e9c1"
               }
             ]
           }
@@ -1611,6 +1752,406 @@
               }
             ],
             "UpdateRowType": 2
+          }
+        ],
+        "TemplateKey": "_RS_Normal_Style2"
+      }
+    },
+    "4,42": {
+      "CellType": {
+        "$type": "Forguncy.ButtonCellType, ServerDesignerCommon",
+        "CommandList": [
+          {
+            "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+            "ParameterName": "取得カウント",
+            "TableValue": {
+              "TableName": "t_task",
+              "TableValueType": 3,
+              "SqlCondition": {
+                "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                "Condition1": {
+                  "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                  "Condition1": {
+                    "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                    "Condition1": {
+                      "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                      "Condition1": {
+                        "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                        "CompareType": 5,
+                        "ColumnBindingInfo": {
+                          "TableName": "t_task",
+                          "ColumnName": "processed_flg"
+                        },
+                        "Value": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=タスク検索リスト!T8"
+                        }
+                      },
+                      "Condition2": {
+                        "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                        "CompareType": 5,
+                        "ColumnBindingInfo": {
+                          "TableName": "t_task",
+                          "ColumnName": "processed_flg"
+                        },
+                        "Value": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=タスク検索リスト!T11"
+                        }
+                      }
+                    },
+                    "Condition2": {
+                      "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                      "CompareType": 4,
+                      "ColumnBindingInfo": {
+                        "TableName": "t_task",
+                        "ColumnName": "deadline"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=タスク検索リスト!T14"
+                      }
+                    }
+                  },
+                  "Condition2": {
+                    "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                    "Condition1": {
+                      "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                      "Condition1": {
+                        "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                        "Condition1": {
+                          "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                          "Condition1": {
+                            "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                            "Condition1": {
+                              "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                              "Condition1": {
+                                "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                                "CompareType": 6,
+                                "ColumnBindingInfo": {
+                                  "TableName": "t_task",
+                                  "ColumnName": "oparete_user_id",
+                                  "RelationBinding": {
+                                    "RelatedTable": "m_user",
+                                    "RelatedColumn": "user_id",
+                                    "DisplayColumn": "user_name"
+                                  }
+                                },
+                                "Value": {
+                                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                  "SerializeProperty": "=タスク検索リスト!検索ワード1"
+                                },
+                                "LeftBracket": 1
+                              },
+                              "Condition2": {
+                                "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                                "CompareType": 6,
+                                "ColumnBindingInfo": {
+                                  "TableName": "t_task",
+                                  "ColumnName": "task_type_id",
+                                  "RelationBinding": {
+                                    "RelatedTable": "m_task_type",
+                                    "RelatedColumn": "task_type_id",
+                                    "DisplayColumn": "task_type_name"
+                                  }
+                                },
+                                "Value": {
+                                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                  "SerializeProperty": "=タスク検索リスト!検索ワード1"
+                                }
+                              },
+                              "RelationType": 1
+                            },
+                            "Condition2": {
+                              "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                              "CompareType": 6,
+                              "ColumnBindingInfo": {
+                                "TableName": "t_task",
+                                "ColumnName": "task_content"
+                              },
+                              "Value": {
+                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                "SerializeProperty": "=タスク検索リスト!検索ワード1"
+                              }
+                            },
+                            "RelationType": 1
+                          },
+                          "Condition2": {
+                            "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                            "CompareType": 6,
+                            "ColumnBindingInfo": {
+                              "TableName": "t_task",
+                              "ColumnName": "object_order_id",
+                              "RelationBinding": {
+                                "RelatedTable": "t_object_order",
+                                "RelatedColumn": "object_order_id",
+                                "DisplayColumn": "object_id",
+                                "NextRelationBinding": {
+                                  "RelatedTable": "t_object",
+                                  "RelatedColumn": "object_id",
+                                  "DisplayColumn": "物件番号"
+                                }
+                              }
+                            },
+                            "Value": {
+                              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                              "SerializeProperty": "=タスク検索リスト!検索ワード1"
+                            }
+                          },
+                          "RelationType": 1
+                        },
+                        "Condition2": {
+                          "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                          "CompareType": 6,
+                          "ColumnBindingInfo": {
+                            "TableName": "t_task",
+                            "ColumnName": "object_order_id",
+                            "RelationBinding": {
+                              "RelatedTable": "t_object_order",
+                              "RelatedColumn": "object_order_id",
+                              "DisplayColumn": "object_id",
+                              "NextRelationBinding": {
+                                "RelatedTable": "t_object",
+                                "RelatedColumn": "object_id",
+                                "DisplayColumn": "物件名"
+                              }
+                            }
+                          },
+                          "Value": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=タスク検索リスト!検索ワード1"
+                          }
+                        },
+                        "RelationType": 1
+                      },
+                      "Condition2": {
+                        "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                        "CompareType": 6,
+                        "ColumnBindingInfo": {
+                          "TableName": "t_task",
+                          "ColumnName": "object_order_id",
+                          "RelationBinding": {
+                            "RelatedTable": "t_object_order",
+                            "RelatedColumn": "object_order_id",
+                            "DisplayColumn": "group_id",
+                            "NextRelationBinding": {
+                              "RelatedTable": "m_group",
+                              "RelatedColumn": "group_id",
+                              "DisplayColumn": "group_name"
+                            }
+                          }
+                        },
+                        "Value": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=タスク検索リスト!検索ワード1"
+                        }
+                      },
+                      "RelationType": 1
+                    },
+                    "Condition2": {
+                      "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                      "CompareType": 6,
+                      "ColumnBindingInfo": {
+                        "TableName": "t_task",
+                        "ColumnName": "object_order_id",
+                        "RelationBinding": {
+                          "RelatedTable": "t_object_order",
+                          "RelatedColumn": "object_order_id",
+                          "DisplayColumn": "builder_id",
+                          "NextRelationBinding": {
+                            "RelatedTable": "m_customer",
+                            "RelatedColumn": "customer_id",
+                            "DisplayColumn": "customer_abbr"
+                          }
+                        }
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=タスク検索リスト!検索ワード1"
+                      },
+                      "RightBracket": 1
+                    },
+                    "RelationType": 1
+                  }
+                },
+                "Condition2": {
+                  "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                  "Condition1": {
+                    "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                    "Condition1": {
+                      "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                      "Condition1": {
+                        "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                        "Condition1": {
+                          "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                          "Condition1": {
+                            "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                            "Condition1": {
+                              "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                              "CompareType": 6,
+                              "ColumnBindingInfo": {
+                                "TableName": "t_task",
+                                "ColumnName": "oparete_user_id",
+                                "RelationBinding": {
+                                  "RelatedTable": "m_user",
+                                  "RelatedColumn": "user_id",
+                                  "DisplayColumn": "user_name"
+                                }
+                              },
+                              "Value": {
+                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                "SerializeProperty": "=タスク検索リスト!検索ワード2"
+                              },
+                              "LeftBracket": 1
+                            },
+                            "Condition2": {
+                              "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                              "CompareType": 6,
+                              "ColumnBindingInfo": {
+                                "TableName": "t_task",
+                                "ColumnName": "task_type_id",
+                                "RelationBinding": {
+                                  "RelatedTable": "m_task_type",
+                                  "RelatedColumn": "task_type_id",
+                                  "DisplayColumn": "task_type_name"
+                                }
+                              },
+                              "Value": {
+                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                "SerializeProperty": "=タスク検索リスト!検索ワード2"
+                              }
+                            },
+                            "RelationType": 1
+                          },
+                          "Condition2": {
+                            "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                            "CompareType": 6,
+                            "ColumnBindingInfo": {
+                              "TableName": "t_task",
+                              "ColumnName": "task_content"
+                            },
+                            "Value": {
+                              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                              "SerializeProperty": "=タスク検索リスト!検索ワード2"
+                            }
+                          },
+                          "RelationType": 1
+                        },
+                        "Condition2": {
+                          "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                          "CompareType": 6,
+                          "ColumnBindingInfo": {
+                            "TableName": "t_task",
+                            "ColumnName": "object_order_id",
+                            "RelationBinding": {
+                              "RelatedTable": "t_object_order",
+                              "RelatedColumn": "object_order_id",
+                              "DisplayColumn": "object_id",
+                              "NextRelationBinding": {
+                                "RelatedTable": "t_object",
+                                "RelatedColumn": "object_id",
+                                "DisplayColumn": "物件番号"
+                              }
+                            }
+                          },
+                          "Value": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=タスク検索リスト!検索ワード2"
+                          }
+                        },
+                        "RelationType": 1
+                      },
+                      "Condition2": {
+                        "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                        "CompareType": 6,
+                        "ColumnBindingInfo": {
+                          "TableName": "t_task",
+                          "ColumnName": "object_order_id",
+                          "RelationBinding": {
+                            "RelatedTable": "t_object_order",
+                            "RelatedColumn": "object_order_id",
+                            "DisplayColumn": "object_id",
+                            "NextRelationBinding": {
+                              "RelatedTable": "t_object",
+                              "RelatedColumn": "object_id",
+                              "DisplayColumn": "物件名"
+                            }
+                          }
+                        },
+                        "Value": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=タスク検索リスト!検索ワード2"
+                        }
+                      },
+                      "RelationType": 1
+                    },
+                    "Condition2": {
+                      "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                      "CompareType": 6,
+                      "ColumnBindingInfo": {
+                        "TableName": "t_task",
+                        "ColumnName": "object_order_id",
+                        "RelationBinding": {
+                          "RelatedTable": "t_object_order",
+                          "RelatedColumn": "object_order_id",
+                          "DisplayColumn": "group_id",
+                          "NextRelationBinding": {
+                            "RelatedTable": "m_group",
+                            "RelatedColumn": "group_id",
+                            "DisplayColumn": "group_name"
+                          }
+                        }
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=タスク検索リスト!検索ワード2"
+                      }
+                    },
+                    "RelationType": 1
+                  },
+                  "Condition2": {
+                    "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                    "CompareType": 6,
+                    "ColumnBindingInfo": {
+                      "TableName": "t_task",
+                      "ColumnName": "object_order_id",
+                      "RelationBinding": {
+                        "RelatedTable": "t_object_order",
+                        "RelatedColumn": "object_order_id",
+                        "DisplayColumn": "builder_id",
+                        "NextRelationBinding": {
+                          "RelatedTable": "m_customer",
+                          "RelatedColumn": "customer_id",
+                          "DisplayColumn": "customer_abbr"
+                        }
+                      }
+                    },
+                    "Value": {
+                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                      "SerializeProperty": "=タスク検索リスト!検索ワード2"
+                    },
+                    "RightBracket": 1
+                  },
+                  "RelationType": 1
+                }
+              }
+            },
+            "ID": "a89afdc9c7354b9ea96a82dbcd4a7cc5"
+          },
+          {
+            "$type": "Forguncy.Model.SetCellPropertyCommand, ServerDesignerCommon",
+            "PropertyItemsList": [
+              {
+                "TargetCells": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=タスク検索リスト!該当カウント"
+                },
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=タスク検索リスト!取得カウント"
+                }
+              }
+            ]
           }
         ],
         "TemplateKey": "_RS_Normal_Style2"
@@ -1725,12 +2266,61 @@
                             }
                           }
                         ],
-                        "ID": "03b2a19f-3c90-4a08-b921-a5ba6247ffb8"
+                        "ID": "8b288c64-ba44-4f0e-ae73-0c838ad71288"
                       }
                     ]
                   }
                 ],
-                "ID": "a74d114e-3330-4b7b-a684-1e661ac744bc"
+                "ID": "039cb70c-0eab-400d-aa36-aa5053eef51f"
+              }
+            ]
+          }
+        ],
+        "CellDefaultValue": "0"
+      }
+    },
+    "10,34": {
+      "CellType": {
+        "$type": "Forguncy.TextCellType, ServerDesignerCommon",
+        "SavedValidators": [
+          {
+            "$type": "Forguncy.CellTypes.Models.UniqueValidadator, ServerDesignerCommon"
+          }
+        ],
+        "CommandList": [
+          {
+            "$type": "Forguncy.Model.OperateCellTypeCommand, ServerDesignerCommon",
+            "TargetPageElement": {
+              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+              "SerializeProperty": "=タスク検索リスト!タスク件数取得ボタン"
+            },
+            "TargetType": "Forguncy.ButtonCellType, ServerDesignerCommon, Version=8.0.41.0, Culture=neutral, PublicKeyToken=967100671921c115",
+            "MethodName": "ExecuteCommand",
+            "ParameterValues": {},
+            "RetrunParamNames": {}
+          },
+          {
+            "$type": "Forguncy.Model.UpdateListviewCommand, ServerDesignerCommon",
+            "UpdateType": 6,
+            "ListviewName": "タスクビュー",
+            "UpdateListviewCommandRunTimeMethodSetting": {
+              "MethodName": "Reload",
+              "ParameterValues": {
+                "clearFilter": true,
+                "clearSort": true
+              },
+              "RetrunParamNames": {}
+            }
+          },
+          {
+            "$type": "Forguncy.Model.SetCellPropertyCommand, ServerDesignerCommon",
+            "PropertyItemsList": [
+              {
+                "TargetCells": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=タスク検索リスト!最新化フラグ"
+                },
+                "Value": "0"
               }
             ]
           }
@@ -1884,6 +2474,12 @@
         "HorizontalAlignment": 12
       },
       {
+        "Background": 11,
+        "FontFamily": 0,
+        "Formatter": 9,
+        "HorizontalAlignment": 12
+      },
+      {
         "BorderTop": 1
       },
       {
@@ -2011,6 +2607,9 @@
       "3,19": 4,
       "3,20": 1,
       "3,21": 1,
+      "3,42": 4,
+      "3,43": 1,
+      "3,44": 1,
       "4,1": 19,
       "4,2": 19,
       "4,3": 19,
@@ -2033,6 +2632,9 @@
       "4,21": 1,
       "4,26": 21,
       "4,34": 21,
+      "4,42": 1,
+      "4,43": 1,
+      "4,44": 1,
       "5,1": 19,
       "5,2": 19,
       "5,3": 19,
@@ -2067,6 +2669,9 @@
       "6,15": 19,
       "6,16": 19,
       "6,17": 19,
+      "6,42": 4,
+      "6,43": 1,
+      "6,44": 1,
       "7,1": 19,
       "7,2": 19,
       "7,3": 19,
@@ -2087,6 +2692,9 @@
       "7,19": 21,
       "7,26": 21,
       "7,34": 22,
+      "7,42": 20,
+      "7,43": 1,
+      "7,44": 1,
       "8,1": 19,
       "8,2": 19,
       "8,3": 19,
@@ -2127,6 +2735,9 @@
       "9,19": 4,
       "9,20": 1,
       "9,21": 1,
+      "9,34": 1,
+      "9,35": 1,
+      "9,36": 1,
       "10,1": 19,
       "10,2": 19,
       "10,3": 19,
@@ -2147,6 +2758,9 @@
       "10,19": 20,
       "10,20": 1,
       "10,21": 1,
+      "10,34": 23,
+      "10,35": 1,
+      "10,36": 1,
       "11,1": 19,
       "11,2": 19,
       "11,3": 19,
@@ -2272,6 +2886,9 @@
       "17,15": 19,
       "17,16": 19,
       "17,17": 19,
+      "17,19": 1,
+      "17,20": 1,
+      "17,21": 1,
       "18,1": 19,
       "18,2": 19,
       "18,3": 19,
@@ -2289,35 +2906,35 @@
       "18,15": 19,
       "18,16": 19,
       "18,17": 19,
-      "19,1": 23,
-      "19,2": 23,
-      "19,3": 23,
-      "19,4": 23,
-      "19,5": 23,
-      "19,6": 23,
-      "19,7": 23,
-      "19,8": 23,
-      "19,9": 23,
-      "20,9": 24
+      "19,1": 24,
+      "19,2": 24,
+      "19,3": 24,
+      "19,4": 24,
+      "19,5": 24,
+      "19,6": 24,
+      "19,7": 24,
+      "19,8": 24,
+      "19,9": 24,
+      "20,9": 25
     },
     "ColStyles": {
-      "1": 25,
-      "2": 25,
-      "3": 25,
-      "4": 25,
-      "5": 25,
-      "6": 25,
-      "7": 25,
-      "8": 25,
-      "9": 25,
-      "10": 25,
-      "11": 25,
-      "12": 25,
-      "13": 25,
-      "14": 25,
-      "15": 25,
-      "16": 25,
-      "17": 25
+      "1": 26,
+      "2": 26,
+      "3": 26,
+      "4": 26,
+      "5": 26,
+      "6": 26,
+      "7": 26,
+      "8": 26,
+      "9": 26,
+      "10": 26,
+      "11": 26,
+      "12": 26,
+      "13": 26,
+      "14": 26,
+      "15": 26,
+      "16": 26,
+      "17": 26
     },
     "SheetStyle": {
       "FontFamily": 0
@@ -2338,11 +2955,26 @@
     "1,34,1,3",
     "7,26,1,3",
     "1,42,1,3",
-    "1,47,1,3"
+    "1,47,1,3",
+    "4,42,1,3",
+    "7,42,1,3",
+    "20,1,1,5",
+    "10,34,1,3"
   ],
   "PageInfo": {
     "$type": "Forguncy.Model.Pages.NormalPage, ServerDesignerCommon",
     "PageLoadedCommandList": [
+      {
+        "$type": "Forguncy.Model.OperateCellTypeCommand, ServerDesignerCommon",
+        "TargetPageElement": {
+          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+          "SerializeProperty": "=タスク検索リスト!タスク件数取得ボタン"
+        },
+        "TargetType": "Forguncy.ButtonCellType, ServerDesignerCommon, Version=8.0.41.0, Culture=neutral, PublicKeyToken=967100671921c115",
+        "MethodName": "ExecuteCommand",
+        "ParameterValues": {},
+        "RetrunParamNames": {}
+      },
       {
         "$type": "LoadingCommand.EndLoadingCommand, LoadingCommand"
       }
@@ -2391,6 +3023,18 @@
     {
       "Name": "全解除ボタン",
       "Formula": "タスク検索リスト!$AV$2"
+    },
+    {
+      "Name": "該当カウント",
+      "Formula": "タスク検索リスト!$AQ$8"
+    },
+    {
+      "Name": "タスク件数取得ボタン",
+      "Formula": "タスク検索リスト!$AQ$5"
+    },
+    {
+      "Name": "最新化フラグ",
+      "Formula": "タスク検索リスト!$AI$11"
     }
   ]
-}//tGOjJXm7b1PSg8XIyBSR7+I4IABkQk13J4qiDgKfopGhNoI4ojjFHqFBiiDpNcMn1+evpXR097tfBLiCSx3TGYchVrn+u54qMGQeHqRjEPpulsIiRrvY0MfL09KAwSg28cgT/Kg+TxpkuiOjaMSuERWRq0HCm6wVmoidiRhszb2wiSEhxw/bvMab7cXR4Tewa/81sUzPshXSFd91Cfz2uM0uodERHoIiL2dmunmPAOJCUop1zLlJDokT6/GJipeu9TaX3DdWQnNOsDcsKgt/nQ0e0FpPzYCrTDHrvSIanY1QzyOiL7yV9rIikimWEDkL+e2SBhvzEdlK8oifslkzOXceG6WYOiUHviIXG5SRAaLx7V91g0tNIstcDf64c9Gc1tKonAL/SdVB2DjlNc5iHDWuNgs4pwLeEFrN06bGkIOlqjxrHmCDz0dEWquIXfuv76OgC1+1guqk1UhOVFfz5P5IIbMJOa7XL6Wl4K/qWfL7qHy3xPlnDim79KAu2JlljgVSEwXANdyCQIYlT5JzRLdBM23+tflHdeJjGLi7w4gOXa1902BCGHnytdr3i9D6+XwTOUtPG8QcIGCEJo6d9jnguAPzvdEKzqZCXxRf0NxlUVrL4jAlYHcUvRsUXYMlDJwtPAIH3DgVWMD85ZL1eghZLM9vMDynZyyjigizvakpweLdVOImIs8OV5LZkv+Bea5xKI0WobWs76dBnRAvHXJhZmRAtGmyZpDOXpNtwSmqJfAMoH8fYxQ5xZoEQmeXFV3kEC3BzsJbsPFjSgXzScSuvBMS9iT1ESghdq4M2bcKkMf95XMYoDpVa28kUvxlvi1s9TLF3IRAA8g2TsSd9IPsx9R9/a9vYChA+sowHMCYhw93aeGkpu8o889fLyZWufWWSAc2RWmku1Oxd5ZRvw==|920
+}///jRRL9agZ8AgFcTCo3AHegpz1QDtkk6TrXpGPYbeOllgnOPWXWpNXIVw9J3Ogwrjzhq5YT2ZdqDGTSmXyLWWqtdRNho5kBpwf7v5pvysME0AtgdCUMt0C6IJDfNYBDSvIPMZoU4ME5zr1Q8wIH8Yqz16zsEGfo4fdbzbOtvt7s5yx6NkedGLGAL/TieZqoVzgLx9P61mgelmF19x3At3W+xtrACUvSWtXjzf9KnMD4mHTyPZtAQc+d5tKWJdeqNbPqbSkdZoDwau46m9IJAbyAvALBkoCk/KC2iCEJZ3xHNzYVwDnbi/DROHl/PCwEMJHt6fyRYm9JceMGv7iJQAH0CGnTMP58TF0/D9OWBvIvLmS8uXfGtDPWn8+6p/BSMGurNDvDjj/fKQCrDK56WwdIpOt3s/2Rf8BfJYfd8iVTSDGcOCDq+BptFKV31Jb6TZfZRP1DGiD2W2delda4yk9VmaDdBjRfb6bcCVLXAILJ/Yr4jRjbo/V/xL7v2JsGR/FI1WJzcU9TTsLb/qr/Ktvz5LOs8zyTXwhX5aTyitoIc90P2H4p+uukz7B1Fr0qP5OLHP+J7W2cpHEFicWB1FB5vHcZ8ls9dt5hiMymc8pXmWYuLwXC73JlIlTMj0bZiFOGBjzIItGizVhcWICgqywTfCzGjTtupIKmFUlifZyBP22QJOWFwHLFhWbIhiWFWTWFEqLCQdSy9M6sYwRCVw5j0wPIRx93PS0GtgSWt/Wry3NKkGMiCX0jRmHqIsYGjG5M5NBLB5bAjTJqOpgo+Jac7+cVxCkEcGaHtXRr1FPxr+Ihr4SriOwoCrt6HdMMcJMi2BvaWEYN2p46f1W9depJqolo69Dq8zY3+xwF1Dv7UvehrXmFZsc/BjQCYSChSpPEIRXF0JDL7bh1DEbG0BGg==|920
