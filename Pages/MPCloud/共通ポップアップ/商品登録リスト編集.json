@@ -239,6 +239,7 @@
     "3,18": "請求先名",
     "3,31": "売上金額",
     "3,37": "粗利益",
+    "3,42": "マスタ単価比較",
     "3,49": "編集",
     "3,51": "更新",
     "4,2": "確定日",
@@ -246,6 +247,7 @@
     "4,18": "支払先名",
     "4,31": "仕入金額",
     "4,37": "粗利率",
+    "4,42": "マスタ原価比較",
     "5,90": "▼調査フラグ",
     "5,94": "▼測量フラグ",
     "5,98": "▼解析フラグ",
@@ -274,15 +276,17 @@
     "9,56": "COUNTIF(BE5,\"<>\")",
     "6,102": "IF(CY4<>\"\",1,0)",
     "9,61": "SUM(BL5)",
-    "4,74": "IF(BU5=0,\"マスタ単価以外\",IF(BV5=1,\"マスタ単価済み\",\"マスタ単価設定\"))",
+    "4,74": "IF(BU5=0,\"設定無し\",IF(BV5=1,\"編集済み\",\"設定通り\"))",
     "6,98": "IF(CU4<>\"\",1,0)",
     "6,90": "IF(CM4<>\"\",1,0)",
     "17,10": "\"仕入合計：\\\"&TEXT(BO10,\"#,##0\")",
     "17,2": "\"売上合計：\\\"&TEXT(BJ10,\"#,##0\")",
-    "4,78": "IF(AND(BY5<>\"\",BZ5<>\"\"),TEXT(BZ5,\"yyyy/mm/dd hh:mm\")&\" \"&BY5,\"\")",
+    "4,77": "IF(AND(BX5<>\"\",BY5<>\"\"),TEXT(BY5,\"yyyy/mm/dd hh:mm\")&\"　\"&BX5,\"\")",
     "6,106": "IF(DC4<>\"\",1,0)",
     "4,71": "IF(BR5<>\"\",\"確定\",\"\")",
-    "17,18": "\"粗利益：\\\"&TEXT(BJ10-BO10,\"#,##0\")"
+    "17,18": "\"粗利益：\\\"&TEXT(BJ10-BO10,\"#,##0\")",
+    "4,81": "IF(CB5=0,\"設定無し\",IF(CC5=1,\"編集済み\",\"設定通り\"))",
+    "4,84": "IF(AND(CE5<>\"\",CF5<>\"\"),TEXT(CF5,\"yyyy/mm/dd hh:mm\")&\"　\"&CE5,\"\")"
   },
   "AttachInfos": {
     "3,56": {
@@ -291,7 +295,7 @@
         "TableName": "t_object_product",
         "RowIndex": 3,
         "ColumnIndex": 56,
-        "ColumnCount": 27,
+        "ColumnCount": 29,
         "RowCount": 4,
         "SelectionMode": 1,
         "IsSingleSelection": true,
@@ -513,7 +517,7 @@
     "4,74": {
       "NameUsedInJavaScript": "マスタ単価ラベル"
     },
-    "4,76": {
+    "4,75": {
       "BindingInfo": {
         "TableName": "t_object_product",
         "ColumnName": "change_price_user_id",
@@ -524,13 +528,13 @@
         }
       }
     },
-    "4,77": {
+    "4,76": {
       "BindingInfo": {
         "TableName": "t_object_product",
         "ColumnName": "change_price_updated"
       }
     },
-    "4,78": {
+    "4,77": {
       "NameUsedInJavaScript": "単価変更ユーザーラベル"
     },
     "4,79": {
@@ -539,6 +543,36 @@
         "ColumnName": "get_master_cost_flg"
       },
       "NameUsedInJavaScript": "マスタ原価取得フラグ"
+    },
+    "4,80": {
+      "BindingInfo": {
+        "TableName": "t_object_product",
+        "ColumnName": "change_master_cost_flg"
+      },
+      "NameUsedInJavaScript": "マスタ原価変更フラグ"
+    },
+    "4,81": {
+      "NameUsedInJavaScript": "マスタ原価ラベル"
+    },
+    "4,82": {
+      "BindingInfo": {
+        "TableName": "t_object_product",
+        "ColumnName": "change_cost_user_id",
+        "RelationBinding": {
+          "RelatedTable": "m_user",
+          "RelatedColumn": "user_id",
+          "DisplayColumn": "user_name"
+        }
+      }
+    },
+    "4,83": {
+      "BindingInfo": {
+        "TableName": "t_object_product",
+        "ColumnName": "change_cost_updated"
+      }
+    },
+    "4,84": {
+      "NameUsedInJavaScript": "原価変更ユーザーラベル"
     },
     "5,2": {
       "CellType": {
@@ -877,7 +911,11 @@
                     "ResultMessageTo": {
                       "SerializeProperty": "リターンメッセージ"
                     },
+                    "RefreshAfterFinish": true,
                     "CheckDataValidation": false
+                  },
+                  {
+                    "$type": "LoadingCommand.EndLoadingCommand, LoadingCommand"
                   },
                   {
                     "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
@@ -893,17 +931,9 @@
                               }
                             ]
                           },
-                          "value": "0"
+                          "value": "0",
+                          "compareType": 1
                         },
-                        "CommandList": [
-                          {
-                            "$type": "Forguncy.Model.ClosePopupCommand, ServerDesignerCommon",
-                            "ReloadData": true
-                          }
-                        ],
-                        "ID": "1c7c8f58-c341-4edb-8a0e-439a0a304e1e"
-                      },
-                      {
                         "CommandList": [
                           {
                             "$type": "Forguncy.Model.ShowMessageCommand, ServerDesignerCommon",
@@ -911,17 +941,14 @@
                               "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
                               "SerializeProperty": "=商品登録リスト編集!リターンメッセージ"
                             }
-                          },
-                          {
-                            "$type": "LoadingCommand.EndLoadingCommand, LoadingCommand"
                           }
                         ],
-                        "ID": "e1554faa-a634-4f3c-abbe-41f58834feb0"
+                        "ID": "1a250a74-4174-45a1-ab01-0e641938c37e"
                       }
                     ]
                   }
                 ],
-                "ID": "27cf37c0-7e21-4078-bed8-4d1604d6434c"
+                "ID": "21328a00-7868-4ea7-a78b-4a98d491a1ca"
               }
             ]
           }
@@ -1294,12 +1321,12 @@
       "3,40": 9,
       "3,41": 10,
       "3,42": 8,
-      "3,43": 8,
-      "3,44": 8,
-      "3,45": 8,
-      "3,46": 8,
-      "3,47": 8,
-      "3,48": 8,
+      "3,43": 9,
+      "3,44": 9,
+      "3,45": 9,
+      "3,46": 9,
+      "3,47": 9,
+      "3,48": 9,
       "3,49": 11,
       "3,50": 12,
       "3,51": 13,
@@ -1318,6 +1345,9 @@
       "3,70": 2,
       "3,71": 2,
       "3,73": 2,
+      "3,75": 2,
+      "3,76": 2,
+      "3,77": 2,
       "3,90": 14,
       "3,91": 2,
       "3,92": 2,
@@ -1375,12 +1405,6 @@
       "4,37": 19,
       "4,41": 12,
       "4,42": 19,
-      "4,43": 19,
-      "4,44": 19,
-      "4,45": 19,
-      "4,46": 19,
-      "4,47": 19,
-      "4,48": 19,
       "4,49": 20,
       "4,50": 12,
       "4,54": 2,
@@ -1401,6 +1425,11 @@
       "4,71": 2,
       "4,73": 2,
       "4,74": 2,
+      "4,75": 2,
+      "4,76": 2,
+      "4,77": 2,
+      "4,81": 2,
+      "4,84": 2,
       "4,90": 2,
       "4,91": 2,
       "4,92": 2,
@@ -1576,8 +1605,6 @@
       "8,87": 1,
       "8,88": 1,
       "8,89": 2,
-      "8,90": 2,
-      "8,92": 1,
       "8,93": 2,
       "8,94": 2,
       "8,96": 1,
@@ -1608,8 +1635,6 @@
       "9,87": 1,
       "9,88": 1,
       "9,89": 2,
-      "9,90": 2,
-      "9,92": 1,
       "9,93": 2,
       "9,94": 2,
       "9,96": 1,
@@ -1741,25 +1766,6 @@
       "12,105": 2,
       "12,106": 2,
       "13,53": 26,
-      "13,56": 27,
-      "13,57": 27,
-      "13,58": 27,
-      "13,59": 2,
-      "13,60": 2,
-      "13,61": 27,
-      "13,62": 27,
-      "13,63": 27,
-      "13,64": 2,
-      "13,65": 2,
-      "13,66": 27,
-      "13,67": 27,
-      "13,68": 27,
-      "13,69": 2,
-      "13,70": 2,
-      "13,71": 2,
-      "13,72": 27,
-      "13,73": 27,
-      "13,74": 27,
       "13,77": 1,
       "13,78": 1,
       "13,79": 1,
@@ -1991,9 +1997,11 @@
     "6,106,1,3",
     "6,110,1,3",
     "17,47,1,6",
-    "5,56,2,27",
     "17,18,1,8",
-    "17,40,1,6"
+    "17,40,1,6",
+    "5,56,2,29",
+    "3,42,1,7",
+    "4,42,1,7"
   ],
   "PageInfo": {
     "$type": "Forguncy.Model.Pages.NormalPage, ServerDesignerCommon",
@@ -2035,4 +2043,4 @@
       "Formula": "商品登録リスト編集!$DG$7"
     }
   ]
-}//uHMiDPZuzVFR5hwL9nz7FYAGyqnVuq7NWmjO0ME/eBLIu0NFUbbjsmJkVU8EjAhywVNDh9mZpniiSaxY9r8Gf3GWTqyINi02oyffCkvh1xiWaX/6Teoww22U9kiTC1Fr/24R9DVpHZmh0ZDPDkB6+XBL/y2iZekvbz1/u0WGThhMiNtJ+kux5hNY3g8B4c3QghCaNqHSu5jO7VCzD5iKW92IKvJuwQi9VF8xo6FV5MDiTcsWyXW4U4ds3KIFD4BWlyH06fGtOMPV0yjfqDLM3bZyqze7WCVl54TI5D70dFoUDyFkZLydmVLX5IeuBoe2lhAh3dcFXZx0y1ZYrKbDn5LbpWTNglMmTESeJYbtDf3OjZfSy/JcodLFiVawNowjEOSgcBKjckeZehCMBwShqfojHVhKfrwPsqXrAx9HJ+nDtbHmVT+LTSLhPIEOoqQRMqKzPOvnb/m9J6gJjtmDt3gbeS3ih4Mze3E/tIkcVOL+W3Lo3AjjwlUSMw23XTNDgUBHNQf+nZGk3I4J5It8dUNDdi5ImvOIVGgBLzHyewFA/S60IJE17L99aC9rvjsIWtu0MNz1MDdUOrjLhLelsDWu5bCMUlJM25CJNCvzEZAKxLGZGE15+s8jbfHQHvHdNQ1UQJVadDkNl9Kvr2sVBgsJsA1ovQjfmvWRlGlyOXvSgPxxLDdKskzhuPbDcXrXIIkKcK4ANA7Upuf0odZAudPhh35Iu7G02x0JV5d1cYSImV8qc9XNU3R90pxMn8gxf4RjcS6Nx3WTaGfa8RkEq7tfHIkd67IpOtKK3jQZYrFnClMkOjkGGufFoklXXZsznSVTm6msUTL2oxfL1TCusbZwse2msxxUehpxb/DayfG5ZyPZ2nPmpoEYVzfUZ+XZlO0UpNL7lBq1p52DBLsEyA==|920
+}//h6JeeFR6TBc6SIfxrRenj4NchqXpVNjhVWFlcg9/GwHQDF1gb9Gfv7QUVWoqpY8LTvqB4G0mWST46V1x2dm6NuumdrNdgPJOKQ3pQi9CWWUIUh4EP59gZpyBwzHuubw8WxwaTwp7WWKS7PhcHyITTWmISTywUBMulxcZn80+4eCFpg+pu8yYzkJJ+pYaYABdRADtymzjoVKqc0L4JdegtAmJOI+aXNI9VTm94qFHyr2uOcwyXYkS7gz5YT+I4MUP9qEmcnXbchokPxXKswSS3yF6HU2H8XqQCOu/yskKbdL5Tq3Kg3eabuwqf+pwzy23Xr7MtofHwOsHgh5pP1KMvetXLdzM4JI2cmOIpdpE3zYTiKREnrgu5B4ssW8OWiFLHr4fyqQhSY6+7AoYCLb8HMo3Lf0ilHSypcRHCrij9JhFmGXmNJBAcHrFLc8B7gCWSHn4DUy93kNINc6wP36yaE+XmfXLdk4kFWCSVoAQu0yNFcMIxsAfyfbQODi6zOP7mPCWZ//zQr6aD7o+wa9h8CPHKMWX8QOoCX4H4oDnHpnIEe4noW1dQNZLNQpOHZiG4RcLiJzk9MJiWnEMkauGWSw24LmOOgUqY1+MrpMc1SEBhqmuDBSmQ11DpAR8LXiNK2SvZRVlHGkwa1VoWzKiD9VTI+smpcgH2LHkHeQBpA02HmfQxsgqUIoxcoq++3ZABIQsRd1GLL9UEt6QqV6cJgbpiv/Bwz/HIAaj4EZ9kgdxJVHgoXPmGRNExQYMtKBuljKjXTXAXNuuKA3kARV4tuAazLRVYRrzQnaWepyR3hvk7V+ezzChKP98i7XF/9isybB1LSz8NSVLCHqDV/LBavspaRAzbAN+ea14SvgUuvk2aqRksIqA7uSbnbRDTICbwtv4hCYs7lRa+ZRFN22rUA==|920
