@@ -15,23 +15,68 @@
   ],
   "Commands": [
     {
-      "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
-      "TableName": "m_customer_default",
-      "ShowConfirm": false,
-      "ConfirmText": "本当に更新してもよろしいですか？",
-      "RowsToUpdate": 1,
-      "RowsToUpdateCondition": {
-        "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
-        "ColumnBindingInfo": {
-          "TableName": "m_customer_default",
-          "ColumnName": "compaction_re_survey_flg"
-        },
-        "Value": "%Null%"
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "申込情報",
+      "TableValue": {
+        "TableName": "t_object_order",
+        "BindingInfos": [
+          {
+            "BindingInfo": {
+              "TableName": "t_object_order",
+              "ColumnName": "object_order_id"
+            },
+            "ColumnName": "申込ID"
+          }
+        ]
       },
-      "UpdateValues": [
+      "ID": "f255d0e6cc564bb790b7278368827544"
+    },
+    {
+      "$type": "Forguncy.Model.LoopCommand, ServerDesignerCommon",
+      "LoopInfo": {
+        "$type": "Forguncy.Model.CountLoopInfo, ServerDesignerCommon",
+        "LoopCount": {
+          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+          "SerializeProperty": "=申込情報"
+        },
+        "LoopItemParamName": "Item"
+      },
+      "CommandList": [
         {
-          "ColumnName": "compaction_re_survey_flg",
-          "Value": "0"
+          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+          "ParameterName": "ランダムID",
+          "ParameterValue": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=BASE(RANDBETWEEN(0,36^10-1),36,10)&BASE(RANDBETWEEN(0,36^10-1),36,10)"
+          },
+          "ID": "9cbcfa7f38e3477c8ca930b8835d186c"
+        },
+        {
+          "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+          "TableName": "t_object_order",
+          "ShowConfirm": false,
+          "ConfirmText": "本当に更新してもよろしいですか？",
+          "RowsToUpdate": 1,
+          "RowsToUpdateCondition": {
+            "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+            "ColumnBindingInfo": {
+              "TableName": "t_object_order",
+              "ColumnName": "object_order_id"
+            },
+            "Value": {
+              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+              "SerializeProperty": "=Item.申込ID"
+            }
+          },
+          "UpdateValues": [
+            {
+              "ColumnName": "random_id",
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=ランダムID"
+              }
+            }
+          ]
         }
       ]
     }
