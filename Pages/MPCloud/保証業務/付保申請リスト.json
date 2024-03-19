@@ -98,21 +98,11 @@
       },
       "19": {
         "GridRowColumnDefinition": {
-          "DesignLengthInPixel": 5.0
-        }
-      },
-      "20": {
-        "GridRowColumnDefinition": {
-          "DesignLengthInPixel": 25.0
-        }
-      },
-      "21": {
-        "GridRowColumnDefinition": {
-          "DesignLengthInPixel": 5.0
+          "DesignLengthInPixel": 30.0
         }
       }
     },
-    "Count": 22,
+    "Count": 20,
     "DefaultSize": 25.0
   },
   "Cols": {
@@ -229,23 +219,26 @@
     "0,29": "▼全解除ボタン",
     "3,16": "▼付保申請ボタン",
     "3,23": "▼付保解除ボタン",
+    "3,29": "▼件数取得ボタン",
     "6,16": "▼付保更新開始フラグ",
     "6,23": "▼付保申請日",
+    "6,29": "▼該当カウント",
     "7,16": "0",
     "9,16": "▼タブ番号",
-    "9,23": "▼付保ステータス条件",
-    "12,16": "▼保証ステータスID",
+    "9,23": "▼付保ステータスID",
+    "9,29": "▼クエリ条件（有効フラグ）",
+    "10,16": 7,
+    "10,29": 1,
+    "12,16": "▼付保申請待ちST",
     "12,23": "▼選択カウント",
     "12,29": "▼抽出カウント"
   },
   "Formulas": {
     "13,29": "COUNT(C2)",
     "1,2": "ROW(C2)",
-    "13,16": "IF(検索保証ステータスID=0,\"\",検索保証ステータスID)",
-    "10,16": "IF(参照タブ番号=0,\"\",参照タブ番号)",
     "10,23": "付保ステータス条件",
     "13,23": "COUNTIF(B2,1)",
-    "20,1": "\"表示データ件数：\"&TEXT(抽出カウント,\"#,##0\")&\"件\""
+    "19,1": "\"該当データ件数：\"&TEXT(該当カウント,\"#,##0\")&\"件　　表示データ件数：\"&TEXT(抽出カウント,\"#,##0\")&\"件\""
   },
   "AttachInfos": {
     "0,1": {
@@ -265,14 +258,33 @@
           "Condition1": {
             "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
             "Condition1": {
-              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
-              "ColumnBindingInfo": {
-                "TableName": "t_object_insurance",
-                "ColumnName": "insurance_status_id"
+              "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+              "Condition1": {
+                "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                "ColumnBindingInfo": {
+                  "TableName": "t_object_insurance",
+                  "ColumnName": "insurance_status_id"
+                },
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=付保申請リスト!X11"
+                }
               },
-              "Value": {
-                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                "SerializeProperty": "=付保申請リスト!X11"
+              "Condition2": {
+                "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                "ColumnBindingInfo": {
+                  "TableName": "t_object_insurance",
+                  "ColumnName": "object_order_id",
+                  "RelationBinding": {
+                    "RelatedTable": "t_object_order",
+                    "RelatedColumn": "object_order_id",
+                    "DisplayColumn": "active_flg"
+                  }
+                },
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=付保申請リスト!AD11"
+                }
               }
             },
             "Condition2": {
@@ -589,7 +601,26 @@
                     "ShareCommandContainerID": "2ddd4852-a0ed-4534-b1b2-3ee6fe2631b3"
                   }
                 },
-                "Value": "7"
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=付保申請リスト!Q11"
+                }
+              },
+              {
+                "ParamReferObject": {
+                  "ParamID": "cd7718e2-fa58-413e-a0d7-6d9c3b6a1e56",
+                  "ShareCommandContainerReferObject": {
+                    "ShareCommandContainerID": "2ddd4852-a0ed-4534-b1b2-3ee6fe2631b3"
+                  }
+                }
+              },
+              {
+                "ParamReferObject": {
+                  "ParamID": "0611339a-68ac-4277-a1f0-b79262f30f08",
+                  "ShareCommandContainerReferObject": {
+                    "ShareCommandContainerID": "2ddd4852-a0ed-4534-b1b2-3ee6fe2631b3"
+                  }
+                }
               }
             ],
             "ReturnPropertiesTo": []
@@ -986,7 +1017,7 @@
                     "$type": "Forguncy.Model.StopCommand, ServerDesignerCommon"
                   }
                 ],
-                "ID": "59072489-f2ce-42b5-9b7a-df96236e8f20"
+                "ID": "3c5f62ad-6f27-4618-b232-ea75ae1de020"
               }
             ]
           },
@@ -1053,7 +1084,7 @@
                     "$type": "Forguncy.Model.StopCommand, ServerDesignerCommon"
                   }
                 ],
-                "ID": "4d37197a-9c58-4c62-bac8-0475bc2ef967"
+                "ID": "3adce81c-38b2-444d-9491-f82a6b5d6eee"
               }
             ]
           },
@@ -1137,9 +1168,96 @@
                               }
                             ]
                           },
-                          "value": "0",
-                          "compareType": 1
+                          "value": "0"
                         },
+                        "CommandList": [
+                          {
+                            "$type": "Forguncy.Model.OperateCellTypeCommand, ServerDesignerCommon",
+                            "TargetPageElement": {
+                              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                              "SerializeProperty": "=付保申請リスト!付保件数取得ボタン"
+                            },
+                            "TargetType": "Forguncy.ButtonCellType, ServerDesignerCommon, Version=8.0.41.0, Culture=neutral, PublicKeyToken=967100671921c115",
+                            "MethodName": "ExecuteCommand",
+                            "ParameterValues": {},
+                            "RetrunParamNames": {}
+                          },
+                          {
+                            "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                            "ParameterName": "取得件数",
+                            "TableValue": {
+                              "TableName": "t_object_insurance",
+                              "TableValueType": 3,
+                              "SqlCondition": {
+                                "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                                "Condition1": {
+                                  "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                                  "ColumnBindingInfo": {
+                                    "TableName": "t_object_insurance",
+                                    "ColumnName": "insurance_status_id"
+                                  },
+                                  "Value": {
+                                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                    "SerializeProperty": "=付保申請リスト!$Q$14"
+                                  }
+                                },
+                                "Condition2": {
+                                  "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                                  "ColumnBindingInfo": {
+                                    "TableName": "t_object_insurance",
+                                    "ColumnName": "object_order_id",
+                                    "RelationBinding": {
+                                      "RelatedTable": "t_object_order",
+                                      "RelatedColumn": "object_order_id",
+                                      "DisplayColumn": "active_flg"
+                                    }
+                                  },
+                                  "Value": {
+                                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                    "SerializeProperty": "=付保申請リスト!$AD$11"
+                                  }
+                                }
+                              }
+                            },
+                            "ID": "0c77add4e93547eea2e95821c92e4542"
+                          },
+                          {
+                            "$type": "Forguncy.Model.ShareCommand, ServerDesignerCommon",
+                            "ShareCommandContainerRefer": {
+                              "ShareCommandContainerID": "1dd6dbdf-73bc-4267-a1c4-2a40740aee23"
+                            },
+                            "Params": [
+                              {
+                                "ParamReferObject": {
+                                  "ParamID": "e26e6dd4-3677-444b-b99b-52b41ae2be86",
+                                  "ShareCommandContainerReferObject": {
+                                    "ShareCommandContainerID": "1dd6dbdf-73bc-4267-a1c4-2a40740aee23"
+                                  }
+                                },
+                                "Value": {
+                                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                  "SerializeProperty": "=付保申請リスト!$Q$14"
+                                }
+                              },
+                              {
+                                "ParamReferObject": {
+                                  "ParamID": "7ffa2e5f-116a-47eb-8ef8-04e7c371a406",
+                                  "ShareCommandContainerReferObject": {
+                                    "ShareCommandContainerID": "1dd6dbdf-73bc-4267-a1c4-2a40740aee23"
+                                  }
+                                },
+                                "Value": {
+                                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                  "SerializeProperty": "=付保申請リスト!取得件数"
+                                }
+                              }
+                            ],
+                            "ReturnPropertiesTo": []
+                          }
+                        ],
+                        "ID": "7e2f3ae5-b985-45d7-8360-22d53f3df0a8"
+                      },
+                      {
                         "CommandList": [
                           {
                             "$type": "Forguncy.Model.ShowMessageCommand, ServerDesignerCommon",
@@ -1149,12 +1267,74 @@
                             }
                           }
                         ],
-                        "ID": "0ad673d4-2901-4951-966e-fbb70b092451"
+                        "ID": "96030dd8-a52b-473c-a4f8-3b97db6cb44c"
                       }
                     ]
                   }
                 ],
-                "ID": "4297522e-757b-40df-810d-07b8742d55ea"
+                "ID": "03982468-2667-4488-b78a-16d111c1bd6a"
+              }
+            ]
+          }
+        ],
+        "TemplateKey": "_RS_Normal_Style2"
+      }
+    },
+    "4,29": {
+      "CellType": {
+        "$type": "Forguncy.ButtonCellType, ServerDesignerCommon",
+        "CommandList": [
+          {
+            "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+            "ParameterName": "取得カウント",
+            "TableValue": {
+              "TableName": "t_object_insurance",
+              "TableValueType": 3,
+              "SqlCondition": {
+                "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                "Condition1": {
+                  "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                  "ColumnBindingInfo": {
+                    "TableName": "t_object_insurance",
+                    "ColumnName": "insurance_status_id"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=付保申請リスト!X11"
+                  }
+                },
+                "Condition2": {
+                  "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                  "ColumnBindingInfo": {
+                    "TableName": "t_object_insurance",
+                    "ColumnName": "object_order_id",
+                    "RelationBinding": {
+                      "RelatedTable": "t_object_order",
+                      "RelatedColumn": "object_order_id",
+                      "DisplayColumn": "active_flg"
+                    }
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=付保申請リスト!AD11"
+                  }
+                }
+              }
+            },
+            "ID": "f1613b91440c4dd19fd7117e41af3b69"
+          },
+          {
+            "$type": "Forguncy.Model.SetCellPropertyCommand, ServerDesignerCommon",
+            "PropertyItemsList": [
+              {
+                "TargetCells": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=付保申請リスト!該当カウント"
+                },
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=付保申請リスト!取得カウント"
+                }
               }
             ]
           }
@@ -1272,9 +1452,96 @@
                               }
                             ]
                           },
-                          "value": "0",
-                          "compareType": 1
+                          "value": "0"
                         },
+                        "CommandList": [
+                          {
+                            "$type": "Forguncy.Model.OperateCellTypeCommand, ServerDesignerCommon",
+                            "TargetPageElement": {
+                              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                              "SerializeProperty": "=付保申請リスト!付保件数取得ボタン"
+                            },
+                            "TargetType": "Forguncy.ButtonCellType, ServerDesignerCommon, Version=8.0.41.0, Culture=neutral, PublicKeyToken=967100671921c115",
+                            "MethodName": "ExecuteCommand",
+                            "ParameterValues": {},
+                            "RetrunParamNames": {}
+                          },
+                          {
+                            "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                            "ParameterName": "取得件数",
+                            "TableValue": {
+                              "TableName": "t_object_insurance",
+                              "TableValueType": 3,
+                              "SqlCondition": {
+                                "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                                "Condition1": {
+                                  "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                                  "ColumnBindingInfo": {
+                                    "TableName": "t_object_insurance",
+                                    "ColumnName": "insurance_status_id"
+                                  },
+                                  "Value": {
+                                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                    "SerializeProperty": "=付保申請リスト!$Q$14"
+                                  }
+                                },
+                                "Condition2": {
+                                  "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                                  "ColumnBindingInfo": {
+                                    "TableName": "t_object_insurance",
+                                    "ColumnName": "object_order_id",
+                                    "RelationBinding": {
+                                      "RelatedTable": "t_object_order",
+                                      "RelatedColumn": "object_order_id",
+                                      "DisplayColumn": "active_flg"
+                                    }
+                                  },
+                                  "Value": {
+                                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                    "SerializeProperty": "=付保申請リスト!$AD$11"
+                                  }
+                                }
+                              }
+                            },
+                            "ID": "5e0c74f33d5d4246804210ed6fac6f1a"
+                          },
+                          {
+                            "$type": "Forguncy.Model.ShareCommand, ServerDesignerCommon",
+                            "ShareCommandContainerRefer": {
+                              "ShareCommandContainerID": "1dd6dbdf-73bc-4267-a1c4-2a40740aee23"
+                            },
+                            "Params": [
+                              {
+                                "ParamReferObject": {
+                                  "ParamID": "e26e6dd4-3677-444b-b99b-52b41ae2be86",
+                                  "ShareCommandContainerReferObject": {
+                                    "ShareCommandContainerID": "1dd6dbdf-73bc-4267-a1c4-2a40740aee23"
+                                  }
+                                },
+                                "Value": {
+                                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                  "SerializeProperty": "=付保申請リスト!$Q$14"
+                                }
+                              },
+                              {
+                                "ParamReferObject": {
+                                  "ParamID": "7ffa2e5f-116a-47eb-8ef8-04e7c371a406",
+                                  "ShareCommandContainerReferObject": {
+                                    "ShareCommandContainerID": "1dd6dbdf-73bc-4267-a1c4-2a40740aee23"
+                                  }
+                                },
+                                "Value": {
+                                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                  "SerializeProperty": "=付保申請リスト!取得件数"
+                                }
+                              }
+                            ],
+                            "ReturnPropertiesTo": []
+                          }
+                        ],
+                        "ID": "7b51b071-c532-4a1b-a3ca-1b54ffc9a333"
+                      },
+                      {
                         "CommandList": [
                           {
                             "$type": "Forguncy.Model.ShowMessageCommand, ServerDesignerCommon",
@@ -1284,12 +1551,12 @@
                             }
                           }
                         ],
-                        "ID": "612f2db1-86a0-400a-8a14-14ca03981aa4"
+                        "ID": "26f5032a-1c43-416e-a90f-884c4dc524df"
                       }
                     ]
                   }
                 ],
-                "ID": "1f82ece4-7dff-4633-a4c9-4fa1dfd73753"
+                "ID": "4c335138-8265-4fdf-ad89-f7ac85ffbaba"
               }
             ]
           }
@@ -1297,7 +1564,7 @@
         "CellDefaultValue": "0"
       }
     },
-    "20,8": {
+    "19,8": {
       "CellType": {
         "$type": "Forguncy.PageNavigateCellType, ServerDesignerCommon",
         "PageingListviewName": "保険付保申請ビュー",
@@ -1422,12 +1689,29 @@
         "FontFamily": 0
       },
       {
+        "Background": 11,
+        "FontFamily": 0,
+        "Formatter": 1
+      },
+      {
+        "Background": 11
+      },
+      {
+        "BorderTop": null
+      },
+      {
+        "FontFamily": 0,
+        "FontSize": 12.0,
+        "BorderTop": 1
+      },
+      {
         "BorderTop": 1
       },
       {
         "FontFamily": 0,
         "FontSize": 12.0,
-        "HorizontalAlignment": 3
+        "HorizontalAlignment": 3,
+        "BorderTop": 1
       },
       {
         "FontSize": 12.0
@@ -1526,6 +1810,9 @@
       "3,23": 3,
       "3,24": 1,
       "3,25": 1,
+      "3,29": 3,
+      "3,30": 1,
+      "3,31": 1,
       "4,1": 16,
       "4,2": 16,
       "4,3": 16,
@@ -1546,6 +1833,9 @@
       "4,23": 1,
       "4,24": 1,
       "4,25": 1,
+      "4,29": 1,
+      "4,30": 1,
+      "4,31": 1,
       "5,1": 16,
       "5,2": 16,
       "5,3": 16,
@@ -1560,6 +1850,9 @@
       "5,12": 16,
       "5,13": 16,
       "5,14": 16,
+      "5,29": 1,
+      "5,30": 1,
+      "5,31": 1,
       "6,1": 16,
       "6,2": 16,
       "6,3": 16,
@@ -1577,6 +1870,9 @@
       "6,23": 1,
       "6,24": 1,
       "6,25": 1,
+      "6,29": 3,
+      "6,30": 1,
+      "6,31": 1,
       "7,1": 16,
       "7,2": 16,
       "7,3": 16,
@@ -1595,6 +1891,9 @@
       "7,23": 18,
       "7,24": 1,
       "7,25": 1,
+      "7,29": 18,
+      "7,30": 1,
+      "7,31": 1,
       "8,1": 16,
       "8,2": 16,
       "8,3": 16,
@@ -1632,6 +1931,9 @@
       "9,23": 3,
       "9,24": 1,
       "9,25": 1,
+      "9,29": 3,
+      "9,30": 1,
+      "9,31": 1,
       "10,1": 16,
       "10,2": 16,
       "10,3": 16,
@@ -1652,6 +1954,9 @@
       "10,23": 18,
       "10,24": 1,
       "10,25": 1,
+      "10,29": 19,
+      "10,30": 1,
+      "10,31": 1,
       "11,1": 16,
       "11,2": 16,
       "11,3": 16,
@@ -1680,9 +1985,6 @@
       "12,12": 16,
       "12,13": 16,
       "12,14": 16,
-      "12,16": 3,
-      "12,17": 1,
-      "12,18": 1,
       "12,23": 3,
       "12,24": 1,
       "12,25": 1,
@@ -1703,9 +2005,7 @@
       "13,12": 16,
       "13,13": 16,
       "13,14": 16,
-      "13,16": 18,
-      "13,17": 1,
-      "13,18": 1,
+      "13,16": 20,
       "13,23": 18,
       "13,24": 1,
       "13,25": 1,
@@ -1782,35 +2082,59 @@
       "18,12": 16,
       "18,13": 16,
       "18,14": 16,
-      "19,1": 19,
-      "19,2": 19,
-      "19,3": 19,
-      "19,4": 19,
-      "19,5": 19,
-      "19,6": 19,
-      "19,7": 19,
-      "19,8": 19,
-      "20,1": 0,
-      "20,2": 0,
-      "20,3": 0,
-      "20,4": 0,
-      "20,8": 20
+      "19,0": 21,
+      "19,1": 22,
+      "19,2": 23,
+      "19,3": 23,
+      "19,4": 23,
+      "19,5": 23,
+      "19,6": 23,
+      "19,7": 23,
+      "19,8": 24,
+      "19,9": 23,
+      "19,10": 23,
+      "19,11": 23,
+      "19,12": 23,
+      "19,13": 23,
+      "19,14": 23,
+      "19,15": 21,
+      "19,16": 21,
+      "19,17": 21,
+      "19,18": 21,
+      "19,19": 21,
+      "19,20": 21,
+      "19,21": 21,
+      "19,22": 21,
+      "19,23": 21,
+      "19,24": 21,
+      "19,25": 21,
+      "19,26": 21,
+      "19,27": 21,
+      "19,28": 21,
+      "19,29": 21,
+      "19,30": 21,
+      "19,31": 21,
+      "19,32": 21,
+      "19,33": 21,
+      "19,34": 21,
+      "19,35": 21,
+      "19,36": 21
     },
     "ColStyles": {
-      "1": 21,
-      "2": 21,
-      "3": 21,
-      "4": 21,
-      "5": 21,
-      "6": 21,
-      "7": 21,
-      "8": 21,
-      "9": 21,
-      "10": 21,
-      "11": 21,
-      "12": 21,
-      "13": 21,
-      "14": 21
+      "1": 25,
+      "2": 25,
+      "3": 25,
+      "4": 25,
+      "5": 25,
+      "6": 25,
+      "7": 25,
+      "8": 25,
+      "9": 25,
+      "10": 25,
+      "11": 25,
+      "12": 25,
+      "13": 25,
+      "14": 25
     },
     "SheetStyle": {
       "FontFamily": 0
@@ -1818,23 +2142,79 @@
   },
   "Spans": [
     "1,16,1,3",
-    "10,16,1,3",
-    "13,16,1,3",
-    "4,16,1,3",
-    "7,16,1,3",
-    "13,23,1,3",
     "1,23,1,3",
-    "13,29,1,3",
     "1,29,1,3",
+    "4,16,1,3",
     "4,23,1,3",
+    "4,29,1,3",
+    "7,16,1,3",
     "7,23,1,3",
+    "7,29,1,3",
+    "10,16,1,3",
+    "10,29,1,3",
+    "13,23,1,3",
+    "13,29,1,3",
+    "19,1,1,5",
+    "2,1,17,14",
     "10,23,1,3",
-    "20,1,1,4",
-    "2,1,17,14"
+    "13,16,1,3"
   ],
   "PageInfo": {
     "$type": "Forguncy.Model.Pages.NormalPage, ServerDesignerCommon",
     "PageLoadedCommandList": [
+      {
+        "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+        "ParameterName": "付保申請待ちST",
+        "TableValue": {
+          "TableName": "m_insurance_status",
+          "OnlyGetValue": true,
+          "TableValueType": 0,
+          "BindingInfos": [
+            {
+              "BindingInfo": {
+                "TableName": "m_insurance_status",
+                "ColumnName": "insurance_status_id"
+              },
+              "ColumnName": "insurance_status_id"
+            }
+          ],
+          "SqlCondition": {
+            "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+            "ColumnBindingInfo": {
+              "TableName": "m_insurance_status",
+              "ColumnName": "application_wait_flg"
+            },
+            "Value": "1"
+          }
+        },
+        "ID": "33eda398cc624b5a8177e0dcc5d979f3"
+      },
+      {
+        "$type": "Forguncy.Model.SetCellPropertyCommand, ServerDesignerCommon",
+        "PropertyItemsList": [
+          {
+            "TargetCells": {
+              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+              "SerializeProperty": "=付保申請リスト!Q14"
+            },
+            "Value": {
+              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+              "SerializeProperty": "=付保申請リスト!付保申請待ちST"
+            }
+          }
+        ]
+      },
+      {
+        "$type": "Forguncy.Model.OperateCellTypeCommand, ServerDesignerCommon",
+        "TargetPageElement": {
+          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+          "SerializeProperty": "=付保申請リスト!付保件数取得ボタン"
+        },
+        "TargetType": "Forguncy.ButtonCellType, ServerDesignerCommon, Version=8.0.41.0, Culture=neutral, PublicKeyToken=967100671921c115",
+        "MethodName": "ExecuteCommand",
+        "ParameterValues": {},
+        "RetrunParamNames": {}
+      },
       {
         "$type": "LoadingCommand.EndLoadingCommand, LoadingCommand"
       }
@@ -1879,6 +2259,14 @@
     {
       "Name": "付保解除ボタン",
       "Formula": "付保申請リスト!$X$5"
+    },
+    {
+      "Name": "該当カウント",
+      "Formula": "付保申請リスト!$AD$8"
+    },
+    {
+      "Name": "付保件数取得ボタン",
+      "Formula": "付保申請リスト!$AD$5"
     }
   ]
-}//gx1Sl70LsriL4zyWwD86bh7/ADtkkWUbaEjTnghZQShQfSkSR7kKrZGKwDlNlc+jZjkd/aWd+i/rIGh4l9oHUSLSXjL+ZwLQZZEM6EppaWbXp6ySD8UPmulhdbLqSwqbjNLs0vP18mmErBQY2UtEnJjXaWVljZT0W6hUUSbt35cVMlYGO0Kmk5YRvSka3br8XdX+xTXMFNykI/juBukU+8WRe+id7PB2wG0QVKNBqvRibUUvUMgK0zzMkCta2O58kTX5yUKagytDvVNHcxo7PZtmoJBi1LHnpkeXjNUkvPvOtWaT3ggk/Djv/D5IFHwmWNSEoI33BGJ5OMbfriCr//TuN9t4xr2oRDAPBU+gX0j6oY3OPdbt3sEfoQxc4f/vlDoCQ95DqoGRFrYoJwrK7W0v7ytlLl1yGkdc3h6VWUHtfTRVqsg1TEM8EVuRDjs7w56q+/ghvO/nnvN6QJxML9TBDffSI6/vHZQpiGIuzSJhonCY/rAqzfh31b5OFfXelnmh8PfBDjDEoUy2vu3cToU5OBXwnNZXP6KJfUo37MRDbLXjlr7YtBFRRrkmErURNbe2A1UhwHhNQLIPrJp9fCYMg/3aT2vMQgajjSRhwDGDf6au80XkHkiBUYmm62SIRkb5NhJmObzMM8Se6O35tpN44lzMBKUIcgoS9M5ElsoC1cScFlXGVuUFpoQ1+b+1vD31F3OH5BgUf21u8M9nPh3hJa6BUsBpJcR2o2gx1o+2hqFsS8HKhW78q22xSdkgyM75rFcjL4QiHGAFUfkxTRycQPHOVWFMZWW3QuS4njmzd4oAE4yeKUgtCH8KEEqYaq1/IeFQbwjZ5c9IQa8RNANjLv+ihWo2Y+kizs4qQuqey9QYEezZxiZZdPAptFzLyf+mNgNW1BqPlsFKIBgtCw==|920
+}//AKAwgS3uuP4XtlXkZINkoNQVxLcCKSAq+ax/8xAjapGu32kWDaL0s47X0CE06HToFjoIAV2ZcDysgZ+efzpkzyUWeMMOg4pSE0M5PntnzbM5TIZQV7f8XbpwH9UrITLMimRQFzFZcQrw7PyY44mrDYGmbpk0YxRwW7VSJhc94iS9c0s9SXAbhjnYKbaeWjWgl4CIqTn4Ywx6JddxzwwmYxxuZu1MJe2ZpHuA+1WBW198/GomPhrhhtFb60QSz/ZiZ7TgtAK5TlC3tVviMAbuzvkADm6ZWZDFYkA5zSSzY6Vo2tRwJw/20QPc1j6zj6qgzZe5QTBlpP8Grm9EysT5Es03KDVu1RpOJd4AniIPFtRD8DwEHOsqWUiPdJr0APl/h4EE6Yb2Y18NWwPYJSmkXE+hfk34MGgpzANmy9zunmeNktIfOyX9db1id6OQRIdM+DcS1hn3JTesSY7/G05yw3rRYcRRO3UavBfP4vrRUF78kDrUfFCQK95cLWp9kjpy+wtJzx1FVdJ3Gg4CjKtZKs7H8TcVI6Eie6pUJuOBP4SpiR57HaOXb4Z/i2OWeDrhwN8VcnyPqQ9y9oj9F9/0pU/QkAXJS6bv9OAS6vnJFlN6HxEnvBFBCGXmAVeH0znsVcXM3dH+xUAUL9jCSupDXCbJWNItGPGkg9KjVofLbA5i532Q05S1urZm+R3TU3DPwdFf1Qw2TX96sKZJyjzsg4yDRKv2VXjiRnr/8XaCICPwIF02hebua3x1f+pakTQLdVFaCU3z3fF8E8HKLtG3GkQ7xcZMMT25Ceb/TU8mA2QZ8xjO+YgBxEwQY0eKt4w0T1ENtsP729WY4ZeQbIpahx0q9uBIuHPFhXccL/UnNPfpIgWCQq7fos9UBiTJUBjRRd8LiM3n4nhDDjxuwc6Ozg==|920
