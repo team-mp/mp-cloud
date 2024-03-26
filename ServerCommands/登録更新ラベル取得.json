@@ -1,0 +1,92 @@
+{
+  "Enabled": true,
+  "Triggers": [
+    {
+      "$type": "Forguncy.ServerCommands.Models.PostRequestTrigger, ServerDesignerCommon",
+      "Permission": {
+        "AllowRoles": [
+          "FGC_LoginUser"
+        ]
+      },
+      "Parameters": [
+        {
+          "Name": "P_ユーザーID"
+        },
+        {
+          "Name": "P_日時"
+        }
+      ]
+    }
+  ],
+  "Commands": [
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "ユーザー情報",
+      "TableValue": {
+        "TableName": "m_user",
+        "TableValueType": 1,
+        "BindingInfos": [
+          {
+            "BindingInfo": {
+              "TableName": "m_user",
+              "ColumnName": "user_name"
+            },
+            "ColumnName": "氏名"
+          },
+          {
+            "BindingInfo": {
+              "TableName": "m_user",
+              "ColumnName": "customer_id",
+              "RelationBinding": {
+                "RelatedTable": "m_customer",
+                "RelatedColumn": "customer_id",
+                "DisplayColumn": "内部顧客名"
+              }
+            },
+            "ColumnName": "内部顧客名"
+          }
+        ],
+        "SqlCondition": {
+          "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+          "ColumnBindingInfo": {
+            "TableName": "m_user",
+            "ColumnName": "user_id"
+          },
+          "Value": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=P_ユーザーID"
+          }
+        }
+      },
+      "ID": "80f3b3c61fe746cc986ac361eff930a4"
+    },
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "ラベル名",
+      "ParameterValue": {
+        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+        "SerializeProperty": "=TEXT(P_日時,\"yyyy/mm/dd hh:mm\")&\"　\"&ユーザー情報.内部顧客名&\" \"&ユーザー情報.氏名"
+      },
+      "ID": "fc34c35e8bac43b39d61ed19eda0f7dc"
+    },
+    {
+      "$type": "Forguncy.Model.ReturnCommand, ServerDesignerCommon",
+      "ErrorCode": "0",
+      "CustomReturns": [
+        {
+          "ReturnPropertyName": "R_ラベル名",
+          "Value": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=ラベル名"
+          }
+        }
+      ]
+    }
+  ],
+  "ReturnProperties": [
+    {
+      "Name": "R_ラベル名"
+    }
+  ],
+  "Name": "登録更新ラベル取得"
+}

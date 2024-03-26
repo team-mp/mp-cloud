@@ -23,7 +23,10 @@
           "Name": "P_証明書申請フラグ"
         },
         {
-          "Name": "P_証明書申請取消フラグ"
+          "Name": "P_証明書申請解除フラグ"
+        },
+        {
+          "Name": "P_付保申請済み戻しフラグ"
         }
       ]
     }
@@ -73,7 +76,7 @@
                       "Value": "1"
                     }
                   },
-                  "ID": "4b86cc282b6c4b77a3704b6efafac0b8"
+                  "ID": "bc22f36ddbe64bcdb718894e6e886232"
                 },
                 {
                   "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
@@ -101,6 +104,9 @@
                       }
                     },
                     {
+                      "ColumnName": "insurance_cancel_date"
+                    },
+                    {
                       "ColumnName": "insurance_status_id",
                       "Value": {
                         "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
@@ -114,7 +120,7 @@
                   ]
                 }
               ],
-              "ID": "66dafec1-9a97-4656-bc7b-ba6e048202e3"
+              "ID": "7cf03dc2-a998-4acf-a7ce-116d5182018a"
             }
           ],
           "Comments": "申請の場合"
@@ -129,7 +135,89 @@
                   "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
                   "ParamObject": {
                     "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                    "SerializeProperty": "=P_証明書申請取消フラグ"
+                    "SerializeProperty": "=P_証明書申請解除フラグ"
+                  }
+                },
+                "value": "1"
+              },
+              "CommandList": [
+                {
+                  "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                  "ParameterName": "証明書申請待ちST",
+                  "TableValue": {
+                    "TableName": "m_insurance_status",
+                    "OnlyGetValue": true,
+                    "TableValueType": 0,
+                    "BindingInfos": [
+                      {
+                        "BindingInfo": {
+                          "TableName": "m_insurance_status",
+                          "ColumnName": "insurance_status_id"
+                        },
+                        "ColumnName": "insurance_status_id"
+                      }
+                    ],
+                    "SqlCondition": {
+                      "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                      "ColumnBindingInfo": {
+                        "TableName": "m_insurance_status",
+                        "ColumnName": "certificate_application_wait_flg"
+                      },
+                      "Value": "1"
+                    }
+                  },
+                  "ID": "5a4ef094f36148348060cc4629103060"
+                },
+                {
+                  "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+                  "TableName": "t_object_insurance",
+                  "ShowConfirm": false,
+                  "ConfirmText": "本当に更新してもよろしいですか？",
+                  "RowsToUpdate": 1,
+                  "RowsToUpdateCondition": {
+                    "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                    "ColumnBindingInfo": {
+                      "TableName": "t_object_insurance",
+                      "ColumnName": "insurance_id"
+                    },
+                    "Value": {
+                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                      "SerializeProperty": "=P_付保ID"
+                    }
+                  },
+                  "UpdateValues": [
+                    {
+                      "ColumnName": "insurance_certificate_apply_date"
+                    },
+                    {
+                      "ColumnName": "insurance_cancel_date"
+                    },
+                    {
+                      "ColumnName": "insurance_status_id",
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=証明書申請待ちST"
+                      }
+                    }
+                  ]
+                }
+              ],
+              "ID": "e6793dec-9579-4b4e-acdb-7a50283b6865"
+            }
+          ],
+          "Comments": "解除の場合"
+        },
+        {
+          "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+          "ConditionAndCommandPairList": [
+            {
+              "Condition": {
+                "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                "param": {
+                  "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                  "ParamObject": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=P_付保申請済み戻しフラグ"
                   }
                 },
                 "value": "1"
@@ -160,7 +248,7 @@
                       "Value": "1"
                     }
                   },
-                  "ID": "2fad0b55fd174861be9df7752a0fdaee"
+                  "ID": "cad6889d031d4f5d91facb7de21e430a"
                 },
                 {
                   "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
@@ -184,23 +272,22 @@
                       "ColumnName": "insurance_certificate_apply_date"
                     },
                     {
+                      "ColumnName": "insurance_cancel_date"
+                    },
+                    {
                       "ColumnName": "insurance_status_id",
                       "Value": {
                         "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
                         "SerializeProperty": "=付保申請済みST"
                       }
-                    },
-                    {
-                      "ColumnName": "insurance_certificate_need_flg",
-                      "Value": "0"
                     }
                   ]
                 }
               ],
-              "ID": "6d72c2fb-391e-4449-9981-7ff1f71e15c7"
+              "ID": "aa8c0c23-31a2-461b-b063-3dca1d089e55"
             }
           ],
-          "Comments": "解除の場合"
+          "Comments": "付保戻しの場合"
         }
       ]
     },

@@ -18,18 +18,32 @@
       "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
       "ParameterName": "申込情報",
       "TableValue": {
-        "TableName": "t_object_order",
+        "TableName": "t_object_follow",
         "BindingInfos": [
           {
             "BindingInfo": {
-              "TableName": "t_object_order",
-              "ColumnName": "object_order_id"
+              "TableName": "t_object_follow",
+              "ColumnName": "object_follow_id"
             },
-            "ColumnName": "申込ID"
+            "ColumnName": "フォローID"
+          },
+          {
+            "BindingInfo": {
+              "TableName": "t_object_follow",
+              "ColumnName": "follow_user_id"
+            },
+            "ColumnName": "フォロー者ID"
+          },
+          {
+            "BindingInfo": {
+              "TableName": "t_object_follow",
+              "ColumnName": "follow_update"
+            },
+            "ColumnName": "フォロー更新日"
           }
         ]
       },
-      "ID": "2d544c6b5cbf4993b2c01751c1800296"
+      "ID": "7c81b9e56cbf4a00bb01b5463c780c4f"
     },
     {
       "$type": "Forguncy.Model.LoopCommand, ServerDesignerCommon",
@@ -43,37 +57,60 @@
       },
       "CommandList": [
         {
-          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
-          "ParameterName": "ランダムID",
-          "ParameterValue": {
-            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-            "SerializeProperty": "=LOWER(BASE(RANDBETWEEN(0,36^10-1),36,10)&BASE(RANDBETWEEN(0,36^10-1),36,10)&BASE(RANDBETWEEN(0,36^10-1),36,10))"
-          },
-          "ID": "01c5006d9b184516b23c39fc08c2cc33"
+          "$type": "Forguncy.Model.RequestServerCommand, ServerDesignerCommon",
+          "ServerCommandName": "登録更新ラベル取得",
+          "Parameters": [
+            {
+              "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=Item.フォロー者ID"
+              },
+              "ParamName": "P_ユーザーID"
+            },
+            {
+              "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=Item.フォロー更新日"
+              },
+              "ParamName": "P_日時"
+            }
+          ],
+          "ReturnPropertiesTo": [
+            {
+              "ResultPropertyName": "R_ラベル名",
+              "ResultTo": {
+                "SerializeProperty": "ラベル名"
+              }
+            }
+          ],
+          "RefreshAfterFinish": true,
+          "CheckDataValidation": true
         },
         {
           "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
-          "TableName": "t_object_order",
+          "TableName": "t_object_follow",
           "ShowConfirm": false,
           "ConfirmText": "本当に更新してもよろしいですか？",
           "RowsToUpdate": 1,
           "RowsToUpdateCondition": {
             "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
             "ColumnBindingInfo": {
-              "TableName": "t_object_order",
-              "ColumnName": "object_order_id"
+              "TableName": "t_object_follow",
+              "ColumnName": "object_follow_id"
             },
             "Value": {
               "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-              "SerializeProperty": "=Item.申込ID"
+              "SerializeProperty": "=Item.フォローID"
             }
           },
           "UpdateValues": [
             {
-              "ColumnName": "random_id",
+              "ColumnName": "follow_update_label",
               "Value": {
                 "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                "SerializeProperty": "=ランダムID"
+                "SerializeProperty": "=ラベル名"
               }
             }
           ]

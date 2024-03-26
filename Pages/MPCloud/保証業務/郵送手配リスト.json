@@ -221,9 +221,12 @@
       37,
       38,
       39,
-      40
+      40,
+      41,
+      42,
+      43
     ],
-    "Count": 41
+    "Count": 44
   },
   "Values": {
     "0,1": "選択",
@@ -234,27 +237,33 @@
     "0,19": "▼ダウンロードボタン",
     "0,26": "▼全選択ボタン",
     "0,33": "▼全解除ボタン",
-    "3,19": "▼郵送済みボタン",
-    "3,26": "▼郵送解除ボタン",
     "3,33": "▼件数取得ボタン",
     "6,19": "▼最新化フラグ",
-    "6,26": "▼取得郵送日",
     "6,33": "▼該当カウント",
     "7,19": "0",
-    "9,19": "▼タブ番号",
-    "9,26": "▼郵送済み更新フラグ",
-    "10,19": 7,
-    "10,26": 0,
-    "12,19": "▼保証ステータスID",
-    "12,26": "▼選択カウント",
-    "12,33": "▼抽出カウント"
+    "9,19": "▼郵送アクション",
+    "9,26": "▼選択日付",
+    "10,19": 0,
+    "12,19": "▼タブ番号",
+    "12,26": "▼郵送済み更新フラグ",
+    "12,33": "▼郵送済み解除フラグ",
+    "13,19": 7,
+    "13,26": 0,
+    "13,33": "0",
+    "15,19": "▼保証ステータスID",
+    "15,26": "▼選択カウント",
+    "15,33": "▼抽出カウント",
+    "15,39": "▼未選択カウント",
+    "18,19": "▼郵送手配待ちST"
   },
   "Formulas": {
     "1,2": "ROW(C2)",
-    "13,19": "IF(VALUE(検索_抽出条件)=1,郵送待ちステータスID,郵送済みステータスID)",
-    "13,26": "COUNTIF(B2,1)",
-    "13,33": "COUNTIF(E2,\"<>\")",
-    "19,1": "\"該当データ件数：\"&TEXT(該当カウント,\"#,##0\")&\"件　　表示データ件数：\"&TEXT(抽出カウント,\"#,##0\")&\"件\""
+    "16,33": "COUNTIF(E2,\"<>\")",
+    "16,26": "COUNTIF(B2,1)",
+    "16,19": "IF(VALUE(検索_抽出条件)=1,郵送待ちステータスID,郵送済みステータスID)",
+    "19,1": "\"該当データ件数：\"&TEXT(該当カウント,\"#,##0\")&\"件　　表示データ件数：\"&TEXT(抽出カウント,\"#,##0\")&\"件\"",
+    "16,39": "抽出カウント-選択カウント",
+    "19,19": "郵送待ちステータスID"
   },
   "AttachInfos": {
     "0,1": {
@@ -278,6 +287,33 @@
             "Condition1": {
               "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
               "Condition1": {
+                "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                "ColumnBindingInfo": {
+                  "TableName": "t_object_order",
+                  "ColumnName": "latest_warranty_id",
+                  "RelationBinding": {
+                    "RelatedTable": "t_object_warranty",
+                    "RelatedColumn": "warranty_id",
+                    "DisplayColumn": "warranty_status_id"
+                  }
+                },
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=郵送手配リスト!T17"
+                }
+              },
+              "Condition2": {
+                "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                "ColumnBindingInfo": {
+                  "TableName": "t_object_order",
+                  "ColumnName": "active_flg"
+                },
+                "Value": "1"
+              }
+            },
+            "Condition2": {
+              "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+              "Condition1": {
                 "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
                 "Condition1": {
                   "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
@@ -292,64 +328,22 @@
                           "Condition1": {
                             "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
                             "Condition1": {
-                              "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
-                              "Condition1": {
-                                "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
-                                "Condition1": {
-                                  "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
-                                  "CompareType": 6,
-                                  "ColumnBindingInfo": {
-                                    "TableName": "t_object_order",
-                                    "ColumnName": "object_id",
-                                    "RelationBinding": {
-                                      "RelatedTable": "t_object",
-                                      "RelatedColumn": "object_id",
-                                      "DisplayColumn": "物件番号"
-                                    }
-                                  },
-                                  "Value": {
-                                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                                    "SerializeProperty": "=郵送手配リスト!検索ワード1"
-                                  },
-                                  "LeftBracket": 1
-                                },
-                                "Condition2": {
-                                  "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
-                                  "CompareType": 3,
-                                  "ColumnBindingInfo": {
-                                    "TableName": "t_object_order",
-                                    "ColumnName": "latest_warranty_id",
-                                    "RelationBinding": {
-                                      "RelatedTable": "t_object_warranty",
-                                      "RelatedColumn": "warranty_id",
-                                      "DisplayColumn": "warranty_request_dte"
-                                    }
-                                  },
-                                  "Value": {
-                                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                                    "SerializeProperty": "=郵送手配リスト!検索ワード1"
-                                  }
-                                },
-                                "RelationType": 1
-                              },
-                              "Condition2": {
-                                "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
-                                "CompareType": 6,
-                                "ColumnBindingInfo": {
-                                  "TableName": "t_object_order",
-                                  "ColumnName": "order_status_id",
-                                  "RelationBinding": {
-                                    "RelatedTable": "m_order_status",
-                                    "RelatedColumn": "order_status_id",
-                                    "DisplayColumn": "order_status_name"
-                                  }
-                                },
-                                "Value": {
-                                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                                  "SerializeProperty": "=郵送手配リスト!検索ワード1"
+                              "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                              "CompareType": 6,
+                              "ColumnBindingInfo": {
+                                "TableName": "t_object_order",
+                                "ColumnName": "object_id",
+                                "RelationBinding": {
+                                  "RelatedTable": "t_object",
+                                  "RelatedColumn": "object_id",
+                                  "DisplayColumn": "物件番号"
                                 }
                               },
-                              "RelationType": 1
+                              "Value": {
+                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                "SerializeProperty": "=郵送手配リスト!検索ワード1"
+                              },
+                              "LeftBracket": 1
                             },
                             "Condition2": {
                               "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
@@ -360,12 +354,7 @@
                                 "RelationBinding": {
                                   "RelatedTable": "t_object_warranty",
                                   "RelatedColumn": "warranty_id",
-                                  "DisplayColumn": "warranty_type_id",
-                                  "NextRelationBinding": {
-                                    "RelatedTable": "m_warranty_type",
-                                    "RelatedColumn": "warranty_type_id",
-                                    "DisplayColumn": "warranty_type_name"
-                                  }
+                                  "DisplayColumn": "warranty_object_name"
                                 }
                               },
                               "Value": {
@@ -380,11 +369,11 @@
                             "CompareType": 6,
                             "ColumnBindingInfo": {
                               "TableName": "t_object_order",
-                              "ColumnName": "order_type_id",
+                              "ColumnName": "latest_warranty_id",
                               "RelationBinding": {
-                                "RelatedTable": "m_order_type",
-                                "RelatedColumn": "order_type_id",
-                                "DisplayColumn": "ordertype_name"
+                                "RelatedTable": "t_object_warranty",
+                                "RelatedColumn": "warranty_id",
+                                "DisplayColumn": "warranty_object_address"
                               }
                             },
                             "Value": {
@@ -399,11 +388,11 @@
                           "CompareType": 6,
                           "ColumnBindingInfo": {
                             "TableName": "t_object_order",
-                            "ColumnName": "group_id",
+                            "ColumnName": "order_type_id",
                             "RelationBinding": {
-                              "RelatedTable": "m_group",
-                              "RelatedColumn": "group_id",
-                              "DisplayColumn": "group_name"
+                              "RelatedTable": "m_order_type",
+                              "RelatedColumn": "order_type_id",
+                              "DisplayColumn": "ordertype_name"
                             }
                           },
                           "Value": {
@@ -418,11 +407,11 @@
                         "CompareType": 6,
                         "ColumnBindingInfo": {
                           "TableName": "t_object_order",
-                          "ColumnName": "builder_id",
+                          "ColumnName": "group_id",
                           "RelationBinding": {
-                            "RelatedTable": "m_customer",
-                            "RelatedColumn": "customer_id",
-                            "DisplayColumn": "内部顧客名"
+                            "RelatedTable": "m_group",
+                            "RelatedColumn": "group_id",
+                            "DisplayColumn": "group_name"
                           }
                         },
                         "Value": {
@@ -437,11 +426,11 @@
                       "CompareType": 6,
                       "ColumnBindingInfo": {
                         "TableName": "t_object_order",
-                        "ColumnName": "latest_warranty_id",
+                        "ColumnName": "builder_id",
                         "RelationBinding": {
-                          "RelatedTable": "t_object_warranty",
-                          "RelatedColumn": "warranty_id",
-                          "DisplayColumn": "warranty_object_name"
+                          "RelatedTable": "m_customer",
+                          "RelatedColumn": "customer_id",
+                          "DisplayColumn": "内部顧客名"
                         }
                       },
                       "Value": {
@@ -452,15 +441,14 @@
                     "RelationType": 1
                   },
                   "Condition2": {
-                    "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
-                    "CompareType": 6,
+                    "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
                     "ColumnBindingInfo": {
                       "TableName": "t_object_order",
                       "ColumnName": "latest_warranty_id",
                       "RelationBinding": {
                         "RelatedTable": "t_object_warranty",
                         "RelatedColumn": "warranty_id",
-                        "DisplayColumn": "warranty_object_address"
+                        "DisplayColumn": "warranty_request_dte"
                       }
                     },
                     "Value": {
@@ -490,12 +478,41 @@
                   "Value": {
                     "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
                     "SerializeProperty": "=郵送手配リスト!検索ワード1"
-                  },
-                  "RightBracket": 1
+                  }
                 },
                 "RelationType": 1
               },
               "Condition2": {
+                "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                "CompareType": 6,
+                "ColumnBindingInfo": {
+                  "TableName": "t_object_order",
+                  "ColumnName": "latest_warranty_id",
+                  "RelationBinding": {
+                    "RelatedTable": "t_object_warranty",
+                    "RelatedColumn": "warranty_id",
+                    "DisplayColumn": "warranty_type_id",
+                    "NextRelationBinding": {
+                      "RelatedTable": "m_warranty_type",
+                      "RelatedColumn": "warranty_type_id",
+                      "DisplayColumn": "warranty_type_name"
+                    }
+                  }
+                },
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=郵送手配リスト!検索ワード1"
+                },
+                "RightBracket": 1
+              },
+              "RelationType": 1
+            }
+          },
+          "Condition2": {
+            "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+            "Condition1": {
+              "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+              "Condition1": {
                 "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
                 "Condition1": {
                   "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
@@ -508,101 +525,33 @@
                         "Condition1": {
                           "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
                           "Condition1": {
-                            "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
-                            "Condition1": {
-                              "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
-                              "Condition1": {
-                                "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
-                                "Condition1": {
-                                  "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
-                                  "CompareType": 6,
-                                  "ColumnBindingInfo": {
-                                    "TableName": "t_object_order",
-                                    "ColumnName": "object_id",
-                                    "RelationBinding": {
-                                      "RelatedTable": "t_object",
-                                      "RelatedColumn": "object_id",
-                                      "DisplayColumn": "物件番号"
-                                    }
-                                  },
-                                  "Value": {
-                                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                                    "SerializeProperty": "=郵送手配リスト!検索ワード2"
-                                  },
-                                  "LeftBracket": 1
-                                },
-                                "Condition2": {
-                                  "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
-                                  "CompareType": 3,
-                                  "ColumnBindingInfo": {
-                                    "TableName": "t_object_order",
-                                    "ColumnName": "latest_warranty_id",
-                                    "RelationBinding": {
-                                      "RelatedTable": "t_object_warranty",
-                                      "RelatedColumn": "warranty_id",
-                                      "DisplayColumn": "warranty_request_dte"
-                                    }
-                                  },
-                                  "Value": {
-                                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                                    "SerializeProperty": "=郵送手配リスト!検索ワード2"
-                                  }
-                                },
-                                "RelationType": 1
-                              },
-                              "Condition2": {
-                                "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
-                                "CompareType": 6,
-                                "ColumnBindingInfo": {
-                                  "TableName": "t_object_order",
-                                  "ColumnName": "order_status_id",
-                                  "RelationBinding": {
-                                    "RelatedTable": "m_order_status",
-                                    "RelatedColumn": "order_status_id",
-                                    "DisplayColumn": "order_status_name"
-                                  }
-                                },
-                                "Value": {
-                                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                                  "SerializeProperty": "=郵送手配リスト!検索ワード2"
-                                }
-                              },
-                              "RelationType": 1
-                            },
-                            "Condition2": {
-                              "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
-                              "CompareType": 6,
-                              "ColumnBindingInfo": {
-                                "TableName": "t_object_order",
-                                "ColumnName": "latest_warranty_id",
-                                "RelationBinding": {
-                                  "RelatedTable": "t_object_warranty",
-                                  "RelatedColumn": "warranty_id",
-                                  "DisplayColumn": "warannty_issue_type",
-                                  "NextRelationBinding": {
-                                    "RelatedTable": "m_warranty_issue_type",
-                                    "RelatedColumn": "warranty_issue_type_id",
-                                    "DisplayColumn": "warranty_issue_type_name"
-                                  }
-                                }
-                              },
-                              "Value": {
-                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                                "SerializeProperty": "=郵送手配リスト!検索ワード2"
+                            "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                            "CompareType": 6,
+                            "ColumnBindingInfo": {
+                              "TableName": "t_object_order",
+                              "ColumnName": "object_id",
+                              "RelationBinding": {
+                                "RelatedTable": "t_object",
+                                "RelatedColumn": "object_id",
+                                "DisplayColumn": "物件番号"
                               }
                             },
-                            "RelationType": 1
+                            "Value": {
+                              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                              "SerializeProperty": "=郵送手配リスト!検索ワード2"
+                            },
+                            "LeftBracket": 1
                           },
                           "Condition2": {
                             "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
                             "CompareType": 6,
                             "ColumnBindingInfo": {
                               "TableName": "t_object_order",
-                              "ColumnName": "order_type_id",
+                              "ColumnName": "latest_warranty_id",
                               "RelationBinding": {
-                                "RelatedTable": "m_order_type",
-                                "RelatedColumn": "order_type_id",
-                                "DisplayColumn": "ordertype_name"
+                                "RelatedTable": "t_object_warranty",
+                                "RelatedColumn": "warranty_id",
+                                "DisplayColumn": "warranty_object_name"
                               }
                             },
                             "Value": {
@@ -617,11 +566,11 @@
                           "CompareType": 6,
                           "ColumnBindingInfo": {
                             "TableName": "t_object_order",
-                            "ColumnName": "group_id",
+                            "ColumnName": "latest_warranty_id",
                             "RelationBinding": {
-                              "RelatedTable": "m_group",
-                              "RelatedColumn": "group_id",
-                              "DisplayColumn": "group_name"
+                              "RelatedTable": "t_object_warranty",
+                              "RelatedColumn": "warranty_id",
+                              "DisplayColumn": "warranty_object_address"
                             }
                           },
                           "Value": {
@@ -636,11 +585,11 @@
                         "CompareType": 6,
                         "ColumnBindingInfo": {
                           "TableName": "t_object_order",
-                          "ColumnName": "builder_id",
+                          "ColumnName": "order_type_id",
                           "RelationBinding": {
-                            "RelatedTable": "m_customer",
-                            "RelatedColumn": "customer_id",
-                            "DisplayColumn": "内部顧客名"
+                            "RelatedTable": "m_order_type",
+                            "RelatedColumn": "order_type_id",
+                            "DisplayColumn": "ordertype_name"
                           }
                         },
                         "Value": {
@@ -655,11 +604,11 @@
                       "CompareType": 6,
                       "ColumnBindingInfo": {
                         "TableName": "t_object_order",
-                        "ColumnName": "latest_warranty_id",
+                        "ColumnName": "group_id",
                         "RelationBinding": {
-                          "RelatedTable": "t_object_warranty",
-                          "RelatedColumn": "warranty_id",
-                          "DisplayColumn": "warranty_object_name"
+                          "RelatedTable": "m_group",
+                          "RelatedColumn": "group_id",
+                          "DisplayColumn": "group_name"
                         }
                       },
                       "Value": {
@@ -674,11 +623,11 @@
                     "CompareType": 6,
                     "ColumnBindingInfo": {
                       "TableName": "t_object_order",
-                      "ColumnName": "latest_warranty_id",
+                      "ColumnName": "builder_id",
                       "RelationBinding": {
-                        "RelatedTable": "t_object_warranty",
-                        "RelatedColumn": "warranty_id",
-                        "DisplayColumn": "warranty_object_address"
+                        "RelatedTable": "m_customer",
+                        "RelatedColumn": "customer_id",
+                        "DisplayColumn": "内部顧客名"
                       }
                     },
                     "Value": {
@@ -689,55 +638,71 @@
                   "RelationType": 1
                 },
                 "Condition2": {
-                  "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
-                  "CompareType": 6,
+                  "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
                   "ColumnBindingInfo": {
                     "TableName": "t_object_order",
                     "ColumnName": "latest_warranty_id",
                     "RelationBinding": {
                       "RelatedTable": "t_object_warranty",
                       "RelatedColumn": "warranty_id",
-                      "DisplayColumn": "mailing_method_id",
-                      "NextRelationBinding": {
-                        "RelatedTable": "m_mailing_method",
-                        "RelatedColumn": "mailing_method_id",
-                        "DisplayColumn": "mailing_method_name"
-                      }
+                      "DisplayColumn": "warranty_request_dte"
                     }
                   },
                   "Value": {
                     "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
                     "SerializeProperty": "=郵送手配リスト!検索ワード2"
-                  },
-                  "RightBracket": 1
+                  }
                 },
                 "RelationType": 1
-              }
+              },
+              "Condition2": {
+                "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                "CompareType": 6,
+                "ColumnBindingInfo": {
+                  "TableName": "t_object_order",
+                  "ColumnName": "latest_warranty_id",
+                  "RelationBinding": {
+                    "RelatedTable": "t_object_warranty",
+                    "RelatedColumn": "warranty_id",
+                    "DisplayColumn": "mailing_method_id",
+                    "NextRelationBinding": {
+                      "RelatedTable": "m_mailing_method",
+                      "RelatedColumn": "mailing_method_id",
+                      "DisplayColumn": "mailing_method_name"
+                    }
+                  }
+                },
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=郵送手配リスト!検索ワード2"
+                }
+              },
+              "RelationType": 1
             },
             "Condition2": {
-              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+              "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+              "CompareType": 6,
               "ColumnBindingInfo": {
                 "TableName": "t_object_order",
                 "ColumnName": "latest_warranty_id",
                 "RelationBinding": {
                   "RelatedTable": "t_object_warranty",
                   "RelatedColumn": "warranty_id",
-                  "DisplayColumn": "warranty_status_id"
+                  "DisplayColumn": "warranty_type_id",
+                  "NextRelationBinding": {
+                    "RelatedTable": "m_warranty_type",
+                    "RelatedColumn": "warranty_type_id",
+                    "DisplayColumn": "warranty_type_name"
+                  }
                 }
               },
               "Value": {
                 "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                "SerializeProperty": "=郵送手配リスト!T14"
-              }
-            }
-          },
-          "Condition2": {
-            "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
-            "ColumnBindingInfo": {
-              "TableName": "t_object_order",
-              "ColumnName": "active_flg"
+                "SerializeProperty": "=郵送手配リスト!検索ワード2"
+              },
+              "RightBracket": 1
             },
-            "Value": "1"
+            "RelationType": 1
           }
         },
         "TopCondition": null,
@@ -873,7 +838,7 @@
                 },
                 "Value": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=郵送手配リスト!T11"
+                  "SerializeProperty": "=郵送手配リスト!T14"
                 }
               }
             ],
@@ -1278,7 +1243,15 @@
                 "Value": "1"
               }
             ],
-            "UpdateRowType": 2
+            "UpdateRowType": 1,
+            "SpecifiedRowCondition": {
+              "$type": "Forguncy.Model.UpdateListviewCondition, ServerDesignerCommon",
+              "Column": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=郵送手配リスト!B2"
+              },
+              "value": "0"
+            }
           }
         ],
         "TemplateKey": "_RS_Normal_Style2"
@@ -1300,199 +1273,15 @@
                 "Value": "0"
               }
             ],
-            "UpdateRowType": 2
-          }
-        ],
-        "TemplateKey": "_RS_Normal_Style2"
-      }
-    },
-    "4,19": {
-      "CellType": {
-        "$type": "Forguncy.ButtonCellType, ServerDesignerCommon",
-        "CommandList": [
-          {
-            "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
-            "ConditionAndCommandPairList": [
-              {
-                "Condition": {
-                  "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
-                  "param": {
-                    "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
-                    "cellLocations": [
-                      {
-                        "SerializeProperty": "=郵送手配リスト!選択カウント"
-                      }
-                    ]
-                  },
-                  "value": "0"
-                },
-                "CommandList": [
-                  {
-                    "$type": "Forguncy.Model.ShowMessageCommand, ServerDesignerCommon",
-                    "MessageFormula": "対象行を選択してください"
-                  },
-                  {
-                    "$type": "Forguncy.Model.StopCommand, ServerDesignerCommon"
-                  }
-                ],
-                "ID": "b39d2c03-b0dc-4f07-aff8-e35c57e39ab4"
-              }
-            ]
-          },
-          {
-            "$type": "Forguncy.Model.ShowPopupCommand, ServerDesignerCommon",
-            "PageName": "日付選択",
-            "PassValues": [
-              {
-                "Source": {
-                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=郵送手配リスト!AA8"
-                },
-                "TargetCell": {
-                  "SerializeProperty": "=日付選択!選択日付"
-                }
+            "UpdateRowType": 1,
+            "SpecifiedRowCondition": {
+              "$type": "Forguncy.Model.UpdateListviewCondition, ServerDesignerCommon",
+              "Column": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=郵送手配リスト!B2"
               },
-              {
-                "Source": {
-                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=郵送手配リスト!AA11"
-                },
-                "TargetCell": {
-                  "SerializeProperty": "=日付選択!更新開始フラグ"
-                }
-              },
-              {
-                "Source": "郵送日を選択してください",
-                "TargetCell": {
-                  "SerializeProperty": "=日付選択!メッセージ"
-                }
-              }
-            ]
-          }
-        ],
-        "TemplateKey": "_RS_Normal_Style2"
-      }
-    },
-    "4,26": {
-      "CellType": {
-        "$type": "Forguncy.ButtonCellType, ServerDesignerCommon",
-        "CommandList": [
-          {
-            "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
-            "ConditionAndCommandPairList": [
-              {
-                "Condition": {
-                  "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
-                  "param": {
-                    "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
-                    "cellLocations": [
-                      {
-                        "SerializeProperty": "=郵送手配リスト!選択カウント"
-                      }
-                    ]
-                  },
-                  "value": "0"
-                },
-                "CommandList": [
-                  {
-                    "$type": "Forguncy.Model.ShowMessageCommand, ServerDesignerCommon",
-                    "MessageFormula": "対象行を選択してください"
-                  },
-                  {
-                    "$type": "Forguncy.Model.StopCommand, ServerDesignerCommon"
-                  }
-                ],
-                "ID": "69815dee-cbcd-47fc-a640-a3de49958149"
-              }
-            ]
-          },
-          {
-            "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
-            "ConditionAndCommandPairList": [
-              {
-                "ConfirmDialogSettings": {
-                  "Title": "確認",
-                  "FormulaText": "郵送済みを解除します。よろしいですか？\r\n※この処理を実行した場合、ステータスは元に戻ります。",
-                  "YesButtonText": "はい",
-                  "NoButtonText": "いいえ",
-                  "ConfirmIcon": 4
-                },
-                "CommandList": [
-                  {
-                    "$type": "LoadingCommand.StartLoadingCommand, LoadingCommand",
-                    "LoadingText": "お待ちください",
-                    "LoadingTextColor": "Background 1 0"
-                  },
-                  {
-                    "$type": "Forguncy.Model.RequestServerCommand, ServerDesignerCommon",
-                    "ServerCommandName": "郵送済み一括解除",
-                    "Parameters": [
-                      {
-                        "$type": "Forguncy.Model.RequestServerCommandListviewParam, ServerDesignerCommon",
-                        "ListviewName": "郵送手配ビュー",
-                        "Columns": [
-                          {
-                            "ArrayItemName": "P_保証ID",
-                            "Column": "保証ID"
-                          },
-                          {
-                            "ArrayItemName": "P_申込ID",
-                            "Column": "申込ID"
-                          },
-                          {
-                            "ArrayItemName": "P_選択フラグ",
-                            "Column": "選択フラグ"
-                          }
-                        ],
-                        "ParamName": "P_郵送待リスト"
-                      }
-                    ],
-                    "ResultErrorCodeTo": {
-                      "SerializeProperty": "リターンコード"
-                    },
-                    "ResultMessageTo": {
-                      "SerializeProperty": "リターンメッセージ"
-                    },
-                    "RefreshAfterFinish": true,
-                    "CheckDataValidation": false
-                  },
-                  {
-                    "$type": "LoadingCommand.EndLoadingCommand, LoadingCommand"
-                  },
-                  {
-                    "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
-                    "ConditionAndCommandPairList": [
-                      {
-                        "Condition": {
-                          "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
-                          "param": {
-                            "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
-                            "cellLocations": [
-                              {
-                                "SerializeProperty": "=郵送手配リスト!リターンコード"
-                              }
-                            ]
-                          },
-                          "value": "0",
-                          "compareType": 1
-                        },
-                        "CommandList": [
-                          {
-                            "$type": "Forguncy.Model.ShowMessageCommand, ServerDesignerCommon",
-                            "MessageFormula": {
-                              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                              "SerializeProperty": "=郵送手配リスト!リターンメッセージ"
-                            }
-                          }
-                        ],
-                        "ID": "432dd175-09fc-4ead-969e-e4438f3abfce"
-                      }
-                    ]
-                  }
-                ],
-                "ID": "c57b57bf-a41f-40fd-abba-166ad0243845"
-              }
-            ]
+              "value": "1"
+            }
           }
         ],
         "TemplateKey": "_RS_Normal_Style2"
@@ -1511,32 +1300,430 @@
               "SqlCondition": {
                 "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
                 "Condition1": {
-                  "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
-                  "ColumnBindingInfo": {
-                    "TableName": "t_object_order",
-                    "ColumnName": "latest_warranty_id",
-                    "RelationBinding": {
-                      "RelatedTable": "t_object_warranty",
-                      "RelatedColumn": "warranty_id",
-                      "DisplayColumn": "warranty_status_id"
+                  "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                  "Condition1": {
+                    "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                    "Condition1": {
+                      "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                      "ColumnBindingInfo": {
+                        "TableName": "t_object_order",
+                        "ColumnName": "latest_warranty_id",
+                        "RelationBinding": {
+                          "RelatedTable": "t_object_warranty",
+                          "RelatedColumn": "warranty_id",
+                          "DisplayColumn": "warranty_status_id"
+                        }
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=郵送手配リスト!T17"
+                      }
+                    },
+                    "Condition2": {
+                      "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                      "ColumnBindingInfo": {
+                        "TableName": "t_object_order",
+                        "ColumnName": "active_flg"
+                      },
+                      "Value": "1"
                     }
                   },
-                  "Value": {
-                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                    "SerializeProperty": "=郵送手配リスト!T14"
+                  "Condition2": {
+                    "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                    "Condition1": {
+                      "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                      "Condition1": {
+                        "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                        "Condition1": {
+                          "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                          "Condition1": {
+                            "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                            "Condition1": {
+                              "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                              "Condition1": {
+                                "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                                "Condition1": {
+                                  "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                                  "Condition1": {
+                                    "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                                    "CompareType": 6,
+                                    "ColumnBindingInfo": {
+                                      "TableName": "t_object_order",
+                                      "ColumnName": "object_id",
+                                      "RelationBinding": {
+                                        "RelatedTable": "t_object",
+                                        "RelatedColumn": "object_id",
+                                        "DisplayColumn": "物件番号"
+                                      }
+                                    },
+                                    "Value": {
+                                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                      "SerializeProperty": "=郵送手配リスト!検索ワード1"
+                                    },
+                                    "LeftBracket": 1
+                                  },
+                                  "Condition2": {
+                                    "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                                    "CompareType": 6,
+                                    "ColumnBindingInfo": {
+                                      "TableName": "t_object_order",
+                                      "ColumnName": "latest_warranty_id",
+                                      "RelationBinding": {
+                                        "RelatedTable": "t_object_warranty",
+                                        "RelatedColumn": "warranty_id",
+                                        "DisplayColumn": "warranty_object_name"
+                                      }
+                                    },
+                                    "Value": {
+                                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                      "SerializeProperty": "=郵送手配リスト!検索ワード1"
+                                    }
+                                  },
+                                  "RelationType": 1
+                                },
+                                "Condition2": {
+                                  "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                                  "CompareType": 6,
+                                  "ColumnBindingInfo": {
+                                    "TableName": "t_object_order",
+                                    "ColumnName": "latest_warranty_id",
+                                    "RelationBinding": {
+                                      "RelatedTable": "t_object_warranty",
+                                      "RelatedColumn": "warranty_id",
+                                      "DisplayColumn": "warranty_object_address"
+                                    }
+                                  },
+                                  "Value": {
+                                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                    "SerializeProperty": "=郵送手配リスト!検索ワード1"
+                                  }
+                                },
+                                "RelationType": 1
+                              },
+                              "Condition2": {
+                                "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                                "CompareType": 6,
+                                "ColumnBindingInfo": {
+                                  "TableName": "t_object_order",
+                                  "ColumnName": "order_type_id",
+                                  "RelationBinding": {
+                                    "RelatedTable": "m_order_type",
+                                    "RelatedColumn": "order_type_id",
+                                    "DisplayColumn": "ordertype_name"
+                                  }
+                                },
+                                "Value": {
+                                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                  "SerializeProperty": "=郵送手配リスト!検索ワード1"
+                                }
+                              },
+                              "RelationType": 1
+                            },
+                            "Condition2": {
+                              "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                              "CompareType": 6,
+                              "ColumnBindingInfo": {
+                                "TableName": "t_object_order",
+                                "ColumnName": "group_id",
+                                "RelationBinding": {
+                                  "RelatedTable": "m_group",
+                                  "RelatedColumn": "group_id",
+                                  "DisplayColumn": "group_name"
+                                }
+                              },
+                              "Value": {
+                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                "SerializeProperty": "=郵送手配リスト!検索ワード1"
+                              }
+                            },
+                            "RelationType": 1
+                          },
+                          "Condition2": {
+                            "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                            "CompareType": 6,
+                            "ColumnBindingInfo": {
+                              "TableName": "t_object_order",
+                              "ColumnName": "builder_id",
+                              "RelationBinding": {
+                                "RelatedTable": "m_customer",
+                                "RelatedColumn": "customer_id",
+                                "DisplayColumn": "内部顧客名"
+                              }
+                            },
+                            "Value": {
+                              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                              "SerializeProperty": "=郵送手配リスト!検索ワード1"
+                            }
+                          },
+                          "RelationType": 1
+                        },
+                        "Condition2": {
+                          "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                          "ColumnBindingInfo": {
+                            "TableName": "t_object_order",
+                            "ColumnName": "latest_warranty_id",
+                            "RelationBinding": {
+                              "RelatedTable": "t_object_warranty",
+                              "RelatedColumn": "warranty_id",
+                              "DisplayColumn": "warranty_request_dte"
+                            }
+                          },
+                          "Value": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=郵送手配リスト!検索ワード1"
+                          }
+                        },
+                        "RelationType": 1
+                      },
+                      "Condition2": {
+                        "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                        "CompareType": 6,
+                        "ColumnBindingInfo": {
+                          "TableName": "t_object_order",
+                          "ColumnName": "latest_warranty_id",
+                          "RelationBinding": {
+                            "RelatedTable": "t_object_warranty",
+                            "RelatedColumn": "warranty_id",
+                            "DisplayColumn": "mailing_method_id",
+                            "NextRelationBinding": {
+                              "RelatedTable": "m_mailing_method",
+                              "RelatedColumn": "mailing_method_id",
+                              "DisplayColumn": "mailing_method_name"
+                            }
+                          }
+                        },
+                        "Value": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=郵送手配リスト!検索ワード1"
+                        }
+                      },
+                      "RelationType": 1
+                    },
+                    "Condition2": {
+                      "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                      "CompareType": 6,
+                      "ColumnBindingInfo": {
+                        "TableName": "t_object_order",
+                        "ColumnName": "latest_warranty_id",
+                        "RelationBinding": {
+                          "RelatedTable": "t_object_warranty",
+                          "RelatedColumn": "warranty_id",
+                          "DisplayColumn": "warranty_type_id",
+                          "NextRelationBinding": {
+                            "RelatedTable": "m_warranty_type",
+                            "RelatedColumn": "warranty_type_id",
+                            "DisplayColumn": "warranty_type_name"
+                          }
+                        }
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=郵送手配リスト!検索ワード1"
+                      },
+                      "RightBracket": 1
+                    },
+                    "RelationType": 1
                   }
                 },
                 "Condition2": {
-                  "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
-                  "ColumnBindingInfo": {
-                    "TableName": "t_object_order",
-                    "ColumnName": "active_flg"
+                  "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                  "Condition1": {
+                    "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                    "Condition1": {
+                      "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                      "Condition1": {
+                        "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                        "Condition1": {
+                          "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                          "Condition1": {
+                            "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                            "Condition1": {
+                              "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                              "Condition1": {
+                                "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                                "Condition1": {
+                                  "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                                  "CompareType": 6,
+                                  "ColumnBindingInfo": {
+                                    "TableName": "t_object_order",
+                                    "ColumnName": "object_id",
+                                    "RelationBinding": {
+                                      "RelatedTable": "t_object",
+                                      "RelatedColumn": "object_id",
+                                      "DisplayColumn": "物件番号"
+                                    }
+                                  },
+                                  "Value": {
+                                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                    "SerializeProperty": "=郵送手配リスト!検索ワード2"
+                                  },
+                                  "LeftBracket": 1
+                                },
+                                "Condition2": {
+                                  "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                                  "CompareType": 6,
+                                  "ColumnBindingInfo": {
+                                    "TableName": "t_object_order",
+                                    "ColumnName": "latest_warranty_id",
+                                    "RelationBinding": {
+                                      "RelatedTable": "t_object_warranty",
+                                      "RelatedColumn": "warranty_id",
+                                      "DisplayColumn": "warranty_object_name"
+                                    }
+                                  },
+                                  "Value": {
+                                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                    "SerializeProperty": "=郵送手配リスト!検索ワード2"
+                                  }
+                                },
+                                "RelationType": 1
+                              },
+                              "Condition2": {
+                                "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                                "CompareType": 6,
+                                "ColumnBindingInfo": {
+                                  "TableName": "t_object_order",
+                                  "ColumnName": "latest_warranty_id",
+                                  "RelationBinding": {
+                                    "RelatedTable": "t_object_warranty",
+                                    "RelatedColumn": "warranty_id",
+                                    "DisplayColumn": "warranty_object_address"
+                                  }
+                                },
+                                "Value": {
+                                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                  "SerializeProperty": "=郵送手配リスト!検索ワード2"
+                                }
+                              },
+                              "RelationType": 1
+                            },
+                            "Condition2": {
+                              "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                              "CompareType": 6,
+                              "ColumnBindingInfo": {
+                                "TableName": "t_object_order",
+                                "ColumnName": "order_type_id",
+                                "RelationBinding": {
+                                  "RelatedTable": "m_order_type",
+                                  "RelatedColumn": "order_type_id",
+                                  "DisplayColumn": "ordertype_name"
+                                }
+                              },
+                              "Value": {
+                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                "SerializeProperty": "=郵送手配リスト!検索ワード2"
+                              }
+                            },
+                            "RelationType": 1
+                          },
+                          "Condition2": {
+                            "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                            "CompareType": 6,
+                            "ColumnBindingInfo": {
+                              "TableName": "t_object_order",
+                              "ColumnName": "group_id",
+                              "RelationBinding": {
+                                "RelatedTable": "m_group",
+                                "RelatedColumn": "group_id",
+                                "DisplayColumn": "group_name"
+                              }
+                            },
+                            "Value": {
+                              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                              "SerializeProperty": "=郵送手配リスト!検索ワード2"
+                            }
+                          },
+                          "RelationType": 1
+                        },
+                        "Condition2": {
+                          "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                          "CompareType": 6,
+                          "ColumnBindingInfo": {
+                            "TableName": "t_object_order",
+                            "ColumnName": "builder_id",
+                            "RelationBinding": {
+                              "RelatedTable": "m_customer",
+                              "RelatedColumn": "customer_id",
+                              "DisplayColumn": "内部顧客名"
+                            }
+                          },
+                          "Value": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=郵送手配リスト!検索ワード2"
+                          }
+                        },
+                        "RelationType": 1
+                      },
+                      "Condition2": {
+                        "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                        "ColumnBindingInfo": {
+                          "TableName": "t_object_order",
+                          "ColumnName": "latest_warranty_id",
+                          "RelationBinding": {
+                            "RelatedTable": "t_object_warranty",
+                            "RelatedColumn": "warranty_id",
+                            "DisplayColumn": "warranty_request_dte"
+                          }
+                        },
+                        "Value": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=郵送手配リスト!検索ワード2"
+                        }
+                      },
+                      "RelationType": 1
+                    },
+                    "Condition2": {
+                      "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                      "CompareType": 6,
+                      "ColumnBindingInfo": {
+                        "TableName": "t_object_order",
+                        "ColumnName": "latest_warranty_id",
+                        "RelationBinding": {
+                          "RelatedTable": "t_object_warranty",
+                          "RelatedColumn": "warranty_id",
+                          "DisplayColumn": "mailing_method_id",
+                          "NextRelationBinding": {
+                            "RelatedTable": "m_mailing_method",
+                            "RelatedColumn": "mailing_method_id",
+                            "DisplayColumn": "mailing_method_name"
+                          }
+                        }
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=郵送手配リスト!検索ワード2"
+                      }
+                    },
+                    "RelationType": 1
                   },
-                  "Value": "1"
+                  "Condition2": {
+                    "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                    "CompareType": 6,
+                    "ColumnBindingInfo": {
+                      "TableName": "t_object_order",
+                      "ColumnName": "latest_warranty_id",
+                      "RelationBinding": {
+                        "RelatedTable": "t_object_warranty",
+                        "RelatedColumn": "warranty_id",
+                        "DisplayColumn": "warranty_type_id",
+                        "NextRelationBinding": {
+                          "RelatedTable": "m_warranty_type",
+                          "RelatedColumn": "warranty_type_id",
+                          "DisplayColumn": "warranty_type_name"
+                        }
+                      }
+                    },
+                    "Value": {
+                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                      "SerializeProperty": "=郵送手配リスト!検索ワード2"
+                    },
+                    "RightBracket": 1
+                  },
+                  "RelationType": 1
                 }
               }
             },
-            "ID": "13cb682a09564fd184ccb93f10d107da"
+            "ID": "bcbbaf4067604a1db17eed9738eb78d2"
           },
           {
             "$type": "Forguncy.Model.SetCellPropertyCommand, ServerDesignerCommon",
@@ -1603,7 +1790,7 @@
         "CellDefaultValue": "0"
       }
     },
-    "10,26": {
+    "10,19": {
       "CellType": {
         "$type": "Forguncy.TextCellType, ServerDesignerCommon",
         "SavedValidators": [
@@ -1622,7 +1809,7 @@
                     "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
                     "cellLocations": [
                       {
-                        "SerializeProperty": "=郵送手配リスト!AA11"
+                        "SerializeProperty": "=郵送手配リスト!郵送アクション"
                       }
                     ]
                   },
@@ -1635,7 +1822,124 @@
                       {
                         "TargetCells": {
                           "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=郵送手配リスト!郵送アクション"
+                        },
+                        "Value": "0"
+                      }
+                    ]
+                  },
+                  {
+                    "$type": "Forguncy.Model.ShowPopupCommand, ServerDesignerCommon",
+                    "PageName": "日付選択",
+                    "PassValues": [
+                      {
+                        "Source": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
                           "SerializeProperty": "=郵送手配リスト!AA11"
+                        },
+                        "TargetCell": {
+                          "SerializeProperty": "=日付選択!選択日付"
+                        }
+                      },
+                      {
+                        "Source": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=郵送手配リスト!AA14"
+                        },
+                        "TargetCell": {
+                          "SerializeProperty": "=日付選択!更新開始フラグ"
+                        }
+                      },
+                      {
+                        "Source": "保証書郵送日を選択してください",
+                        "TargetCell": {
+                          "SerializeProperty": "=日付選択!メッセージ"
+                        }
+                      }
+                    ]
+                  }
+                ],
+                "ID": "b2308193-2064-4185-b39a-f54c29403828"
+              },
+              {
+                "Condition": {
+                  "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                  "param": {
+                    "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+                    "cellLocations": [
+                      {
+                        "SerializeProperty": "=郵送手配リスト!郵送アクション"
+                      }
+                    ]
+                  },
+                  "value": "2"
+                },
+                "CommandList": [
+                  {
+                    "$type": "Forguncy.Model.SetCellPropertyCommand, ServerDesignerCommon",
+                    "PropertyItemsList": [
+                      {
+                        "TargetCells": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=郵送手配リスト!郵送アクション"
+                        },
+                        "Value": "0"
+                      }
+                    ]
+                  },
+                  {
+                    "$type": "Forguncy.Model.SetCellPropertyCommand, ServerDesignerCommon",
+                    "PropertyItemsList": [
+                      {
+                        "TargetCells": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=郵送手配リスト!AH14"
+                        },
+                        "Value": "1"
+                      }
+                    ],
+                    "Comments": "郵送済み解除フラグOn"
+                  }
+                ],
+                "ID": "5b7b25d2-12df-477c-a852-32c8838506b9"
+              }
+            ]
+          }
+        ],
+        "CellDefaultValue": 0
+      }
+    },
+    "13,26": {
+      "CellType": {
+        "$type": "Forguncy.TextCellType, ServerDesignerCommon",
+        "SavedValidators": [
+          {
+            "$type": "Forguncy.CellTypes.Models.UniqueValidadator, ServerDesignerCommon"
+          }
+        ],
+        "CommandList": [
+          {
+            "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+            "ConditionAndCommandPairList": [
+              {
+                "ConfirmDialogSettings": {
+                  "Title": "確認",
+                  "FormulaText": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=\"「\"&TEXT(郵送手配リスト!AA11,\"yyyy/mm/dd\")&\"」付で郵送済みに更新します。\"&CHAR(10)&\"よろしいですか？\""
+                  },
+                  "YesButtonText": "はい",
+                  "NoButtonText": "いいえ",
+                  "ConfirmIcon": 1
+                },
+                "CommandList": [
+                  {
+                    "$type": "Forguncy.Model.SetCellPropertyCommand, ServerDesignerCommon",
+                    "PropertyItemsList": [
+                      {
+                        "TargetCells": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=郵送手配リスト!AA14"
                         },
                         "Value": "0"
                       }
@@ -1654,7 +1958,7 @@
                         "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
                         "Value": {
                           "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                          "SerializeProperty": "=郵送手配リスト!AA8"
+                          "SerializeProperty": "=郵送手配リスト!AA11"
                         },
                         "ParamName": "P_郵送予定日"
                       },
@@ -1704,9 +2008,45 @@
                               }
                             ]
                           },
-                          "value": "0",
-                          "compareType": 1
+                          "value": "0"
                         },
+                        "CommandList": [
+                          {
+                            "$type": "Forguncy.Model.OperateCellTypeCommand, ServerDesignerCommon",
+                            "TargetPageElement": {
+                              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                              "SerializeProperty": "=郵送手配リスト!保証件数取得ボタン"
+                            },
+                            "TargetType": "Forguncy.ButtonCellType, ServerDesignerCommon, Version=8.0.41.0, Culture=neutral, PublicKeyToken=967100671921c115",
+                            "MethodName": "ExecuteCommand",
+                            "ParameterValues": {},
+                            "RetrunParamNames": {}
+                          },
+                          {
+                            "$type": "Forguncy.Model.ShareCommand, ServerDesignerCommon",
+                            "ShareCommandContainerRefer": {
+                              "ShareCommandContainerID": "07ba1548-1f17-4934-913f-38d49df7143e"
+                            },
+                            "Params": [
+                              {
+                                "ParamReferObject": {
+                                  "ParamID": "95622679-e8e5-440d-abaa-561668df8c6b",
+                                  "ShareCommandContainerReferObject": {
+                                    "ShareCommandContainerID": "07ba1548-1f17-4934-913f-38d49df7143e"
+                                  }
+                                },
+                                "Value": {
+                                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                  "SerializeProperty": "=郵送手配リスト!T20"
+                                }
+                              }
+                            ],
+                            "ReturnPropertiesTo": []
+                          }
+                        ],
+                        "ID": "fcbb8e0c-6c75-4a84-943e-2ecf32486c75"
+                      },
+                      {
                         "CommandList": [
                           {
                             "$type": "Forguncy.Model.ShowMessageCommand, ServerDesignerCommon",
@@ -1716,17 +2056,154 @@
                             }
                           }
                         ],
-                        "ID": "f8b23b87-3bf5-4959-8289-2fd92ca301b3"
+                        "ID": "fc7339f5-6fec-437e-bd72-41c7422caffd"
                       }
                     ]
                   }
                 ],
-                "ID": "1e987fda-9702-4718-bf1b-4a83143417d5"
+                "ID": "41c83013-5a77-4bee-aef5-1af60d7880dc"
               }
             ]
           }
         ],
         "CellDefaultValue": 0
+      }
+    },
+    "13,33": {
+      "CellType": {
+        "$type": "Forguncy.TextCellType, ServerDesignerCommon",
+        "SavedValidators": [
+          {
+            "$type": "Forguncy.CellTypes.Models.UniqueValidadator, ServerDesignerCommon"
+          }
+        ],
+        "CommandList": [
+          {
+            "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+            "ConditionAndCommandPairList": [
+              {
+                "ConfirmDialogSettings": {
+                  "Title": "確認",
+                  "FormulaText": "郵送済みを解除します。よろしいですか？\r\n※この処理を実行した場合、「郵送手配待ち」に戻ります。",
+                  "YesButtonText": "はい",
+                  "NoButtonText": "いいえ",
+                  "ConfirmIcon": 4
+                },
+                "CommandList": [
+                  {
+                    "$type": "LoadingCommand.StartLoadingCommand, LoadingCommand",
+                    "LoadingText": "お待ちください",
+                    "LoadingTextColor": "Background 1 0"
+                  },
+                  {
+                    "$type": "Forguncy.Model.RequestServerCommand, ServerDesignerCommon",
+                    "ServerCommandName": "郵送済み一括解除",
+                    "Parameters": [
+                      {
+                        "$type": "Forguncy.Model.RequestServerCommandListviewParam, ServerDesignerCommon",
+                        "ListviewName": "郵送手配ビュー",
+                        "Columns": [
+                          {
+                            "ArrayItemName": "P_保証ID",
+                            "Column": "保証ID"
+                          },
+                          {
+                            "ArrayItemName": "P_申込ID",
+                            "Column": "申込ID"
+                          },
+                          {
+                            "ArrayItemName": "P_選択フラグ",
+                            "Column": "選択フラグ"
+                          }
+                        ],
+                        "ParamName": "P_郵送待リスト"
+                      }
+                    ],
+                    "ResultErrorCodeTo": {
+                      "SerializeProperty": "リターンコード"
+                    },
+                    "ResultMessageTo": {
+                      "SerializeProperty": "リターンメッセージ"
+                    },
+                    "RefreshAfterFinish": true,
+                    "CheckDataValidation": false
+                  },
+                  {
+                    "$type": "LoadingCommand.EndLoadingCommand, LoadingCommand"
+                  },
+                  {
+                    "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+                    "ConditionAndCommandPairList": [
+                      {
+                        "Condition": {
+                          "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                          "param": {
+                            "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+                            "cellLocations": [
+                              {
+                                "SerializeProperty": "=郵送手配リスト!リターンコード"
+                              }
+                            ]
+                          },
+                          "value": "0"
+                        },
+                        "CommandList": [
+                          {
+                            "$type": "Forguncy.Model.OperateCellTypeCommand, ServerDesignerCommon",
+                            "TargetPageElement": {
+                              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                              "SerializeProperty": "=郵送手配リスト!保証件数取得ボタン"
+                            },
+                            "TargetType": "Forguncy.ButtonCellType, ServerDesignerCommon, Version=8.0.41.0, Culture=neutral, PublicKeyToken=967100671921c115",
+                            "MethodName": "ExecuteCommand",
+                            "ParameterValues": {},
+                            "RetrunParamNames": {}
+                          },
+                          {
+                            "$type": "Forguncy.Model.ShareCommand, ServerDesignerCommon",
+                            "ShareCommandContainerRefer": {
+                              "ShareCommandContainerID": "07ba1548-1f17-4934-913f-38d49df7143e"
+                            },
+                            "Params": [
+                              {
+                                "ParamReferObject": {
+                                  "ParamID": "95622679-e8e5-440d-abaa-561668df8c6b",
+                                  "ShareCommandContainerReferObject": {
+                                    "ShareCommandContainerID": "07ba1548-1f17-4934-913f-38d49df7143e"
+                                  }
+                                },
+                                "Value": {
+                                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                  "SerializeProperty": "=郵送手配リスト!T20"
+                                }
+                              }
+                            ],
+                            "ReturnPropertiesTo": []
+                          }
+                        ],
+                        "ID": "1a8d4c39-43a1-418c-91e0-937531c3b5b3"
+                      },
+                      {
+                        "CommandList": [
+                          {
+                            "$type": "Forguncy.Model.ShowMessageCommand, ServerDesignerCommon",
+                            "MessageFormula": {
+                              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                              "SerializeProperty": "=郵送手配リスト!リターンメッセージ"
+                            }
+                          }
+                        ],
+                        "ID": "75ec38c1-3861-4428-9f99-a006e40e5c35"
+                      }
+                    ]
+                  }
+                ],
+                "ID": "4066c49e-ce4e-4637-9816-9ca765cda39e"
+              }
+            ]
+          }
+        ],
+        "CellDefaultValue": "0"
       }
     },
     "19,11": {
@@ -1848,9 +2325,6 @@
         "HorizontalAlignment": 3
       },
       {
-        "Background": 10
-      },
-      {
         "Background": 10,
         "FontFamily": 0
       },
@@ -1873,6 +2347,9 @@
         "BorderTop": null
       },
       {
+        "Background": 10
+      },
+      {
         "FontSize": 12.0
       },
       {
@@ -1890,7 +2367,7 @@
         "Background 1 0",
         "#FF0070C0",
         "General",
-        "Accent 1 80",
+        "Accent 1 60",
         "@",
         "#FFFFFF00",
         "Background 1 -15"
@@ -1931,6 +2408,9 @@
       "0,37": 1,
       "0,38": 1,
       "0,39": 1,
+      "0,40": 1,
+      "0,41": 1,
+      "0,42": 1,
       "1,1": 4,
       "1,2": 5,
       "1,3": 6,
@@ -1961,115 +2441,175 @@
       "1,37": 1,
       "1,38": 1,
       "1,39": 1,
+      "1,40": 1,
+      "1,41": 1,
+      "1,42": 1,
       "2,33": 1,
       "2,34": 1,
       "2,35": 1,
-      "3,19": 1,
-      "3,20": 1,
-      "3,21": 1,
       "3,22": 1,
       "3,23": 1,
       "3,24": 1,
       "3,25": 1,
-      "3,26": 3,
-      "3,27": 1,
-      "3,28": 1,
       "3,33": 3,
       "3,34": 1,
       "3,35": 1,
-      "4,19": 1,
-      "4,20": 1,
-      "4,21": 1,
       "4,22": 1,
       "4,23": 1,
       "4,24": 1,
       "4,25": 1,
-      "4,26": 1,
-      "4,27": 1,
-      "4,28": 1,
       "4,33": 1,
       "4,34": 1,
       "4,35": 1,
       "5,33": 1,
       "5,34": 1,
       "5,35": 1,
-      "6,26": 1,
       "6,33": 3,
       "6,34": 1,
       "6,35": 1,
       "7,19": 17,
-      "7,26": 18,
-      "7,33": 19,
+      "7,33": 18,
       "7,34": 1,
       "7,35": 1,
-      "9,19": 1,
+      "9,19": 3,
       "9,20": 1,
       "9,21": 1,
-      "9,26": 3,
+      "9,26": 1,
       "9,27": 1,
       "9,28": 1,
       "10,19": 19,
       "10,20": 1,
       "10,21": 1,
-      "10,26": 20,
-      "12,19": 3,
+      "10,26": 18,
+      "10,27": 1,
+      "10,28": 1,
+      "12,19": 1,
       "12,20": 1,
       "12,21": 1,
+      "12,22": 1,
+      "12,23": 1,
+      "12,24": 1,
+      "12,25": 1,
       "12,26": 3,
       "12,27": 1,
       "12,28": 1,
-      "12,33": 1,
+      "12,29": 1,
+      "12,30": 1,
+      "12,31": 1,
+      "12,32": 1,
+      "12,33": 3,
       "12,34": 1,
       "12,35": 1,
-      "13,19": 19,
+      "13,19": 18,
       "13,20": 1,
       "13,21": 1,
+      "13,22": 1,
+      "13,23": 1,
+      "13,24": 1,
+      "13,25": 1,
       "13,26": 19,
       "13,27": 1,
       "13,28": 1,
+      "13,29": 1,
+      "13,30": 1,
+      "13,31": 1,
+      "13,32": 1,
       "13,33": 19,
-      "13,34": 1,
-      "13,35": 1,
-      "19,1": 21,
-      "19,2": 21,
-      "19,3": 21,
-      "19,4": 21,
-      "19,5": 21,
-      "19,6": 21,
-      "19,7": 21,
-      "19,8": 21,
-      "19,9": 21,
-      "19,10": 21,
-      "19,11": 22,
-      "19,12": 21,
-      "19,13": 21,
-      "19,14": 21,
-      "19,15": 21,
-      "19,16": 21,
-      "19,17": 21,
-      "19,18": 23,
+      "14,19": 1,
+      "14,20": 1,
+      "14,21": 1,
+      "14,22": 1,
+      "14,23": 1,
+      "14,24": 1,
+      "14,25": 1,
+      "14,26": 1,
+      "14,27": 1,
+      "14,28": 1,
+      "14,29": 1,
+      "14,30": 1,
+      "14,31": 1,
+      "14,32": 1,
+      "14,33": 1,
+      "14,34": 1,
+      "14,35": 1,
+      "15,19": 3,
+      "15,20": 1,
+      "15,21": 1,
+      "15,22": 1,
+      "15,23": 1,
+      "15,24": 1,
+      "15,25": 1,
+      "15,26": 3,
+      "15,27": 1,
+      "15,28": 1,
+      "15,29": 1,
+      "15,30": 1,
+      "15,31": 1,
+      "15,32": 1,
+      "15,33": 1,
+      "15,34": 1,
+      "15,35": 1,
+      "15,39": 1,
+      "15,40": 1,
+      "15,41": 1,
+      "16,19": 18,
+      "16,20": 1,
+      "16,21": 1,
+      "16,22": 1,
+      "16,23": 1,
+      "16,24": 1,
+      "16,25": 1,
+      "16,26": 18,
+      "16,27": 1,
+      "16,28": 1,
+      "16,29": 1,
+      "16,30": 1,
+      "16,31": 1,
+      "16,32": 1,
+      "16,33": 18,
+      "16,34": 1,
+      "16,35": 1,
+      "16,39": 18,
+      "16,40": 1,
+      "16,41": 1,
+      "19,1": 20,
+      "19,2": 20,
+      "19,3": 20,
+      "19,4": 20,
+      "19,5": 20,
+      "19,6": 20,
+      "19,7": 20,
+      "19,8": 20,
+      "19,9": 20,
+      "19,10": 20,
+      "19,11": 21,
+      "19,12": 20,
+      "19,13": 20,
+      "19,14": 20,
+      "19,15": 20,
+      "19,16": 20,
+      "19,17": 20,
+      "19,18": 22,
       "19,19": 23,
-      "19,20": 23,
-      "19,21": 23,
-      "19,22": 23,
-      "19,23": 23,
-      "19,24": 23,
-      "19,25": 23,
-      "19,26": 23,
-      "19,27": 23,
-      "19,28": 23,
-      "19,29": 23,
-      "19,30": 23,
-      "19,31": 23,
-      "19,32": 23,
-      "19,33": 23,
-      "19,34": 23,
-      "19,35": 23,
-      "19,36": 23,
-      "19,37": 23,
-      "19,38": 23,
-      "19,39": 23,
-      "19,40": 23
+      "19,22": 22,
+      "19,23": 22,
+      "19,24": 22,
+      "19,25": 22,
+      "19,26": 22,
+      "19,27": 22,
+      "19,28": 22,
+      "19,29": 22,
+      "19,30": 22,
+      "19,31": 22,
+      "19,32": 22,
+      "19,33": 22,
+      "19,34": 22,
+      "19,35": 22,
+      "19,36": 22,
+      "19,37": 22,
+      "19,38": 22,
+      "19,39": 22,
+      "19,43": 22
     },
     "ColStyles": {
       "1": 24,
@@ -2097,20 +2637,22 @@
   "Spans": [
     "1,19,1,3",
     "7,19,1,3",
-    "10,19,1,3",
     "1,26,1,3",
-    "7,26,1,3",
-    "10,26,1,3",
-    "13,19,1,3",
-    "13,26,1,3",
     "1,33,1,3",
-    "13,33,1,3",
-    "4,19,1,3",
-    "4,26,1,3",
     "4,33,1,3",
     "7,33,1,3",
     "2,1,17,17",
-    "19,1,1,5"
+    "19,1,1,5",
+    "13,19,1,3",
+    "13,26,1,3",
+    "16,19,1,3",
+    "16,26,1,3",
+    "16,33,1,3",
+    "10,19,1,3",
+    "10,26,1,3",
+    "13,33,1,3",
+    "16,39,1,3",
+    "19,19,1,3"
   ],
   "PageInfo": {
     "$type": "Forguncy.Model.Pages.NormalPage, ServerDesignerCommon",
@@ -2145,7 +2687,7 @@
   "CustomNames": [
     {
       "Name": "抽出カウント",
-      "Formula": "郵送手配リスト!$AH$14"
+      "Formula": "郵送手配リスト!$AH$17"
     },
     {
       "Name": "全選択ボタン",
@@ -2164,16 +2706,12 @@
       "Formula": "郵送手配リスト!$AH$2"
     },
     {
-      "Name": "郵送済みボタン",
-      "Formula": "郵送手配リスト!$T$5"
-    },
-    {
-      "Name": "郵送解除ボタン",
-      "Formula": "郵送手配リスト!$AA$5"
+      "Name": "未選択カウント",
+      "Formula": "郵送手配リスト!$AN$17"
     },
     {
       "Name": "選択カウント",
-      "Formula": "郵送手配リスト!$AA$14"
+      "Formula": "郵送手配リスト!$AA$17"
     },
     {
       "Name": "該当カウント",
@@ -2182,6 +2720,10 @@
     {
       "Name": "保証件数取得ボタン",
       "Formula": "郵送手配リスト!$AH$5"
+    },
+    {
+      "Name": "郵送アクション",
+      "Formula": "郵送手配リスト!$T$11"
     }
   ]
-}//gmu07wK4oSilBAHZvDAsXoYZFF2LO9cGswQgkANoncdMUBJ7cVi05DATawjNLA9NjDZMVu1Gs0OqzHn86oGRwZOETHJiklC2iEla8IVuw0bOYFuLpqAKe3jNwOUZXrTPiPZi868sWtDjiE9hXtmZ2saYY0OShR0uvc4D1EOJI/p+Rfob1Tk9Uv2CUFHNNJiDzMSWuQPESqqdptfNm7qgkoMX/yS2fZkNM9aoT4MmwFOiLGMAq9stq4/+3ZDP84NmOOy1zBvQYuRcKchR308I7YCIjef5yEEFpGPYdhb81Wljdat7Mdu6HCE4zqBPCuaYrNUJUDxqfL8Bz//G1fpw2DwT6aF1uCDtkJ93MucJMzvqubZB0+BamgY0gVLZiu9MCsTsbeCW+Fbuzryzyny3MT/O8oPmBYQo97zFbnMhRtbdWGPTwbCH7zgDXCLG9Msc3LQ/xTHOBnXtYWOPr+a6opJKijMI4gd/c0R/0zoXRWeQIDD7OIcM2XZFvpK8uhHxdRWZzc15IxGujDxc1qztjVrFXfmA3YEscdPyPtYrHc1T1pk70klpJZDs0saNFxPiGQ1mgugRsFfUBviNjR7uwBbCmbnKdZXUQEpEvaoItZoPYFQVsLb9SvN/EnOIneA+8AjwqlATyio+AU/WiC87dBMsxQrPky9Lrj6p7O/dSxq/VphOlwfqtn7SdwOfomWadBMLWXUN+AGxQ/hFV3py9yt5dTk4gBwI78gzSTUlOYv3+kKru1wWxO/CQufpfaCdDpJtnbzEpvlxUtEeTOOpecqqn6QCkrCxcD7yp7N9TqyzJw5IAzyt26k9mc9LJto11jGhJ+OfjTplp7pNykt0kXd42fEWjATQL5nQylIWK8mPADtuHfHC9xj+T1ratj+NN4IszNcs6KV6b3R2q35FlA==|920
+}//Gh8ouirnEj/558zzRrFjKjTN4LTkpDQttOn38Ynqo7UyECzidADggMXE7MRKzCICoMrxCSmcg2Vylxf1/oWCdcnHZ9Wf/bKreBkyOITebbBjKc8iDxUl6b7gKji5RJZbdHwxc2retv59J3YnKruY9in0x/dSP0KeAeVSgs5OVa28ZXmyl9a1p56bnN3uBnC4KeuUrNGWBPrjb5eyla/9BoY+pWf99U4kMvkxeCP/EhURCsG5uUgqEo4Wi0yqUE0dMJz6yX8R45S6E95Gq/SqnnQQpxAQUpdG84N8hRk4BWwqKplQDm//unlYBQDjjFXlhXOWKRIUQSCtsPiBTlA2sStmDRWiwquWFSnMjexBDsMWjnu7+9cCAlCHdE6EQTydqxleckb+QKxRwSVKXU4jWfq/Wsatv2G0FOS76zeODVzeoCKu1qJ4+JU8R9u3YMmCQ9SoChTNHR72JDBraHDO5PEnDBROf8jutREY8mmJVIObrHYX9lYCJDRUC9p9f3xY8r54PSlhT1xYhC4pyvXMmXDT+4w0DvwptATLF6Sez5CkPc4Kbm9zkqVObwtv8/+nyGUGcyFPTiw3ZHFZIQw3ude5EY2nlWpabQV4YmvhFaV1DxzuowzsXK09vP0Z04FXh2HnSoUm737xbsMNWcv1cAHMeByqLt/eBjiPUv0iWhMLZxEkmPwPGCHye7oONUuFrvFBN4hUbhSJbsmN74L7FZxBVYgHkwAboIMHTHr42IrVyM7zxp8rBgE73qW5G5SE6/HHivjRB/rqirtX8dTSs0qv3y0lFURzkuVInRIMaSKlzYzgUU5N43W/TEMcMdlCl8K/UaXMOMcSQrt+lxb9Jxnf2MNLbHKSM9RaqLlfB/0DQkszWbv8bqIORz5soJmjVTlkRrqzNnRkcKJRErKZJg==|920
