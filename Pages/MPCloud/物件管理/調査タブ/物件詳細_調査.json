@@ -311,6 +311,8 @@
     "14,46": "▼申込ID",
     "14,53": "▼申込タイプID",
     "14,59": "▼グループID",
+    "14,65": "▼住宅事業者ID",
+    "14,71": "▼住宅事業者名",
     "17,46": "▼申込キャンセル日時",
     "20,46": "▼調査ビュー",
     "21,49": "調査履歴番号",
@@ -318,17 +320,20 @@
     "21,80": "仕入",
     "26,46": "▼登録件数",
     "26,51": "▼調査ビューリロードフラグ",
-    "27,51": "0"
+    "26,59": "▼調査報告書ファイル属性ID",
+    "26,68": "▼地盤解析フラグ",
+    "27,51": "0",
+    "27,59": 19
   },
   "Formulas": {
     "22,49": "$AU$28-ROW(AU23)+1",
     "22,84": "ODATA(\"t_object_attachment/$count?$filter=file_attribute_id eq \"&IF(ISBLANK(AZ23),\"null\",AZ23)&\" and survey_id eq \"&IF(ISBLANK(AW23),\"null\",AW23)&\" and active_flg eq 1\")",
     "22,82": "IFERROR(ODATA(\"v_survey_product_summary?$select=仕入合計&$filter=調査ID eq \"&IF(ISBLANK(AW23),\"null\",AW23)),\"\")",
-    "22,51": "IF(AY23=1,18,6)",
     "22,81": "IFERROR(ODATA(\"v_survey_product_summary?$select=売上合計&$filter=調査ID eq \"&IF(ISBLANK(AW23),\"null\",AW23)),\"\")",
     "27,46": "COUNT(AW23)",
     "22,56": "IF(BB23=1,\"以降\",\"～\")",
-    "22,85": "\"調査報告書(\"&CG23&\")\""
+    "22,85": "\"調査報告書(\"&CG23&\")\"",
+    "27,59": "IF(BQ28=1,18,6)"
   },
   "AttachInfos": {
     "0,0": {
@@ -554,6 +559,41 @@
     "11,29": {
       "CellType": {
         "$type": "Forguncy.ButtonCellType, ServerDesignerCommon",
+        "CommandList": [
+          {
+            "$type": "Forguncy.Model.ShowPopupCommand, ServerDesignerCommon",
+            "PageName": "過去調査検索",
+            "PassValues": [
+              {
+                "Source": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=物件詳細_調査!BN16"
+                },
+                "TargetCell": {
+                  "SerializeProperty": "=過去調査検索!住宅事業者ID"
+                }
+              },
+              {
+                "Source": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=物件詳細_調査!BT16"
+                },
+                "TargetCell": {
+                  "SerializeProperty": "=過去調査検索!住宅事業者名"
+                }
+              },
+              {
+                "Source": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=物件詳細_調査!AU16"
+                },
+                "TargetCell": {
+                  "SerializeProperty": "=過去調査検索!元申込ID"
+                }
+              }
+            ]
+          }
+        ],
         "Text": "過去の調査履歴",
         "TemplateKey": "角緑",
         "Icon": {
@@ -620,7 +660,7 @@
                 }
               }
             },
-            "ID": "44837a7eaf77451dac6a8e7465f76c00"
+            "ID": "6f765ca4a8764990a4cafeb212ec2174"
           },
           {
             "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
@@ -648,7 +688,7 @@
                     "$type": "Forguncy.Model.StopCommand, ServerDesignerCommon"
                   }
                 ],
-                "ID": "e03ec109-8dea-4077-b2c9-42bdb1d86aeb"
+                "ID": "e2f4e19c-55b7-4d69-b922-bf0cfa93a76c"
               }
             ]
           },
@@ -658,7 +698,7 @@
             "DrawerDirection": 3,
             "ShowDrawerHeader": true,
             "CloseWhenClickGrayArea": false,
-            "PageName": "調査登録・編集",
+            "PageName": "調査登録フレーム",
             "PassValues": [
               {
                 "Source": {
@@ -666,7 +706,7 @@
                   "SerializeProperty": "=物件詳細_調査!AU16"
                 },
                 "TargetCell": {
-                  "SerializeProperty": "=調査登録・編集!申込ID"
+                  "SerializeProperty": "=調査登録フレーム!申込ID"
                 }
               },
               {
@@ -675,7 +715,7 @@
                   "SerializeProperty": "=物件詳細_調査!BA6"
                 },
                 "TargetCell": {
-                  "SerializeProperty": "=調査登録・編集!住宅事業者ID"
+                  "SerializeProperty": "=調査登録フレーム!住宅事業者ID"
                 }
               },
               {
@@ -684,7 +724,7 @@
                   "SerializeProperty": "=物件詳細_調査!BH16"
                 },
                 "TargetCell": {
-                  "SerializeProperty": "=調査登録・編集!グループID"
+                  "SerializeProperty": "=調査登録フレーム!グループID"
                 }
               },
               {
@@ -693,7 +733,7 @@
                   "SerializeProperty": "=物件詳細_調査!BB16"
                 },
                 "TargetCell": {
-                  "SerializeProperty": "=調査登録・編集!申込タイプID"
+                  "SerializeProperty": "=調査登録フレーム!申込タイプID"
                 }
               }
             ],
@@ -797,6 +837,23 @@
         "ColumnName": "group_id"
       }
     },
+    "15,65": {
+      "BindingInfo": {
+        "TableName": "t_object_order",
+        "ColumnName": "builder_id"
+      }
+    },
+    "15,71": {
+      "BindingInfo": {
+        "TableName": "t_object_order",
+        "ColumnName": "builder_id",
+        "RelationBinding": {
+          "RelatedTable": "m_customer",
+          "RelatedColumn": "customer_id",
+          "DisplayColumn": "内部顧客名"
+        }
+      }
+    },
     "18,46": {
       "BindingInfo": {
         "TableName": "t_object_order",
@@ -893,9 +950,6 @@
         }
       },
       "NameUsedInJavaScript": "地盤解析フラグ"
-    },
-    "22,51": {
-      "NameUsedInJavaScript": "調査報告書ファイル属性ID"
     },
     "22,52": {
       "BindingInfo": {
@@ -1190,12 +1244,23 @@
                     ]
                   }
                 ],
-                "ID": "15d90c00-e9e3-4c87-a2d7-cc449ec554cd"
+                "ID": "9f86a088-7486-49d1-9703-3a2d8402fbd1"
               }
             ]
           }
         ],
         "CellDefaultValue": "0"
+      }
+    },
+    "27,68": {
+      "BindingInfo": {
+        "TableName": "t_object_order",
+        "ColumnName": "order_type_id",
+        "RelationBinding": {
+          "RelatedTable": "m_order_type",
+          "RelatedColumn": "order_type_id",
+          "DisplayColumn": "analyze_flg"
+        }
       }
     }
   },
@@ -1262,9 +1327,25 @@
         "Formatter": 5
       },
       {
+        "FontFamily": 1,
+        "BorderBottom": null,
+        "BorderTop": null,
+        "BorderLeft": null,
+        "BorderRight": null
+      },
+      {
         "Background": 9,
         "Formatter": 10,
         "HorizontalAlignment": 6
+      },
+      {
+        "Background": 0,
+        "FontFamily": 1,
+        "HorizontalAlignment": 11,
+        "BorderBottom": null,
+        "BorderTop": null,
+        "BorderLeft": null,
+        "BorderRight": null
       }
     ],
     "Types": {
@@ -1279,7 +1360,8 @@
         "Top",
         "#FFFFFF00",
         "Accent 1 80",
-        "@"
+        "@",
+        "Left"
       ],
       "Borders": [
         {
@@ -1419,6 +1501,9 @@
       "14,59": 6,
       "14,60": 1,
       "14,61": 1,
+      "14,71": 6,
+      "14,72": 1,
+      "14,73": 1,
       "15,46": 13,
       "15,53": 13,
       "15,54": 1,
@@ -1426,6 +1511,8 @@
       "15,59": 13,
       "15,60": 1,
       "15,61": 1,
+      "15,65": 13,
+      "15,71": 13,
       "17,46": 14,
       "17,47": 9,
       "17,48": 9,
@@ -1599,10 +1686,20 @@
       "26,46": 1,
       "26,47": 1,
       "26,48": 1,
+      "26,59": 15,
+      "26,60": 15,
+      "26,61": 15,
+      "26,68": 1,
+      "26,69": 1,
+      "26,70": 1,
       "27,46": 13,
       "27,47": 1,
       "27,48": 1,
-      "27,51": 15
+      "27,51": 16,
+      "27,59": 17,
+      "27,60": 15,
+      "27,61": 15,
+      "27,68": 13
     },
     "SheetStyle": {
       "FontFamily": 1
@@ -1631,7 +1728,11 @@
     "23,46,2,40",
     "12,35,1,2",
     "11,29,1,7",
-    "0,0,8,46"
+    "0,0,8,46",
+    "15,65,1,3",
+    "15,71,1,3",
+    "27,59,1,3",
+    "27,68,1,3"
   ],
   "PageInfo": {
     "$type": "Forguncy.Model.Pages.NormalPage, ServerDesignerCommon",
@@ -1641,7 +1742,7 @@
     },
     "RowBreakLines": [],
     "RepeatRangeSettings": [],
-    "RelatedDataTableName": "t_object_survey",
+    "RelatedDataTableName": "t_object_order",
     "PageResponsiveMode": 2
   },
   "PrintInfo": {
@@ -1664,6 +1765,10 @@
     {
       "Name": "タブID",
       "Formula": "物件詳細_調査!$AU$4"
+    },
+    {
+      "Name": "調査報告書ファイル属性ID",
+      "Formula": "物件詳細_調査!$BH$28"
     }
   ]
-}//a4sFXFD8iUphA0YdHacOtFS6LTud49VlTln0AV4cIL8l3qeEySPxofggcZ1i8sd0MVK0jZuOhmCC9VyoUBxgALOE9FVN7eEHR554yzi8qkpbx+gTDcJKb9xT2UmRKvJ6rLYxDMupp5wYKi+lJRddZrCuu/VagZNNCcm2Ap2Soz9uOw1htnCSV6Rf4lZkevU8M7NXzIlHt7XvLzYkMRZPL6bbpfICaStiNqjEGnTkpKVdJuy540rCPOyZDP6V8V1J3C0Xmdt3IoHvIXC0fp3UxqXbesS/yLow74RvvFymxa25W4rS3NBFS+TTQPSiAWNkWfV0vtFYcjfkHhr69OG2OT1nE62yZorY7RmSMR/u+VjB7XHVh3eYnvo64iwfh7Vmwv330jaDkPFOyV4po1m/BPfJbMkPFARutAZRb55jIG6/x7HUgkzBUH0LwBB/QMJBfo6mlozworifNVjQhxwtk/MUrMNg9l9/n1OgaPYpcN8WX3uGi03Tax0w+KIpXErON8py0ovdC8V82gVK5YS1ZgBZ7kDtOODcXQPVhoccwm6l/CKdVkaoCeAj2GvePzjOJvxqYxTliQJ4fTHSmSAOc7e7V0ZExt5qytzevf1RZwea2gayF30g2mnhbh54zbXpb8jDrsPaR0S9m92SpP1G/Ll1hYxgQKkd/lE3Yg+lr02hFAV3e1fw8VJ2WGu8MxgtS7481r0oo489rimEGW4BiczvkYRqcTUPHhMYZ6qIpyT1upxLihBoFEYrNckGmBJ5UjepvQ7DGmM+gZnGXr80giMwNe3Z0ZfoKbkkoNIiT7+RMAlZrBkxHuI0fCKha2gIbwGHjQPM4VntGBFdHXE4Fb8Qdb+4Agg8Xio0DOWfyjdYGgwJ2xRctDh0mEwqpEAaCiBAnmMD13sTbTHjREhAVQ==|920
+}//9QZObZVQ1AH+1UP5XRVRK2tVITOUs/aawQUzGCUrkS1/jxsDempcJTiyY/w/2RGvfyv8iJ2RldQRtcUW8PjoMumgQIEi6LDhpvl3BrrZl75wXzBMIX9jib/MPf4bNQ/mwG/vXhMmEb80ARC+s7zp3U1bQNm0VTpA2sKZj+BsQgzl+htXq0u6Fx4g1azmkTZknItpfT6dLBOG0wsWsZEmLDq74QfP0Xu8vJD8YXdpxD5oMiPc4nMfqlkOmgPlUg1sH0WMieAicmS0N4g5Ejk9Z5GJyYOok/askzDNY8b0t41FSZ6/SzeOtlWW/zzZFeMj79U/Ewdl7CnP1SgDCf9tu/swrDw+2E0UWeN3CoPcbkYSngqm3A8UNOSAUUvNwvYLTXs7CTU/snwZMXRiH0xEEX8WSdYKrwX5t5szPEwfGx6xPfWAZJUzORMg7pVE4k3Yb6oNWolyhYt0BF2a7C5XMHS5/E3jEisyRqDMqtTMlUM93jukPkTTafKn3TWKih0B/Y0Sti+PGCSHcwQL/YCKkKMppmnRl7pPq/UZPk/uPBphu4yXEtMSjioDNaZC9ROMOeYUj+HHZs17D341IVJpDszpnmqjcagKR5PitkEpxMFYRIbJ+5vQ2NBePuIVXt5p48xnApze7JaYnqhwyCk0ofl7hToZOf+OfYmjeawLQzYU72jzOA9ltZw/aD4UClAYlnehvhp6OFUtZDRm7L6v9JeSBsnx/CE0vAxLCtpoQKugNeWXOu6m8iwsX7KMFDT0FBrV3L3oa/MiePyzwwdIRBGi9pGkelTYpBL7PpFXo2rnX0gQ/15RoQwIaZnfVjZUWGoOrfAvtK8wHVmxaSIdMawm/HPPvypjndxzBi8mh/xk25XhJH1lqVDNksghNJWG6fGGOsWfWaa8QHMOefXi9g==|920
