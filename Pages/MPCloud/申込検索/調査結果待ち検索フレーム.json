@@ -124,6 +124,7 @@
   },
   "Values": {
     "1,1": "調査結果待ちスケジュール",
+    "1,11": 1,
     "3,60": "▼調査予定ビュー",
     "4,3": "日",
     "4,7": "日",
@@ -140,7 +141,7 @@
     "4,55": "日",
     "5,2": "以前",
     "5,54": "以降",
-    "8,19": "調査予定期間",
+    "8,19": "検索対象期間",
     "8,31": "～",
     "8,43": "最新情報に更新する",
     "8,51": "ダウンロードする",
@@ -158,13 +159,13 @@
     "5,48": "TEXT(AW5,\"aaa\")",
     "5,44": "TEXT(AS5,\"aaa\")",
     "17,60": "IF(BI12>0,MID(B9,BI12+1,1000),\"\")",
-    "6,1": "COUNTIF(BI6,\"<=\"&F5)",
-    "6,18": "COUNTIF(BI6,\"=\"&S5)",
-    "6,27": "COUNTIF(BI6,\"=\"&AB5)",
-    "6,44": "COUNTIF(BI6,\"=\"&AS5)",
+    "6,1": "IF($L$2=1,COUNTIF($BM6,\"<=\"&B5),COUNTIF($BI6,\"<=\"&B5))",
+    "6,18": "IF($L$2=1,COUNTIF($BM6,\"=\"&S5),COUNTIF($BI6,\"=\"&S5))",
+    "6,27": "IF($L$2=1,COUNTIF($BM6,\"=\"&AB5),COUNTIF($BI6,\"=\"&AB5))",
+    "6,44": "IF($L$2=1,COUNTIF($BM6,\"=\"&AS5),COUNTIF($BI6,\"=\"&AS5))",
     "5,35": "TEXT(AJ5,\"aaa\")",
     "4,35": "AF5+1",
-    "6,35": "COUNTIF(BI6,\"=\"&AJ5)",
+    "6,35": "IF($L$2=1,COUNTIF($BM6,\"=\"&AJ5),COUNTIF($BI6,\"=\"&AJ5))",
     "3,9": "IF(MONTH(J5)<>MONTH(F5),TEXT(J5,\"yyyy年m月\"),\"\")",
     "3,13": "IF(MONTH(N5)<>MONTH(J5),TEXT(N5,\"yyyy年m月\"),\"\")",
     "4,9": "F5+1",
@@ -185,8 +186,8 @@
     "5,31": "TEXT(AF5,\"aaa\")",
     "5,23": "TEXT(X5,\"aaa\")",
     "4,31": "AB5+1",
-    "6,5": "COUNTIF(BI6,\"=\"&F5)",
-    "6,9": "COUNTIF(BI6,\"=\"&J5)",
+    "6,5": "IF($L$2=1,COUNTIF($BM6,\"=\"&F5),COUNTIF($BI6,\"=\"&F5))",
+    "6,9": "IF($L$2=1,COUNTIF($BM6,\"=\"&J5),COUNTIF($BI6,\"=\"&J5))",
     "4,23": "S5+1",
     "3,18": "IF(MONTH(S5)<>MONTH(N5),TEXT(S5,\"yyyy年m月\"),\"\")",
     "3,23": "IF(MONTH(X5)<>MONTH(S5),TEXT(X5,\"yyyy年m月\"),\"\")",
@@ -198,12 +199,12 @@
     "4,44": "AN5+1",
     "4,48": "AS5+1",
     "4,53": "AW5+1",
-    "6,13": "COUNTIF(BI6,\"=\"&N5)",
-    "6,23": "COUNTIF(BI6,\"=\"&X5)",
-    "6,31": "COUNTIF(BI6,\"=\"&AF5)",
-    "6,39": "COUNTIF(BI6,\"=\"&AN5)",
-    "6,48": "COUNTIF(BI6,\"=\"&AW5)",
-    "6,53": "COUNTIF(BI6,\">=\"&BB5)",
+    "6,13": "IF($L$2=1,COUNTIF($BM6,\"=\"&N5),COUNTIF($BI6,\"=\"&N5))",
+    "6,23": "IF($L$2=1,COUNTIF($BM6,\"=\"&X5),COUNTIF($BI6,\"=\"&X5))",
+    "6,31": "IF($L$2=1,COUNTIF($BM6,\"=\"&AF5),COUNTIF($BI6,\"=\"&AF5))",
+    "6,39": "IF($L$2=1,COUNTIF($BM6,\"=\"&AN5),COUNTIF($BI6,\"=\"&AN5))",
+    "6,48": "IF($L$2=1,COUNTIF($BM6,\"=\"&AW5),COUNTIF($BI6,\"=\"&AW5))",
+    "6,53": "IF($L$2=1,COUNTIF($BM6,\">=\"&BB5),COUNTIF($BI6,\">=\"&BB5))",
     "5,27": "TEXT(AB5,\"aaa\")",
     "4,27": "X5+1",
     "3,5": "IF(MONTH(F5)<>MONTH(B5),TEXT(F5,\"yyyy年m月\"),\"\")",
@@ -225,6 +226,45 @@
     "11,68,13,1": "IFERROR(ODATA(\"m_company_holiday?$select=holiday&$filter=holiday ge \"&IF(ISBLANK($B$5),\"null\",TEXT($B$5,\"yyyy-MM-ddThh:mm:ssZ\"))&\" and holiday le \"&IF(ISBLANK($BB$5),\"null\",TEXT($BB$5,\"yyyy-MM-ddThh:mm:ssZ\"))),\"\")"
   },
   "AttachInfos": {
+    "1,11": {
+      "CellType": {
+        "$type": "Forguncy.RadioGroupCellType, ServerDesignerCommon",
+        "NoneItemText": "＜なし＞",
+        "Style": 1,
+        "CellDefaultValue": 1,
+        "Items": [
+          {
+            "Value": "1",
+            "DisplayValue": "調査報告書受領予定日を表示"
+          },
+          {
+            "Value": "2",
+            "DisplayValue": "調査終了予定日を表示"
+          }
+        ],
+        "CommandList": [
+          {
+            "$type": "Forguncy.Model.SetCellPropertyCommand, ServerDesignerCommon",
+            "PropertyItemsList": [
+              {
+                "TargetCells": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=調査結果待ち検索フレーム!検索対象期間開始日"
+                },
+                "Value": "%Null%"
+              },
+              {
+                "TargetCells": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=調査結果待ち検索フレーム!検索対象期間終了日"
+                },
+                "Value": "%Null%"
+              }
+            ]
+          }
+        ]
+      }
+    },
     "1,54": {
       "CellType": {
         "$type": "Forguncy.ImageCellType, ServerDesignerCommon",
@@ -691,7 +731,7 @@
             "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
             "Formula": {
               "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-              "SerializeProperty": "=OR(VALUE(調査結果待ち検索フレーム!$BR$22)>0,WEEKDAY(調査結果待ち検索フレーム!AW5)=1)"
+              "SerializeProperty": "=OR(VALUE(調査結果待ち検索フレーム!$BR$23)>0,WEEKDAY(調査結果待ち検索フレーム!AW5)=1)"
             },
             "StyleInfo": {
               "FontWeight": "Bold",
@@ -756,7 +796,7 @@
         "TableName": "v_survey_scheduled_counter",
         "RowIndex": 4,
         "ColumnIndex": 60,
-        "ColumnCount": 6,
+        "ColumnCount": 8,
         "RowCount": 4,
         "ColumnOperation": 2,
         "ShowEditStatusIcon": true,
@@ -1115,6 +1155,12 @@
         "ColumnName": "調査予定終了日"
       }
     },
+    "5,64": {
+      "BindingInfo": {
+        "TableName": "v_survey_scheduled_counter",
+        "ColumnName": "調査報告書受領予定日"
+      }
+    },
     "6,1": {
       "CellType": {
         "$type": "Forguncy.HyperlinkCellType, ServerDesignerCommon",
@@ -1125,14 +1171,14 @@
               {
                 "TargetCells": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=調査結果待ち検索フレーム!検索_調査予定終了開始日"
+                  "SerializeProperty": "=調査結果待ち検索フレーム!検索対象期間開始日"
                 },
                 "Value": "%Null%"
               },
               {
                 "TargetCells": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=調査結果待ち検索フレーム!検索_調査予定終了終了日"
+                  "SerializeProperty": "=調査結果待ち検索フレーム!検索対象期間終了日"
                 },
                 "Value": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
@@ -1169,7 +1215,7 @@
               {
                 "TargetCells": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=調査結果待ち検索フレーム!検索_調査予定終了開始日"
+                  "SerializeProperty": "=調査結果待ち検索フレーム!検索対象期間開始日"
                 },
                 "Value": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
@@ -1179,7 +1225,7 @@
               {
                 "TargetCells": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=調査結果待ち検索フレーム!検索_調査予定終了終了日"
+                  "SerializeProperty": "=調査結果待ち検索フレーム!検索対象期間終了日"
                 },
                 "Value": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
@@ -1216,7 +1262,7 @@
               {
                 "TargetCells": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=調査結果待ち検索フレーム!検索_調査予定終了開始日"
+                  "SerializeProperty": "=調査結果待ち検索フレーム!検索対象期間開始日"
                 },
                 "Value": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
@@ -1226,7 +1272,7 @@
               {
                 "TargetCells": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=調査結果待ち検索フレーム!検索_調査予定終了終了日"
+                  "SerializeProperty": "=調査結果待ち検索フレーム!検索対象期間終了日"
                 },
                 "Value": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
@@ -1263,7 +1309,7 @@
               {
                 "TargetCells": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=調査結果待ち検索フレーム!検索_調査予定終了開始日"
+                  "SerializeProperty": "=調査結果待ち検索フレーム!検索_対象期間開始日"
                 },
                 "Value": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
@@ -1273,7 +1319,7 @@
               {
                 "TargetCells": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=調査結果待ち検索フレーム!検索_調査予定終了終了日"
+                  "SerializeProperty": "=調査結果待ち検索フレーム!検索_対象期間終了日"
                 },
                 "Value": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
@@ -1310,7 +1356,7 @@
               {
                 "TargetCells": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=調査結果待ち検索フレーム!検索_調査予定終了開始日"
+                  "SerializeProperty": "=調査結果待ち検索フレーム!検索対象期間開始日"
                 },
                 "Value": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
@@ -1320,7 +1366,7 @@
               {
                 "TargetCells": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=調査結果待ち検索フレーム!検索_調査予定終了終了日"
+                  "SerializeProperty": "=調査結果待ち検索フレーム!検索対象期間終了日"
                 },
                 "Value": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
@@ -1357,7 +1403,7 @@
               {
                 "TargetCells": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=調査結果待ち検索フレーム!検索_調査予定終了開始日"
+                  "SerializeProperty": "=調査結果待ち検索フレーム!検索対象期間開始日"
                 },
                 "Value": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
@@ -1367,7 +1413,7 @@
               {
                 "TargetCells": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=調査結果待ち検索フレーム!検索_調査予定終了終了日"
+                  "SerializeProperty": "=調査結果待ち検索フレーム!検索対象期間終了日"
                 },
                 "Value": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
@@ -1404,7 +1450,7 @@
               {
                 "TargetCells": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=調査結果待ち検索フレーム!検索_調査予定終了開始日"
+                  "SerializeProperty": "=調査結果待ち検索フレーム!検索対象期間開始日"
                 },
                 "Value": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
@@ -1414,7 +1460,7 @@
               {
                 "TargetCells": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=調査結果待ち検索フレーム!検索_調査予定終了終了日"
+                  "SerializeProperty": "=調査結果待ち検索フレーム!検索対象期間終了日"
                 },
                 "Value": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
@@ -1451,7 +1497,7 @@
               {
                 "TargetCells": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=調査結果待ち検索フレーム!検索_調査予定終了開始日"
+                  "SerializeProperty": "=調査結果待ち検索フレーム!検索対象期間開始日"
                 },
                 "Value": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
@@ -1461,7 +1507,7 @@
               {
                 "TargetCells": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=調査結果待ち検索フレーム!検索_調査予定終了終了日"
+                  "SerializeProperty": "=調査結果待ち検索フレーム!検索対象期間終了日"
                 },
                 "Value": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
@@ -1498,7 +1544,7 @@
               {
                 "TargetCells": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=調査結果待ち検索フレーム!検索_調査予定終了開始日"
+                  "SerializeProperty": "=調査結果待ち検索フレーム!検索対象期間開始日"
                 },
                 "Value": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
@@ -1508,7 +1554,7 @@
               {
                 "TargetCells": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=調査結果待ち検索フレーム!検索_調査予定終了終了日"
+                  "SerializeProperty": "=調査結果待ち検索フレーム!検索対象期間終了日"
                 },
                 "Value": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
@@ -1545,7 +1591,7 @@
               {
                 "TargetCells": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=調査結果待ち検索フレーム!検索_調査予定終了開始日"
+                  "SerializeProperty": "=調査結果待ち検索フレーム!検索対象期間開始日"
                 },
                 "Value": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
@@ -1555,7 +1601,7 @@
               {
                 "TargetCells": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=調査結果待ち検索フレーム!検索_調査予定終了終了日"
+                  "SerializeProperty": "=調査結果待ち検索フレーム!検索対象期間終了日"
                 },
                 "Value": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
@@ -1592,7 +1638,7 @@
               {
                 "TargetCells": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=調査結果待ち検索フレーム!検索_調査予定終了開始日"
+                  "SerializeProperty": "=調査結果待ち検索フレーム!検索対象期間開始日"
                 },
                 "Value": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
@@ -1602,7 +1648,7 @@
               {
                 "TargetCells": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=調査結果待ち検索フレーム!検索_調査予定終了終了日"
+                  "SerializeProperty": "=調査結果待ち検索フレーム!検索対象期間終了日"
                 },
                 "Value": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
@@ -1639,7 +1685,7 @@
               {
                 "TargetCells": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=調査結果待ち検索フレーム!検索_調査予定終了開始日"
+                  "SerializeProperty": "=調査結果待ち検索フレーム!検索対象期間開始日"
                 },
                 "Value": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
@@ -1649,7 +1695,7 @@
               {
                 "TargetCells": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=調査結果待ち検索フレーム!検索_調査予定終了終了日"
+                  "SerializeProperty": "=調査結果待ち検索フレーム!検索対象期間終了日"
                 },
                 "Value": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
@@ -1686,7 +1732,7 @@
               {
                 "TargetCells": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=調査結果待ち検索フレーム!検索_調査予定終了開始日"
+                  "SerializeProperty": "=調査結果待ち検索フレーム!検索対象期間開始日"
                 },
                 "Value": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
@@ -1696,7 +1742,7 @@
               {
                 "TargetCells": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=調査結果待ち検索フレーム!検索_調査予定終了終了日"
+                  "SerializeProperty": "=調査結果待ち検索フレーム!検索対象期間終了日"
                 },
                 "Value": "%Null%"
               }
@@ -1836,14 +1882,14 @@
               {
                 "TargetCells": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=調査結果待ち検索フレーム!検索_調査予定終了開始日"
+                  "SerializeProperty": "=調査結果待ち検索フレーム!検索対象期間開始日"
                 },
                 "Value": "%Null%"
               },
               {
                 "TargetCells": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=調査結果待ち検索フレーム!検索_調査予定終了終了日"
+                  "SerializeProperty": "=調査結果待ち検索フレーム!検索対象期間終了日"
                 },
                 "Value": "%Null%"
               }
@@ -1862,7 +1908,7 @@
             "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
             "Formula": {
               "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-              "SerializeProperty": "=AND(調査結果待ち検索フレーム!検索_調査予定終了開始日=\"\",調査結果待ち検索フレーム!検索_調査予定終了終了日=\"\")"
+              "SerializeProperty": "=AND(調査結果待ち検索フレーム!検索対象期間開始日=\"\",調査結果待ち検索フレーム!検索対象期間終了日=\"\")"
             },
             "StyleInfo": {
               "Underline": null,
@@ -2486,18 +2532,8 @@
     "8,26,1,5",
     "8,32,1,5",
     "10,0,21,58",
-    "6,5,1,4",
     "6,53,1,4",
-    "6,9,1,4",
     "6,13,1,5",
-    "6,18,1,5",
-    "6,23,1,4",
-    "6,27,1,4",
-    "6,31,1,4",
-    "6,35,1,4",
-    "6,39,1,5",
-    "6,44,1,4",
-    "6,48,1,5",
     "4,5,1,2",
     "8,19,1,7",
     "5,5,1,4",
@@ -2514,8 +2550,6 @@
     "3,35,1,4",
     "3,44,1,4",
     "3,48,1,5",
-    "5,60,1,6",
-    "6,60,2,6",
     "5,13,1,5",
     "5,9,1,4",
     "5,18,1,5",
@@ -2526,7 +2560,22 @@
     "5,39,1,5",
     "5,44,1,4",
     "5,48,1,5",
-    "4,60,1,6"
+    "6,60,2,8",
+    "5,60,1,4",
+    "5,64,1,4",
+    "1,11,1,24",
+    "6,5,1,4",
+    "6,18,1,5",
+    "6,39,1,5",
+    "6,48,1,5",
+    "6,9,1,4",
+    "6,23,1,4",
+    "6,27,1,4",
+    "6,31,1,4",
+    "6,35,1,4",
+    "6,44,1,4",
+    "4,60,1,4",
+    "4,64,1,4"
   ],
   "PageInfo": {
     "$type": "Forguncy.Model.Pages.NormalPage, ServerDesignerCommon",
@@ -2585,12 +2634,16 @@
       "Formula": "調査結果待ち検索フレーム!$B$9"
     },
     {
-      "Name": "検索_調査予定終了開始日",
+      "Name": "検索対象期間開始日",
       "Formula": "調査結果待ち検索フレーム!$AA$9"
     },
     {
-      "Name": "検索_調査予定終了終了日",
+      "Name": "検索対象期間終了日",
       "Formula": "調査結果待ち検索フレーム!$AG$9"
+    },
+    {
+      "Name": "検索区分",
+      "Formula": "調査結果待ち検索フレーム!$L$2"
     }
   ]
-}//mv7rLEdU/TxBmK3AtmQSABoTgTDBjzVyz0SkDoDGxx2s9Dt5bYkkhMJ8bO7UmcZOIe0kT/RQ46/EDA3lyXGbo0YrpRzdq/iLJaR5jVBE8g3ku91iY0ZWFHTIGRQUk//d95p3pYHactaTKW7APXzaHxYZUDfRuNY0/g/RLMVrKkxWtIt/rSgY1nkklgvmfyEzYpNLf6R4BGFuftY5BjXUjZx3NIGk7LqMjrImzKtgXV3YzMvmcG2WSIEzkRF9Tc4fWAddVa6PLCEIYh+500Ned+OKdW2Kzp3zE843IICtnFAPNGTvMNoJ+rzQXqV20CSc+rfE8LFRVZwjf9pWPsI1IXCBowlF2kte8kn91x+gT65bIy762fZeFV1BfM8FRPVPSD81+nXCa32ZFyQS34z1sdhKCV7bA+3tnAyZTsE1hMDxIGxcgPRAi4/AYfTGrSMGfUQVOTUNY14fG1lBuaSCQzJ7+1WwD2jySqoc/y23sUxp1TX/xqaF2MCl28KxnWXSv/Pk5XHLtszM9x0qD3vNitGXH3buFtV5aXxHYePPR0+35GsHAr+PzTR608FbWwYBjyOOSNmUPmoaeEmuCSF2B59Z4BrjeUA8H/gz2eUqjWoIQqIa8AKfNGt7VIrjvzOZ8vC7HxDQ2TCD5iD3kA2NWE4KoZcaz7izcjRoseyPmwhRpfoVJvRoHByIZIU4eFPT4NBhceypbi0z7IiizRxLW2gDsKrFFrDM9VhXSvVeiUWfP13NcUC0PBAIhVvbmGfOkqsArtkwjPtdpZMK/4XZccdU2hZGwOzvYbodXf+9rXAVL+Ghs31LGgeDNkTIaL961P8POWSlNXBBzr7XHadSRQNvmxucDVoo/Q7ahqbtbbJMfWVLdoE1mCXuiqSxn0jvKBd8wXcuFHoSf4CBpS0e5w==|920
+}//ANRuEPdaeLi707uLdZ577H+BVMpPrfo+WYoq9Zu/0mIozt6gUvZmO4MY94NU8/k32eBehZC3c0v2QjxynEjQZjYVOuCYhc+dGNNNLlPXFTHRier0dhumvt4L4QGc5AsgInP33xHBvkqRYmdCZlM4CIOWtMNcbvroURr0OYZ/UtgmxicWcJRoaNcD25zECfc+hK62/h3e0tuozGBjKY18YEg4tAJGPoFqHCdsysNYyo6otCTU+Os554/+Tulr45J7Cal6pc/OWniqPkX4Vudie2t/amaHBPcP4oLygpW42R75KfRh+TNprAGt5yywasNA+faEKI8vaybTJEeBzukWf5aLD0hYzJJKBr7o1UDozPB8TxThUXvvOeIHXxmF/RLN8AMmFOA3iN+XSFNieTYalpk26oUceyHuQeQY8HByVTOQE3D/drWZraQh7HfKDTK7JnxQnuezMhUuqU7HF4YHOeOa9mWXssjJ1YgMxIf+vaMNrMv0SsYqEBtVhDRDAPYh4MYQ6Bl92RwKVP78vQxXubgANivQeHtgLZy3O+vkcGwIlR3kolswJEHTER0nJdVqcQU7JS6QYAQemcXWSpROVtxxUs8lDzS/6EPkRQEoafq6ZXYz8BU9CV4GRtWzIMPgSUBZ5QvvL0XswUQMShr6JlNluIaDbAF7Y+Xg3Z0Xzqr0UdpgtsrZ2R/hmWZeHbyQQracn+yhONLQI8YqfB9TiPsGMC0xS/Do54Pt7aY+Wl025eXj8UKtikBIBacb8mebyi0r3deaycTdoTc9UkHKc68onycxqRby6WpqCsg0SaReWw1403v6rhRKEeuX7TmOtJkE4ew3fCwknkkG2FLTszt5N9YnaxsIMo6K312lg/RX66EX8PgjbdSTWVVn+hIzVOBzgAo/hys8sp949BFOVg==|920
