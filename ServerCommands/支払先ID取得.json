@@ -10,7 +10,7 @@
       },
       "Parameters": [
         {
-          "Name": "P_調査工事会社ID"
+          "Name": "P_外注先ID"
         }
       ]
     }
@@ -26,7 +26,7 @@
               "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
               "ParamObject": {
                 "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                "SerializeProperty": "=P_調査工事会社ID"
+                "SerializeProperty": "=P_外注先ID"
               }
             },
             "value": "%Null%"
@@ -38,28 +38,37 @@
               "CustomReturns": [
                 {
                   "ReturnPropertyName": "R_支払先ID"
+                },
+                {
+                  "ReturnPropertyName": "R_支払先略称名"
                 }
               ]
             }
           ],
-          "ID": "c56b7f7e-93b6-4760-935c-f1617808e98c"
+          "ID": "8c6cc9a1-153f-42e5-874b-46467daa9b54"
         }
       ]
     },
     {
       "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
-      "ParameterName": "支払先ID",
+      "ParameterName": "顧客情報",
       "TableValue": {
         "TableName": "m_customer",
-        "OnlyGetValue": true,
-        "TableValueType": 0,
+        "TableValueType": 1,
         "BindingInfos": [
           {
             "BindingInfo": {
               "TableName": "m_customer",
               "ColumnName": "payment_comp_id"
             },
-            "ColumnName": "payment_comp_id"
+            "ColumnName": "支払先ID"
+          },
+          {
+            "BindingInfo": {
+              "TableName": "m_customer",
+              "ColumnName": "内部顧客名"
+            },
+            "ColumnName": "支払先略称名"
           }
         ],
         "SqlCondition": {
@@ -70,11 +79,11 @@
           },
           "Value": {
             "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-            "SerializeProperty": "=P_調査工事会社ID"
+            "SerializeProperty": "=P_外注先ID"
           }
         }
       },
-      "ID": "b688403151df4fad8b858ed4529e6a49"
+      "ID": "28ec06cd7cb9446abcc7c27a47fdd8a4"
     },
     {
       "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
@@ -86,13 +95,43 @@
               "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
               "ParamObject": {
                 "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                "SerializeProperty": "=支払先ID"
+                "SerializeProperty": "=顧客情報.支払先ID"
               }
             },
             "value": "%Null%",
             "compareType": 1
           },
           "CommandList": [
+            {
+              "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+              "ParameterName": "支払先略称名",
+              "TableValue": {
+                "TableName": "m_customer",
+                "OnlyGetValue": true,
+                "TableValueType": 0,
+                "BindingInfos": [
+                  {
+                    "BindingInfo": {
+                      "TableName": "m_customer",
+                      "ColumnName": "内部顧客名"
+                    },
+                    "ColumnName": "内部顧客名"
+                  }
+                ],
+                "SqlCondition": {
+                  "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                  "ColumnBindingInfo": {
+                    "TableName": "m_customer",
+                    "ColumnName": "customer_id"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=顧客情報.支払先ID"
+                  }
+                }
+              },
+              "ID": "c1d2e7ff21e441e1b971a7de136a206f"
+            },
             {
               "$type": "Forguncy.Model.ReturnCommand, ServerDesignerCommon",
               "ErrorCode": "0",
@@ -101,13 +140,20 @@
                   "ReturnPropertyName": "R_支払先ID",
                   "Value": {
                     "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                    "SerializeProperty": "=支払先ID"
+                    "SerializeProperty": "=顧客情報.支払先ID"
+                  }
+                },
+                {
+                  "ReturnPropertyName": "R_支払先略称名",
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=支払先略称名"
                   }
                 }
               ]
             }
           ],
-          "ID": "71e2618a-fa86-456d-abdf-d3e2852d6556"
+          "ID": "b9178d8b-388f-4e45-aadf-00dffa7e33bb"
         },
         {
           "CommandList": [
@@ -119,13 +165,20 @@
                   "ReturnPropertyName": "R_支払先ID",
                   "Value": {
                     "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                    "SerializeProperty": "=P_調査工事会社ID"
+                    "SerializeProperty": "=P_外注先ID"
+                  }
+                },
+                {
+                  "ReturnPropertyName": "R_支払先略称名",
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=顧客情報.支払先略称名"
                   }
                 }
               ]
             }
           ],
-          "ID": "481887b7-21ff-4627-977b-f08bd46c8541"
+          "ID": "8069f5d4-b21e-4c71-9c9f-f788af0c15c6"
         }
       ]
     }
@@ -133,6 +186,9 @@
   "ReturnProperties": [
     {
       "Name": "R_支払先ID"
+    },
+    {
+      "Name": "R_支払先略称名"
     }
   ],
   "Name": "支払先ID取得"
