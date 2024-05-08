@@ -355,7 +355,8 @@
     "14,26": "▼工事ID",
     "15,6": "→",
     "16,1": "敷地調査依頼会社",
-    "16,16": "▼敷調会社ID",
+    "16,16": "▼敷測会社ID",
+    "16,21": "▼敷測フラグ",
     "16,26": "▼保証ID",
     "18,1": "敷地調査予定日（実施日）",
     "18,16": "▼予定",
@@ -363,6 +364,7 @@
     "19,6": "→",
     "20,1": "役所調査依頼会社",
     "20,16": "▼役調会社ID",
+    "20,21": "▼役調フラグ",
     "22,1": "役所調査予定日（実施日）",
     "22,16": "▼予定",
     "22,21": "▼実施",
@@ -869,6 +871,17 @@
         }
       }
     },
+    "17,21": {
+      "BindingInfo": {
+        "TableName": "t_object_order",
+        "ColumnName": "latest_surveying_id",
+        "RelationBinding": {
+          "RelatedTable": "t_object_surveying",
+          "RelatedColumn": "surveying_id",
+          "DisplayColumn": "site_survey_flg"
+        }
+      }
+    },
     "17,26": {
       "BindingInfo": {
         "TableName": "t_object_order",
@@ -997,7 +1010,7 @@
             "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
             "Formula": {
               "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-              "SerializeProperty": "=申込詳細_概要!$B$18=\"\""
+              "SerializeProperty": "=申込詳細_概要!$B$22=\"\""
             },
             "StyleInfo": {
               "Underline": null,
@@ -1018,6 +1031,17 @@
           "RelatedTable": "t_object_surveying",
           "RelatedColumn": "surveying_id",
           "DisplayColumn": "gove_survey_customer_id"
+        }
+      }
+    },
+    "21,21": {
+      "BindingInfo": {
+        "TableName": "t_object_order",
+        "ColumnName": "latest_surveying_id",
+        "RelationBinding": {
+          "RelatedTable": "t_object_surveying",
+          "RelatedColumn": "surveying_id",
+          "DisplayColumn": "gove_survey_flg"
         }
       }
     },
@@ -1847,7 +1871,7 @@
       "16,18": 1,
       "16,19": 1,
       "16,20": 1,
-      "16,21": 1,
+      "16,21": 6,
       "16,22": 1,
       "16,23": 1,
       "16,24": 1,
@@ -1861,6 +1885,7 @@
       "17,13": 1,
       "17,14": 1,
       "17,16": 5,
+      "17,21": 5,
       "17,26": 5,
       "17,29": 1,
       "18,1": 3,
@@ -1931,6 +1956,9 @@
       "20,16": 6,
       "20,17": 1,
       "20,18": 1,
+      "20,21": 6,
+      "20,22": 1,
+      "20,23": 1,
       "20,24": 1,
       "20,25": 1,
       "20,26": 1,
@@ -1942,6 +1970,7 @@
       "21,13": 4,
       "21,14": 4,
       "21,16": 5,
+      "21,21": 5,
       "21,24": 1,
       "21,25": 1,
       "21,26": 1,
@@ -2473,7 +2502,9 @@
     "17,1,1,10",
     "21,1,1,10",
     "27,1,1,10",
-    "31,1,1,10"
+    "31,1,1,10",
+    "17,21,1,3",
+    "21,21,1,3"
   ],
   "PageInfo": {
     "$type": "Forguncy.Model.Pages.NormalPage, ServerDesignerCommon",
@@ -2509,7 +2540,7 @@
                 ]
               }
             ],
-            "ID": "1ce6ffd8-4211-4e65-b060-fe312ca00db4"
+            "ID": "abd194a8-0bb3-4ac7-891b-9d9860979774"
           }
         ],
         "Comments": "調査の場合"
@@ -2533,19 +2564,77 @@
             },
             "CommandList": [
               {
-                "$type": "Forguncy.Model.SetRowColumnLayoutCommand, ServerDesignerCommon",
-                "PropertyItemsList": [
+                "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+                "ConditionAndCommandPairList": [
                   {
-                    "Location": {
-                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                      "SerializeProperty": "=申込詳細_概要!17:24"
+                    "Condition": {
+                      "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                      "param": {
+                        "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+                        "cellLocations": [
+                          {
+                            "SerializeProperty": "=申込詳細_概要!V18"
+                          }
+                        ]
+                      },
+                      "value": "1"
                     },
-                    "Value": true
+                    "CommandList": [
+                      {
+                        "$type": "Forguncy.Model.SetRowColumnLayoutCommand, ServerDesignerCommon",
+                        "PropertyItemsList": [
+                          {
+                            "Location": {
+                              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                              "SerializeProperty": "=申込詳細_概要!17:20"
+                            },
+                            "Value": true
+                          }
+                        ]
+                      }
+                    ],
+                    "ID": "d6290139-5dcf-48e0-b295-185a3fa443d1"
                   }
-                ]
+                ],
+                "Comments": "敷調の場合"
+              },
+              {
+                "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+                "ConditionAndCommandPairList": [
+                  {
+                    "Condition": {
+                      "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                      "param": {
+                        "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+                        "cellLocations": [
+                          {
+                            "SerializeProperty": "=申込詳細_概要!V22"
+                          }
+                        ]
+                      },
+                      "value": "1"
+                    },
+                    "CommandList": [
+                      {
+                        "$type": "Forguncy.Model.SetRowColumnLayoutCommand, ServerDesignerCommon",
+                        "PropertyItemsList": [
+                          {
+                            "Location": {
+                              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                              "SerializeProperty": "=申込詳細_概要!21:24"
+                            },
+                            "Value": true
+                          }
+                        ]
+                      }
+                    ],
+                    "ID": "2235bfca-ae8a-40b8-bf91-cc1170778116"
+                  }
+                ],
+                "Comments": "役調の場合"
               }
             ],
-            "ID": "84f2eaa5-4bb4-4f5a-ae25-b29f70f77095"
+            "ID": "4fb628b7-82e7-49ef-afcc-2d04d26c4e49"
           }
         ],
         "Comments": "測量の場合"
@@ -2581,7 +2670,7 @@
                 ]
               }
             ],
-            "ID": "e7f393c3-5030-4ef3-979c-9dd2679aef11"
+            "ID": "8a562720-ba8b-481e-b7a1-44f7cd85b1b3"
           }
         ],
         "Comments": "解析の場合"
@@ -2617,7 +2706,7 @@
                 ]
               }
             ],
-            "ID": "2183543e-4863-4636-afe7-07dfeefd4de9"
+            "ID": "7f68f531-1f2d-47b0-9ec2-2ebf6867955b"
           }
         ],
         "Comments": "転圧の場合"
@@ -2653,7 +2742,7 @@
                 ]
               }
             ],
-            "ID": "f0814f4e-94a8-48df-b83c-36d4db9654e4"
+            "ID": "1a5585ae-e2cb-477d-b711-382020141380"
           }
         ],
         "Comments": "転圧の場合"
@@ -2689,7 +2778,7 @@
                 ]
               }
             ],
-            "ID": "be887843-8af7-4196-9b27-8bbf76a7a9c2"
+            "ID": "4b778f4f-3a51-4d8c-82e2-37f5dc7217c5"
           }
         ],
         "Comments": "保証の場合"
@@ -2724,7 +2813,7 @@
                 ]
               }
             ],
-            "ID": "769d692d-c86c-491a-a9f0-89b8dec111b8"
+            "ID": "cdf7b496-556b-44ee-ae0d-2fa4ab8ef035"
           }
         ],
         "Comments": "保証書原本郵送の場合"
@@ -2760,7 +2849,7 @@
                 ]
               }
             ],
-            "ID": "da06ca7d-6788-42c9-b0a5-184d72fe5479"
+            "ID": "dffa97f2-1885-4414-b1bd-02a88f8c2fa2"
           }
         ],
         "Comments": "保証キャンセルの場合"
@@ -2796,7 +2885,7 @@
                 ]
               }
             ],
-            "ID": "7f920663-72e9-45ae-b0f0-5afb0637e75f"
+            "ID": "9614f569-1383-41b9-9522-8e79a674ea86"
           }
         ],
         "Comments": "申込事業者アリの場合"
@@ -2814,4 +2903,4 @@
     "Margin": {},
     "PaperSize": {}
   }
-}//Drt/fK1n6n86jLYEXCjgG/lpb5cdufQx6z3XEVOhm6hdspsHVMtExkCg/KdVELZpMDcV9Kedj6VhvJK4QmiYmrNnGYUXarI6GZy20ExJOvf43tKIjBSU99UAWSlGUw/ln+3voLnP507Eey6Rnmqoq56UFt0W7PLLPPH59GFYmeyN8H/jK3Ci7FyNXo8HKknY/8d2GraX4ylTh1pT2pIKGl5ljKonIAxrTW0NdNRtgCj0NLKWnNJZXHQ6LsrntWzdYADA7A4HmPBadK0Ty6oxGua3lPn+V9iAFBIoLY4EPm1krZLkrSpPzY9SppZyW2CdSZFIh9w7ToLUdPBrQsewBO37BEsjKxWkp+ByiqyfiN4ZjJk+g49f54lp25H+bYzlHhM2tUJAyBDjyOTyBYN9PXbHHM3JPUX3C21UBdcFCPFcr9YlBYW4b75hqiUBMkESfgfWtQMX1sLSKNyyJjk3LNUXUeQ2FU+I988VEsEmwslVl4ieT6ooyYkFuLlNJhLuUe2KE5n95R8PzfXnDqqHmwNTUQGuWyi+2gY46wDFdlQ73gEWCtM1cMwZyqNJ7BRdHQf7oggHRwCOL2X+JvIGy5FcFhzAuurRsv4vpHS+zoS/6H0SnvN5ucLsQjjj4+rt8IlqX8wbsD/WTBFZVLH8Zl2Guw5iDV7tIjP1gHWweQuimxhni1b0GiS7EnUtAndMUR7eZZl9agwhu1+RCq9CLt//21EyyIoO5qlBFqKinqYjBcKLFRPClS6S2lpQSn1vxXhT3HLogm9OTc3zsbt4hEAI6rb3wnjDPkrViPelXLws7TFAyuPrWsApkY6AYRo1Ggcc44+n9D5EN6P8ggC7QXw2C3Ew6Or1OPraFb0SDNrt74bLMyk3RbhieCoBOIWV8kFMWMkE9zibgF/5c9fR5g==|920
+}//pFu2lvEhF9kEFgCNKrZRCqFZyOLoHJerbcedWRbg0R0XRKP33ce5XcnQ9A+OxRRaOOaFB8OZ9UoZM4aSfX7Px1wfOEzk2WfnyzsdGVQT6vvfvXS+wZbHeRk0mQsMCxvHX0hT8jd5XJ9zb66ngFHSjynf6lYlBTl/DqSggmrhAlyH65zxsYssvnfqqNgDyl8GCHTf0dtW8T/NVQs4lYgonvzocX9M+gD0wfNz/HYFcYPS8lrzu0IMyVjmQgiJ2Kk/LTodLmrtttlkASWgSTlH1IBMSCY+BYSsfMkKFkncJLTEdHvZAgEyvvf50lw5ABriFXS0jtg8ES3tQ+RQz8pxZBn2RSVVr4KvG+l1oKswa+YZ0q9icwDJn74tC8zQyF5o5yfKwF5GIP4/3ZFRC4TmyOT74aAR7IK/o6bDQDjpBC0t0UhDI7BXcMaNYmqGol1DKi3FsLW+M3EoErPFA5baYtisoeiV724TP7Cl1LL5pUi6isze0BCFlkDN7R9wcTLRwajOQqqb57cxuELxmxWB/Uk2qAbwEwSkiAN4ZxCVjSsnDdSlojDeF9iDjO+WYKlwcRWDozc9qSe98Um6l7Kgu7GR09wVWPyIrS0CnWjzO1CmSIpINs1HrJiyWP9j8BQXnDuDdVpnYd0UYwHb9PCFbEjdNygzJew6LGHRTNLR2fklvbC6Mv7jfw/RMlXJdeFylZTnXAGiJkMvWqeMVltgAljp6IfnkkBYA2Di+5SmCpgA6kn4Jj5wpJ7f8N+kw0sL1RAhmNXND2ZEBX34oRoNPVBKE4CpiPYUS5wkpa/4ixL1D90dCCZg9zUCvt/aZhjuUjFvJdWAoUfj33jt9nALFzrU4Y4wCcWlMuaEEQhBEPJ/Vo/vNypk7ZVW1a01m0Ik6pZYS8647VTMZQ2g9Od9xQ==|920

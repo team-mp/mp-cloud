@@ -1,0 +1,470 @@
+{
+  "Enabled": true,
+  "Triggers": [
+    {
+      "$type": "Forguncy.ServerCommands.Models.PostRequestTrigger, ServerDesignerCommon",
+      "Permission": {
+        "AllowRoles": [
+          "FGC_LoginUser"
+        ]
+      },
+      "Parameters": [
+        {
+          "Type": 1,
+          "ArrayParamItems": [
+            {
+              "Name": "P_選択フラグ"
+            },
+            {
+              "Name": "P_請求番号"
+            }
+          ],
+          "PrimaryKeys": [
+            "ID"
+          ],
+          "Name": "P_請求リスト"
+        },
+        {
+          "Name": "P_郵送済み更新フラグ"
+        },
+        {
+          "Name": "P_郵送済み解除フラグ"
+        },
+        {
+          "Name": "P_メール送信済み更新フラグ"
+        },
+        {
+          "Name": "P_メール送信済み解除フラグ"
+        },
+        {
+          "Name": "P_システム登録済み更新フラグ"
+        },
+        {
+          "Name": "P_システム登録済み解除フラグ"
+        },
+        {
+          "Name": "P_FAX送信済み更新フラグ"
+        },
+        {
+          "Name": "P_FAX送信済み解除フラグ"
+        },
+        {
+          "Name": "P_更新日付"
+        },
+        {
+          "Name": "P_請求書ダウンロードフラグ"
+        }
+      ]
+    }
+  ],
+  "Commands": [
+    {
+      "$type": "Forguncy.Model.ServerTransactionCommand, ServerDesignerCommon",
+      "CommandList": [
+        {
+          "$type": "Forguncy.Model.LoopCommand, ServerDesignerCommon",
+          "LoopInfo": {
+            "$type": "Forguncy.Model.CountLoopInfo, ServerDesignerCommon",
+            "LoopCount": {
+              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+              "SerializeProperty": "=P_請求リスト"
+            },
+            "LoopItemParamName": "Item"
+          },
+          "CommandList": [
+            {
+              "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+              "ConditionAndCommandPairList": [
+                {
+                  "Condition": {
+                    "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                    "param": {
+                      "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                      "ParamObject": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=Item.P_選択フラグ"
+                      }
+                    },
+                    "value": "1"
+                  },
+                  "CommandList": [
+                    {
+                      "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+                      "ConditionAndCommandPairList": [
+                        {
+                          "Condition": {
+                            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                            "param": {
+                              "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                              "ParamObject": {
+                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                "SerializeProperty": "=P_郵送済み更新フラグ"
+                              }
+                            },
+                            "value": "1"
+                          },
+                          "CommandList": [
+                            {
+                              "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+                              "TableName": "t_sales",
+                              "ShowConfirm": false,
+                              "ConfirmText": "本当に更新してもよろしいですか？",
+                              "RowsToUpdate": 1,
+                              "RowsToUpdateCondition": {
+                                "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                                "ColumnBindingInfo": {
+                                  "TableName": "t_sales",
+                                  "ColumnName": "billing_no"
+                                },
+                                "Value": {
+                                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                  "SerializeProperty": "=Item.P_請求番号"
+                                }
+                              },
+                              "UpdateValues": [
+                                {
+                                  "ColumnName": "invoice_mailing_date",
+                                  "Value": {
+                                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                    "SerializeProperty": "=P_更新日付"
+                                  }
+                                }
+                              ]
+                            }
+                          ],
+                          "ID": "78c234fc-2a75-40da-9ff3-b97fe8518cb7"
+                        }
+                      ]
+                    },
+                    {
+                      "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+                      "ConditionAndCommandPairList": [
+                        {
+                          "Condition": {
+                            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                            "param": {
+                              "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                              "ParamObject": {
+                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                "SerializeProperty": "=P_郵送済み解除フラグ"
+                              }
+                            },
+                            "value": "1"
+                          },
+                          "CommandList": [
+                            {
+                              "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+                              "TableName": "t_sales",
+                              "ShowConfirm": false,
+                              "ConfirmText": "本当に更新してもよろしいですか？",
+                              "RowsToUpdate": 1,
+                              "RowsToUpdateCondition": {
+                                "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                                "ColumnBindingInfo": {
+                                  "TableName": "t_sales",
+                                  "ColumnName": "billing_no"
+                                },
+                                "Value": {
+                                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                  "SerializeProperty": "=Item.P_請求番号"
+                                }
+                              },
+                              "UpdateValues": [
+                                {
+                                  "ColumnName": "invoice_mailing_date"
+                                }
+                              ]
+                            }
+                          ],
+                          "ID": "0230e0a0-cd0c-4e4b-b9fd-87c459815620"
+                        }
+                      ]
+                    },
+                    {
+                      "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+                      "ConditionAndCommandPairList": [
+                        {
+                          "Condition": {
+                            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                            "param": {
+                              "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                              "ParamObject": {
+                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                "SerializeProperty": "=P_メール送信済み更新フラグ"
+                              }
+                            },
+                            "value": "1"
+                          },
+                          "CommandList": [
+                            {
+                              "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+                              "TableName": "t_sales",
+                              "ShowConfirm": false,
+                              "ConfirmText": "本当に更新してもよろしいですか？",
+                              "RowsToUpdate": 1,
+                              "RowsToUpdateCondition": {
+                                "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                                "ColumnBindingInfo": {
+                                  "TableName": "t_sales",
+                                  "ColumnName": "billing_no"
+                                },
+                                "Value": {
+                                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                  "SerializeProperty": "=Item.P_請求番号"
+                                }
+                              },
+                              "UpdateValues": [
+                                {
+                                  "ColumnName": "mail_send_date",
+                                  "Value": {
+                                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                    "SerializeProperty": "=P_更新日付"
+                                  }
+                                }
+                              ]
+                            }
+                          ],
+                          "ID": "68b5d746-8f0f-441d-8617-76140645e08b"
+                        }
+                      ]
+                    },
+                    {
+                      "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+                      "ConditionAndCommandPairList": [
+                        {
+                          "Condition": {
+                            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                            "param": {
+                              "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                              "ParamObject": {
+                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                "SerializeProperty": "=P_メール送信済み解除フラグ"
+                              }
+                            },
+                            "value": "1"
+                          },
+                          "CommandList": [
+                            {
+                              "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+                              "TableName": "t_sales",
+                              "ShowConfirm": false,
+                              "ConfirmText": "本当に更新してもよろしいですか？",
+                              "RowsToUpdate": 1,
+                              "RowsToUpdateCondition": {
+                                "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                                "ColumnBindingInfo": {
+                                  "TableName": "t_sales",
+                                  "ColumnName": "billing_no"
+                                },
+                                "Value": {
+                                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                  "SerializeProperty": "=Item.P_請求番号"
+                                }
+                              },
+                              "UpdateValues": [
+                                {
+                                  "ColumnName": "mail_send_date"
+                                }
+                              ]
+                            }
+                          ],
+                          "ID": "a0ce25ff-c35d-4bf7-9879-dc8a2dc0cdf4"
+                        }
+                      ]
+                    },
+                    {
+                      "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+                      "ConditionAndCommandPairList": [
+                        {
+                          "Condition": {
+                            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                            "param": {
+                              "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                              "ParamObject": {
+                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                "SerializeProperty": "=P_システム登録済み更新フラグ"
+                              }
+                            },
+                            "value": "1"
+                          },
+                          "CommandList": [
+                            {
+                              "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+                              "TableName": "t_sales",
+                              "ShowConfirm": false,
+                              "ConfirmText": "本当に更新してもよろしいですか？",
+                              "RowsToUpdate": 1,
+                              "RowsToUpdateCondition": {
+                                "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                                "ColumnBindingInfo": {
+                                  "TableName": "t_sales",
+                                  "ColumnName": "billing_no"
+                                },
+                                "Value": {
+                                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                  "SerializeProperty": "=Item.P_請求番号"
+                                }
+                              },
+                              "UpdateValues": [
+                                {
+                                  "ColumnName": "system_entry_date",
+                                  "Value": {
+                                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                    "SerializeProperty": "=P_更新日付"
+                                  }
+                                }
+                              ]
+                            }
+                          ],
+                          "ID": "5f8070b8-c5df-441e-9b56-fd23bc37661e"
+                        }
+                      ]
+                    },
+                    {
+                      "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+                      "ConditionAndCommandPairList": [
+                        {
+                          "Condition": {
+                            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                            "param": {
+                              "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                              "ParamObject": {
+                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                "SerializeProperty": "=P_システム登録済み解除フラグ"
+                              }
+                            },
+                            "value": "1"
+                          },
+                          "CommandList": [
+                            {
+                              "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+                              "TableName": "t_sales",
+                              "ShowConfirm": false,
+                              "ConfirmText": "本当に更新してもよろしいですか？",
+                              "RowsToUpdate": 1,
+                              "RowsToUpdateCondition": {
+                                "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                                "ColumnBindingInfo": {
+                                  "TableName": "t_sales",
+                                  "ColumnName": "billing_no"
+                                },
+                                "Value": {
+                                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                  "SerializeProperty": "=Item.P_請求番号"
+                                }
+                              },
+                              "UpdateValues": [
+                                {
+                                  "ColumnName": "system_entry_date"
+                                }
+                              ]
+                            }
+                          ],
+                          "ID": "722a370d-33dc-4752-a9d6-50c7f209d981"
+                        }
+                      ]
+                    },
+                    {
+                      "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+                      "ConditionAndCommandPairList": [
+                        {
+                          "Condition": {
+                            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                            "param": {
+                              "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                              "ParamObject": {
+                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                "SerializeProperty": "=P_FAX送信済み更新フラグ"
+                              }
+                            },
+                            "value": "1"
+                          },
+                          "CommandList": [
+                            {
+                              "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+                              "TableName": "t_sales",
+                              "ShowConfirm": false,
+                              "ConfirmText": "本当に更新してもよろしいですか？",
+                              "RowsToUpdate": 1,
+                              "RowsToUpdateCondition": {
+                                "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                                "ColumnBindingInfo": {
+                                  "TableName": "t_sales",
+                                  "ColumnName": "billing_no"
+                                },
+                                "Value": {
+                                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                  "SerializeProperty": "=Item.P_請求番号"
+                                }
+                              },
+                              "UpdateValues": [
+                                {
+                                  "ColumnName": "fax_send_date",
+                                  "Value": {
+                                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                    "SerializeProperty": "=P_更新日付"
+                                  }
+                                }
+                              ]
+                            }
+                          ],
+                          "ID": "d42e1283-2260-4d10-8baf-7746b7bc76b9"
+                        }
+                      ]
+                    },
+                    {
+                      "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+                      "ConditionAndCommandPairList": [
+                        {
+                          "Condition": {
+                            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                            "param": {
+                              "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                              "ParamObject": {
+                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                "SerializeProperty": "=P_FAX送信済み解除フラグ"
+                              }
+                            },
+                            "value": "1"
+                          },
+                          "CommandList": [
+                            {
+                              "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+                              "TableName": "t_sales",
+                              "ShowConfirm": false,
+                              "ConfirmText": "本当に更新してもよろしいですか？",
+                              "RowsToUpdate": 1,
+                              "RowsToUpdateCondition": {
+                                "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                                "ColumnBindingInfo": {
+                                  "TableName": "t_sales",
+                                  "ColumnName": "billing_no"
+                                },
+                                "Value": {
+                                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                  "SerializeProperty": "=Item.P_請求番号"
+                                }
+                              },
+                              "UpdateValues": [
+                                {
+                                  "ColumnName": "fax_send_date"
+                                }
+                              ]
+                            }
+                          ],
+                          "ID": "f91ae874-1ec5-4c2a-beca-19e52b6e8bd8"
+                        }
+                      ]
+                    }
+                  ],
+                  "ID": "7cf57128-86aa-40da-8f64-78bc7d11fbe6"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "Name": "請求書更新処理"
+}
