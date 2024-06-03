@@ -171,9 +171,13 @@
       97,
       98,
       99,
-      100
+      100,
+      101,
+      102,
+      103,
+      104
     ],
-    "Count": 101
+    "Count": 105
   },
   "Values": {
     "0,23": "メール送信画面_詳細",
@@ -192,28 +196,40 @@
     "10,67": "▼調査ID",
     "10,73": "▼資料待ちID",
     "11,2": "連絡事項",
+    "11,80": "以下は請求書メールに使用",
     "13,2": "連絡事項サブページ",
     "14,67": "▼測量ID",
-    "14,73": "▼連絡ID",
-    "14,80": "▼指定メールアドレス",
+    "14,73": "▼催促資料名",
+    "14,80": "▼請求年月",
+    "14,87": "▼指定メールアドレス",
+    "14,95": "▼連絡事項表示フラグ",
+    "15,95": 0,
     "17,67": "▼解析ID",
-    "17,73": "▼連絡事項",
-    "17,80": "▼申込書添付フラグ",
+    "17,73": "▼連絡ID",
+    "17,80": "▼請求日",
+    "17,95": "▼選択テンプレートID",
+    "18,95": "0",
     "20,67": "▼転圧ID",
-    "20,73": "▼タブID",
-    "20,80": "▼申込事業者ID",
+    "20,73": "▼連絡事項",
+    "20,80": "▼通知先ID",
+    "20,87": "▼申込事業者ID",
     "23,67": "▼工事ID",
-    "23,73": "▼フォローID",
-    "23,80": "▼住宅事業者ID",
+    "23,73": "▼タブID",
+    "23,80": "▼請求先名",
+    "23,87": "▼住宅事業者ID",
     "26,67": "▼工事見積ID",
+    "26,73": "▼フォローID",
+    "26,80": "▼請求先担当者名",
+    "29,80": "▼請求番号",
+    "31,39": "汎用テンプレートを選択",
     "31,47": "連絡事項を参照する",
     "31,56": "メール送信する"
   },
   "Formulas": {
     "3,91": "IF(CJ4=2,CL4,\"\")",
-    "24,80": "IF(申込ID>0,ODATA(\"t_object_order?$select=builder_id&$filter=object_order_id eq \"&IF(ISBLANK(申込ID),\"null\",申込ID)),0)",
+    "24,87": "IF(申込ID>0,ODATA(\"t_object_order?$select=builder_id&$filter=object_order_id eq \"&IF(ISBLANK(申込ID),\"null\",申込ID)),0)",
     "3,90": "IF(CJ4=1,CK4,\"\")",
-    "21,80": "IF(申込ID>0,ODATA(\"t_object_order?$select=order_customer_id&$filter=object_order_id eq \"&IF(ISBLANK(申込ID),\"null\",申込ID)),0)",
+    "21,87": "IF(申込ID>0,ODATA(\"t_object_order?$select=order_customer_id&$filter=object_order_id eq \"&IF(ISBLANK(申込ID),\"null\",申込ID)),0)",
     "3,86": "IF(CH4=\"\",\"共有\",CH4)",
     "3,96": "CR4&\"　\"&CP4"
   },
@@ -230,18 +246,19 @@
         "$type": "Forguncy.ImageCellType, ServerDesignerCommon",
         "CommandList": [
           {
-            "$type": "Forguncy.Model.SetRowColumnLayoutCommand, ServerDesignerCommon",
+            "$type": "Forguncy.Model.SetCellPropertyCommand, ServerDesignerCommon",
             "PropertyItemsList": [
               {
-                "Location": {
+                "TargetCells": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=メール送信画面フレーム!A:W"
+                  "SerializeProperty": "=メール送信画面フレーム!CR16"
                 },
-                "Value": false
+                "Value": "0"
               }
             ]
           }
         ],
+        "TemplateKey": "余白2グレー",
         "ImagePath": "Application/034_close_delete_2.svg",
         "BuiltIn": true,
         "Color": "Accent 1",
@@ -292,11 +309,163 @@
                 },
                 "CommandList": [
                   {
+                    "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+                    "ConditionAndCommandPairList": [
+                      {
+                        "Condition": {
+                          "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                          "Condition1": {
+                            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                            "param": {
+                              "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+                              "cellLocations": [
+                                {
+                                  "SerializeProperty": "=メール送信画面フレーム!請求番号"
+                                }
+                              ]
+                            },
+                            "value": "%Null%",
+                            "compareType": 1
+                          },
+                          "Condition2": {
+                            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                            "param": {
+                              "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+                              "cellLocations": [
+                                {
+                                  "SerializeProperty": "=メール送信画面フレーム!通知先ID"
+                                }
+                              ]
+                            },
+                            "value": "%Null%",
+                            "compareType": 1
+                          }
+                        },
+                        "CommandList": [
+                          {
+                            "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                            "ParameterName": "同一通知先",
+                            "TableValue": {
+                              "TableName": "v_billing_no_summary",
+                              "BindingInfos": [
+                                {
+                                  "BindingInfo": {
+                                    "TableName": "v_billing_no_summary",
+                                    "ColumnName": "請求番号"
+                                  },
+                                  "ColumnName": "請求番号"
+                                }
+                              ],
+                              "SqlCondition": {
+                                "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                                "Condition1": {
+                                  "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                                  "ColumnBindingInfo": {
+                                    "TableName": "v_billing_no_summary",
+                                    "ColumnName": "請求日"
+                                  },
+                                  "Value": {
+                                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                    "SerializeProperty": "=メール送信画面フレーム!請求日"
+                                  }
+                                },
+                                "Condition2": {
+                                  "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                                  "ColumnBindingInfo": {
+                                    "TableName": "v_billing_no_summary",
+                                    "ColumnName": "通知先ID"
+                                  },
+                                  "Value": {
+                                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                    "SerializeProperty": "=メール送信画面フレーム!通知先ID"
+                                  }
+                                }
+                              }
+                            },
+                            "ID": "6f9eb5792aa044b899613d9afc5cb7c7"
+                          },
+                          {
+                            "$type": "Forguncy.Model.LoopCommand, ServerDesignerCommon",
+                            "LoopInfo": {
+                              "$type": "Forguncy.Model.CountLoopInfo, ServerDesignerCommon",
+                              "LoopCount": {
+                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                "SerializeProperty": "=メール送信画面フレーム!同一通知先"
+                              },
+                              "LoopItemParamName": "Item"
+                            },
+                            "CommandList": [
+                              {
+                                "$type": "Forguncy.Model.RequestServerCommand, ServerDesignerCommon",
+                                "ServerCommandName": "請求書メール送信日更新処理",
+                                "Parameters": [
+                                  {
+                                    "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                                    "Value": {
+                                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                      "SerializeProperty": "=メール送信画面フレーム!Item.請求番号"
+                                    },
+                                    "ParamName": "P_請求番号"
+                                  }
+                                ],
+                                "ResultErrorCodeTo": {
+                                  "SerializeProperty": "リターンコード"
+                                },
+                                "ResultMessageTo": {
+                                  "SerializeProperty": "リターンメッセージ"
+                                },
+                                "CheckDataValidation": false
+                              },
+                              {
+                                "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+                                "ConditionAndCommandPairList": [
+                                  {
+                                    "Condition": {
+                                      "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                                      "param": {
+                                        "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+                                        "cellLocations": [
+                                          {
+                                            "SerializeProperty": "=メール送信画面フレーム!リターンコード"
+                                          }
+                                        ]
+                                      },
+                                      "value": "0",
+                                      "compareType": 1
+                                    },
+                                    "CommandList": [
+                                      {
+                                        "$type": "Forguncy.Model.ShowMessageCommand, ServerDesignerCommon",
+                                        "MessageFormula": {
+                                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                          "SerializeProperty": "=メール送信画面フレーム!リターンメッセージ"
+                                        }
+                                      },
+                                      {
+                                        "$type": "LoadingCommand.EndLoadingCommand, LoadingCommand"
+                                      },
+                                      {
+                                        "$type": "Forguncy.Model.StopCommand, ServerDesignerCommon"
+                                      }
+                                    ],
+                                    "ID": "c90c7198-d59a-44f0-a591-ab99d74afd2a"
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ],
+                        "ID": "08cbcd4e-98df-4a54-9019-8e20f7966359"
+                      }
+                    ],
+                    "Comments": "請求書の場合"
+                  },
+                  {
                     "$type": "Forguncy.Model.ClosePopupCommand, ServerDesignerCommon",
                     "PassValueBack": true
                   }
                 ],
-                "ID": "a3dde907-db0f-419e-8573-9f10d601043e"
+                "ID": "d0a7cfb4-2fcd-4d1a-9c40-884a1696fff4"
               }
             ]
           }
@@ -575,7 +744,7 @@
           },
           "Value": {
             "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-            "SerializeProperty": "=メール送信画面フレーム!CC22"
+            "SerializeProperty": "=メール送信画面フレーム!CJ22"
           }
         },
         "TopCondition": null,
@@ -615,7 +784,7 @@
           },
           "Value": {
             "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-            "SerializeProperty": "=メール送信画面フレーム!CC25"
+            "SerializeProperty": "=メール送信画面フレーム!CJ25"
           }
         },
         "TopCondition": null,
@@ -734,15 +903,167 @@
         }
       }
     },
-    "15,80": {
+    "15,87": {
       "CellComment": {
         "Comments": "指定ユーザーIDから、カンマ区切りでメールアドレスを取得"
       }
     },
-    "18,80": {
-      "BindingInfo": {
-        "TableName": "m_mail_template",
-        "ColumnName": "application_attached_flg"
+    "15,95": {
+      "CellType": {
+        "$type": "Forguncy.TextCellType, ServerDesignerCommon",
+        "SavedValidators": [
+          {
+            "$type": "Forguncy.CellTypes.Models.UniqueValidadator, ServerDesignerCommon"
+          }
+        ],
+        "CommandList": [
+          {
+            "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+            "ConditionAndCommandPairList": [
+              {
+                "Condition": {
+                  "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                  "param": {
+                    "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+                    "cellLocations": [
+                      {
+                        "SerializeProperty": "=メール送信画面フレーム!CR16"
+                      }
+                    ]
+                  },
+                  "value": "1"
+                },
+                "CommandList": [
+                  {
+                    "$type": "Forguncy.Model.SetRowColumnLayoutCommand, ServerDesignerCommon",
+                    "PropertyItemsList": [
+                      {
+                        "Location": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=メール送信画面フレーム!A:W"
+                        },
+                        "Value": true
+                      }
+                    ]
+                  }
+                ],
+                "ID": "e5f8fa99-3a28-4a80-a0b0-299c597c7eea"
+              },
+              {
+                "CommandList": [
+                  {
+                    "$type": "Forguncy.Model.SetRowColumnLayoutCommand, ServerDesignerCommon",
+                    "PropertyItemsList": [
+                      {
+                        "Location": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=メール送信画面フレーム!A:W"
+                        },
+                        "Value": false
+                      }
+                    ]
+                  }
+                ],
+                "ID": "8ee3ba9b-1d0c-45bf-ae4d-69fd52c1f37a"
+              }
+            ]
+          }
+        ],
+        "CellDefaultValue": 0
+      }
+    },
+    "18,95": {
+      "CellType": {
+        "$type": "Forguncy.TextCellType, ServerDesignerCommon",
+        "SavedValidators": [
+          {
+            "$type": "Forguncy.CellTypes.Models.UniqueValidadator, ServerDesignerCommon"
+          }
+        ],
+        "CommandList": [
+          {
+            "$type": "SetCurrentRowCommand.SetCurrentRowCommand, SetCurrentRowCommand",
+            "CurrentRowInfo": {
+              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+              "ColumnBindingInfo": {
+                "TableName": "m_mail_template",
+                "ColumnName": "template_id"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=メール送信画面フレーム!CR19"
+              }
+            },
+            "Comments": "テンプレートIDセット"
+          },
+          {
+            "$type": "Forguncy.Model.ShareCommand, ServerDesignerCommon",
+            "ShareCommandContainerRefer": {
+              "ShareCommandContainerID": "7e30fe40-8383-4b5b-a858-425311f1e1f7"
+            },
+            "ReturnPropertiesTo": []
+          },
+          {
+            "$type": "Forguncy.Model.OperateCellTypeCommand, ServerDesignerCommon",
+            "TargetPageElement": {
+              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+              "SerializeProperty": "=メール送信画面フレーム!宛先設定ボタン"
+            },
+            "TargetType": "Forguncy.ButtonCellType, ServerDesignerCommon, Version=8.0.41.0, Culture=neutral, PublicKeyToken=967100671921c115",
+            "MethodName": "ExecuteCommand",
+            "ParameterValues": {},
+            "RetrunParamNames": {}
+          }
+        ],
+        "CellDefaultValue": "0"
+      }
+    },
+    "31,39": {
+      "CellType": {
+        "$type": "Forguncy.ButtonCellType, ServerDesignerCommon",
+        "CommandList": [
+          {
+            "$type": "Forguncy.Model.ShowPopupCommand, ServerDesignerCommon",
+            "PageName": "テンプレート選択",
+            "PassValues": [
+              {
+                "Source": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=メール送信画面フレーム!CR19"
+                },
+                "TargetCell": {
+                  "SerializeProperty": "=テンプレート選択!テンプレートID"
+                }
+              },
+              {
+                "Source": "1",
+                "TargetCell": {
+                  "SerializeProperty": "=テンプレート選択!汎用フラグ"
+                }
+              }
+            ]
+          }
+        ],
+        "Text": "汎用テンプレートを選択",
+        "TemplateKey": "スタイル2"
+      },
+      "ConditionFormatRulesCollection": {
+        "Rules": [
+          {
+            "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
+            "Formula": {
+              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+              "SerializeProperty": "=メール送信画面フレーム!テンプレートID<>\"\""
+            },
+            "StyleInfo": {
+              "Underline": null,
+              "Strikethrough": null
+            },
+            "IsDisabled": false,
+            "IsInvisible": true,
+            "IsReadOnly": false
+          }
+        ]
       }
     },
     "31,47": {
@@ -750,14 +1071,53 @@
         "$type": "Forguncy.ButtonCellType, ServerDesignerCommon",
         "CommandList": [
           {
-            "$type": "Forguncy.Model.SetRowColumnLayoutCommand, ServerDesignerCommon",
-            "PropertyItemsList": [
+            "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+            "ConditionAndCommandPairList": [
               {
-                "Location": {
-                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=メール送信画面フレーム!A:W"
+                "Condition": {
+                  "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                  "param": {
+                    "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+                    "cellLocations": [
+                      {
+                        "SerializeProperty": "=メール送信画面フレーム!CR16"
+                      }
+                    ]
+                  },
+                  "value": "1"
                 },
-                "Value": true
+                "CommandList": [
+                  {
+                    "$type": "Forguncy.Model.SetCellPropertyCommand, ServerDesignerCommon",
+                    "PropertyItemsList": [
+                      {
+                        "TargetCells": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=メール送信画面フレーム!CR16"
+                        },
+                        "Value": "0"
+                      }
+                    ]
+                  }
+                ],
+                "ID": "0c20e599-a12e-4921-b7c7-6cf28acb595a"
+              },
+              {
+                "CommandList": [
+                  {
+                    "$type": "Forguncy.Model.SetCellPropertyCommand, ServerDesignerCommon",
+                    "PropertyItemsList": [
+                      {
+                        "TargetCells": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=メール送信画面フレーム!CR16"
+                        },
+                        "Value": "1"
+                      }
+                    ]
+                  }
+                ],
+                "ID": "76fdcff1-0ee3-47ae-a840-c9b9b4ceefeb"
               }
             ]
           }
@@ -887,6 +1247,12 @@
         "FontFamily": 1
       },
       {
+        "Background": 12,
+        "FontFamily": 1,
+        "Formatter": 8,
+        "HorizontalAlignment": 9
+      },
+      {
         "BorderTop": 0
       },
       {
@@ -911,7 +1277,8 @@
         "@",
         "Right",
         "Background 1 -5",
-        "#FFFFFF00"
+        "#FFFFFF00",
+        "Accent 1 60"
       ],
       "Borders": [
         {
@@ -1701,9 +2068,12 @@
       "14,73": 1,
       "14,74": 1,
       "14,75": 1,
-      "14,80": 14,
-      "14,81": 1,
-      "14,82": 1,
+      "14,87": 14,
+      "14,88": 1,
+      "14,89": 1,
+      "14,95": 1,
+      "14,96": 1,
+      "14,97": 1,
       "15,22": 0,
       "15,23": 1,
       "15,24": 1,
@@ -1754,9 +2124,13 @@
       "15,73": 15,
       "15,74": 1,
       "15,75": 1,
-      "15,80": 17,
-      "15,81": 1,
-      "15,82": 1,
+      "15,80": 6,
+      "15,87": 17,
+      "15,88": 1,
+      "15,89": 1,
+      "15,95": 18,
+      "15,96": 1,
+      "15,97": 1,
       "16,22": 0,
       "16,23": 1,
       "16,24": 1,
@@ -1801,6 +2175,9 @@
       "16,63": 1,
       "16,64": 1,
       "16,65": 1,
+      "16,87": 1,
+      "16,88": 1,
+      "16,89": 1,
       "17,22": 0,
       "17,23": 1,
       "17,24": 1,
@@ -1848,12 +2225,15 @@
       "17,67": 14,
       "17,68": 1,
       "17,69": 1,
-      "17,73": 14,
+      "17,73": 1,
       "17,74": 1,
       "17,75": 1,
       "17,80": 1,
       "17,81": 1,
       "17,82": 1,
+      "17,95": 1,
+      "17,96": 1,
+      "17,97": 1,
       "18,22": 0,
       "18,23": 1,
       "18,24": 1,
@@ -1904,9 +2284,12 @@
       "18,73": 15,
       "18,74": 1,
       "18,75": 1,
-      "18,80": 17,
+      "18,80": 15,
       "18,81": 1,
       "18,82": 1,
+      "18,95": 18,
+      "18,96": 1,
+      "18,97": 1,
       "19,22": 0,
       "19,23": 1,
       "19,24": 1,
@@ -1951,9 +2334,12 @@
       "19,63": 1,
       "19,64": 1,
       "19,65": 1,
-      "19,80": 1,
-      "19,81": 1,
-      "19,82": 1,
+      "19,73": 1,
+      "19,74": 1,
+      "19,75": 1,
+      "19,87": 1,
+      "19,88": 1,
+      "19,89": 1,
       "20,22": 0,
       "20,23": 1,
       "20,24": 1,
@@ -2004,9 +2390,12 @@
       "20,73": 14,
       "20,74": 1,
       "20,75": 1,
-      "20,80": 1,
+      "20,80": 14,
       "20,81": 1,
       "20,82": 1,
+      "20,87": 1,
+      "20,88": 1,
+      "20,89": 1,
       "21,22": 0,
       "21,23": 1,
       "21,24": 1,
@@ -2057,9 +2446,12 @@
       "21,73": 15,
       "21,74": 1,
       "21,75": 1,
-      "21,80": 17,
+      "21,80": 15,
       "21,81": 1,
       "21,82": 1,
+      "21,87": 17,
+      "21,88": 1,
+      "21,89": 1,
       "22,22": 0,
       "22,23": 1,
       "22,24": 1,
@@ -2104,9 +2496,15 @@
       "22,63": 1,
       "22,64": 1,
       "22,65": 1,
+      "22,73": 1,
+      "22,74": 1,
+      "22,75": 1,
       "22,80": 1,
       "22,81": 1,
       "22,82": 1,
+      "22,87": 1,
+      "22,88": 1,
+      "22,89": 1,
       "23,22": 0,
       "23,23": 1,
       "23,24": 1,
@@ -2160,6 +2558,9 @@
       "23,80": 14,
       "23,81": 1,
       "23,82": 1,
+      "23,87": 14,
+      "23,88": 1,
+      "23,89": 1,
       "24,22": 0,
       "24,23": 1,
       "24,24": 1,
@@ -2210,9 +2611,12 @@
       "24,73": 15,
       "24,74": 1,
       "24,75": 1,
-      "24,80": 17,
+      "24,80": 15,
       "24,81": 1,
       "24,82": 1,
+      "24,87": 17,
+      "24,88": 1,
+      "24,89": 1,
       "25,22": 0,
       "25,23": 1,
       "25,24": 1,
@@ -2257,6 +2661,12 @@
       "25,63": 1,
       "25,64": 1,
       "25,65": 1,
+      "25,73": 1,
+      "25,74": 1,
+      "25,75": 1,
+      "25,80": 1,
+      "25,81": 1,
+      "25,82": 1,
       "26,22": 0,
       "26,23": 1,
       "26,24": 1,
@@ -2304,6 +2714,12 @@
       "26,67": 14,
       "26,68": 1,
       "26,69": 1,
+      "26,73": 14,
+      "26,74": 1,
+      "26,75": 1,
+      "26,80": 14,
+      "26,81": 1,
+      "26,82": 1,
       "27,22": 0,
       "27,23": 1,
       "27,24": 1,
@@ -2351,6 +2767,12 @@
       "27,67": 15,
       "27,68": 1,
       "27,69": 1,
+      "27,73": 15,
+      "27,74": 1,
+      "27,75": 1,
+      "27,80": 15,
+      "27,81": 1,
+      "27,82": 1,
       "28,22": 0,
       "28,23": 1,
       "28,24": 1,
@@ -2395,6 +2817,9 @@
       "28,63": 1,
       "28,64": 1,
       "28,65": 1,
+      "28,80": 1,
+      "28,81": 1,
+      "28,82": 1,
       "29,22": 0,
       "29,23": 1,
       "29,24": 1,
@@ -2439,80 +2864,88 @@
       "29,63": 1,
       "29,64": 1,
       "29,65": 1,
-      "30,0": 18,
-      "30,1": 18,
-      "30,2": 18,
-      "30,3": 18,
-      "30,4": 18,
-      "30,5": 18,
-      "30,6": 18,
-      "30,7": 18,
-      "30,8": 18,
-      "30,9": 18,
-      "30,10": 18,
-      "30,11": 18,
-      "30,12": 18,
-      "30,13": 18,
-      "30,14": 18,
-      "30,15": 18,
-      "30,16": 18,
-      "30,17": 18,
-      "30,18": 18,
-      "30,19": 18,
-      "30,20": 18,
-      "30,21": 18,
-      "30,22": 19,
-      "30,23": 18,
-      "30,24": 18,
-      "30,25": 18,
-      "30,26": 18,
-      "30,27": 18,
-      "30,28": 18,
-      "30,29": 18,
-      "30,30": 18,
-      "30,31": 18,
-      "30,32": 18,
-      "30,33": 18,
-      "30,34": 18,
-      "30,35": 18,
-      "30,36": 18,
-      "30,37": 18,
-      "30,38": 18,
-      "30,39": 18,
-      "30,40": 18,
-      "30,41": 18,
-      "30,42": 18,
-      "30,43": 18,
-      "30,44": 18,
-      "30,45": 18,
-      "30,46": 18,
-      "30,47": 18,
-      "30,48": 18,
-      "30,49": 18,
-      "30,50": 18,
-      "30,51": 18,
-      "30,52": 18,
-      "30,53": 18,
-      "30,54": 18,
-      "30,55": 18,
-      "30,56": 18,
-      "30,57": 18,
-      "30,58": 18,
-      "30,59": 18,
-      "30,60": 18,
-      "30,61": 18,
-      "30,62": 18,
-      "30,63": 18,
-      "30,64": 18,
+      "29,80": 14,
+      "29,81": 1,
+      "29,82": 1,
+      "30,0": 19,
+      "30,1": 19,
+      "30,2": 19,
+      "30,3": 19,
+      "30,4": 19,
+      "30,5": 19,
+      "30,6": 19,
+      "30,7": 19,
+      "30,8": 19,
+      "30,9": 19,
+      "30,10": 19,
+      "30,11": 19,
+      "30,12": 19,
+      "30,13": 19,
+      "30,14": 19,
+      "30,15": 19,
+      "30,16": 19,
+      "30,17": 19,
+      "30,18": 19,
+      "30,19": 19,
+      "30,20": 19,
+      "30,21": 19,
+      "30,22": 20,
+      "30,23": 19,
+      "30,24": 19,
+      "30,25": 19,
+      "30,26": 19,
+      "30,27": 19,
+      "30,28": 19,
+      "30,29": 19,
+      "30,30": 19,
+      "30,31": 19,
+      "30,32": 19,
+      "30,33": 19,
+      "30,34": 19,
+      "30,35": 19,
+      "30,36": 19,
+      "30,37": 19,
+      "30,38": 19,
+      "30,39": 19,
+      "30,40": 19,
+      "30,41": 19,
+      "30,42": 19,
+      "30,43": 19,
+      "30,44": 19,
+      "30,45": 19,
+      "30,46": 19,
+      "30,47": 19,
+      "30,48": 19,
+      "30,49": 19,
+      "30,50": 19,
+      "30,51": 19,
+      "30,52": 19,
+      "30,53": 19,
+      "30,54": 19,
+      "30,55": 19,
+      "30,56": 19,
+      "30,57": 19,
+      "30,58": 19,
+      "30,59": 19,
+      "30,60": 19,
+      "30,61": 19,
+      "30,62": 19,
+      "30,63": 19,
+      "30,64": 19,
       "31,22": 0,
-      "31,47": 20,
-      "31,56": 20,
+      "31,39": 21,
+      "31,46": 1,
+      "31,47": 21,
+      "31,56": 21,
       "31,57": 1,
       "31,58": 1,
       "31,59": 1,
       "31,60": 1,
       "31,61": 1,
       "31,62": 1,
+      "31,80": 15,
+      "31,81": 1,
+      "31,82": 1,
       "32,22": 0
     },
     "SheetStyle": {
@@ -2520,755 +2953,50 @@
     }
   },
   "Spans": [
-    "2,67,1,3",
-    "5,67,1,3",
-    "5,73,1,3",
-    "8,67,1,3",
-    "11,67,1,3",
-    "15,67,1,3",
-    "18,67,1,3",
-    "21,67,1,3",
-    "11,73,1,3",
     "2,73,1,3",
-    "15,73,1,3",
-    "18,73,1,3",
-    "24,67,1,3",
     "31,56,1,7",
     "31,47,1,8",
     "13,2,17,20",
     "11,6,1,4",
-    "27,67,1,3",
-    "8,73,1,3",
     "2,2,8,20",
     "9,80,1,4",
     "9,89,1,4",
     "0,23,30,43",
     "4,80,1,20",
-    "21,73,1,3",
-    "24,73,1,3",
-    "18,80,1,3",
-    "21,80,1,3",
+    "31,39,1,7",
+    "21,87,1,3",
+    "24,87,1,3",
+    "15,87,1,3",
+    "15,95,1,3",
+    "18,95,1,3",
+    "5,73,1,3",
+    "31,80,1,3",
+    "27,80,1,3",
     "24,80,1,3",
-    "15,80,1,3"
+    "21,80,1,3",
+    "18,80,1,3",
+    "15,80,1,3",
+    "11,73,1,3",
+    "8,73,1,3",
+    "27,67,1,3",
+    "24,67,1,3",
+    "21,67,1,3",
+    "18,67,1,3",
+    "15,67,1,3",
+    "11,67,1,3",
+    "8,67,1,3",
+    "5,67,1,3",
+    "2,67,1,3",
+    "27,73,1,3",
+    "24,73,1,3",
+    "21,73,1,3",
+    "18,73,1,3",
+    "15,73,1,3"
   ],
   "PageInfo": {
     "$type": "Forguncy.Model.Pages.NormalPage, ServerDesignerCommon",
     "Title": "メール送信画面",
     "PageLoadedCommandList": [
-      {
-        "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
-        "ConditionAndCommandPairList": [
-          {
-            "Condition": {
-              "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
-              "param": {
-                "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
-                "cellLocations": [
-                  {
-                    "SerializeProperty": "=メール送信画面フレーム!テンプレートID"
-                  }
-                ]
-              },
-              "value": "%Null%",
-              "compareType": 1
-            },
-            "CommandList": [
-              {
-                "$type": "SetCurrentRowCommand.SetCurrentRowCommand, SetCurrentRowCommand",
-                "CurrentRowInfo": {
-                  "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
-                  "ColumnBindingInfo": {
-                    "TableName": "m_mail_template",
-                    "ColumnName": "template_id"
-                  },
-                  "Value": {
-                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                    "SerializeProperty": "=メール送信画面フレーム!BP3"
-                  }
-                },
-                "Comments": "テンプレートIDセット"
-              }
-            ],
-            "ID": "d3c5c089-eace-4597-8f84-0a828ac1a97f"
-          }
-        ]
-      },
-      {
-        "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
-        "ConditionAndCommandPairList": [
-          {
-            "Condition": {
-              "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
-              "param": {
-                "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
-                "cellLocations": [
-                  {
-                    "SerializeProperty": "=メール送信画面フレーム!指定ユーザーID"
-                  }
-                ]
-              },
-              "value": "%Null%",
-              "compareType": 1
-            },
-            "CommandList": [
-              {
-                "$type": "SetCurrentRowCommand.SetCurrentRowCommand, SetCurrentRowCommand",
-                "CurrentRowInfo": {
-                  "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
-                  "ColumnBindingInfo": {
-                    "TableName": "m_user",
-                    "ColumnName": "user_id"
-                  },
-                  "Value": {
-                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                    "SerializeProperty": "=メール送信画面フレーム!指定ユーザーID"
-                  }
-                },
-                "Comments": "ユーザーIDセット"
-              },
-              {
-                "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
-                "ParameterName": "ユーザー",
-                "TableValue": {
-                  "TableName": "m_user",
-                  "BindingInfos": [
-                    {
-                      "BindingInfo": {
-                        "TableName": "m_user",
-                        "ColumnName": "mail_address"
-                      },
-                      "ColumnName": "メールアドレス"
-                    }
-                  ],
-                  "SqlCondition": {
-                    "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
-                    "CompareType": 8,
-                    "ColumnBindingInfo": {
-                      "TableName": "m_user",
-                      "ColumnName": "user_id"
-                    },
-                    "Value": {
-                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                      "SerializeProperty": "=メール送信画面フレーム!指定ユーザーID"
-                    }
-                  }
-                },
-                "ID": "8a49fcef482144e79e6f2096995231fa",
-                "Comments": "ユーザーIDセット"
-              },
-              {
-                "$type": "Forguncy.Model.LoopCommand, ServerDesignerCommon",
-                "LoopInfo": {
-                  "$type": "Forguncy.Model.CountLoopInfo, ServerDesignerCommon",
-                  "LoopCount": {
-                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                    "SerializeProperty": "=メール送信画面フレーム!ユーザー"
-                  },
-                  "LoopItemParamName": "Item"
-                },
-                "CommandList": [
-                  {
-                    "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
-                    "ConditionAndCommandPairList": [
-                      {
-                        "Condition": {
-                          "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
-                          "param": {
-                            "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
-                            "cellLocations": [
-                              {
-                                "SerializeProperty": "=メール送信画面フレーム!指定メールアドレス"
-                              }
-                            ]
-                          },
-                          "value": "%Null%"
-                        },
-                        "CommandList": [
-                          {
-                            "$type": "Forguncy.Model.SetCellPropertyCommand, ServerDesignerCommon",
-                            "PropertyItemsList": [
-                              {
-                                "TargetCells": {
-                                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                                  "SerializeProperty": "=メール送信画面フレーム!指定メールアドレス"
-                                },
-                                "Value": {
-                                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                                  "SerializeProperty": "=メール送信画面フレーム!Item.メールアドレス"
-                                }
-                              }
-                            ]
-                          }
-                        ],
-                        "ID": "49c5d83e-88c5-4ab5-8566-99cff97a94e5"
-                      },
-                      {
-                        "CommandList": [
-                          {
-                            "$type": "Forguncy.Model.SetCellPropertyCommand, ServerDesignerCommon",
-                            "PropertyItemsList": [
-                              {
-                                "TargetCells": {
-                                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                                  "SerializeProperty": "=メール送信画面フレーム!指定メールアドレス"
-                                },
-                                "Value": {
-                                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                                  "SerializeProperty": "=メール送信画面フレーム!指定メールアドレス&\",\"&メール送信画面フレーム!Item.メールアドレス"
-                                }
-                              }
-                            ]
-                          }
-                        ],
-                        "ID": "9caec6be-28c4-4d2e-9534-23bd5db94af1"
-                      }
-                    ]
-                  }
-                ]
-              }
-            ],
-            "ID": "2242d721-0035-4869-a6e9-7d87f31a893b"
-          }
-        ]
-      },
-      {
-        "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
-        "ConditionAndCommandPairList": [
-          {
-            "Condition": {
-              "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
-              "param": {
-                "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
-                "cellLocations": [
-                  {
-                    "SerializeProperty": "=メール送信画面フレーム!資料待ちID"
-                  }
-                ]
-              },
-              "value": "%Null%",
-              "compareType": 1
-            },
-            "CommandList": [
-              {
-                "$type": "SetCurrentRowCommand.SetCurrentRowCommand, SetCurrentRowCommand",
-                "CurrentRowInfo": {
-                  "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
-                  "ColumnBindingInfo": {
-                    "TableName": "t_object_wait_documents",
-                    "ColumnName": "wait_document_id"
-                  },
-                  "Value": {
-                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                    "SerializeProperty": "=メール送信画面フレーム!資料待ちID"
-                  }
-                },
-                "Comments": "資料待ちIDセット"
-              }
-            ],
-            "ID": "f60321b0-02bd-4f51-b9d5-5f7792c28b73"
-          }
-        ]
-      },
-      {
-        "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
-        "ConditionAndCommandPairList": [
-          {
-            "Condition": {
-              "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
-              "param": {
-                "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
-                "cellLocations": [
-                  {
-                    "SerializeProperty": "=メール送信画面フレーム!連絡ID"
-                  }
-                ]
-              },
-              "value": "%Null%",
-              "compareType": 1
-            },
-            "CommandList": [
-              {
-                "$type": "SetCurrentRowCommand.SetCurrentRowCommand, SetCurrentRowCommand",
-                "CurrentRowInfo": {
-                  "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
-                  "ColumnBindingInfo": {
-                    "TableName": "t_object_notice",
-                    "ColumnName": "notice_id"
-                  },
-                  "Value": {
-                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                    "SerializeProperty": "=メール送信画面フレーム!連絡ID"
-                  }
-                },
-                "Comments": "資料待ちIDセット"
-              }
-            ],
-            "ID": "c3a18cc8-058f-4498-b0e0-d83c8dd5fab8"
-          }
-        ]
-      },
-      {
-        "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
-        "ConditionAndCommandPairList": [
-          {
-            "Condition": {
-              "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
-              "param": {
-                "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
-                "cellLocations": [
-                  {
-                    "SerializeProperty": "=メール送信画面フレーム!申込ID"
-                  }
-                ]
-              },
-              "value": "%Null%",
-              "compareType": 1
-            },
-            "CommandList": [
-              {
-                "$type": "SetCurrentRowCommand.SetCurrentRowCommand, SetCurrentRowCommand",
-                "CurrentRowInfo": {
-                  "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
-                  "ColumnBindingInfo": {
-                    "TableName": "t_object_order",
-                    "ColumnName": "object_order_id"
-                  },
-                  "Value": {
-                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                    "SerializeProperty": "=メール送信画面フレーム!申込ID"
-                  }
-                },
-                "Comments": "申込IDセット"
-              }
-            ],
-            "ID": "e0cca85f-bda2-4862-ae63-9468fb83fa3f"
-          }
-        ]
-      },
-      {
-        "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
-        "ConditionAndCommandPairList": [
-          {
-            "Condition": {
-              "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
-              "param": {
-                "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
-                "cellLocations": [
-                  {
-                    "SerializeProperty": "=メール送信画面フレーム!調査ID"
-                  }
-                ]
-              },
-              "value": "%Null%",
-              "compareType": 1
-            },
-            "CommandList": [
-              {
-                "$type": "SetCurrentRowCommand.SetCurrentRowCommand, SetCurrentRowCommand",
-                "CurrentRowInfo": {
-                  "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
-                  "ColumnBindingInfo": {
-                    "TableName": "t_object_survey",
-                    "ColumnName": "survey_id"
-                  },
-                  "Value": {
-                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                    "SerializeProperty": "=メール送信画面フレーム!調査ID"
-                  }
-                },
-                "Comments": "調査IDセット"
-              }
-            ],
-            "ID": "b0c9fefd-16a5-419c-bf05-552af745cc6e"
-          }
-        ]
-      },
-      {
-        "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
-        "ConditionAndCommandPairList": [
-          {
-            "Condition": {
-              "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
-              "param": {
-                "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
-                "cellLocations": [
-                  {
-                    "SerializeProperty": "=メール送信画面フレーム!測量ID"
-                  }
-                ]
-              },
-              "value": "%Null%",
-              "compareType": 1
-            },
-            "CommandList": [
-              {
-                "$type": "SetCurrentRowCommand.SetCurrentRowCommand, SetCurrentRowCommand",
-                "CurrentRowInfo": {
-                  "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
-                  "ColumnBindingInfo": {
-                    "TableName": "t_object_surveying",
-                    "ColumnName": "surveying_id"
-                  },
-                  "Value": {
-                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                    "SerializeProperty": "=メール送信画面フレーム!測量ID"
-                  }
-                },
-                "Comments": "調査IDセット"
-              }
-            ],
-            "ID": "a3a8699c-7a6b-44c2-a8b5-733492ec4a33"
-          }
-        ]
-      },
-      {
-        "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
-        "ConditionAndCommandPairList": [
-          {
-            "Condition": {
-              "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
-              "param": {
-                "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
-                "cellLocations": [
-                  {
-                    "SerializeProperty": "=メール送信画面フレーム!解析ID"
-                  }
-                ]
-              },
-              "value": "%Null%",
-              "compareType": 1
-            },
-            "CommandList": [
-              {
-                "$type": "SetCurrentRowCommand.SetCurrentRowCommand, SetCurrentRowCommand",
-                "CurrentRowInfo": {
-                  "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
-                  "ColumnBindingInfo": {
-                    "TableName": "t_object_analysis",
-                    "ColumnName": "analysis_id"
-                  },
-                  "Value": {
-                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                    "SerializeProperty": "=メール送信画面フレーム!解析ID"
-                  }
-                },
-                "Comments": "調査IDセット"
-              }
-            ],
-            "ID": "84947a33-636a-4826-92ad-9828c73d696a"
-          }
-        ]
-      },
-      {
-        "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
-        "ConditionAndCommandPairList": [
-          {
-            "Condition": {
-              "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
-              "param": {
-                "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
-                "cellLocations": [
-                  {
-                    "SerializeProperty": "=メール送信画面フレーム!転圧ID"
-                  }
-                ]
-              },
-              "value": "%Null%",
-              "compareType": 1
-            },
-            "CommandList": [
-              {
-                "$type": "SetCurrentRowCommand.SetCurrentRowCommand, SetCurrentRowCommand",
-                "CurrentRowInfo": {
-                  "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
-                  "ColumnBindingInfo": {
-                    "TableName": "t_object_compaction",
-                    "ColumnName": "compaction_id"
-                  },
-                  "Value": {
-                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                    "SerializeProperty": "=メール送信画面フレーム!転圧ID"
-                  }
-                },
-                "Comments": "調査IDセット"
-              }
-            ],
-            "ID": "bb184160-e5da-43f0-a427-fe16331cbfd2"
-          }
-        ]
-      },
-      {
-        "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
-        "ConditionAndCommandPairList": [
-          {
-            "Condition": {
-              "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
-              "param": {
-                "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
-                "cellLocations": [
-                  {
-                    "SerializeProperty": "=メール送信画面フレーム!工事見積ID"
-                  }
-                ]
-              },
-              "value": "%Null%",
-              "compareType": 1
-            },
-            "CommandList": [
-              {
-                "$type": "SetCurrentRowCommand.SetCurrentRowCommand, SetCurrentRowCommand",
-                "CurrentRowInfo": {
-                  "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
-                  "ColumnBindingInfo": {
-                    "TableName": "t_object_construction_estimate",
-                    "ColumnName": "construction_estimate_id"
-                  },
-                  "Value": {
-                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                    "SerializeProperty": "=メール送信画面フレーム!工事見積ID"
-                  }
-                },
-                "Comments": "工事見積IDセット"
-              }
-            ],
-            "ID": "b12ecd2c-dcec-48bc-9bac-49ec6e469807"
-          }
-        ]
-      },
-      {
-        "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
-        "ConditionAndCommandPairList": [
-          {
-            "Condition": {
-              "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
-              "param": {
-                "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
-                "cellLocations": [
-                  {
-                    "SerializeProperty": "=メール送信画面フレーム!工事ID"
-                  }
-                ]
-              },
-              "value": "%Null%",
-              "compareType": 1
-            },
-            "CommandList": [
-              {
-                "$type": "SetCurrentRowCommand.SetCurrentRowCommand, SetCurrentRowCommand",
-                "CurrentRowInfo": {
-                  "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
-                  "ColumnBindingInfo": {
-                    "TableName": "t_object_construction",
-                    "ColumnName": "construction_id"
-                  },
-                  "Value": {
-                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                    "SerializeProperty": "=メール送信画面フレーム!工事ID"
-                  }
-                },
-                "Comments": "工事IDセット"
-              }
-            ],
-            "ID": "f030cef0-1311-4876-beba-89cd64644c04"
-          }
-        ]
-      },
-      {
-        "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
-        "ConditionAndCommandPairList": [
-          {
-            "Condition": {
-              "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
-              "param": {
-                "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
-                "cellLocations": [
-                  {
-                    "SerializeProperty": "=メール送信画面フレーム!保証ID"
-                  }
-                ]
-              },
-              "value": "%Null%",
-              "compareType": 1
-            },
-            "CommandList": [
-              {
-                "$type": "SetCurrentRowCommand.SetCurrentRowCommand, SetCurrentRowCommand",
-                "CurrentRowInfo": {
-                  "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
-                  "ColumnBindingInfo": {
-                    "TableName": "t_object_warranty",
-                    "ColumnName": "warranty_id"
-                  },
-                  "Value": {
-                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                    "SerializeProperty": "=メール送信画面フレーム!保証ID"
-                  }
-                },
-                "Comments": "保証IDセット"
-              }
-            ],
-            "ID": "5ab805fd-070a-474e-991b-aba542566b93"
-          }
-        ]
-      },
-      {
-        "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
-        "ConditionAndCommandPairList": [
-          {
-            "Condition": {
-              "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
-              "param": {
-                "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
-                "cellLocations": [
-                  {
-                    "SerializeProperty": "=メール送信画面フレーム!フォローID"
-                  }
-                ]
-              },
-              "value": "%Null%",
-              "compareType": 1
-            },
-            "CommandList": [
-              {
-                "$type": "SetCurrentRowCommand.SetCurrentRowCommand, SetCurrentRowCommand",
-                "CurrentRowInfo": {
-                  "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
-                  "ColumnBindingInfo": {
-                    "TableName": "t_object_follow",
-                    "ColumnName": "object_follow_id"
-                  },
-                  "Value": {
-                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                    "SerializeProperty": "=メール送信画面フレーム!フォローID"
-                  }
-                },
-                "Comments": "保証IDセット"
-              }
-            ],
-            "ID": "f1e2e7b9-4210-4d68-acdd-de78b8075ca2"
-          }
-        ]
-      },
-      {
-        "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
-        "ConditionAndCommandPairList": [
-          {
-            "Condition": {
-              "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
-              "Condition1": {
-                "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
-                "param": {
-                  "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
-                  "cellLocations": [
-                    {
-                      "SerializeProperty": "=メール送信画面フレーム!CC19"
-                    }
-                  ]
-                },
-                "value": "1"
-              },
-              "Condition2": {
-                "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
-                "param": {
-                  "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
-                  "cellLocations": [
-                    {
-                      "SerializeProperty": "=メール送信画面フレーム!申込ID"
-                    }
-                  ]
-                },
-                "value": "%Null%",
-                "compareType": 1
-              }
-            },
-            "CommandList": [
-              {
-                "$type": "Forguncy.Model.RequestServerCommand, ServerDesignerCommon",
-                "ServerCommandName": "添付ファイル取得処理",
-                "Parameters": [
-                  {
-                    "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
-                    "Value": "1",
-                    "ParamName": "P_ファイル属性ID"
-                  },
-                  {
-                    "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
-                    "Value": {
-                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                      "SerializeProperty": "=メール送信画面フレーム!申込ID"
-                    },
-                    "ParamName": "P_申込ID"
-                  },
-                  {
-                    "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
-                    "ParamName": "P_調査ID"
-                  },
-                  {
-                    "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
-                    "ParamName": "P_測量ID"
-                  },
-                  {
-                    "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
-                    "ParamName": "P_解析ID"
-                  },
-                  {
-                    "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
-                    "ParamName": "P_転圧ID"
-                  },
-                  {
-                    "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
-                    "ParamName": "P_工事見積ID"
-                  },
-                  {
-                    "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
-                    "ParamName": "P_工事ID"
-                  },
-                  {
-                    "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
-                    "ParamName": "P_保証ID"
-                  },
-                  {
-                    "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
-                    "ParamName": "P_付保ID"
-                  }
-                ],
-                "ResultErrorCodeTo": {
-                  "SerializeProperty": "リターンコード"
-                },
-                "ResultMessageTo": {
-                  "SerializeProperty": "リターンメッセージ"
-                },
-                "ReturnPropertiesTo": [
-                  {
-                    "ResultPropertyName": "R_添付ファイル文字列",
-                    "ResultTo": {
-                      "SerializeProperty": "添付ファイル文字列"
-                    }
-                  }
-                ],
-                "CheckDataValidation": false
-              },
-              {
-                "$type": "Forguncy.Model.SetCellPropertyCommand, ServerDesignerCommon",
-                "PropertyItemsList": [
-                  {
-                    "TargetCells": {
-                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                      "SerializeProperty": "=メール送信画面フレーム!添付ファイル"
-                    },
-                    "Value": {
-                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                      "SerializeProperty": "=メール送信画面_詳細!添付ファイル&メール送信画面_詳細!添付ファイル文字列"
-                    }
-                  }
-                ],
-                "Comments": "添付ファイルを追加する"
-              }
-            ],
-            "ID": "c9f01a87-c3a0-4ba9-a863-4f8a3d83248d"
-          }
-        ]
-      },
       {
         "$type": "PassListviewDataCommand.PassListviewDataCommand, PassListviewDataCommand",
         "ImportMode": 1,
@@ -3304,7 +3032,8 @@
               "SerializeProperty": "=メール送信画面フレーム!CE9"
             }
           }
-        ]
+        ],
+        "Comments": "共有事項ビューセット"
       }
     ],
     "AuthorizeInfo": {
@@ -3374,11 +3103,11 @@
     },
     {
       "Name": "連絡ID",
-      "Formula": "メール送信画面フレーム!$BV$16"
+      "Formula": "メール送信画面フレーム!$BV$19"
     },
     {
       "Name": "連絡事項",
-      "Formula": "メール送信画面フレーム!$BV$19"
+      "Formula": "メール送信画面フレーム!$BV$22"
     },
     {
       "Name": "連絡事項タブ検索",
@@ -3386,15 +3115,43 @@
     },
     {
       "Name": "タブID",
-      "Formula": "メール送信画面フレーム!$BV$22"
-    },
-    {
-      "Name": "フォローID",
       "Formula": "メール送信画面フレーム!$BV$25"
     },
     {
+      "Name": "フォローID",
+      "Formula": "メール送信画面フレーム!$BV$28"
+    },
+    {
       "Name": "指定メールアドレス",
+      "Formula": "メール送信画面フレーム!$CJ$16"
+    },
+    {
+      "Name": "請求年月",
       "Formula": "メール送信画面フレーム!$CC$16"
+    },
+    {
+      "Name": "請求先名",
+      "Formula": "メール送信画面フレーム!$CC$25"
+    },
+    {
+      "Name": "請求先担当者名",
+      "Formula": "メール送信画面フレーム!$CC$28"
+    },
+    {
+      "Name": "通知先ID",
+      "Formula": "メール送信画面フレーム!$CC$22"
+    },
+    {
+      "Name": "請求番号",
+      "Formula": "メール送信画面フレーム!$CC$32"
+    },
+    {
+      "Name": "請求日",
+      "Formula": "メール送信画面フレーム!$CC$19"
+    },
+    {
+      "Name": "催促資料名",
+      "Formula": "メール送信画面フレーム!$BV$16"
     }
   ]
-}//vZxZqIlaq6bTCpqLJ3SBurJc8Jkvodo7h8F9kvdHRI/4Wdf8DLIyWFZmAbhZw/+T1uiI8QIZwQ2ZUKaewWjoX10GbvvfJPFQqFtmojvf8qHWr4OpaUxYnPowfaCPTOlZOnN+4z9NgBjgANQZEmQgQGwL+GIZPbMR4MeKT+vyDzPygUi3ywlqf8NJH7V8uw/mNMOtp/g56WM9f8Pk7nJtYzSyHwFgcBTuCULdaTjn/ibvUDDoAt5XVK7B3tf5mxKWXb1XqvpSZSuFPMl8b5rtzaqVLeEHdgaLBdFYxoKiVif5HsIJWVEpuJrXIYK524fVkZ3BUUv4bPWp1842FriQELjXtU2e0ye72F7XaxADHreQlxkKbr7jXW492W7GP0Bl6LSf7fckEGUh22XyB1j8tmF5SeMq9CRg7EYOvNeyyGCtxIJt0eNzuNXR24e+xfXJF2EzMMDgw2N3OFVd8lB4j4VIMxyI47c4DmKsQujS0WQ13RZdgfyx4/viFee+2kLckVeKofMW0yNQJFSlEgQuWtFfyDtlYDUrg7vajv6uoKiKiwfXi4ys/EBct6+z3SPudPcVfcIVLdqG8mw2UmQoych9JnQjN5dHtM6wF+ky+aW/jB26wRZmZY5SYZGOSABgwWwZoSihDzO2H2GFrXm/Ja534XIR38gcZSR6qnwVvtxVoRMJRkDsm9fDlmD56ZHKUd6TM0Y0SRB39ysZoEIDu3UUi8Ag4ScLS279JDUL3GVXRsHTVHtTifauEaO/bcLCpbG6s2sVWWn4s30bFU8xF+iOzU9qULnlPE70yzIG4G0XD/fks5qPUWB5MHxYsuw20Gm2h1IBexhcEBy2IM3r0R53WejzTGeJxrBQo2wgdmylxP5X/9cRTBWR5zMNUl9Pkt8RJlVk5BYc5ZBCH6HjCg==|920
+}//ObVf2iBPp5qA0nZ50CaCmgb0IT5VwpuTt9SSFfE08hlmCvqgMxzmEIrNDusQ612sNSHVdzmMEaJTMwHDMfkm4WzKZy3b0DMDcLID2BHJghcQrGk/6TrQ0fr2gd0oGeypzpQl2VzlwhqUnsOI4QSCzKBWFIuUOePQ8vS0aUvQoNdM3dwv0I6Dqovizdu3LqdXZbg1Klr0DqYabDFCBPJ/ZeXHZFw00r4Pj+PD2OmZl1ijW0iPzbyJCqbWiH6EDwaM4E0Ffmy+kC5bMwp1/IIsSZruCQBTrsgLI3RNO30i5jjYCbAsa8ZKqnMOhkUloTzUnuoXH+M4i7Vixz4/LIa7OO7ilq+BbMkLCUHNcYD+0vAclyayEM1qiibsnMtOHbLZzzX48Lj1u/2kpjQeYhpCH3rqceOwsm7A0nnq/z1LmLHQDvzLp7Ye5ROMUozz7VjE4orldMvQux3Cb1x/N609yRrMhiS4tGCpr6J1+KiotXadunvXSQF4RRPh53AATeZgrAnQFE3W5ygFblvIOJcJqzBg/YnTWpNSnC6Hyh34mGx3EKZWWPwGDrN7xIbZgpEizH2+a3XRvmcViAqTBzwKFZzrMc/+vqALvyJtsiTaMzyTL6NmMBqAtVcuC2IkqVcqUsSeA3drEKC/Md7aPjKisr1352L4o5pKYeornQV3+1Y4gRk4bxzP8lffk1SvtFSlikaQmc+upvkWxU+bfo70xdZCT8cj2TiVMGkLtlugfFgvSdBmdMplEe/loyCKgakOhry8YONxf/SmPtT+CMfSc3jEDmzbqNGPV328jEvAgq/mjz1CWbeiWoXkJMWfqQYjzjvwxosSfz+6WsJRiXWUO63tC+poKo8jR/EH63TWY6nTorkT0b0wnLY1+AeFt1Bj+udkM6nracX6DyHYrzv5qA==|920
