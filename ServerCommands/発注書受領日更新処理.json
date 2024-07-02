@@ -23,33 +23,110 @@
       "$type": "Forguncy.Model.ServerTransactionCommand, ServerDesignerCommon",
       "CommandList": [
         {
-          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
-          "ParameterName": "物件商品",
-          "TableValue": {
-            "TableName": "t_object_product",
-            "TableValueType": 1,
-            "BindingInfos": [
-              {
-                "BindingInfo": {
-                  "TableName": "t_object_product",
-                  "ColumnName": "purchase_receipt_date"
-                },
-                "ColumnName": "発注書受領日"
+          "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+          "TableName": "t_object_product",
+          "ShowConfirm": false,
+          "ConfirmText": "本当に更新してもよろしいですか？",
+          "RowsToUpdate": 1,
+          "RowsToUpdateCondition": {
+            "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+            "ColumnBindingInfo": {
+              "TableName": "t_object_product",
+              "ColumnName": "object_product_id"
+            },
+            "Value": {
+              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+              "SerializeProperty": "=P_物件商品ID"
+            }
+          },
+          "UpdateValues": [
+            {
+              "ColumnName": "purchase_receipt_date",
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_発注書受領日"
               }
-            ],
-            "SqlCondition": {
-              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
-              "ColumnBindingInfo": {
-                "TableName": "t_object_product",
-                "ColumnName": "object_product_id"
-              },
+            }
+          ]
+        },
+        {
+          "$type": "Forguncy.Model.RequestServerCommand, ServerDesignerCommon",
+          "ServerCommandName": "計上確定可能フラグ取得処理",
+          "Parameters": [
+            {
+              "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
               "Value": {
                 "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
                 "SerializeProperty": "=P_物件商品ID"
+              },
+              "ParamName": "P_物件商品ID"
+            }
+          ],
+          "ReturnPropertiesTo": [
+            {
+              "ResultPropertyName": "R_計上確定可能フラグ",
+              "ResultTo": {
+                "SerializeProperty": "計上確定可能フラグ"
+              }
+            },
+            {
+              "ResultPropertyName": "R_計上ステータスID",
+              "ResultTo": {
+                "SerializeProperty": "計上ステータスID"
               }
             }
+          ],
+          "RefreshAfterFinish": true,
+          "CheckDataValidation": true
+        },
+        {
+          "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+          "TableName": "t_object_product",
+          "ShowConfirm": false,
+          "ConfirmText": "本当に更新してもよろしいですか？",
+          "RowsToUpdate": 1,
+          "RowsToUpdateCondition": {
+            "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+            "ColumnBindingInfo": {
+              "TableName": "t_object_product",
+              "ColumnName": "object_product_id"
+            },
+            "Value": {
+              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+              "SerializeProperty": "=P_物件商品ID"
+            }
           },
-          "ID": "93222dac43944def8884989c6af252a7"
+          "UpdateValues": [
+            {
+              "ColumnName": "account_status_id",
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=計上ステータスID"
+              }
+            }
+          ]
+        },
+        {
+          "$type": "Forguncy.Model.RequestServerCommand, ServerDesignerCommon",
+          "ServerCommandName": "発注書受領後保証ステータス更新処理",
+          "Parameters": [
+            {
+              "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_物件商品ID"
+              },
+              "ParamName": "P_物件商品ID"
+            }
+          ],
+          "ResultErrorCodeTo": {
+            "SerializeProperty": "リターンコード"
+          },
+          "ResultMessageTo": {
+            "SerializeProperty": "リターンメッセージ"
+          },
+          "RefreshAfterFinish": true,
+          "CheckDataValidation": true
         },
         {
           "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
@@ -61,112 +138,13 @@
                   "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
                   "ParamObject": {
                     "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                    "SerializeProperty": "=物件商品.発注書受領日"
+                    "SerializeProperty": "=リターンコード"
                   }
                 },
-                "value": "%Null%"
+                "value": "0",
+                "compareType": 1
               },
               "CommandList": [
-                {
-                  "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
-                  "TableName": "t_object_product",
-                  "ShowConfirm": false,
-                  "ConfirmText": "本当に更新してもよろしいですか？",
-                  "RowsToUpdate": 1,
-                  "RowsToUpdateCondition": {
-                    "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
-                    "ColumnBindingInfo": {
-                      "TableName": "t_object_product",
-                      "ColumnName": "object_product_id"
-                    },
-                    "Value": {
-                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                      "SerializeProperty": "=P_物件商品ID"
-                    }
-                  },
-                  "UpdateValues": [
-                    {
-                      "ColumnName": "purchase_receipt_date",
-                      "Value": {
-                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                        "SerializeProperty": "=P_発注書受領日"
-                      }
-                    }
-                  ]
-                },
-                {
-                  "$type": "Forguncy.Model.RequestServerCommand, ServerDesignerCommon",
-                  "ServerCommandName": "計上確定可能フラグ取得処理",
-                  "Parameters": [
-                    {
-                      "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
-                      "Value": {
-                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                        "SerializeProperty": "=P_物件商品ID"
-                      },
-                      "ParamName": "P_物件商品ID"
-                    }
-                  ],
-                  "ReturnPropertiesTo": [
-                    {
-                      "ResultPropertyName": "R_計上確定可能フラグ",
-                      "ResultTo": {
-                        "SerializeProperty": "計上確定可能フラグ"
-                      }
-                    }
-                  ],
-                  "RefreshAfterFinish": true,
-                  "CheckDataValidation": true
-                },
-                {
-                  "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
-                  "TableName": "t_object_product",
-                  "ShowConfirm": false,
-                  "ConfirmText": "本当に更新してもよろしいですか？",
-                  "RowsToUpdate": 1,
-                  "RowsToUpdateCondition": {
-                    "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
-                    "ColumnBindingInfo": {
-                      "TableName": "t_object_product",
-                      "ColumnName": "object_product_id"
-                    },
-                    "Value": {
-                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                      "SerializeProperty": "=P_物件商品ID"
-                    }
-                  },
-                  "UpdateValues": [
-                    {
-                      "ColumnName": "account_confirm_possible_flg",
-                      "Value": {
-                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                        "SerializeProperty": "=計上確定可能フラグ"
-                      }
-                    }
-                  ]
-                },
-                {
-                  "$type": "Forguncy.Model.RequestServerCommand, ServerDesignerCommon",
-                  "ServerCommandName": "発注書受領後保証ステータス更新処理",
-                  "Parameters": [
-                    {
-                      "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
-                      "Value": {
-                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                        "SerializeProperty": "=P_物件商品ID"
-                      },
-                      "ParamName": "P_物件商品ID"
-                    }
-                  ],
-                  "ResultErrorCodeTo": {
-                    "SerializeProperty": "リターンコード"
-                  },
-                  "ResultMessageTo": {
-                    "SerializeProperty": "リターンメッセージ"
-                  },
-                  "RefreshAfterFinish": true,
-                  "CheckDataValidation": true
-                },
                 {
                   "$type": "Forguncy.Model.ReturnCommand, ServerDesignerCommon",
                   "ErrorCode": {
@@ -180,7 +158,7 @@
                   "CustomReturns": []
                 }
               ],
-              "ID": "3dd312ee-6c82-437c-837f-4e284abe1f18"
+              "ID": "a86699ad-5156-48ae-82f6-34c4a6e82f71"
             }
           ]
         }
