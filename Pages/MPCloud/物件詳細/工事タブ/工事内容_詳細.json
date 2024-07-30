@@ -497,7 +497,7 @@
               {
                 "ConfirmDialogSettings": {
                   "Title": "確認",
-                  "FormulaText": "完了を解除します。よろしいですか？\r\n※計上商品がある場合、請求データは解除されません。",
+                  "FormulaText": "工事完了を解除します。よろしいですか？\r\n※すでに計上確定済みの商品がある場合、\r\n請求、支払いデータは解除されません。",
                   "YesButtonText": "はい",
                   "NoButtonText": "いいえ",
                   "ConfirmIcon": 4
@@ -564,7 +564,7 @@
                             "ReloadData": true
                           }
                         ],
-                        "ID": "78cd4f49-a9c2-499a-a9be-d587d0ac76ef"
+                        "ID": "2f718d2b-b506-4e74-888f-65677da0a591"
                       },
                       {
                         "CommandList": [
@@ -576,12 +576,12 @@
                             }
                           }
                         ],
-                        "ID": "0ac5eda1-0072-49f8-830f-3b0aef44088a"
+                        "ID": "62712e4a-fe2a-43da-8cbe-9b77935328c6"
                       }
                     ]
                   }
                 ],
-                "ID": "1f159e8b-77c5-4f59-a6d0-08cf5b1ded83"
+                "ID": "0c93c95a-a7d4-4a4a-8bf7-80c06e12896f"
               }
             ]
           }
@@ -1023,7 +1023,7 @@
                     "ReloadData": true
                   }
                 ],
-                "ID": "f58ab623-637a-41cd-950f-7911866b5aff"
+                "ID": "19b0af25-228f-4ee9-b4c0-2e23f2703cca"
               }
             ]
           }
@@ -1507,7 +1507,7 @@
                     ]
                   }
                 ],
-                "ID": "73bc6d15-83ce-4ca8-b9af-2cc09b5328c2"
+                "ID": "c7667812-7c38-4ff8-8112-14547239cd7b"
               }
             ]
           }
@@ -1629,7 +1629,7 @@
                     ]
                   }
                 ],
-                "ID": "d1006a59-628b-4805-9561-309400cc1107"
+                "ID": "c035501d-91d2-4fde-b79d-b3879dde7e48"
               }
             ]
           }
@@ -1734,7 +1734,7 @@
                     ]
                   }
                 ],
-                "ID": "91deda7a-763b-4faf-b4d7-1181ad887b5b"
+                "ID": "419532f2-fcf5-40cd-9463-7840b12fabd7"
               }
             ]
           }
@@ -1862,7 +1862,7 @@
                     ]
                   }
                 ],
-                "ID": "07991f98-ec9d-4bf5-971f-9e26a2d68735"
+                "ID": "26ed9285-2998-44d9-903e-dbef18ac4252"
               }
             ]
           }
@@ -1984,7 +1984,7 @@
                     ]
                   }
                 ],
-                "ID": "4826629b-ade7-434c-a257-d4073d114532"
+                "ID": "8ddbabae-5c01-4c1b-b99c-d61dee9744ce"
               }
             ]
           }
@@ -2089,7 +2089,7 @@
                     ]
                   }
                 ],
-                "ID": "a1b02d87-a528-45eb-827b-a1b0f1a1b194"
+                "ID": "cc681f27-b105-4a5a-b5b3-526d0239a25b"
               }
             ]
           }
@@ -2229,7 +2229,7 @@
                     ]
                   }
                 ],
-                "ID": "9626a9b0-f4a1-4742-a077-ee2470575977"
+                "ID": "a4e8cf0a-de1b-472e-a0d8-63cc896e8627"
               },
               {
                 "Condition": {
@@ -2261,7 +2261,7 @@
                     ]
                   }
                 ],
-                "ID": "0899192d-d749-4a82-b80c-cac330d31e27"
+                "ID": "a4db3993-aaff-4ee0-ba84-71b6d4b1975d"
               }
             ]
           }
@@ -2366,11 +2366,28 @@
                 },
                 "CommandList": [
                   {
+                    "$type": "LoadingCommand.StartLoadingCommand, LoadingCommand",
+                    "LoadingText": "お待ちください",
+                    "LoadingTextColor": "Background 1 0"
+                  },
+                  {
                     "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
                     "TableName": "t_object_construction",
                     "ShowConfirm": false,
                     "CheckDataValidation": false,
                     "ConfirmText": "本当に更新してもよろしいですか？",
+                    "RowsToUpdate": 1,
+                    "RowsToUpdateCondition": {
+                      "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                      "ColumnBindingInfo": {
+                        "TableName": "t_object_construction",
+                        "ColumnName": "construction_id"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=工事内容_詳細!工事ID"
+                      }
+                    },
                     "UpdateValues": [
                       {
                         "ColumnName": "construction_check_result"
@@ -2388,25 +2405,14 @@
                     ]
                   },
                   {
-                    "$type": "Forguncy.Model.ShareCommand, ServerDesignerCommon",
-                    "ShareCommandContainerRefer": {
-                      "ShareCommandContainerID": "de66a115-ade0-422c-9d10-db03223efd9b"
-                    },
-                    "Params": [
-                      {
-                        "ParamReferObject": {
-                          "ParamID": "1163bbdf-62b1-43af-9906-e63bfc780ec3",
-                          "ShareCommandContainerReferObject": {
-                            "ShareCommandContainerID": "de66a115-ade0-422c-9d10-db03223efd9b"
-                          }
-                        },
-                        "Value": "承認を解除しました"
-                      }
-                    ],
-                    "ReturnPropertiesTo": []
+                    "$type": "Forguncy.Model.IgnorePageDirtyCommand, ServerDesignerCommon"
+                  },
+                  {
+                    "$type": "Forguncy.Model.ClosePopupCommand, ServerDesignerCommon",
+                    "ReloadData": true
                   }
                 ],
-                "ID": "d2e7b85d-741c-4896-b325-a61cff056e49"
+                "ID": "26b43e4e-513a-401f-bbe2-7c9d71bebf30"
               }
             ]
           }
@@ -2475,88 +2481,54 @@
                     "LoadingTextColor": "Background 1 0"
                   },
                   {
-                    "$type": "Forguncy.Model.RequestServerCommand, ServerDesignerCommon",
-                    "ServerCommandName": "工事施工承認処理",
-                    "Parameters": [
+                    "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+                    "TableName": "t_object_construction",
+                    "ShowConfirm": false,
+                    "CheckDataValidation": false,
+                    "ConfirmText": "本当に更新してもよろしいですか？",
+                    "RowsToUpdate": 1,
+                    "RowsToUpdateCondition": {
+                      "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                      "ColumnBindingInfo": {
+                        "TableName": "t_object_construction",
+                        "ColumnName": "construction_id"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=工事内容_詳細!工事ID"
+                      }
+                    },
+                    "UpdateValues": [
                       {
-                        "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                        "ColumnName": "construction_check_result",
+                        "Value": "1"
+                      },
+                      {
+                        "ColumnName": "construction_approval_flg",
+                        "Value": "1"
+                      },
+                      {
+                        "ColumnName": "construction_approval_user_id",
+                        "Value": "%CurrentUser.user_id%"
+                      },
+                      {
+                        "ColumnName": "construction_approval_date",
                         "Value": {
                           "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                          "SerializeProperty": "=工事内容_詳細!工事ID"
-                        },
-                        "ParamName": "P_工事ID"
-                      },
-                      {
-                        "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
-                        "ParamName": "P_工法ID"
-                      }
-                    ],
-                    "ResultErrorCodeTo": {
-                      "SerializeProperty": "リターンコード"
-                    },
-                    "ResultMessageTo": {
-                      "SerializeProperty": "リターンメッセージ"
-                    },
-                    "RefreshAfterFinish": true,
-                    "CheckDataValidation": false
-                  },
-                  {
-                    "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
-                    "ConditionAndCommandPairList": [
-                      {
-                        "Condition": {
-                          "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
-                          "param": {
-                            "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
-                            "cellLocations": [
-                              {
-                                "SerializeProperty": "=工事内容_詳細!リターンコード"
-                              }
-                            ]
-                          },
-                          "value": "0"
-                        },
-                        "CommandList": [
-                          {
-                            "$type": "Forguncy.Model.ShareCommand, ServerDesignerCommon",
-                            "ShareCommandContainerRefer": {
-                              "ShareCommandContainerID": "de66a115-ade0-422c-9d10-db03223efd9b"
-                            },
-                            "Params": [
-                              {
-                                "ParamReferObject": {
-                                  "ParamID": "1163bbdf-62b1-43af-9906-e63bfc780ec3",
-                                  "ShareCommandContainerReferObject": {
-                                    "ShareCommandContainerID": "de66a115-ade0-422c-9d10-db03223efd9b"
-                                  }
-                                },
-                                "Value": "施工承認しました"
-                              }
-                            ],
-                            "ReturnPropertiesTo": []
-                          }
-                        ],
-                        "ID": "db4e458d-55ce-42a3-85a2-75309c1766e6"
-                      },
-                      {
-                        "CommandList": [
-                          {
-                            "$type": "Forguncy.Model.ShowMessageCommand, ServerDesignerCommon",
-                            "MessageFormula": {
-                              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                              "SerializeProperty": "=工事内容_詳細!リターンメッセージ"
-                            }
-                          },
-                          {
-                            "$type": "LoadingCommand.EndLoadingCommand, LoadingCommand"
-                          }
-                        ],
-                        "ID": "7d4d23cb-e336-462f-82a8-ecaeb59462d4"
+                          "SerializeProperty": "=TODAY()"
+                        }
                       }
                     ]
+                  },
+                  {
+                    "$type": "Forguncy.Model.IgnorePageDirtyCommand, ServerDesignerCommon"
+                  },
+                  {
+                    "$type": "Forguncy.Model.ClosePopupCommand, ServerDesignerCommon",
+                    "ReloadData": true
                   }
                 ],
-                "ID": "6347f8fe-ec84-4785-9856-350674899b01"
+                "ID": "67f87a23-c847-4dfe-b289-16e99b69c7fc"
               }
             ]
           }
@@ -3159,8 +3131,10 @@
                     "ResultMessageTo": {
                       "SerializeProperty": "リターンメッセージ"
                     },
-                    "RefreshAfterFinish": true,
                     "CheckDataValidation": false
+                  },
+                  {
+                    "$type": "Forguncy.Model.IgnorePageDirtyCommand, ServerDesignerCommon"
                   },
                   {
                     "$type": "LoadingCommand.EndLoadingCommand, LoadingCommand"
@@ -3184,11 +3158,10 @@
                         "CommandList": [
                           {
                             "$type": "Forguncy.Model.ClosePopupCommand, ServerDesignerCommon",
-                            "PassValueBack": true,
                             "ReloadData": true
                           }
                         ],
-                        "ID": "0a12bdfd-68a8-4dc1-a99d-549d81992470"
+                        "ID": "ad8ad097-754d-46b3-ab43-ff53083c945c"
                       },
                       {
                         "CommandList": [
@@ -3200,12 +3173,12 @@
                             }
                           }
                         ],
-                        "ID": "5b77f0c0-97dc-473f-8c4e-7e291bfd9234"
+                        "ID": "013c31b7-0140-42ca-b93d-664272a69d29"
                       }
                     ]
                   }
                 ],
-                "ID": "7a80fade-8b26-4166-9168-9687ffc8fe30"
+                "ID": "c529cc5c-ab60-42f0-b24e-7796b0abe842"
               }
             ]
           }
@@ -3266,20 +3239,6 @@
             "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
             "Formula": {
               "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-              "SerializeProperty": "=工事内容_詳細!$AX$12=1"
-            },
-            "StyleInfo": {
-              "Underline": null,
-              "Strikethrough": null
-            },
-            "IsDisabled": true,
-            "IsInvisible": false,
-            "IsReadOnly": false
-          },
-          {
-            "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
-            "Formula": {
-              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
               "SerializeProperty": "=工事内容_詳細!$J$6=2"
             },
             "StyleInfo": {
@@ -3288,6 +3247,20 @@
             },
             "IsDisabled": false,
             "IsInvisible": true,
+            "IsReadOnly": false
+          },
+          {
+            "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
+            "Formula": {
+              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+              "SerializeProperty": "=工事内容_詳細!$AX$12=1"
+            },
+            "StyleInfo": {
+              "Underline": null,
+              "Strikethrough": null
+            },
+            "IsDisabled": true,
+            "IsInvisible": false,
             "IsReadOnly": false
           }
         ]
@@ -3330,7 +3303,7 @@
                     ]
                   }
                 ],
-                "ID": "efc83b99-f3d8-4c33-9ec3-13170756be55"
+                "ID": "8f8fc655-8273-4c32-8a1b-d5042cbbb74d"
               },
               {
                 "Condition": {
@@ -3362,7 +3335,7 @@
                     ]
                   }
                 ],
-                "ID": "dd99fcf0-4c81-449a-a9a0-091149933adb"
+                "ID": "5a7ff0d4-d7cf-4d26-937a-d5df61107afe"
               }
             ]
           }
@@ -4530,4 +4503,4 @@
       "Formula": "工事内容_詳細!$AX$6"
     }
   ]
-}//gIK1b33ASvIlJp/Dt6bjlqKQVOHP+7sKZWBM6P5PSAYtyRxT6Ho9lLGtUncrmeY1jHWOVoHUqReyaoNAaFGLagkc7TedfQk9Y1ppqg7Dkf+ieePk7aQKvT1y8V/CXv6hpxtvZvd+qatI1fYSt7KFYus8djvn1UFTT3P9eu1AyUqbpMxk1pI9uFZF8PqJNLauqsZD4c4CQuMwE/TUB4sgRD+ihkNdzu3bpqd3U7LdBEnvkqi6PcOusO0KzI6PT7YN0aSx2KLQnfP31+nAOUmezyfi4yXv4EmtY8bawDRPt0guVzYFvpxsbB2HvWCtGeRfMH7v0ZGcr+js7crSMPSlVX61DdDyYwRtfB4XgJq+ZOrAuh9tW8RQP48Sgq39n8V1FksjHbsuHE41RVyV6qIJvSsABEdf0ZBOya8xf7++FOZoYi5lf3tLI5IJuDLTwlvfpfSeoWZGEjIEvi6lBcO/LVx7Wy63/v5bQ1HxN350v6q1oDELGthQB0Nd2/W98hVwgvsuMemG+Tt1zCFd+Rc+rd6vOgkhouZOiz1H/lz+QE8u4rw2zllv6HG8sOaGucfLTju2xF6dVYaiXPKP+z+1YZQp5igw8alqn5qzHvCzjV7IIfbOjnQ5ltEr4FSDJHQlMZM4x3KoDhSpKiQqxikfKo7kwYQNra+gURs9IFWrUd7T89X72wCaqyLAxnYeDKj1TmxNj8fvDI0DiWV0FGFTte1ngSmKLScnJzv3r0HjVWZnXoyTKK9tX9kwEiwclGcqEbd/A+h2AB0EIfEQiSZmeOO7sHCvYaN366Qsllapu9O0mPfICh9qRgd9VIgJ1eEDQEfarde0w4UING8PT85HmC/neDSBbw1iQ4AEswlD0BjzuWIdQ8LrAlfX62S1oWtZXHwoYN/OFPY9arKoy4vooQ==|920
+}//oetwwiJ/tyZV8l2XoDXgbcoUQ+KBrb+0rT3tpJes3OdtpE7U8MzuBpsw2eKhvvnfjH4E9K7Gg0KMJnULvdHDN5V7pZCY0yfBwttEb9FTLqxbCyuKoC5kq2Q5PPzGWYkshhbTCt9OTBLQzOZdTY5IQhKiJdoFnxYFK/Dabc402rTeV//8LTFH1ZtfJowDTTCJ2GsuqCkTvyL43rpMGTPau6IVYJrkoKp2JHZsec5loJJhlvl6qK+x4ysyShiCfUbJfSxAIuzaWDtW368M67hS2awr+5lzkuWP2dpWsUdZZRVZD47VX8RMcjlg+DfotspY0lAZa+Qda1OqWwlZtcisUND5ALmlrN5DolV7YBC8MjLWwbu6fmOOoDbj1MYw7N6rDFvDsFhXhIjlIFkTb3vvPRLKlp/V/oko8EXjYJxFAIyds7nXzVOvfomcGweaBEvSD+GAdZSzW/kgyaWCwYsXyTFvAQ0FjoE1vzXT2GjSXO2tLMkUIzERnaT+fiFnOa4KqhsaAFfDNSPbRz8XKN64rlx5chsZm1CARYZw1U9ZCT07ivcDNPfA6RoCFJSgHluFyl6JABRV0DVRbq03QzOiHwvIgfb93bD2Vi2EL0zyHNSbnjaJsmdBxQ7aPskJMGQ5ewbT4vx9tKexd/jNORWmxy4lHl0q5eDYkWrHicxUMIzYoq6/Zrmq3l1axzAUrF0rmTDm5TPit051DwgC0vr8DWcRxbPRdYWTZdPK/L7xL/jmesgLdoF6c+Fp2J9IrAIY68RjFRRmo8ngMIBQ5nSVA3epZsktkCsHEDHlYEOK+BZbtbaTl/d18HZQlv+WPx27P+uvijAYB2quRa1H46EqqzLO9VFoE/B4UmseCq/YZmNz+y472I04qPROygp8TJ7kkUL7Z+AzrXre7NV4wbr6Ag==|920

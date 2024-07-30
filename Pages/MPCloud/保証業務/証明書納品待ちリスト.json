@@ -118,12 +118,12 @@
           "DesignLengthInPixel": 25.0
         }
       },
-      "29": {
+      "31": {
         "GridRowColumnDefinition": {
           "DesignLengthInPixel": 25.0
         }
       },
-      "30": {
+      "32": {
         "GridRowColumnDefinition": {
           "DesignLengthInPixel": 35.0
         }
@@ -135,7 +135,7 @@
       7,
       8
     ],
-    "Count": 31,
+    "Count": 33,
     "DefaultSize": 25.0
   },
   "Cols": {
@@ -770,7 +770,7 @@
   "Values": {
     "1,26": "全て選択",
     "1,31": "全て解除",
-    "1,51": "付保アクション選択",
+    "1,51": "アクション選択",
     "1,60": "最新情報に更新する",
     "3,11": "詳細条件を設定",
     "5,11": "詳細条件を非表示",
@@ -782,40 +782,44 @@
     "9,105": "選択フラグ",
     "9,112": "▼区切り位置",
     "9,119": "▼付保最新化フラグ",
+    "9,126": "▼証明書納品取消フラグ",
+    "9,133": "▼件数取得ボタン",
     "10,119": "0",
+    "10,126": "0",
     "12,112": "▼検索ワード1",
     "12,119": "▼証明書納品フラグ",
-    "12,126": "▼証明書納品取消フラグ",
-    "12,133": "▼件数取得ボタン",
+    "12,126": "▼証明書納品日",
+    "12,133": "▼該当カウント",
     "13,119": "0",
-    "13,126": "0",
     "15,112": "▼検索ワード2",
     "15,119": "▼付保アクション",
-    "15,126": "▼証明書納品日",
-    "15,133": "▼該当カウント",
+    "15,126": "▼選択フラグ",
+    "15,133": "▼表示該当カウント",
     "16,119": "0",
+    "16,126": "0",
     "18,112": "▼タブ番号",
     "18,119": "▼証明書納品フラグ",
-    "18,126": "▼選択フラグ",
-    "18,133": "▼申請待ちに戻す",
+    "18,126": "▼選択カウント",
     "19,112": 7,
     "19,119": "0",
-    "19,126": "0",
-    "19,133": 0,
     "21,112": "▼証明書納品待ちST",
-    "21,126": "▼選択カウント",
-    "24,126": "▼抽出カウント",
-    "24,133": "▼付保証明書ファイル属性ID",
-    "25,133": 21
+    "21,119": "▼申請待ちに戻す",
+    "21,126": "▼抽出カウント",
+    "21,133": "▼付保証明書ファイル属性ID",
+    "22,119": 0,
+    "22,133": 21,
+    "24,126": "▼未選択カウント"
   },
   "Formulas": {
-    "30,1": "\"該当データ件数：\"&TEXT(該当カウント,\"#,##0\")&\"件　　表示データ件数：\"&TEXT(抽出カウント,\"#,##0\")&\"件\"",
+    "32,1": "\"該当データ件数：\"&TEXT(ED17,\"#,##0\")&\"件　　表示データ件数：\"&TEXT(DW23,\"#,##0\")&\"件\"",
     "10,112": "IF(IFERROR(FIND(\"　\",検索ワード),0)>0,FIND(\"　\",検索ワード),IF(IFERROR(FIND(\" \",検索ワード),0)>0,FIND(\" \",検索ワード),0))",
     "16,112": "IF(DI11>0,MID(検索ワード,DI11+1,1000),\"\")",
     "13,112": "IF(DI11>0,LEFT(検索ワード,DI11-1),IF(検索ワード<>\"\",検索ワード,\"\"))",
-    "22,126": "COUNTIF(DB11,1)",
+    "22,126": "COUNT(CR11)",
     "1,1": "検索リストページタイトル",
-    "25,126": "COUNT(CR11)"
+    "19,126": "COUNTIF(DB11,1)",
+    "25,126": "DW23-DW20",
+    "16,133": "IF(DW23=0,0,ED14)"
   },
   "AttachInfos": {
     "1,1": {
@@ -890,7 +894,7 @@
             "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
             "Formula": {
               "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-              "SerializeProperty": "=証明書納品待ちリスト!抽出カウント-証明書納品待ちリスト!選択カウント=0"
+              "SerializeProperty": "=証明書納品待ちリスト!$DW$26=0"
             },
             "StyleInfo": {
               "Underline": null,
@@ -939,7 +943,7 @@
             "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
             "Formula": {
               "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-              "SerializeProperty": "=証明書納品待ちリスト!選択カウント=0"
+              "SerializeProperty": "=証明書納品待ちリスト!$DW$20=0"
             },
             "StyleInfo": {
               "Underline": null,
@@ -1025,7 +1029,7 @@
                 }
               }
             },
-            "ID": "08c865724a384b5eb38368e0c40ef6c7"
+            "ID": "aa664f64d7a448908ed1f75124764399"
           },
           {
             "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
@@ -1048,10 +1052,10 @@
                     "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
                     "ParameterName": "選択可能アクション",
                     "ParameterValue": "1",
-                    "ID": "dbb1e080ac7c4ae8b24c241baaa5bd52"
+                    "ID": "0fcd535a1bfb48288ca6c043a0344984"
                   }
                 ],
-                "ID": "3e31f5a4-98de-4ad3-81a0-64dec59bf5b0"
+                "ID": "cda76757-4a10-4501-b47f-58f35e9dcc2a"
               },
               {
                 "Condition": {
@@ -1071,10 +1075,10 @@
                     "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
                     "ParameterName": "選択可能アクション",
                     "ParameterValue": "2,3",
-                    "ID": "91c72fddbc0e4d2a9e0b4924eb7c2b3e"
+                    "ID": "2465ab97cd0d4bdca8eb5b1963837fdb"
                   }
                 ],
-                "ID": "1782c387-f265-495e-b1b6-7eba539665de"
+                "ID": "f61ac575-2d09-4b93-b940-ab722a4ee04f"
               },
               {
                 "Condition": {
@@ -1094,10 +1098,10 @@
                     "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
                     "ParameterName": "選択可能アクション",
                     "ParameterValue": "3,9",
-                    "ID": "9541530e819c4f59b63be3fd9797db15"
+                    "ID": "d1fd2b6ed2e940f89971ca9a3eb7c841"
                   }
                 ],
-                "ID": "13e7384f-672a-44c0-99e4-9de663004b9f"
+                "ID": "0542b3cc-902d-4c81-a418-ae66d7d282df"
               },
               {
                 "Condition": {
@@ -1117,10 +1121,10 @@
                     "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
                     "ParameterName": "選択可能アクション",
                     "ParameterValue": "4,5",
-                    "ID": "f102733de58c498587423c32ebb9080d"
+                    "ID": "b2e0edc056424721ad3a7e960e636c00"
                   }
                 ],
-                "ID": "e2255c2e-7747-4ea5-931b-5f8ce60f2a38"
+                "ID": "76ce2ded-d0fc-4648-a587-5e2ac3e6e4c0"
               },
               {
                 "Condition": {
@@ -1140,10 +1144,10 @@
                     "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
                     "ParameterName": "選択可能アクション",
                     "ParameterValue": "6",
-                    "ID": "0548e6a6ed5844aca9e1d22ecb820ba4"
+                    "ID": "811fa5a728a84904937dfbdf4134a99d"
                   }
                 ],
-                "ID": "1a72b261-7cf7-449c-8b39-906197b2b205"
+                "ID": "0ef3b593-9370-4045-9286-46a0ebe75d96"
               },
               {
                 "Condition": {
@@ -1163,10 +1167,10 @@
                     "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
                     "ParameterName": "選択可能アクション",
                     "ParameterValue": "7",
-                    "ID": "9a3b3e5e0cee40a7988044275227b2de"
+                    "ID": "fec5da1681244036bab26265a9bb0520"
                   }
                 ],
-                "ID": "ffade9fe-9f0c-41fe-890c-8b9c67c92b1f"
+                "ID": "ebe79b8f-f5a8-4e03-87b0-c077d7b7553b"
               },
               {
                 "Condition": {
@@ -1186,10 +1190,10 @@
                     "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
                     "ParameterName": "選択可能アクション",
                     "ParameterValue": "8",
-                    "ID": "70d5be381c2c46b3b32951d949565610"
+                    "ID": "beda6976c00f4380a18ca4e574a58733"
                   }
                 ],
-                "ID": "4f993668-b762-418c-bca5-750463cf3110"
+                "ID": "a9d0e4a5-2bb8-4a30-a91a-4a7d59e279b7"
               }
             ]
           },
@@ -1222,7 +1226,7 @@
             ]
           }
         ],
-        "Text": "付保アクション選択",
+        "Text": "アクション選択",
         "TemplateKey": "角緑",
         "Icon": {
           "Name": "Application/144_check_1.svg",
@@ -1237,7 +1241,7 @@
             "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
             "Formula": {
               "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-              "SerializeProperty": "=証明書納品待ちリスト!選択カウント=0"
+              "SerializeProperty": "=証明書納品待ちリスト!$DW$20=0"
             },
             "StyleInfo": {
               "Underline": null,
@@ -1297,6 +1301,13 @@
                   "SerializeProperty": "=証明書納品待ちリスト!4:5"
                 },
                 "Value": false
+              },
+              {
+                "Location": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=証明書納品待ちリスト!32:32"
+                },
+                "Value": false
               }
             ]
           }
@@ -1329,6 +1340,13 @@
                 "Location": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
                   "SerializeProperty": "=証明書納品待ちリスト!4:5"
+                },
+                "Value": true
+              },
+              {
+                "Location": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=証明書納品待ちリスト!32:32"
                 },
                 "Value": true
               }
@@ -1405,7 +1423,7 @@
         "RowIndex": 9,
         "ColumnIndex": 1,
         "ColumnCount": 109,
-        "RowCount": 21,
+        "RowCount": 23,
         "FrozenIndex": 2,
         "ColumnOperation": 2,
         "ShowEditStatusIcon": true,
@@ -1671,7 +1689,7 @@
         "TopCondition": null,
         "CommitType": 1,
         "DoNotLoadDataWhenLoadPage": true,
-        "ListViewStyleName": "カスタムスタイル2"
+        "ListViewStyleName": "_RS_Medium1"
       }
     },
     "10,1": {
@@ -1684,7 +1702,7 @@
               {
                 "TargetCells": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=証明書納品待ちリスト!$DW$20"
+                  "SerializeProperty": "=証明書納品待ちリスト!$DW$17"
                 },
                 "Value": "1"
               }
@@ -1972,7 +1990,7 @@
                     "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
                     "ParameterName": "送信アクション",
                     "ParameterValue": "2",
-                    "ID": "c2ee6542578b4642810b749603e95b83"
+                    "ID": "50103aba722c4f468f8aef59fcfb83b0"
                   },
                   {
                     "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
@@ -1998,7 +2016,7 @@
                         "Value": "付保証明書納品ボタン"
                       }
                     },
-                    "ID": "ee4ed2c1c1c243df983a458aa0f99b78"
+                    "ID": "e3205ce64baf42519d859f2db8b42c60"
                   },
                   {
                     "$type": "Forguncy.Model.ShareCommand, ServerDesignerCommon",
@@ -2202,7 +2220,7 @@
                     "ReturnPropertiesTo": []
                   }
                 ],
-                "ID": "5ae8c26b-67a5-4653-86ab-209282f1ded8"
+                "ID": "0363a788-1999-46a7-86a5-9785320265a0"
               },
               {
                 "CommandList": [
@@ -2217,7 +2235,7 @@
                     "$type": "LoadingCommand.EndLoadingCommand, LoadingCommand"
                   }
                 ],
-                "ID": "bdb5ab9a-21c5-49fb-ae2c-e9fd5be7a57a"
+                "ID": "0b8f7e17-7e06-4f09-9aca-6b19e7f12771"
               }
             ]
           }
@@ -2256,7 +2274,7 @@
               {
                 "TargetCells": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=証明書納品待ちリスト!$DW$20"
+                  "SerializeProperty": "=証明書納品待ちリスト!$DW$17"
                 },
                 "Value": "1"
               }
@@ -2302,7 +2320,7 @@
               {
                 "TargetCells": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=証明書納品待ちリスト!$DW$20"
+                  "SerializeProperty": "=証明書納品待ちリスト!$DW$17"
                 },
                 "Value": "1"
               }
@@ -2343,7 +2361,7 @@
               {
                 "TargetCells": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=証明書納品待ちリスト!$DW$20"
+                  "SerializeProperty": "=証明書納品待ちリスト!$DW$17"
                 },
                 "Value": "1"
               }
@@ -2385,7 +2403,7 @@
               {
                 "TargetCells": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=証明書納品待ちリスト!$DW$20"
+                  "SerializeProperty": "=証明書納品待ちリスト!$DW$17"
                 },
                 "Value": "1"
               }
@@ -2431,7 +2449,7 @@
               {
                 "TargetCells": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=証明書納品待ちリスト!$DW$20"
+                  "SerializeProperty": "=証明書納品待ちリスト!$DW$17"
                 },
                 "Value": "1"
               }
@@ -2539,7 +2557,7 @@
               {
                 "TargetCells": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=証明書納品待ちリスト!$DW$20"
+                  "SerializeProperty": "=証明書納品待ちリスト!$DW$17"
                 },
                 "Value": "1"
               }
@@ -2709,7 +2727,7 @@
         "CellDefaultValue": "0"
       }
     },
-    "13,119": {
+    "10,126": {
       "CellType": {
         "$type": "Forguncy.TextCellType, ServerDesignerCommon",
         "SavedValidators": [
@@ -2724,173 +2742,7 @@
               {
                 "TargetCells": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=証明書納品待ちリスト!DP14"
-                },
-                "Value": "0"
-              }
-            ],
-            "Comments": "フラグリセット"
-          },
-          {
-            "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
-            "ConditionAndCommandPairList": [
-              {
-                "ConfirmDialogSettings": {
-                  "Title": "確認",
-                  "FormulaText": {
-                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                    "SerializeProperty": "=\"「\"&TEXT(証明書納品待ちリスト!DW17,\"yyyy/mm/dd\")&\"」付で証明書納品済みに更新します\"&CHAR(10)&\"よろしいですか?\""
-                  },
-                  "YesButtonText": "はい",
-                  "NoButtonText": "いいえ",
-                  "ConfirmIcon": 1
-                },
-                "CommandList": [
-                  {
-                    "$type": "LoadingCommand.StartLoadingCommand, LoadingCommand",
-                    "LoadingText": "お待ちください",
-                    "LoadingTextColor": "Background 1 0"
-                  },
-                  {
-                    "$type": "Forguncy.Model.RequestServerCommand, ServerDesignerCommon",
-                    "ServerCommandName": "証明書納品一括更新",
-                    "Parameters": [
-                      {
-                        "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
-                        "Value": {
-                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                          "SerializeProperty": "=証明書納品待ちリスト!DW17"
-                        },
-                        "ParamName": "P_証明書納品日"
-                      },
-                      {
-                        "$type": "Forguncy.Model.RequestServerCommandListviewParam, ServerDesignerCommon",
-                        "ListviewName": "証明書納品ビュー",
-                        "Columns": [
-                          {
-                            "ArrayItemName": "P_付保ID",
-                            "Column": "付保ID"
-                          },
-                          {
-                            "ArrayItemName": "P_選択フラグ",
-                            "Column": "選択フラグ"
-                          }
-                        ],
-                        "ParamName": "P_証明書納品リスト"
-                      },
-                      {
-                        "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
-                        "Value": "1",
-                        "ParamName": "P_証明書納品フラグ"
-                      },
-                      {
-                        "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
-                        "ParamName": "P_証明書納品解除フラグ"
-                      }
-                    ],
-                    "ResultErrorCodeTo": {
-                      "SerializeProperty": "リターンコード"
-                    },
-                    "ResultMessageTo": {
-                      "SerializeProperty": "リターンメッセージ"
-                    },
-                    "RefreshAfterFinish": true,
-                    "CheckDataValidation": false
-                  },
-                  {
-                    "$type": "LoadingCommand.EndLoadingCommand, LoadingCommand"
-                  },
-                  {
-                    "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
-                    "ConditionAndCommandPairList": [
-                      {
-                        "Condition": {
-                          "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
-                          "param": {
-                            "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
-                            "cellLocations": [
-                              {
-                                "SerializeProperty": "=証明書納品待ちリスト!リターンコード"
-                              }
-                            ]
-                          },
-                          "value": "0"
-                        },
-                        "CommandList": [
-                          {
-                            "$type": "Forguncy.Model.OperateCellTypeCommand, ServerDesignerCommon",
-                            "TargetPageElement": {
-                              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                              "SerializeProperty": "=証明書納品待ちリスト!付保件数取得ボタン"
-                            },
-                            "TargetType": "Forguncy.ButtonCellType, ServerDesignerCommon, Version=8.0.42.0, Culture=neutral, PublicKeyToken=967100671921c115",
-                            "MethodName": "ExecuteCommand",
-                            "ParameterValues": {},
-                            "RetrunParamNames": {}
-                          },
-                          {
-                            "$type": "Forguncy.Model.ShareCommand, ServerDesignerCommon",
-                            "ShareCommandContainerRefer": {
-                              "ShareCommandContainerID": "1dd6dbdf-73bc-4267-a1c4-2a40740aee23"
-                            },
-                            "Params": [
-                              {
-                                "ParamReferObject": {
-                                  "ParamID": "e26e6dd4-3677-444b-b99b-52b41ae2be86",
-                                  "ShareCommandContainerReferObject": {
-                                    "ShareCommandContainerID": "1dd6dbdf-73bc-4267-a1c4-2a40740aee23"
-                                  }
-                                },
-                                "Value": {
-                                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                                  "SerializeProperty": "=証明書納品待ちリスト!DI23"
-                                }
-                              }
-                            ],
-                            "ReturnPropertiesTo": []
-                          }
-                        ],
-                        "ID": "e9c4b8bf-d839-4544-a355-4ee939570f00"
-                      },
-                      {
-                        "CommandList": [
-                          {
-                            "$type": "Forguncy.Model.ShowMessageCommand, ServerDesignerCommon",
-                            "MessageFormula": {
-                              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                              "SerializeProperty": "=証明書納品待ちリスト!リターンメッセージ"
-                            }
-                          }
-                        ],
-                        "ID": "36a93e53-7f82-473b-bb90-05fdadf549d0"
-                      }
-                    ]
-                  }
-                ],
-                "ID": "a2c917db-c951-4e3b-a1ed-83333536054f"
-              }
-            ]
-          }
-        ],
-        "CellDefaultValue": "0"
-      }
-    },
-    "13,126": {
-      "CellType": {
-        "$type": "Forguncy.TextCellType, ServerDesignerCommon",
-        "SavedValidators": [
-          {
-            "$type": "Forguncy.CellTypes.Models.UniqueValidadator, ServerDesignerCommon"
-          }
-        ],
-        "CommandList": [
-          {
-            "$type": "Forguncy.Model.SetCellPropertyCommand, ServerDesignerCommon",
-            "PropertyItemsList": [
-              {
-                "TargetCells": {
-                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=証明書納品待ちリスト!DW14"
+                  "SerializeProperty": "=証明書納品待ちリスト!DW11"
                 },
                 "Value": "0"
               }
@@ -3009,7 +2861,7 @@
                             "ReturnPropertiesTo": []
                           }
                         ],
-                        "ID": "095db6a1-0eca-4a23-abab-9cbd48e4ed94"
+                        "ID": "a84ffeed-d84c-4b69-a1c4-d7d590c7df73"
                       },
                       {
                         "CommandList": [
@@ -3021,12 +2873,12 @@
                             }
                           }
                         ],
-                        "ID": "9ee16211-7d01-440a-9a43-80f3b6f681d8"
+                        "ID": "f3f66ae7-20b8-4ba1-a346-e605dfd5995b"
                       }
                     ]
                   }
                 ],
-                "ID": "660e56f8-f612-4228-b538-09ceb3fbc2c6"
+                "ID": "930cadbe-34e2-495d-b3f7-5731727a8b11"
               }
             ]
           }
@@ -3034,7 +2886,7 @@
         "CellDefaultValue": "0"
       }
     },
-    "13,133": {
+    "10,133": {
       "CellType": {
         "$type": "Forguncy.ButtonCellType, ServerDesignerCommon",
         "CommandList": [
@@ -3072,7 +2924,7 @@
                 }
               }
             },
-            "ID": "6132f42ff90e41aa816dc7ec82a0b6a2"
+            "ID": "cdbee9172b4c4800a970f777499029e4"
           },
           {
             "$type": "Forguncy.Model.SetCellPropertyCommand, ServerDesignerCommon",
@@ -3080,7 +2932,7 @@
               {
                 "TargetCells": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=証明書納品待ちリスト!該当カウント"
+                  "SerializeProperty": "=証明書納品待ちリスト!ED14"
                 },
                 "Value": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
@@ -3091,6 +2943,172 @@
           }
         ],
         "TemplateKey": "_RS_Normal_Style2"
+      }
+    },
+    "13,119": {
+      "CellType": {
+        "$type": "Forguncy.TextCellType, ServerDesignerCommon",
+        "SavedValidators": [
+          {
+            "$type": "Forguncy.CellTypes.Models.UniqueValidadator, ServerDesignerCommon"
+          }
+        ],
+        "CommandList": [
+          {
+            "$type": "Forguncy.Model.SetCellPropertyCommand, ServerDesignerCommon",
+            "PropertyItemsList": [
+              {
+                "TargetCells": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=証明書納品待ちリスト!DP14"
+                },
+                "Value": "0"
+              }
+            ],
+            "Comments": "フラグリセット"
+          },
+          {
+            "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+            "ConditionAndCommandPairList": [
+              {
+                "ConfirmDialogSettings": {
+                  "Title": "確認",
+                  "FormulaText": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=\"「\"&TEXT(証明書納品待ちリスト!DW14,\"yyyy/mm/dd\")&\"」付で証明書納品済みに更新します\"&CHAR(10)&\"よろしいですか?\""
+                  },
+                  "YesButtonText": "はい",
+                  "NoButtonText": "いいえ",
+                  "ConfirmIcon": 1
+                },
+                "CommandList": [
+                  {
+                    "$type": "LoadingCommand.StartLoadingCommand, LoadingCommand",
+                    "LoadingText": "お待ちください",
+                    "LoadingTextColor": "Background 1 0"
+                  },
+                  {
+                    "$type": "Forguncy.Model.RequestServerCommand, ServerDesignerCommon",
+                    "ServerCommandName": "証明書納品一括更新",
+                    "Parameters": [
+                      {
+                        "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                        "Value": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=証明書納品待ちリスト!DW14"
+                        },
+                        "ParamName": "P_証明書納品日"
+                      },
+                      {
+                        "$type": "Forguncy.Model.RequestServerCommandListviewParam, ServerDesignerCommon",
+                        "ListviewName": "証明書納品ビュー",
+                        "Columns": [
+                          {
+                            "ArrayItemName": "P_付保ID",
+                            "Column": "付保ID"
+                          },
+                          {
+                            "ArrayItemName": "P_選択フラグ",
+                            "Column": "選択フラグ"
+                          }
+                        ],
+                        "ParamName": "P_証明書納品リスト"
+                      },
+                      {
+                        "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                        "Value": "1",
+                        "ParamName": "P_証明書納品フラグ"
+                      },
+                      {
+                        "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                        "ParamName": "P_証明書納品解除フラグ"
+                      }
+                    ],
+                    "ResultErrorCodeTo": {
+                      "SerializeProperty": "リターンコード"
+                    },
+                    "ResultMessageTo": {
+                      "SerializeProperty": "リターンメッセージ"
+                    },
+                    "RefreshAfterFinish": true,
+                    "CheckDataValidation": false
+                  },
+                  {
+                    "$type": "LoadingCommand.EndLoadingCommand, LoadingCommand"
+                  },
+                  {
+                    "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+                    "ConditionAndCommandPairList": [
+                      {
+                        "Condition": {
+                          "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                          "param": {
+                            "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+                            "cellLocations": [
+                              {
+                                "SerializeProperty": "=証明書納品待ちリスト!リターンコード"
+                              }
+                            ]
+                          },
+                          "value": "0"
+                        },
+                        "CommandList": [
+                          {
+                            "$type": "Forguncy.Model.OperateCellTypeCommand, ServerDesignerCommon",
+                            "TargetPageElement": {
+                              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                              "SerializeProperty": "=証明書納品待ちリスト!付保件数取得ボタン"
+                            },
+                            "TargetType": "Forguncy.ButtonCellType, ServerDesignerCommon, Version=8.0.42.0, Culture=neutral, PublicKeyToken=967100671921c115",
+                            "MethodName": "ExecuteCommand",
+                            "ParameterValues": {},
+                            "RetrunParamNames": {}
+                          },
+                          {
+                            "$type": "Forguncy.Model.ShareCommand, ServerDesignerCommon",
+                            "ShareCommandContainerRefer": {
+                              "ShareCommandContainerID": "1dd6dbdf-73bc-4267-a1c4-2a40740aee23"
+                            },
+                            "Params": [
+                              {
+                                "ParamReferObject": {
+                                  "ParamID": "e26e6dd4-3677-444b-b99b-52b41ae2be86",
+                                  "ShareCommandContainerReferObject": {
+                                    "ShareCommandContainerID": "1dd6dbdf-73bc-4267-a1c4-2a40740aee23"
+                                  }
+                                },
+                                "Value": {
+                                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                  "SerializeProperty": "=証明書納品待ちリスト!DI23"
+                                }
+                              }
+                            ],
+                            "ReturnPropertiesTo": []
+                          }
+                        ],
+                        "ID": "3d784e34-dedc-4aba-a43e-20e250a9bc66"
+                      },
+                      {
+                        "CommandList": [
+                          {
+                            "$type": "Forguncy.Model.ShowMessageCommand, ServerDesignerCommon",
+                            "MessageFormula": {
+                              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                              "SerializeProperty": "=証明書納品待ちリスト!リターンメッセージ"
+                            }
+                          }
+                        ],
+                        "ID": "9e7c3124-41c0-42ab-b4e9-ab8ecb1bdb61"
+                      }
+                    ]
+                  }
+                ],
+                "ID": "e1f76055-2160-4afa-8895-c5e4881445c6"
+              }
+            ]
+          }
+        ],
+        "CellDefaultValue": "0"
       }
     },
     "16,119": {
@@ -3137,7 +3155,7 @@
                       {
                         "TargetCells": {
                           "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                          "SerializeProperty": "=証明書納品待ちリスト!ED20"
+                          "SerializeProperty": "=証明書納品待ちリスト!DP23"
                         },
                         "Value": "1"
                       }
@@ -3145,7 +3163,7 @@
                   }
                 ],
                 "Comments": "証明書申請待ちに戻す",
-                "ID": "b08fcc30-0d32-4ee1-b3ad-ef6480e30834"
+                "ID": "36233425-fac8-475c-a94c-d36fb4eecdbe"
               },
               {
                 "Condition": {
@@ -3180,7 +3198,7 @@
                       {
                         "Source": {
                           "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                          "SerializeProperty": "=証明書納品待ちリスト!DW17"
+                          "SerializeProperty": "=証明書納品待ちリスト!DW14"
                         },
                         "TargetCell": {
                           "SerializeProperty": "=日付選択!選択日付"
@@ -3204,7 +3222,7 @@
                     ]
                   }
                 ],
-                "ID": "9f9c28a5-7913-4796-ab49-29629bde1d39"
+                "ID": "ab26f4c0-19c4-4e0d-895f-30eca8f41f55"
               },
               {
                 "Condition": {
@@ -3238,7 +3256,7 @@
                       {
                         "TargetCells": {
                           "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                          "SerializeProperty": "=証明書納品待ちリスト!DW14"
+                          "SerializeProperty": "=証明書納品待ちリスト!DW11"
                         },
                         "Value": "1"
                       }
@@ -3246,9 +3264,124 @@
                   }
                 ],
                 "Comments": "証明書納品取消の場合",
-                "ID": "9fabb63d-0770-46c0-9e67-cb97ac76cd4a"
+                "ID": "ac32fc1e-7bef-4e9e-a90e-d3677fdb5f73"
               }
             ]
+          }
+        ],
+        "CellDefaultValue": "0"
+      }
+    },
+    "16,126": {
+      "CellType": {
+        "$type": "Forguncy.TextCellType, ServerDesignerCommon",
+        "SavedValidators": [
+          {
+            "$type": "Forguncy.CellTypes.Models.UniqueValidadator, ServerDesignerCommon"
+          }
+        ],
+        "CommandList": [
+          {
+            "$type": "Forguncy.Model.UpdateListviewCommand, ServerDesignerCommon",
+            "UpdateType": 6,
+            "ListviewName": "証明書納品ビュー",
+            "UpdateListviewCommandRunTimeMethodSetting": {
+              "MethodName": "GetCurrentRowIndex",
+              "ParameterValues": {},
+              "RetrunParamNames": {
+                "RowIndex": {
+                  "SerializeProperty": "行番号"
+                }
+              }
+            }
+          },
+          {
+            "$type": "Forguncy.Model.UpdateListviewCommand, ServerDesignerCommon",
+            "UpdateType": 6,
+            "ListviewName": "証明書納品ビュー",
+            "UpdateListviewCommandRunTimeMethodSetting": {
+              "MethodName": "GetValue",
+              "ParameterValues": {
+                "rowIndex": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=証明書納品待ちリスト!行番号"
+                },
+                "columnIndexOrName": "選択フラグ"
+              },
+              "RetrunParamNames": {
+                "Value": {
+                  "SerializeProperty": "値"
+                }
+              }
+            }
+          },
+          {
+            "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+            "ConditionAndCommandPairList": [
+              {
+                "Condition": {
+                  "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                  "param": {
+                    "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+                    "cellLocations": [
+                      {
+                        "SerializeProperty": "=証明書納品待ちリスト!値"
+                      }
+                    ]
+                  },
+                  "value": "1"
+                },
+                "CommandList": [
+                  {
+                    "$type": "Forguncy.Model.UpdateListviewCommand, ServerDesignerCommon",
+                    "ListviewName": "証明書納品ビュー",
+                    "UpdateValues": [
+                      {
+                        "Column": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=証明書納品待ちリスト!DB11"
+                        },
+                        "Value": "0"
+                      }
+                    ],
+                    "UpdateRowType": 3
+                  }
+                ],
+                "ID": "2e8d6927-9209-4b0c-9473-8bfd8680bb7c"
+              },
+              {
+                "CommandList": [
+                  {
+                    "$type": "Forguncy.Model.UpdateListviewCommand, ServerDesignerCommon",
+                    "ListviewName": "証明書納品ビュー",
+                    "UpdateValues": [
+                      {
+                        "Column": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=証明書納品待ちリスト!DB11"
+                        },
+                        "Value": "1"
+                      }
+                    ],
+                    "UpdateRowType": 3
+                  }
+                ],
+                "ID": "7ab6411e-6915-45b1-b595-8132b608c327"
+              }
+            ]
+          },
+          {
+            "$type": "Forguncy.Model.SetCellPropertyCommand, ServerDesignerCommon",
+            "PropertyItemsList": [
+              {
+                "TargetCells": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=証明書納品待ちリスト!DW17"
+                },
+                "Value": "0"
+              }
+            ],
+            "Comments": "選択フラグリセット"
           }
         ],
         "CellDefaultValue": "0"
@@ -3355,7 +3488,7 @@
                     "ReturnPropertiesTo": []
                   }
                 ],
-                "ID": "5cc3438d-a238-4fc8-91d8-9cf233c02140"
+                "ID": "3ab51031-0a32-4bc6-92a9-19f8a1fccb84"
               },
               {
                 "CommandList": [
@@ -3367,7 +3500,7 @@
                     }
                   }
                 ],
-                "ID": "40c2ec08-c574-4f62-872c-1d38b15ed63e"
+                "ID": "82010e67-6cda-43e4-860b-4ce7f7ae287c"
               }
             ]
           }
@@ -3375,122 +3508,12 @@
         "CellDefaultValue": "0"
       }
     },
-    "19,126": {
-      "CellType": {
-        "$type": "Forguncy.TextCellType, ServerDesignerCommon",
-        "SavedValidators": [
-          {
-            "$type": "Forguncy.CellTypes.Models.UniqueValidadator, ServerDesignerCommon"
-          }
-        ],
-        "CommandList": [
-          {
-            "$type": "Forguncy.Model.UpdateListviewCommand, ServerDesignerCommon",
-            "UpdateType": 6,
-            "ListviewName": "証明書納品ビュー",
-            "UpdateListviewCommandRunTimeMethodSetting": {
-              "MethodName": "GetCurrentRowIndex",
-              "ParameterValues": {},
-              "RetrunParamNames": {
-                "RowIndex": {
-                  "SerializeProperty": "行番号"
-                }
-              }
-            }
-          },
-          {
-            "$type": "Forguncy.Model.UpdateListviewCommand, ServerDesignerCommon",
-            "UpdateType": 6,
-            "ListviewName": "証明書納品ビュー",
-            "UpdateListviewCommandRunTimeMethodSetting": {
-              "MethodName": "GetValue",
-              "ParameterValues": {
-                "rowIndex": {
-                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=証明書納品待ちリスト!行番号"
-                },
-                "columnIndexOrName": "選択フラグ"
-              },
-              "RetrunParamNames": {
-                "Value": {
-                  "SerializeProperty": "値"
-                }
-              }
-            }
-          },
-          {
-            "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
-            "ConditionAndCommandPairList": [
-              {
-                "Condition": {
-                  "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
-                  "param": {
-                    "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
-                    "cellLocations": [
-                      {
-                        "SerializeProperty": "=証明書納品待ちリスト!値"
-                      }
-                    ]
-                  },
-                  "value": "1"
-                },
-                "CommandList": [
-                  {
-                    "$type": "Forguncy.Model.UpdateListviewCommand, ServerDesignerCommon",
-                    "ListviewName": "証明書納品ビュー",
-                    "UpdateValues": [
-                      {
-                        "Column": {
-                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                          "SerializeProperty": "=証明書納品待ちリスト!DB11"
-                        },
-                        "Value": "0"
-                      }
-                    ],
-                    "UpdateRowType": 3
-                  }
-                ],
-                "ID": "7430e83b-81ea-4713-932a-501fbc730e69"
-              },
-              {
-                "CommandList": [
-                  {
-                    "$type": "Forguncy.Model.UpdateListviewCommand, ServerDesignerCommon",
-                    "ListviewName": "証明書納品ビュー",
-                    "UpdateValues": [
-                      {
-                        "Column": {
-                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                          "SerializeProperty": "=証明書納品待ちリスト!DB11"
-                        },
-                        "Value": "1"
-                      }
-                    ],
-                    "UpdateRowType": 3
-                  }
-                ],
-                "ID": "be8fae58-7d32-4e1d-bb90-c88790e8df82"
-              }
-            ]
-          },
-          {
-            "$type": "Forguncy.Model.SetCellPropertyCommand, ServerDesignerCommon",
-            "PropertyItemsList": [
-              {
-                "TargetCells": {
-                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=証明書納品待ちリスト!DW20"
-                },
-                "Value": "0"
-              }
-            ],
-            "Comments": "選択フラグリセット"
-          }
-        ],
-        "CellDefaultValue": "0"
+    "22,112": {
+      "CellComment": {
+        "Comments": "ページロード時にセット"
       }
     },
-    "19,133": {
+    "22,119": {
       "CellType": {
         "$type": "Forguncy.TextCellType, ServerDesignerCommon",
         "SavedValidators": [
@@ -3505,7 +3528,7 @@
               {
                 "TargetCells": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=証明書納品待ちリスト!ED20"
+                  "SerializeProperty": "=証明書納品待ちリスト!DP23"
                 },
                 "Value": "0"
               }
@@ -3628,7 +3651,7 @@
                             "ReturnPropertiesTo": []
                           }
                         ],
-                        "ID": "6f2674ad-8666-4360-bc61-0218aa61cf42"
+                        "ID": "ca284cea-1ea6-4d89-98dc-cf5ba5a9797a"
                       },
                       {
                         "CommandList": [
@@ -3640,12 +3663,12 @@
                             }
                           }
                         ],
-                        "ID": "03ed9045-55ac-4ade-b76f-aeea3383d127"
+                        "ID": "5e150505-575b-4448-8c4b-5268e47aa170"
                       }
                     ]
                   }
                 ],
-                "ID": "eab1fa87-d013-4734-b5a6-1d416ba51ded"
+                "ID": "fe87c3a4-a3f3-49be-b0ed-164939bc7e94"
               }
             ]
           }
@@ -3653,12 +3676,7 @@
         "CellDefaultValue": 0
       }
     },
-    "22,112": {
-      "CellComment": {
-        "Comments": "ページロード時にセット"
-      }
-    },
-    "30,46": {
+    "32,46": {
       "CellType": {
         "$type": "Forguncy.PageNavigateCellType, ServerDesignerCommon",
         "PageingListviewName": "証明書納品ビュー",
@@ -4186,14 +4204,14 @@
       "9,123": 6,
       "9,124": 6,
       "9,125": 6,
-      "9,126": 6,
+      "9,126": 8,
       "9,127": 6,
       "9,128": 6,
       "9,129": 6,
       "9,130": 6,
       "9,131": 6,
       "9,132": 6,
-      "9,133": 6,
+      "9,133": 8,
       "9,134": 6,
       "9,135": 6,
       "9,136": 6,
@@ -4321,7 +4339,7 @@
       "10,123": 6,
       "10,124": 6,
       "10,125": 6,
-      "10,126": 6,
+      "10,126": 23,
       "10,127": 6,
       "10,128": 6,
       "10,129": 6,
@@ -4726,14 +4744,14 @@
       "13,123": 6,
       "13,124": 6,
       "13,125": 6,
-      "13,126": 23,
+      "13,126": 22,
       "13,127": 6,
       "13,128": 6,
       "13,129": 6,
       "13,130": 6,
       "13,131": 6,
       "13,132": 6,
-      "13,133": 6,
+      "13,133": 22,
       "13,134": 6,
       "13,135": 6,
       "13,136": 6,
@@ -5131,7 +5149,7 @@
       "16,123": 6,
       "16,124": 6,
       "16,125": 6,
-      "16,126": 22,
+      "16,126": 23,
       "16,127": 6,
       "16,128": 6,
       "16,129": 6,
@@ -5405,9 +5423,6 @@
       "18,130": 6,
       "18,131": 6,
       "18,132": 6,
-      "18,133": 8,
-      "18,134": 6,
-      "18,135": 6,
       "18,136": 6,
       "18,137": 6,
       "18,138": 6,
@@ -5531,16 +5546,13 @@
       "19,123": 6,
       "19,124": 6,
       "19,125": 6,
-      "19,126": 23,
+      "19,126": 22,
       "19,127": 6,
       "19,128": 6,
       "19,129": 6,
       "19,130": 6,
       "19,131": 6,
       "19,132": 6,
-      "19,133": 23,
-      "19,134": 6,
-      "19,135": 6,
       "19,136": 6,
       "19,137": 6,
       "19,138": 6,
@@ -5788,6 +5800,9 @@
       "21,112": 8,
       "21,113": 6,
       "21,114": 6,
+      "21,119": 8,
+      "21,120": 6,
+      "21,121": 6,
       "21,122": 6,
       "21,123": 6,
       "21,124": 6,
@@ -5799,6 +5814,9 @@
       "21,130": 6,
       "21,131": 6,
       "21,132": 6,
+      "21,133": 8,
+      "21,134": 6,
+      "21,135": 6,
       "21,136": 6,
       "21,137": 6,
       "21,138": 6,
@@ -5917,6 +5935,9 @@
       "22,112": 22,
       "22,113": 6,
       "22,114": 6,
+      "22,119": 23,
+      "22,120": 6,
+      "22,121": 6,
       "22,122": 6,
       "22,123": 6,
       "22,124": 6,
@@ -5928,6 +5949,9 @@
       "22,130": 6,
       "22,131": 6,
       "22,132": 6,
+      "22,133": 26,
+      "22,134": 6,
+      "22,135": 6,
       "22,136": 6,
       "22,137": 6,
       "22,138": 6,
@@ -6050,16 +6074,6 @@
       "23,123": 6,
       "23,124": 6,
       "23,125": 6,
-      "23,126": 6,
-      "23,127": 6,
-      "23,128": 6,
-      "23,129": 6,
-      "23,130": 6,
-      "23,131": 6,
-      "23,132": 6,
-      "23,133": 6,
-      "23,134": 6,
-      "23,135": 6,
       "23,136": 6,
       "23,137": 6,
       "23,138": 6,
@@ -6182,13 +6196,6 @@
       "24,126": 8,
       "24,127": 6,
       "24,128": 6,
-      "24,129": 6,
-      "24,130": 6,
-      "24,131": 6,
-      "24,132": 6,
-      "24,133": 8,
-      "24,134": 6,
-      "24,135": 6,
       "24,136": 6,
       "24,137": 6,
       "24,138": 6,
@@ -6311,13 +6318,6 @@
       "25,126": 22,
       "25,127": 6,
       "25,128": 6,
-      "25,129": 6,
-      "25,130": 6,
-      "25,131": 6,
-      "25,132": 6,
-      "25,133": 26,
-      "25,134": 6,
-      "25,135": 6,
       "25,136": 6,
       "25,137": 6,
       "25,138": 6,
@@ -6433,245 +6433,245 @@
       "26,107": 24,
       "26,108": 24,
       "26,109": 24,
-      "29,1": 24,
-      "29,2": 24,
-      "29,3": 24,
-      "29,4": 24,
-      "29,5": 24,
-      "29,6": 24,
-      "29,7": 24,
-      "29,8": 24,
-      "29,9": 24,
-      "29,10": 24,
-      "29,11": 24,
-      "29,12": 24,
-      "29,13": 24,
-      "29,14": 24,
-      "29,15": 24,
-      "29,16": 24,
-      "29,17": 24,
-      "29,18": 24,
-      "29,19": 24,
-      "29,20": 24,
-      "29,21": 24,
-      "29,22": 24,
-      "29,23": 24,
-      "29,24": 24,
-      "29,25": 24,
-      "29,26": 24,
-      "29,27": 24,
-      "29,28": 24,
-      "29,29": 24,
-      "29,30": 24,
-      "29,31": 24,
-      "29,32": 24,
-      "29,33": 24,
-      "29,34": 24,
-      "29,35": 24,
-      "29,36": 24,
-      "29,37": 24,
-      "29,38": 24,
-      "29,39": 24,
-      "29,40": 24,
-      "29,41": 24,
-      "29,42": 24,
-      "29,43": 24,
-      "29,44": 24,
-      "29,45": 24,
-      "29,46": 24,
-      "29,47": 24,
-      "29,48": 24,
-      "29,49": 24,
-      "29,50": 24,
-      "29,51": 24,
-      "29,52": 24,
-      "29,53": 24,
-      "29,54": 24,
-      "29,55": 24,
-      "29,56": 24,
-      "29,57": 24,
-      "29,58": 24,
-      "29,59": 24,
-      "29,60": 24,
-      "29,61": 24,
-      "29,62": 24,
-      "29,63": 24,
-      "29,64": 24,
-      "29,65": 24,
-      "29,66": 24,
-      "29,67": 24,
-      "29,68": 24,
-      "29,69": 24,
-      "29,70": 24,
-      "29,71": 24,
-      "29,72": 24,
-      "29,73": 24,
-      "29,74": 24,
-      "29,75": 24,
-      "29,76": 24,
-      "29,77": 24,
-      "29,78": 24,
-      "29,79": 24,
-      "29,80": 24,
-      "29,81": 24,
-      "29,82": 24,
-      "29,83": 24,
-      "29,84": 24,
-      "29,85": 24,
-      "29,86": 24,
-      "29,87": 24,
-      "29,88": 24,
-      "29,89": 24,
-      "29,90": 24,
-      "29,91": 24,
-      "29,92": 24,
-      "29,93": 24,
-      "29,94": 24,
-      "29,95": 24,
-      "29,96": 24,
-      "29,97": 24,
-      "29,98": 24,
-      "29,99": 24,
-      "29,100": 24,
-      "29,101": 24,
-      "29,102": 24,
-      "29,103": 24,
-      "29,104": 24,
-      "29,105": 24,
-      "29,106": 24,
-      "29,107": 24,
-      "29,108": 24,
-      "29,109": 24,
-      "30,1": 27,
-      "30,2": 28,
-      "30,3": 28,
-      "30,4": 28,
-      "30,5": 28,
-      "30,6": 28,
-      "30,7": 28,
-      "30,8": 28,
-      "30,9": 28,
-      "30,10": 28,
-      "30,11": 28,
-      "30,12": 28,
-      "30,13": 28,
-      "30,14": 28,
-      "30,15": 28,
-      "30,16": 28,
-      "30,17": 28,
-      "30,18": 28,
-      "30,19": 28,
-      "30,20": 28,
-      "30,21": 28,
-      "30,22": 27,
-      "30,23": 27,
-      "30,24": 28,
-      "30,25": 28,
-      "30,26": 28,
-      "30,27": 28,
-      "30,28": 28,
-      "30,29": 28,
-      "30,30": 28,
-      "30,31": 28,
-      "30,32": 28,
-      "30,33": 28,
-      "30,34": 28,
-      "30,35": 28,
-      "30,36": 28,
-      "30,37": 28,
-      "30,38": 28,
-      "30,39": 28,
-      "30,40": 28,
-      "30,41": 28,
-      "30,42": 28,
-      "30,43": 28,
-      "30,44": 28,
-      "30,45": 28,
-      "30,46": 29,
-      "30,47": 28,
-      "30,48": 28,
-      "30,49": 28,
-      "30,50": 28,
-      "30,51": 28,
-      "30,52": 28,
-      "30,53": 28,
-      "30,54": 28,
-      "30,55": 28,
-      "30,56": 28,
-      "30,57": 28,
-      "30,58": 28,
-      "30,59": 28,
-      "30,60": 28,
-      "30,61": 28,
-      "30,62": 29,
-      "30,63": 28,
-      "30,64": 29,
-      "30,65": 29,
-      "30,66": 28,
-      "30,67": 28,
-      "30,68": 28,
-      "30,69": 28,
-      "30,70": 28,
-      "30,71": 28,
-      "30,72": 28,
-      "30,73": 28,
-      "30,74": 28,
-      "30,75": 28,
-      "30,76": 28,
-      "30,77": 28,
-      "30,78": 28,
-      "30,79": 28,
-      "30,80": 28,
-      "30,81": 28,
-      "30,82": 28,
-      "30,83": 28,
-      "30,84": 28,
-      "30,85": 28,
-      "30,86": 28,
-      "30,87": 28,
-      "30,88": 28,
-      "30,89": 28,
-      "30,90": 28,
-      "30,91": 28,
-      "30,92": 28,
-      "30,93": 28,
-      "30,94": 28,
-      "30,95": 28,
-      "30,96": 28,
-      "30,97": 28,
-      "30,98": 28,
-      "30,99": 28,
-      "30,100": 28,
-      "30,101": 28,
-      "30,102": 28,
-      "30,103": 28,
-      "30,104": 28,
-      "30,105": 28,
-      "30,106": 28,
-      "30,107": 28,
-      "30,108": 28,
-      "30,109": 28,
-      "30,110": 30,
-      "30,114": 30,
-      "30,115": 30,
-      "30,116": 30,
-      "30,117": 30,
-      "30,118": 30,
-      "30,119": 30,
-      "30,120": 30,
-      "30,121": 30,
-      "30,122": 30,
-      "30,123": 30,
-      "30,124": 30,
-      "30,125": 30,
-      "30,126": 30,
-      "30,127": 30,
-      "30,128": 30,
-      "30,129": 30,
-      "30,130": 30,
-      "30,131": 30,
-      "30,132": 30,
-      "30,133": 30
+      "31,1": 24,
+      "31,2": 24,
+      "31,3": 24,
+      "31,4": 24,
+      "31,5": 24,
+      "31,6": 24,
+      "31,7": 24,
+      "31,8": 24,
+      "31,9": 24,
+      "31,10": 24,
+      "31,11": 24,
+      "31,12": 24,
+      "31,13": 24,
+      "31,14": 24,
+      "31,15": 24,
+      "31,16": 24,
+      "31,17": 24,
+      "31,18": 24,
+      "31,19": 24,
+      "31,20": 24,
+      "31,21": 24,
+      "31,22": 24,
+      "31,23": 24,
+      "31,24": 24,
+      "31,25": 24,
+      "31,26": 24,
+      "31,27": 24,
+      "31,28": 24,
+      "31,29": 24,
+      "31,30": 24,
+      "31,31": 24,
+      "31,32": 24,
+      "31,33": 24,
+      "31,34": 24,
+      "31,35": 24,
+      "31,36": 24,
+      "31,37": 24,
+      "31,38": 24,
+      "31,39": 24,
+      "31,40": 24,
+      "31,41": 24,
+      "31,42": 24,
+      "31,43": 24,
+      "31,44": 24,
+      "31,45": 24,
+      "31,46": 24,
+      "31,47": 24,
+      "31,48": 24,
+      "31,49": 24,
+      "31,50": 24,
+      "31,51": 24,
+      "31,52": 24,
+      "31,53": 24,
+      "31,54": 24,
+      "31,55": 24,
+      "31,56": 24,
+      "31,57": 24,
+      "31,58": 24,
+      "31,59": 24,
+      "31,60": 24,
+      "31,61": 24,
+      "31,62": 24,
+      "31,63": 24,
+      "31,64": 24,
+      "31,65": 24,
+      "31,66": 24,
+      "31,67": 24,
+      "31,68": 24,
+      "31,69": 24,
+      "31,70": 24,
+      "31,71": 24,
+      "31,72": 24,
+      "31,73": 24,
+      "31,74": 24,
+      "31,75": 24,
+      "31,76": 24,
+      "31,77": 24,
+      "31,78": 24,
+      "31,79": 24,
+      "31,80": 24,
+      "31,81": 24,
+      "31,82": 24,
+      "31,83": 24,
+      "31,84": 24,
+      "31,85": 24,
+      "31,86": 24,
+      "31,87": 24,
+      "31,88": 24,
+      "31,89": 24,
+      "31,90": 24,
+      "31,91": 24,
+      "31,92": 24,
+      "31,93": 24,
+      "31,94": 24,
+      "31,95": 24,
+      "31,96": 24,
+      "31,97": 24,
+      "31,98": 24,
+      "31,99": 24,
+      "31,100": 24,
+      "31,101": 24,
+      "31,102": 24,
+      "31,103": 24,
+      "31,104": 24,
+      "31,105": 24,
+      "31,106": 24,
+      "31,107": 24,
+      "31,108": 24,
+      "31,109": 24,
+      "32,1": 27,
+      "32,2": 28,
+      "32,3": 28,
+      "32,4": 28,
+      "32,5": 28,
+      "32,6": 28,
+      "32,7": 28,
+      "32,8": 28,
+      "32,9": 28,
+      "32,10": 28,
+      "32,11": 28,
+      "32,12": 28,
+      "32,13": 28,
+      "32,14": 28,
+      "32,15": 28,
+      "32,16": 28,
+      "32,17": 28,
+      "32,18": 28,
+      "32,19": 28,
+      "32,20": 28,
+      "32,21": 28,
+      "32,22": 27,
+      "32,23": 27,
+      "32,24": 28,
+      "32,25": 28,
+      "32,26": 28,
+      "32,27": 28,
+      "32,28": 28,
+      "32,29": 28,
+      "32,30": 28,
+      "32,31": 28,
+      "32,32": 28,
+      "32,33": 28,
+      "32,34": 28,
+      "32,35": 28,
+      "32,36": 28,
+      "32,37": 28,
+      "32,38": 28,
+      "32,39": 28,
+      "32,40": 28,
+      "32,41": 28,
+      "32,42": 28,
+      "32,43": 28,
+      "32,44": 28,
+      "32,45": 28,
+      "32,46": 29,
+      "32,47": 28,
+      "32,48": 28,
+      "32,49": 28,
+      "32,50": 28,
+      "32,51": 28,
+      "32,52": 28,
+      "32,53": 28,
+      "32,54": 28,
+      "32,55": 28,
+      "32,56": 28,
+      "32,57": 28,
+      "32,58": 28,
+      "32,59": 28,
+      "32,60": 28,
+      "32,61": 28,
+      "32,62": 29,
+      "32,63": 28,
+      "32,64": 29,
+      "32,65": 29,
+      "32,66": 28,
+      "32,67": 28,
+      "32,68": 28,
+      "32,69": 28,
+      "32,70": 28,
+      "32,71": 28,
+      "32,72": 28,
+      "32,73": 28,
+      "32,74": 28,
+      "32,75": 28,
+      "32,76": 28,
+      "32,77": 28,
+      "32,78": 28,
+      "32,79": 28,
+      "32,80": 28,
+      "32,81": 28,
+      "32,82": 28,
+      "32,83": 28,
+      "32,84": 28,
+      "32,85": 28,
+      "32,86": 28,
+      "32,87": 28,
+      "32,88": 28,
+      "32,89": 28,
+      "32,90": 28,
+      "32,91": 28,
+      "32,92": 28,
+      "32,93": 28,
+      "32,94": 28,
+      "32,95": 28,
+      "32,96": 28,
+      "32,97": 28,
+      "32,98": 28,
+      "32,99": 28,
+      "32,100": 28,
+      "32,101": 28,
+      "32,102": 28,
+      "32,103": 28,
+      "32,104": 28,
+      "32,105": 28,
+      "32,106": 28,
+      "32,107": 28,
+      "32,108": 28,
+      "32,109": 28,
+      "32,110": 30,
+      "32,114": 30,
+      "32,115": 30,
+      "32,116": 30,
+      "32,117": 30,
+      "32,118": 30,
+      "32,119": 30,
+      "32,120": 30,
+      "32,121": 30,
+      "32,122": 30,
+      "32,123": 30,
+      "32,124": 30,
+      "32,125": 30,
+      "32,126": 30,
+      "32,127": 30,
+      "32,128": 30,
+      "32,129": 30,
+      "32,130": 30,
+      "32,131": 30,
+      "32,132": 30,
+      "32,133": 30
     },
     "ColStyles": {
       "1": 31,
@@ -6789,7 +6789,7 @@
     }
   },
   "Spans": [
-    "30,1,1,23",
+    "32,1,1,23",
     "10,1,1,2",
     "10,3,1,5",
     "10,8,1,3",
@@ -6797,23 +6797,23 @@
     "10,14,1,5",
     "10,19,1,5",
     "10,24,1,5",
-    "30,24,1,5",
+    "32,24,1,5",
     "10,29,1,17",
-    "30,29,1,17",
+    "32,29,1,17",
     "10,46,1,20",
-    "30,46,1,20",
+    "32,46,1,20",
     "10,80,1,5",
-    "30,80,1,5",
+    "32,80,1,5",
     "10,85,1,5",
-    "30,85,1,5",
+    "32,85,1,5",
     "10,66,1,14",
-    "30,66,1,14",
+    "32,66,1,14",
     "10,90,1,5",
-    "30,90,1,5",
+    "32,90,1,5",
     "10,95,1,5",
-    "30,95,1,5",
+    "32,95,1,5",
     "10,105,1,4",
-    "30,105,1,4",
+    "32,105,1,4",
     "1,11,1,14",
     "3,11,1,7",
     "5,11,1,7",
@@ -6821,16 +6821,9 @@
     "1,1,1,10",
     "7,16,1,8",
     "1,31,1,5",
-    "16,126,1,3",
-    "22,126,1,3",
-    "25,133,1,3",
-    "13,133,1,3",
-    "16,133,1,3",
     "13,119,1,3",
     "16,119,1,3",
-    "13,126,1,3",
     "10,119,1,3",
-    "19,133,1,3",
     "10,112,1,3",
     "13,112,1,3",
     "16,112,1,3",
@@ -6838,11 +6831,20 @@
     "22,112,1,3",
     "1,60,1,7",
     "1,51,1,8",
-    "25,126,1,3",
-    "19,126,1,3",
     "19,119,1,3",
-    "11,1,19,109",
     "10,100,1,5",
+    "13,126,1,3",
+    "19,126,1,3",
+    "22,133,1,3",
+    "10,133,1,3",
+    "13,133,1,3",
+    "10,126,1,3",
+    "22,126,1,3",
+    "16,126,1,3",
+    "22,119,1,3",
+    "16,133,1,3",
+    "25,126,1,3",
+    "11,1,21,109",
     "9,1,1,2",
     "9,3,1,5",
     "9,8,1,3",
@@ -6884,7 +6886,7 @@
           {
             "TargetCells": {
               "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-              "SerializeProperty": "=証明書納品待ちリスト!該当カウント"
+              "SerializeProperty": "=証明書納品待ちリスト!ED14"
             },
             "Value": {
               "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
@@ -6911,16 +6913,8 @@
   },
   "CustomNames": [
     {
-      "Name": "該当カウント",
-      "Formula": "証明書納品待ちリスト!$ED$17"
-    },
-    {
       "Name": "付保最新化フラグ",
       "Formula": "証明書納品待ちリスト!$DP$11"
-    },
-    {
-      "Name": "選択カウント",
-      "Formula": "証明書納品待ちリスト!$DW$23"
     },
     {
       "Name": "検索ワード1",
@@ -6931,16 +6925,12 @@
       "Formula": "証明書納品待ちリスト!$DI$17"
     },
     {
-      "Name": "抽出カウント",
-      "Formula": "証明書納品待ちリスト!$DW$26"
-    },
-    {
       "Name": "付保件数取得ボタン",
-      "Formula": "証明書納品待ちリスト!$ED$14"
+      "Formula": "証明書納品待ちリスト!$ED$11"
     },
     {
       "Name": "付保証明書ファイル属性ID",
-      "Formula": "証明書納品待ちリスト!$ED$26"
+      "Formula": "証明書納品待ちリスト!$ED$23"
     },
     {
       "Name": "付保アクション",
@@ -6955,4 +6945,4 @@
       "Formula": "証明書納品待ちリスト!$Q$8"
     }
   ]
-}//j98kbYMnKsS42UalwbkgI2ZCZ1pDqU8t9jFXZOueRzD27K6pSG1qy3XNuZcAjPqWzdSoDDGPTzjRlzR1hgj9DADE45uFCxIZwOAAY4I36oAycWToMRzjCzGVvQc/qvWO8Ic/SwZ8JzhESpjTd/+755cuS/8JxYCPg1fv2hhAJqvyofAfy4YvUbalzpr8Am9afbIj9NcKrdnOPbGOwbC0C8v0tR6HsUUpawooBlFySBexWjVoZmugRJmWF1S6qWBWUQTQz+7MyLUczaYOWisw+VJCMOUVSjikAfk21/ozhNHA9FeDI1r1tvRRQHjYFOIgMu/il+7ksoJqe9qQceAEZ7rkOT5KATK4RqFPFgLT4wk6QoC9MvIbLrp9XRo7ICSuhVXA3q+5oGsXHijn7dJMRr4gifPa3Jq3YLew1uf4j0Yq9HnDjXtWfDD75R820RwCkvw2SZcPd7AAYuDvoO9MhoY4+el8onNrSfFe6SHnPcOaHVzpT2cJRHKboRg0thiiLhL3+mf4l/S7Qg5r0j0v0abKHys55a0QgPCn1bwvSYBylXHXjRDUVgMpQ25zY8b77AHZiO9XG+9J6d4sLNDmF7IytBhs73jXeLMdw1RsA98g5wu2bQAt2SRlork8TMKjjnqtm59hCyLXOfALfyW/glK0f83YKPCn3i0wOqLmMBgTaTKjRk+GRx9fIz8bgWQNcVtnmrizjTrRqO3lKRKjfg+QuuDjfjmcnYAxy3Ubq44ewe4rzOhBNYkcZcMNB7XEC65pQ5WDHMs6gxiPATqapkmzjj4itnz2XKts6gLB/kwMCkRcVGMX1j7dS2VQ+0wi6p2WV92Itx7vLz5u6HzF2fqEF+FbmRa+couyVLDv/2wZTh3p2tS8k3Cl/4S04vhl0rJQk1RxYH+TZ1w2WE9z9Q==|920
+}//3RLxF1I14zHDskd1JAmJPUreq+nzPW6Pv7mCZmMvrBk2+JzAa+GSfA4Y6JTohkxBiurOMwNwr3FqNJYj5tptUZJLZUFSalwL4tV4Lkxziwr+4/ZLLW71PvySO60Yhg6bxsybFCY44k1zU+Luzm1DuKX7oj8jnOJewk+POw9PJJv2/wPveKikVCTCxHs0VgNyUw5h0lLC6odRzt4LTn2fT9Kh1AHNEUo8u+8EeGhii2qk+INK6tyxaYgtFHFxSOZqXj9azXYK+nBP2JUK6VNf/eZsaekcQlzqHKDDPQn1mUVHyvYq7ZFnqjY5Lc6YK8dxvmyg7NccAAcVWQ1ihbOmk3qAmbscHdAmUhk38HnDCrF3QRkqXXpiqm/3MbGh3nIZDI1SX7PL4mGj2Uk6DbFgL5FDWKMFlp9R8qpyu3c8D/7Qf5RdRVYD4XyYXmi5ErK/oqX1uLepMQtXyAoZGRiJmk5LSa9QyMdNvgTP2qC4LHdaqKQ/qkCVIzq538FGEVKozp92FNLgP8I0Qij7cqctmC8AOJcdTNmempj7BqUO2nDRiFegwwDQIg0K+QNkHRErHXmqk9HRAeEGGVQ1ZT6xl5NzoQRaUh45HiWLa6W9fodcNHtS1m3IyDjjA11sadcHVPM2gx1EGUW77dEUIp3ZatTMH9B2Zvc98cnqqZ2JAAKm/Bhjdw00cxTA6G94oXU9wVbvr+i7p49P9Gq8kOLWjUEMxEgAAumcfSAE68FXLc8oG06m//Zuqd4rHfTMAsg9GWU3lnGESBbpgzLouwh1gusw1+wvBz1T6fE3Jnnc4gF8Db7ny47R/Ti4uHTR10Bh5oQ2eQzG0civAR1ueIrxb8aW22BbSb+LgI7ZJ2m80EdkNGJaWwdjI2UZDw1YmE0+NGPe/1v1vidN05+JsvIVVA==|920

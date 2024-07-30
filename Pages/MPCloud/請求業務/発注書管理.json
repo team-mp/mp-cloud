@@ -327,6 +327,7 @@
     "16,79": "▼該当カウント取得",
     "18,91": "▼区切り位置",
     "19,67": "▼未選択カウント",
+    "19,73": "▼表示該当カウント",
     "19,79": "▼選択アクション",
     "19,85": "▼確定済みカウント",
     "21,91": "▼検索ワード1",
@@ -336,16 +337,17 @@
   },
   "Formulas": {
     "14,67": "COUNTIF(BS11,\"<>\")",
-    "10,93": "ODATA(\"t_object_attachment/$count?$filter=object_order_id eq \"&IF(ISBLANK(BR11),\"null\",BR11)&\" and object_product_id eq \"&IF(ISBLANK(BQ11),\"null\",BQ11)&\" and file_attribute_id eq \"&IF(ISBLANK(発注書ファイル属性ID),\"null\",発注書ファイル属性ID)&\" and active_flg eq 1\")",
-    "20,67": "発注データ抽出カウント-選択カウント",
+    "10,92": "ODATA(\"t_object_attachment/$count?$filter=object_order_id eq \"&IF(ISBLANK(BR11),\"null\",BR11)&\" and object_product_id eq \"&IF(ISBLANK(BQ11),\"null\",BQ11)&\" and file_attribute_id eq \"&IF(ISBLANK(発注書ファイル属性ID),\"null\",発注書ファイル属性ID)&\" and active_flg eq 1\")",
+    "20,67": "BP15-BP18",
     "16,91": "IF(発注書検索ワード=0,\"\",発注書検索ワード)",
     "19,91": "IF(IFERROR(FIND(\"　\",CN17),0)>0,FIND(\"　\",CN17),IF(IFERROR(FIND(\" \",CN17),0)>0,FIND(\" \",CN17),0))",
     "25,91": "IF(CN20>0,MID(CN17,CN20+1,1000),\"\")",
     "22,91": "IF(CN20>0,LEFT(CN17,CN20-1),IF(CN17<>\"\",CN17,\"\"))",
     "17,67": "COUNTIF(BP11,1)",
-    "33,1": "\"該当データ件数：\"&TEXT(発注データ該当カウント,\"#,##0\")&\"件　　表示データ件数：\"&TEXT(発注データ抽出カウント,\"#,##0\")&\"件\"",
+    "33,1": "\"該当データ件数：\"&TEXT(BV21,\"#,##0\")&\"件　　表示データ件数：\"&TEXT(BP15,\"#,##0\")&\"件\"",
     "20,85": "COUNTIFS(BP11,1,CG11,1)",
-    "23,67": "TEXTJOINIF(\",\",TRUE,BP11,1,BQ11)"
+    "23,67": "TEXTJOINIF(\",\",TRUE,BP11,1,BQ11)",
+    "20,73": "IF(BP15=0,0,BV18)"
   },
   "AttachInfos": {
     "1,10": {
@@ -398,21 +400,16 @@
             "ListviewName": "物件商品ビュー",
             "UpdateValues": [
               {
-                "Column": {
-                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=発注書管理!BP11"
-                },
+                "Column": "選択フラグ",
                 "Value": "1"
               }
             ],
             "UpdateRowType": 1,
             "SpecifiedRowCondition": {
               "$type": "Forguncy.Model.UpdateListviewCondition, ServerDesignerCommon",
-              "Column": {
-                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                "SerializeProperty": "=発注書管理!BP11"
-              },
-              "value": "0"
+              "Column": "選択フラグ",
+              "value": "1",
+              "compareType": 1
             }
           }
         ],
@@ -431,7 +428,7 @@
             "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
             "Formula": {
               "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-              "SerializeProperty": "=OR(発注書管理!発注データ抽出カウント=0,発注書管理!未選択カウント=0)"
+              "SerializeProperty": "=発注書管理!$BP$21=0"
             },
             "StyleInfo": {
               "Underline": null,
@@ -453,20 +450,14 @@
             "ListviewName": "物件商品ビュー",
             "UpdateValues": [
               {
-                "Column": {
-                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=発注書管理!BP11"
-                },
+                "Column": "選択フラグ",
                 "Value": "0"
               }
             ],
             "UpdateRowType": 1,
             "SpecifiedRowCondition": {
               "$type": "Forguncy.Model.UpdateListviewCondition, ServerDesignerCommon",
-              "Column": {
-                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                "SerializeProperty": "=発注書管理!BP11"
-              },
+              "Column": "選択フラグ",
               "value": "1"
             }
           }
@@ -486,7 +477,7 @@
             "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
             "Formula": {
               "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-              "SerializeProperty": "=発注書管理!選択カウント=0"
+              "SerializeProperty": "=発注書管理!$BP$18=0"
             },
             "StyleInfo": {
               "Underline": null,
@@ -547,7 +538,7 @@
             "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
             "Formula": {
               "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-              "SerializeProperty": "=発注書管理!選択カウント=0"
+              "SerializeProperty": "=発注書管理!$BP$18=0"
             },
             "StyleInfo": {
               "Underline": null,
@@ -741,7 +732,7 @@
                     ]
                   }
                 ],
-                "ID": "2ff457dd-07f7-4798-8af7-2b1a9464fa0f"
+                "ID": "f32d2e8e-06f9-4b6e-b3ec-2708189c7901"
               }
             ]
           }
@@ -773,6 +764,17 @@
         "$type": "Forguncy.DateCellType, ServerDesignerCommon",
         "TemplateKey": "_RS_LightLine_Translucent_SmallRoundCorner_Normal1",
         "CommandList": [
+          {
+            "$type": "Forguncy.Model.OperateCellTypeCommand, ServerDesignerCommon",
+            "TargetPageElement": {
+              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+              "SerializeProperty": "=発注書管理!該当カウント取得ボタン"
+            },
+            "TargetType": "Forguncy.ButtonCellType, ServerDesignerCommon, Version=8.0.42.0, Culture=neutral, PublicKeyToken=967100671921c115",
+            "MethodName": "ExecuteCommand",
+            "ParameterValues": {},
+            "RetrunParamNames": {}
+          },
           {
             "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
             "ConditionAndCommandPairList": [
@@ -826,7 +828,7 @@
                     ]
                   }
                 ],
-                "ID": "5bdeefcb-fbd2-43e6-91d6-ff5cad053a34"
+                "ID": "445228aa-16a2-4df9-83ba-bb026a30b5d9"
               }
             ]
           }
@@ -874,7 +876,20 @@
     "7,43": {
       "CellType": {
         "$type": "Forguncy.DateCellType, ServerDesignerCommon",
-        "TemplateKey": "_RS_LightLine_Translucent_SmallRoundCorner_Normal1"
+        "TemplateKey": "_RS_LightLine_Translucent_SmallRoundCorner_Normal1",
+        "CommandList": [
+          {
+            "$type": "Forguncy.Model.OperateCellTypeCommand, ServerDesignerCommon",
+            "TargetPageElement": {
+              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+              "SerializeProperty": "=発注書管理!該当カウント取得ボタン"
+            },
+            "TargetType": "Forguncy.ButtonCellType, ServerDesignerCommon, Version=8.0.42.0, Culture=neutral, PublicKeyToken=967100671921c115",
+            "MethodName": "ExecuteCommand",
+            "ParameterValues": {},
+            "RetrunParamNames": {}
+          }
+        ]
       },
       "ConditionFormatRulesCollection": {
         "Rules": [
@@ -1301,10 +1316,6 @@
       }
     },
     "10,67": {
-      "BindingInfo": {
-        "TableName": "t_object_product",
-        "ColumnName": "select_flg"
-      },
       "NameUsedInJavaScript": "選択フラグ"
     },
     "10,68": {
@@ -1499,21 +1510,7 @@
       },
       "NameUsedInJavaScript": "発注書受領日"
     },
-    "10,84": {
-      "BindingInfo": {
-        "TableName": "t_object_product",
-        "ColumnName": "accounting_complete_flg"
-      },
-      "NameUsedInJavaScript": "計上確定フラグ"
-    },
     "10,85": {
-      "BindingInfo": {
-        "TableName": "t_object_product",
-        "ColumnName": "accounting_confirm_date"
-      },
-      "NameUsedInJavaScript": "計上確定日"
-    },
-    "10,86": {
       "BindingInfo": {
         "TableName": "t_object_product",
         "ColumnName": "object_order_id",
@@ -1530,7 +1527,7 @@
       },
       "NameUsedInJavaScript": "調査実施日"
     },
-    "10,87": {
+    "10,86": {
       "BindingInfo": {
         "TableName": "t_object_product",
         "ColumnName": "object_order_id",
@@ -1547,7 +1544,7 @@
       },
       "NameUsedInJavaScript": "敷測実施日"
     },
-    "10,88": {
+    "10,87": {
       "BindingInfo": {
         "TableName": "t_object_product",
         "ColumnName": "object_order_id",
@@ -1564,7 +1561,7 @@
       },
       "NameUsedInJavaScript": "解析確定日"
     },
-    "10,89": {
+    "10,88": {
       "BindingInfo": {
         "TableName": "t_object_product",
         "ColumnName": "object_order_id",
@@ -1581,7 +1578,7 @@
       },
       "NameUsedInJavaScript": "役調実施日"
     },
-    "10,90": {
+    "10,89": {
       "BindingInfo": {
         "TableName": "t_object_product",
         "ColumnName": "object_order_id",
@@ -1598,7 +1595,7 @@
       },
       "NameUsedInJavaScript": "転圧実施日"
     },
-    "10,91": {
+    "10,90": {
       "BindingInfo": {
         "TableName": "t_object_product",
         "ColumnName": "object_order_id",
@@ -1615,7 +1612,7 @@
       },
       "NameUsedInJavaScript": "工事実施日"
     },
-    "10,92": {
+    "10,91": {
       "BindingInfo": {
         "TableName": "t_object_product",
         "ColumnName": "object_order_id",
@@ -1632,8 +1629,15 @@
       },
       "NameUsedInJavaScript": "保証書発行日"
     },
-    "10,93": {
+    "10,92": {
       "NameUsedInJavaScript": "発注書カウント"
+    },
+    "10,93": {
+      "BindingInfo": {
+        "TableName": "t_object_product",
+        "ColumnName": "sales_account_complete_date"
+      },
+      "NameUsedInJavaScript": "売上計上確定日"
     },
     "11,1": {
       "CellType": {
@@ -1705,7 +1709,7 @@
                       ]
                     }
                   ],
-                  "ID": "6c9c6618-8882-4d0d-9897-29930a4293da"
+                  "ID": "aa2fd109-1c94-464a-91a2-53ae4f8ea0de"
                 },
                 {
                   "CommandList": [
@@ -1720,7 +1724,7 @@
                       ]
                     }
                   ],
-                  "ID": "0f244fb9-2e6c-4450-928b-f334cc9c7dac"
+                  "ID": "c0c62eb7-fa9b-4119-922d-ab6aaed83aad"
                 }
               ]
             }
@@ -1783,44 +1787,44 @@
                     "Condition1": {
                       "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
                       "Condition1": {
-                        "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
-                        "ColumnBindingInfo": {
-                          "TableName": "t_object_product",
-                          "ColumnName": "object_order_id",
-                          "RelationBinding": {
-                            "RelatedTable": "t_object_order",
-                            "RelatedColumn": "object_order_id",
-                            "DisplayColumn": "active_flg"
+                        "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                        "Condition1": {
+                          "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                          "Condition1": {
+                            "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                            "ColumnBindingInfo": {
+                              "TableName": "t_object_product",
+                              "ColumnName": "object_order_id",
+                              "RelationBinding": {
+                                "RelatedTable": "t_object_order",
+                                "RelatedColumn": "object_order_id",
+                                "DisplayColumn": "active_flg"
+                              }
+                            },
+                            "Value": "1"
+                          },
+                          "Condition2": {
+                            "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                            "ColumnBindingInfo": {
+                              "TableName": "t_object_product",
+                              "ColumnName": "purchase_required_flg"
+                            },
+                            "Value": "1"
                           }
                         },
-                        "Value": "1"
+                        "Condition2": {
+                          "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                          "ColumnBindingInfo": {
+                            "TableName": "t_object_product",
+                            "ColumnName": "発注書受領区分"
+                          },
+                          "Value": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=発注書管理!発注書受領区分"
+                          }
+                        }
                       },
                       "Condition2": {
-                        "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
-                        "ColumnBindingInfo": {
-                          "TableName": "t_object_product",
-                          "ColumnName": "purchase_required_flg"
-                        },
-                        "Value": "1"
-                      }
-                    },
-                    "Condition2": {
-                      "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
-                      "ColumnBindingInfo": {
-                        "TableName": "t_object_product",
-                        "ColumnName": "発注書受領区分"
-                      },
-                      "Value": {
-                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                        "SerializeProperty": "=発注書管理!発注書受領区分"
-                      }
-                    }
-                  },
-                  "Condition2": {
-                    "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
-                    "Condition1": {
-                      "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
-                      "Condition1": {
                         "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
                         "Condition1": {
                           "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
@@ -1829,44 +1833,86 @@
                             "Condition1": {
                               "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
                               "Condition1": {
-                                "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
-                                "CompareType": 6,
-                                "ColumnBindingInfo": {
-                                  "TableName": "t_object_product",
-                                  "ColumnName": "object_order_id",
-                                  "RelationBinding": {
-                                    "RelatedTable": "t_object_order",
-                                    "RelatedColumn": "object_order_id",
-                                    "DisplayColumn": "object_id",
-                                    "NextRelationBinding": {
-                                      "RelatedTable": "t_object",
-                                      "RelatedColumn": "object_id",
-                                      "DisplayColumn": "物件番号"
+                                "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                                "Condition1": {
+                                  "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                                  "Condition1": {
+                                    "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                                    "CompareType": 6,
+                                    "ColumnBindingInfo": {
+                                      "TableName": "t_object_product",
+                                      "ColumnName": "object_order_id",
+                                      "RelationBinding": {
+                                        "RelatedTable": "t_object_order",
+                                        "RelatedColumn": "object_order_id",
+                                        "DisplayColumn": "object_id",
+                                        "NextRelationBinding": {
+                                          "RelatedTable": "t_object",
+                                          "RelatedColumn": "object_id",
+                                          "DisplayColumn": "物件番号"
+                                        }
+                                      }
+                                    },
+                                    "Value": {
+                                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                      "SerializeProperty": "=発注書管理!CN23"
+                                    },
+                                    "LeftBracket": 1
+                                  },
+                                  "Condition2": {
+                                    "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                                    "CompareType": 6,
+                                    "ColumnBindingInfo": {
+                                      "TableName": "t_object_product",
+                                      "ColumnName": "object_order_id",
+                                      "RelationBinding": {
+                                        "RelatedTable": "t_object_order",
+                                        "RelatedColumn": "object_order_id",
+                                        "DisplayColumn": "object_id",
+                                        "NextRelationBinding": {
+                                          "RelatedTable": "t_object",
+                                          "RelatedColumn": "object_id",
+                                          "DisplayColumn": "物件名"
+                                        }
+                                      }
+                                    },
+                                    "Value": {
+                                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                      "SerializeProperty": "=発注書管理!CN23"
                                     }
+                                  },
+                                  "RelationType": 1
+                                },
+                                "Condition2": {
+                                  "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                                  "CompareType": 6,
+                                  "ColumnBindingInfo": {
+                                    "TableName": "t_object_product",
+                                    "ColumnName": "object_order_id",
+                                    "RelationBinding": {
+                                      "RelatedTable": "t_object_order",
+                                      "RelatedColumn": "object_order_id",
+                                      "DisplayColumn": "object_id",
+                                      "NextRelationBinding": {
+                                        "RelatedTable": "t_object",
+                                        "RelatedColumn": "object_id",
+                                        "DisplayColumn": "物件住所"
+                                      }
+                                    }
+                                  },
+                                  "Value": {
+                                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                    "SerializeProperty": "=発注書管理!CN23"
                                   }
                                 },
-                                "Value": {
-                                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                                  "SerializeProperty": "=発注書管理!CN23"
-                                },
-                                "LeftBracket": 1
+                                "RelationType": 1
                               },
                               "Condition2": {
                                 "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
                                 "CompareType": 6,
                                 "ColumnBindingInfo": {
                                   "TableName": "t_object_product",
-                                  "ColumnName": "object_order_id",
-                                  "RelationBinding": {
-                                    "RelatedTable": "t_object_order",
-                                    "RelatedColumn": "object_order_id",
-                                    "DisplayColumn": "object_id",
-                                    "NextRelationBinding": {
-                                      "RelatedTable": "t_object",
-                                      "RelatedColumn": "object_id",
-                                      "DisplayColumn": "物件名"
-                                    }
-                                  }
+                                  "ColumnName": "purchase_receipt_date"
                                 },
                                 "Value": {
                                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
@@ -1880,16 +1926,11 @@
                               "CompareType": 6,
                               "ColumnBindingInfo": {
                                 "TableName": "t_object_product",
-                                "ColumnName": "object_order_id",
+                                "ColumnName": "billing_comp_id",
                                 "RelationBinding": {
-                                  "RelatedTable": "t_object_order",
-                                  "RelatedColumn": "object_order_id",
-                                  "DisplayColumn": "object_id",
-                                  "NextRelationBinding": {
-                                    "RelatedTable": "t_object",
-                                    "RelatedColumn": "object_id",
-                                    "DisplayColumn": "物件住所"
-                                  }
+                                  "RelatedTable": "m_customer",
+                                  "RelatedColumn": "customer_id",
+                                  "DisplayColumn": "内部顧客名"
                                 }
                               },
                               "Value": {
@@ -1904,7 +1945,17 @@
                             "CompareType": 6,
                             "ColumnBindingInfo": {
                               "TableName": "t_object_product",
-                              "ColumnName": "purchase_receipt_date"
+                              "ColumnName": "object_order_id",
+                              "RelationBinding": {
+                                "RelatedTable": "t_object_order",
+                                "RelatedColumn": "object_order_id",
+                                "DisplayColumn": "builder_id",
+                                "NextRelationBinding": {
+                                  "RelatedTable": "m_customer",
+                                  "RelatedColumn": "customer_id",
+                                  "DisplayColumn": "内部顧客名"
+                                }
+                              }
                             },
                             "Value": {
                               "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
@@ -1918,65 +1969,18 @@
                           "CompareType": 6,
                           "ColumnBindingInfo": {
                             "TableName": "t_object_product",
-                            "ColumnName": "billing_comp_id",
-                            "RelationBinding": {
-                              "RelatedTable": "m_customer",
-                              "RelatedColumn": "customer_id",
-                              "DisplayColumn": "内部顧客名"
-                            }
+                            "ColumnName": "product_name"
                           },
                           "Value": {
                             "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
                             "SerializeProperty": "=発注書管理!CN23"
-                          }
+                          },
+                          "RightBracket": 1
                         },
                         "RelationType": 1
-                      },
-                      "Condition2": {
-                        "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
-                        "CompareType": 6,
-                        "ColumnBindingInfo": {
-                          "TableName": "t_object_product",
-                          "ColumnName": "object_order_id",
-                          "RelationBinding": {
-                            "RelatedTable": "t_object_order",
-                            "RelatedColumn": "object_order_id",
-                            "DisplayColumn": "builder_id",
-                            "NextRelationBinding": {
-                              "RelatedTable": "m_customer",
-                              "RelatedColumn": "customer_id",
-                              "DisplayColumn": "内部顧客名"
-                            }
-                          }
-                        },
-                        "Value": {
-                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                          "SerializeProperty": "=発注書管理!CN23"
-                        }
-                      },
-                      "RelationType": 1
+                      }
                     },
                     "Condition2": {
-                      "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
-                      "CompareType": 6,
-                      "ColumnBindingInfo": {
-                        "TableName": "t_object_product",
-                        "ColumnName": "product_name"
-                      },
-                      "Value": {
-                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                        "SerializeProperty": "=発注書管理!CN23"
-                      },
-                      "RightBracket": 1
-                    },
-                    "RelationType": 1
-                  }
-                },
-                "Condition2": {
-                  "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
-                  "Condition1": {
-                    "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
-                    "Condition1": {
                       "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
                       "Condition1": {
                         "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
@@ -1985,44 +1989,86 @@
                           "Condition1": {
                             "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
                             "Condition1": {
-                              "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
-                              "CompareType": 6,
-                              "ColumnBindingInfo": {
-                                "TableName": "t_object_product",
-                                "ColumnName": "object_order_id",
-                                "RelationBinding": {
-                                  "RelatedTable": "t_object_order",
-                                  "RelatedColumn": "object_order_id",
-                                  "DisplayColumn": "object_id",
-                                  "NextRelationBinding": {
-                                    "RelatedTable": "t_object",
-                                    "RelatedColumn": "object_id",
-                                    "DisplayColumn": "物件番号"
+                              "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                              "Condition1": {
+                                "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                                "Condition1": {
+                                  "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                                  "CompareType": 6,
+                                  "ColumnBindingInfo": {
+                                    "TableName": "t_object_product",
+                                    "ColumnName": "object_order_id",
+                                    "RelationBinding": {
+                                      "RelatedTable": "t_object_order",
+                                      "RelatedColumn": "object_order_id",
+                                      "DisplayColumn": "object_id",
+                                      "NextRelationBinding": {
+                                        "RelatedTable": "t_object",
+                                        "RelatedColumn": "object_id",
+                                        "DisplayColumn": "物件番号"
+                                      }
+                                    }
+                                  },
+                                  "Value": {
+                                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                    "SerializeProperty": "=発注書管理!CN26"
+                                  },
+                                  "LeftBracket": 1
+                                },
+                                "Condition2": {
+                                  "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                                  "CompareType": 6,
+                                  "ColumnBindingInfo": {
+                                    "TableName": "t_object_product",
+                                    "ColumnName": "object_order_id",
+                                    "RelationBinding": {
+                                      "RelatedTable": "t_object_order",
+                                      "RelatedColumn": "object_order_id",
+                                      "DisplayColumn": "object_id",
+                                      "NextRelationBinding": {
+                                        "RelatedTable": "t_object",
+                                        "RelatedColumn": "object_id",
+                                        "DisplayColumn": "物件名"
+                                      }
+                                    }
+                                  },
+                                  "Value": {
+                                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                    "SerializeProperty": "=発注書管理!CN26"
                                   }
+                                },
+                                "RelationType": 1
+                              },
+                              "Condition2": {
+                                "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                                "CompareType": 6,
+                                "ColumnBindingInfo": {
+                                  "TableName": "t_object_product",
+                                  "ColumnName": "object_order_id",
+                                  "RelationBinding": {
+                                    "RelatedTable": "t_object_order",
+                                    "RelatedColumn": "object_order_id",
+                                    "DisplayColumn": "object_id",
+                                    "NextRelationBinding": {
+                                      "RelatedTable": "t_object",
+                                      "RelatedColumn": "object_id",
+                                      "DisplayColumn": "物件住所"
+                                    }
+                                  }
+                                },
+                                "Value": {
+                                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                  "SerializeProperty": "=発注書管理!CN26"
                                 }
                               },
-                              "Value": {
-                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                                "SerializeProperty": "=発注書管理!CN26"
-                              },
-                              "LeftBracket": 1
+                              "RelationType": 1
                             },
                             "Condition2": {
                               "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
                               "CompareType": 6,
                               "ColumnBindingInfo": {
                                 "TableName": "t_object_product",
-                                "ColumnName": "object_order_id",
-                                "RelationBinding": {
-                                  "RelatedTable": "t_object_order",
-                                  "RelatedColumn": "object_order_id",
-                                  "DisplayColumn": "object_id",
-                                  "NextRelationBinding": {
-                                    "RelatedTable": "t_object",
-                                    "RelatedColumn": "object_id",
-                                    "DisplayColumn": "物件名"
-                                  }
-                                }
+                                "ColumnName": "purchase_receipt_date"
                               },
                               "Value": {
                                 "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
@@ -2036,16 +2082,11 @@
                             "CompareType": 6,
                             "ColumnBindingInfo": {
                               "TableName": "t_object_product",
-                              "ColumnName": "object_order_id",
+                              "ColumnName": "billing_comp_id",
                               "RelationBinding": {
-                                "RelatedTable": "t_object_order",
-                                "RelatedColumn": "object_order_id",
-                                "DisplayColumn": "object_id",
-                                "NextRelationBinding": {
-                                  "RelatedTable": "t_object",
-                                  "RelatedColumn": "object_id",
-                                  "DisplayColumn": "物件住所"
-                                }
+                                "RelatedTable": "m_customer",
+                                "RelatedColumn": "customer_id",
+                                "DisplayColumn": "内部顧客名"
                               }
                             },
                             "Value": {
@@ -2060,7 +2101,17 @@
                           "CompareType": 6,
                           "ColumnBindingInfo": {
                             "TableName": "t_object_product",
-                            "ColumnName": "purchase_receipt_date"
+                            "ColumnName": "object_order_id",
+                            "RelationBinding": {
+                              "RelatedTable": "t_object_order",
+                              "RelatedColumn": "object_order_id",
+                              "DisplayColumn": "builder_id",
+                              "NextRelationBinding": {
+                                "RelatedTable": "m_customer",
+                                "RelatedColumn": "customer_id",
+                                "DisplayColumn": "内部顧客名"
+                              }
+                            }
                           },
                           "Value": {
                             "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
@@ -2074,62 +2125,45 @@
                         "CompareType": 6,
                         "ColumnBindingInfo": {
                           "TableName": "t_object_product",
-                          "ColumnName": "billing_comp_id",
-                          "RelationBinding": {
-                            "RelatedTable": "m_customer",
-                            "RelatedColumn": "customer_id",
-                            "DisplayColumn": "内部顧客名"
-                          }
+                          "ColumnName": "product_name"
                         },
                         "Value": {
                           "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
                           "SerializeProperty": "=発注書管理!CN26"
-                        }
+                        },
+                        "RightBracket": 1
                       },
                       "RelationType": 1
-                    },
-                    "Condition2": {
-                      "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
-                      "CompareType": 6,
-                      "ColumnBindingInfo": {
-                        "TableName": "t_object_product",
-                        "ColumnName": "object_order_id",
-                        "RelationBinding": {
-                          "RelatedTable": "t_object_order",
-                          "RelatedColumn": "object_order_id",
-                          "DisplayColumn": "builder_id",
-                          "NextRelationBinding": {
-                            "RelatedTable": "m_customer",
-                            "RelatedColumn": "customer_id",
-                            "DisplayColumn": "内部顧客名"
-                          }
-                        }
-                      },
-                      "Value": {
-                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                        "SerializeProperty": "=発注書管理!CN26"
-                      }
-                    },
-                    "RelationType": 1
+                    }
                   },
                   "Condition2": {
-                    "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
-                    "CompareType": 6,
+                    "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                    "CompareType": 3,
                     "ColumnBindingInfo": {
                       "TableName": "t_object_product",
-                      "ColumnName": "product_name"
+                      "ColumnName": "purchase_receipt_date"
                     },
                     "Value": {
                       "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                      "SerializeProperty": "=発注書管理!CN26"
-                    },
-                    "RightBracket": 1
+                      "SerializeProperty": "=発注書管理!AJ8"
+                    }
+                  }
+                },
+                "Condition2": {
+                  "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                  "CompareType": 5,
+                  "ColumnBindingInfo": {
+                    "TableName": "t_object_product",
+                    "ColumnName": "purchase_receipt_date"
                   },
-                  "RelationType": 1
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=発注書管理!AR8"
+                  }
                 }
               }
             },
-            "ID": "609813edb7434bcc9cf5485f74fab09d"
+            "ID": "c90b7da3d01141cf94eac2f1dc9ee78e"
           },
           {
             "$type": "Forguncy.Model.SetCellPropertyCommand, ServerDesignerCommon",
@@ -2137,7 +2171,7 @@
               {
                 "TargetCells": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=発注書管理!発注データ該当カウント"
+                  "SerializeProperty": "=発注書管理!BV18"
                 },
                 "Value": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
@@ -2166,7 +2200,7 @@
               "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
               "SerializeProperty": "=発注書管理!CB21"
             },
-            "ID": "4e008a036e9f4bc09b273b0477ec62ab"
+            "ID": "8469728e83d4466a8f86e2f1f6ec1ede"
           },
           {
             "$type": "Forguncy.Model.SetCellPropertyCommand, ServerDesignerCommon",
@@ -2220,7 +2254,7 @@
                   }
                 ],
                 "Comments": "確定処理の場合",
-                "ID": "279ad8e9-627b-4ddd-90be-e3932fac3aae"
+                "ID": "bff3c8de-e825-4a05-a9c4-4875373bbde9"
               },
               {
                 "Condition": {
@@ -2262,7 +2296,7 @@
                             "$type": "Forguncy.Model.StopCommand, ServerDesignerCommon"
                           }
                         ],
-                        "ID": "2402ee6d-1b89-4bb6-9cc1-97e447a7787f"
+                        "ID": "6d90684e-39c4-4768-ab61-921ff2a7396f"
                       }
                     ]
                   },
@@ -2334,18 +2368,18 @@
                                     }
                                   }
                                 ],
-                                "ID": "880bc539-5cf0-46ea-89a6-a81aca304ff4"
+                                "ID": "a96b2d6d-bf59-413e-8a6e-d8c418a32ab1"
                               }
                             ]
                           }
                         ],
-                        "ID": "b123abf3-d084-4e95-88c0-503f2f34077c"
+                        "ID": "1d81a523-48dc-474e-930b-c637ebeb5f3d"
                       }
                     ]
                   }
                 ],
                 "Comments": "確定解除の場合",
-                "ID": "83a5a1c8-dd3b-4b08-8344-9b292e0dcfac"
+                "ID": "c5d7a2c6-2ed7-4e2c-8a6b-dce60599e2c0"
               }
             ]
           }
@@ -2368,7 +2402,7 @@
               "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
               "SerializeProperty": "=発注書管理!CB24"
             },
-            "ID": "14d9423ef7a94d848c962f5ed038c4b4"
+            "ID": "41facc5f6f45461e8c90913de70f273e"
           },
           {
             "$type": "Forguncy.Model.SetCellPropertyCommand, ServerDesignerCommon",
@@ -2404,19 +2438,12 @@
                     "ServerCommandName": "発注書受領日一括更新処理",
                     "Parameters": [
                       {
-                        "$type": "Forguncy.Model.RequestServerCommandListviewParam, ServerDesignerCommon",
-                        "ListviewName": "物件商品ビュー",
-                        "Columns": [
-                          {
-                            "ArrayItemName": "P_選択フラグ",
-                            "Column": "選択フラグ"
-                          },
-                          {
-                            "ArrayItemName": "P_物件商品ID",
-                            "Column": "物件商品ID"
-                          }
-                        ],
-                        "ParamName": "P_発注書受領リスト"
+                        "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                        "Value": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=発注書管理!BP24"
+                        },
+                        "ParamName": "P_物件商品IDs"
                       },
                       {
                         "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
@@ -2465,7 +2492,7 @@
                             "Comments": "最新情報に更新する"
                           }
                         ],
-                        "ID": "3c0fc621-b6fb-4442-aff1-3b462590bd23"
+                        "ID": "311bc583-0bba-4218-8448-350efaaca776"
                       },
                       {
                         "CommandList": [
@@ -2480,12 +2507,12 @@
                             "$type": "LoadingCommand.EndLoadingCommand, LoadingCommand"
                           }
                         ],
-                        "ID": "b75bfd85-4098-40e9-a055-ddea9993a4c3"
+                        "ID": "aa5de43d-42c0-48d6-a125-588c44fa648a"
                       }
                     ]
                   }
                 ],
-                "ID": "a493bafc-a286-4823-8569-1232c1ac3bf2"
+                "ID": "11bbbc74-ba6e-4a79-8636-f0beab675d3a"
               }
             ]
           }
@@ -2967,15 +2994,14 @@
       "9,82": 24,
       "9,83": 24,
       "9,84": 3,
-      "9,85": 2,
+      "9,85": 3,
       "9,86": 3,
       "9,87": 3,
       "9,88": 3,
-      "9,89": 3,
-      "9,90": 2,
+      "9,89": 2,
+      "9,90": 3,
       "9,91": 3,
-      "9,92": 3,
-      "9,93": 2,
+      "9,92": 2,
       "9,94": 2,
       "9,95": 2,
       "9,100": 2,
@@ -3062,15 +3088,14 @@
       "10,82": 2,
       "10,83": 34,
       "10,84": 34,
-      "10,85": 2,
-      "10,86": 35,
+      "10,85": 35,
+      "10,86": 3,
       "10,87": 3,
       "10,88": 3,
       "10,89": 3,
-      "10,90": 3,
-      "10,91": 2,
-      "10,92": 3,
-      "10,93": 2,
+      "10,90": 2,
+      "10,91": 3,
+      "10,92": 2,
       "10,94": 2,
       "10,95": 2,
       "10,100": 2,
@@ -3138,6 +3163,9 @@
       "20,67": 39,
       "20,68": 2,
       "20,69": 2,
+      "20,73": 39,
+      "20,74": 2,
+      "20,75": 2,
       "20,79": 40,
       "20,80": 2,
       "20,81": 2,
@@ -3262,7 +3290,6 @@
     "33,35,1,2",
     "1,31,1,5",
     "1,59,1,7",
-    "10,57,1,2",
     "33,49,1,2",
     "1,50,1,8",
     "20,79,1,3",
@@ -3272,7 +3299,8 @@
     "23,67,1,3",
     "7,35,1,7",
     "7,43,1,6",
-    "11,67,1,27"
+    "11,67,1,27",
+    "20,73,1,3"
   ],
   "PageInfo": {
     "$type": "Forguncy.Model.Pages.NormalPage, ServerDesignerCommon",
@@ -3314,18 +3342,6 @@
       "Formula": "発注書管理!$CT$11"
     },
     {
-      "Name": "選択カウント",
-      "Formula": "発注書管理!$BP$18"
-    },
-    {
-      "Name": "発注データ該当カウント",
-      "Formula": "発注書管理!$BV$18"
-    },
-    {
-      "Name": "発注データ抽出カウント",
-      "Formula": "発注書管理!$BP$15"
-    },
-    {
       "Name": "発注書ファイル属性ID",
       "Formula": "発注書管理!$BV$15"
     },
@@ -3336,10 +3352,6 @@
     {
       "Name": "発注書受領区分",
       "Formula": "発注書管理!$K$8"
-    },
-    {
-      "Name": "未選択カウント",
-      "Formula": "発注書管理!$BP$21"
     }
   ]
-}//u8DBeO/kpebzUm0l+UzDCRZcoE0I3bkUgBd0wtXDxoySW6yqTSd5T5ZxhRJb7BmQyiS8RKuBiErb0fieq5NDb44h0N4h976D5BLjPgR4bLGGumqAM21iUdQk1zaBL14RSXNAmQK9uaa2yocGDoYQTyyJUeA0xf4IefXr+wZ/CPq8iOCDCyXLRWyTDl1j/+8Gn8rTVRJ7Q6t72il5HOeq8ee7AAlwH4jUBc1pnMsuZKE0yR81eihvPqJBGSu0IM3X+Sv8v9FDpOMvZ36XXKm43FjR2lgwOkfLgUbbe35BpHWGGfBMB1DEPZ3zFYyMfDV+VwBIMzpV2l6xwcIiRxMAmCenU0owFa2UcDMm5WtpsFM1feDkfxt/J4wqDPZQ5EV6TR2DTxduLxU8act6i8l8MGDUGqsL8Ul2mWhMulMV+k6yTM0nucYn1TeCscpaRVXK/TReCtCHTzUo3Y9N1o3eIjs/BwpCasJXRt2VknvDaC22MNtRpJADXYGosB2wCCKmj0ogtbQbobIHPphQPrd+IdJMZTp98B43k1TdmpZ3+WxcHmEqJK1302kJ4LBXVJedm/hiHRdB8QYPITo8WmICaprSVYk9/Z8SaQ4Immip1MlQSPL00zhGyboRNB3W+S80ptr/1VC+0DeLsep6kRo0KDvLYIgUPud2h7kIWGj1HibF/OA9hgIpCVeYuCty9L8migIp38ccWb5kFTojm+OoeYaMTVx2s08AmmE9tYEG0mIRgimD3j/yyLthsdhYSzznmYWezVx/3gQ3f7ybyuOMy/PdWJzotGiwUqUyvkij5gwXNH/63fQBJ46+ePSeGYk73FfnE2oBWaaNTmTI76vHWm+wk2YeHsHwvWszNgYRs0ZRIHhiksEzV3WgyLJgwz4Ib+ukwDdnFoXn0u+ew9u6dQ==|920
+}//vssD5zz54eKbWO44OEFLW9o1iHalTQoPtzV9+94W40/vT57ZGwWdeAOvFnClX/fGDZ8x660HsD4CEJwu1QOZu8iUeK53odl6B6Hmt4P3qcn23Bx6DGG6vFXaMzuDyVC7QpWruc5NY5jCqrB1oKLNuYS5KP/Vxn13Lw26U+MSXxts7SqQgguePtNovOLoPxg40ZUSQMrWZMo9k4Vvnd7lKwm4kBH71Lgv4ylG8pAE7VetDgDmJy42StNUDFH8/9qCzhxNPVdWAFzdiF1/ckm0BN5tNYIBj6rtk5hqLA8Dkq7Ry6unYSf20wshlHLsqfTdp4o/ObKpKQvfUSdAKgnBZi260m1SE5mQzIqI4vqlKO+Vy987orNu2o8pIoMYRgEyVTtU1VrWjhSPzmgl8LEKzDDbQDjYnqM9Jn+qyTQEXJ1bCo4WRCqLUWEHmuGK1idSsuC5h0F+nI+TWzeMDJBsyQZs4nNZoHR1z3UDVmi+HvAZZqkVY6kzAOkuEoNtIN5xEmWjrq3dW9Za13Q58dIlgeyFZZZTdYhzPXkFyo+6AmhAP5ny3ejnarUpuho1+kyF1UmQ9lc5v9uWx7hqrBiLvSbqEt5nmEhalxjFJ1foXjSeLpbwtfttG+yWc/MGP4d4ppVqSGZM8E0ll4dx7XH1oha3V906TwFu2TEL8zdwBSf1SRM11SSrZo+Te+nixmdbMPfbWWWpzMQBTRIUWpVz3r3QjU26l6IjaIW9bjiY02+lBqkcSvRVlGteutPfQaaoQI4N8XtZgjTOvP2aXqdhvsQcRH5w9Zg8NyzoJxoJvAlzl9wAcDUv4rWfB3hltjDGO360ryPvpHD3K5mnoFFlv3t/Wjk/YAwcF0p7pjLKphR0qsGCWHO3LIBHH6wbXgeE87mlGTHBSQaMsLpNhmQ62A==|920

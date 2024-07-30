@@ -263,7 +263,9 @@
     "3,3": "売上区分",
     "3,10": 1,
     "4,48": "▼請求商品ID",
+    "4,57": "▼顧客属性",
     "5,3": "商品",
+    "5,57": 6,
     "7,3": "請求商品名",
     "7,48": "▼物件商品ID",
     "9,3": "請求書備考",
@@ -272,6 +274,7 @@
     "13,48": "▼発注書必要フラグ",
     "15,10": "税抜金額",
     "16,48": "▼請求日",
+    "16,57": "▼退避請求日",
     "17,10": "消費税額",
     "17,26": "消費税率",
     "19,10": "請求金額",
@@ -280,7 +283,7 @@
     "22,48": "▼税抜金額",
     "23,3": "回収予定日",
     "25,3": "専用請求番号",
-    "26,48": "▼退避請求日",
+    "25,48": "▼取消売上ID",
     "27,3": "専用発注書",
     "27,20": "発注書受領日",
     "30,21": "取消する",
@@ -374,7 +377,7 @@
             "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
             "Formula": {
               "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-              "SerializeProperty": "=請求登録編集!$AH$2<>\"\""
+              "SerializeProperty": "=請求登録編集!$AW$3<>\"\""
             },
             "StyleInfo": {
               "Underline": null,
@@ -427,12 +430,28 @@
             "Condition1": {
               "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
               "Condition1": {
-                "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
-                "ColumnBindingInfo": {
-                  "TableName": "m_product",
-                  "ColumnName": "active_flg"
+                "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                "Condition1": {
+                  "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                  "ColumnBindingInfo": {
+                    "TableName": "m_product",
+                    "ColumnName": "active_flg"
+                  },
+                  "Value": "1"
                 },
-                "Value": "1"
+                "Condition2": {
+                  "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                  "ColumnBindingInfo": {
+                    "TableName": "m_product",
+                    "ColumnName": "product_type_id",
+                    "RelationBinding": {
+                      "RelatedTable": "m_product_type",
+                      "RelatedColumn": "product_type_id",
+                      "DisplayColumn": "survey_warranty_set_flg"
+                    }
+                  },
+                  "Value": "0"
+                }
               },
               "Condition2": {
                 "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
@@ -442,7 +461,7 @@
                   "RelationBinding": {
                     "RelatedTable": "m_product_type",
                     "RelatedColumn": "product_type_id",
-                    "DisplayColumn": "survey_warranty_set_flg"
+                    "DisplayColumn": "analysis_warranty_set_flg"
                   }
                 },
                 "Value": "0"
@@ -456,24 +475,20 @@
                 "RelationBinding": {
                   "RelatedTable": "m_product_type",
                   "RelatedColumn": "product_type_id",
-                  "DisplayColumn": "analysis_warranty_set_flg"
+                  "DisplayColumn": "site_gove_set_flg"
                 }
               },
               "Value": "0"
             }
           },
           "Condition2": {
-            "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+            "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+            "CompareType": 8,
             "ColumnBindingInfo": {
               "TableName": "m_product",
-              "ColumnName": "product_type_id",
-              "RelationBinding": {
-                "RelatedTable": "m_product_type",
-                "RelatedColumn": "product_type_id",
-                "DisplayColumn": "site_gove_set_flg"
-              }
+              "ColumnName": "accounting_type"
             },
-            "Value": "0"
+            "Value": "1,2"
           }
         },
         "CommandList": [
@@ -592,7 +607,7 @@
                     ]
                   }
                 ],
-                "ID": "db7bce11-1097-4f93-a524-a5ec1e9af569"
+                "ID": "cce221f0-8582-4eaf-a9fa-437f2ef1d8a7"
               }
             ]
           }
@@ -601,12 +616,35 @@
       "BindingInfo": {
         "TableName": "t_sales",
         "ColumnName": "billing_product_id"
+      },
+      "ConditionFormatRulesCollection": {
+        "Rules": [
+          {
+            "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
+            "Formula": {
+              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+              "SerializeProperty": "=請求登録編集!$AW$27<>\"\""
+            },
+            "StyleInfo": {
+              "Underline": null,
+              "Strikethrough": null
+            },
+            "IsDisabled": true,
+            "IsInvisible": false,
+            "IsReadOnly": false
+          }
+        ]
       }
     },
     "5,48": {
       "BindingInfo": {
         "TableName": "t_sales",
         "ColumnName": "billing_product_id"
+      }
+    },
+    "5,57": {
+      "CellComment": {
+        "Comments": "請求先"
       }
     },
     "7,10": {
@@ -622,6 +660,24 @@
       "BindingInfo": {
         "TableName": "t_sales",
         "ColumnName": "billing_product_name"
+      },
+      "ConditionFormatRulesCollection": {
+        "Rules": [
+          {
+            "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
+            "Formula": {
+              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+              "SerializeProperty": "=請求登録編集!$AW$27<>\"\""
+            },
+            "StyleInfo": {
+              "Underline": null,
+              "Strikethrough": null
+            },
+            "IsDisabled": true,
+            "IsInvisible": false,
+            "IsReadOnly": false
+          }
+        ]
       }
     },
     "8,48": {
@@ -788,7 +844,10 @@
                 }
               },
               {
-                "Source": "6",
+                "Source": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=請求登録編集!BF6"
+                },
                 "TargetCell": {
                   "SerializeProperty": "=顧客検索!属性フィルタ"
                 }
@@ -815,7 +874,7 @@
             "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
             "Formula": {
               "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-              "SerializeProperty": "=請求登録編集!$AW$3<>\"\""
+              "SerializeProperty": "=請求登録編集!$AW$27<>\"\""
             },
             "StyleInfo": {
               "Underline": null,
@@ -823,20 +882,6 @@
             },
             "IsDisabled": true,
             "IsInvisible": false,
-            "IsReadOnly": false
-          },
-          {
-            "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
-            "Formula": {
-              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-              "SerializeProperty": "=請求登録編集!$K$4=3"
-            },
-            "StyleInfo": {
-              "Underline": null,
-              "Strikethrough": null
-            },
-            "IsDisabled": false,
-            "IsInvisible": true,
             "IsReadOnly": false
           }
         ]
@@ -920,7 +965,7 @@
                     ]
                   }
                 ],
-                "ID": "8a194f0d-6e6d-4351-a32b-e01fcfafff79"
+                "ID": "61b4d999-fb4c-4247-b384-18efa7673355"
               }
             ]
           }
@@ -936,14 +981,14 @@
             "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
             "Formula": {
               "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-              "SerializeProperty": "=請求登録編集!$K$4=3"
+              "SerializeProperty": "=請求登録編集!$AW$27<>\"\""
             },
             "StyleInfo": {
               "Underline": null,
               "Strikethrough": null
             },
-            "IsDisabled": false,
-            "IsInvisible": true,
+            "IsDisabled": true,
+            "IsInvisible": false,
             "IsReadOnly": false
           }
         ]
@@ -984,14 +1029,14 @@
             "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
             "Formula": {
               "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-              "SerializeProperty": "=請求登録編集!$K$4=3"
+              "SerializeProperty": "=請求登録編集!$AW$27<>\"\""
             },
             "StyleInfo": {
               "Underline": null,
               "Strikethrough": null
             },
-            "IsDisabled": false,
-            "IsInvisible": true,
+            "IsDisabled": true,
+            "IsInvisible": false,
             "IsReadOnly": false
           }
         ]
@@ -1090,7 +1135,7 @@
                     "Comments": "値を保持する"
                   }
                 ],
-                "ID": "8d4c39ca-2998-4541-9b3b-8535b041b76f"
+                "ID": "c836ef80-70ec-4f8e-be07-f1e66833dc28"
               }
             ],
             "Comments": "消費税率が更新されたら消費税額を再計算"
@@ -1100,9 +1145,33 @@
       "BindingInfo": {
         "TableName": "t_sales",
         "ColumnName": "tax_rate"
+      },
+      "ConditionFormatRulesCollection": {
+        "Rules": [
+          {
+            "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
+            "Formula": {
+              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+              "SerializeProperty": "=請求登録編集!$AW$27<>\"\""
+            },
+            "StyleInfo": {
+              "Underline": null,
+              "Strikethrough": null
+            },
+            "IsDisabled": true,
+            "IsInvisible": false,
+            "IsReadOnly": false
+          }
+        ]
       }
     },
     "17,48": {
+      "BindingInfo": {
+        "TableName": "t_sales",
+        "ColumnName": "billing_date"
+      }
+    },
+    "17,57": {
       "BindingInfo": {
         "TableName": "t_sales",
         "ColumnName": "billing_date"
@@ -1179,7 +1248,7 @@
                   },
                   "value": {
                     "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                    "SerializeProperty": "=請求登録編集!AW28"
+                    "SerializeProperty": "=請求登録編集!BF18"
                   },
                   "compareType": 1
                 },
@@ -1190,7 +1259,7 @@
                       {
                         "TargetCells": {
                           "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                          "SerializeProperty": "=請求登録編集!AW28"
+                          "SerializeProperty": "=請求登録編集!BF18"
                         },
                         "Value": {
                           "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
@@ -1269,7 +1338,7 @@
                             ]
                           }
                         ],
-                        "ID": "d8c6ace4-5ba4-4319-8378-de6744f4cffc"
+                        "ID": "81e6eb78-7986-4ee3-a47e-988a8925a080"
                       },
                       {
                         "CommandList": [
@@ -1281,12 +1350,12 @@
                             }
                           }
                         ],
-                        "ID": "373ced07-55df-4542-91cc-b79a534134e9"
+                        "ID": "da8bedf0-a736-4d65-b703-e44daa20629e"
                       }
                     ]
                   }
                 ],
-                "ID": "2b87d92b-1c31-43c2-80f9-1ef143551f20"
+                "ID": "3e2d5fac-3629-4d51-9e3b-4020f952bc50"
               }
             ]
           }
@@ -1337,6 +1406,12 @@
         "BuiltIn": true,
         "Color": "#FF005B47",
         "UseCellForeColor": true
+      }
+    },
+    "26,48": {
+      "BindingInfo": {
+        "TableName": "t_sales",
+        "ColumnName": "cancel_seles_id"
       }
     },
     "27,10": {
@@ -1391,7 +1466,7 @@
                   }
                 ],
                 "Comments": "売上のみの場合",
-                "ID": "ffe7cd7e-89d1-4dd7-83a9-ce4d158dfa83"
+                "ID": "065995cc-7b6d-4ca1-a686-35fb48e0c477"
               }
             ]
           }
@@ -1459,12 +1534,6 @@
             "IsReadOnly": false
           }
         ]
-      }
-    },
-    "27,48": {
-      "BindingInfo": {
-        "TableName": "t_sales",
-        "ColumnName": "billing_date"
       }
     },
     "30,21": {
@@ -1536,7 +1605,7 @@
                             "ReloadData": true
                           }
                         ],
-                        "ID": "a3bfa9e6-2970-4bb2-8c80-f9f7cce8a531"
+                        "ID": "531d63d7-ee04-485a-9dcd-1a276898f043"
                       },
                       {
                         "CommandList": [
@@ -1548,12 +1617,12 @@
                             }
                           }
                         ],
-                        "ID": "81e4244f-8f7e-4937-ba5a-827401cbb42a"
+                        "ID": "560369de-79f6-4fd5-b78b-9b3a694e8cf8"
                       }
                     ]
                   }
                 ],
-                "ID": "c3824bcf-e5c9-40fc-af36-c3d4b07df4c2"
+                "ID": "ce693d64-ed7d-4e5c-9209-e6e272f99c88"
               }
             ]
           }
@@ -1698,7 +1767,7 @@
                             "ReloadData": true
                           }
                         ],
-                        "ID": "eeccea2e-b9cf-4c2e-b0a9-8c8b93de2b5c"
+                        "ID": "0b9972f4-c04f-4ffe-92cf-99d06605d1e5"
                       },
                       {
                         "CommandList": [
@@ -1710,12 +1779,12 @@
                             }
                           }
                         ],
-                        "ID": "d2c48ce0-274b-4072-a9e0-0d75d7d53609"
+                        "ID": "1c841ea2-8cb4-40c7-ad76-7277701230ce"
                       }
                     ]
                   }
                 ],
-                "ID": "da2c462d-2a47-4d36-9e4a-4a286ec06bc1"
+                "ID": "f66035b3-5c47-4b81-8f7f-90ba94895764"
               }
             ]
           }
@@ -1974,7 +2043,7 @@
                     "CheckDataValidation": false
                   }
                 ],
-                "ID": "3440fbc4-f009-4d39-94d9-605b71a87470"
+                "ID": "1186c393-ce4a-4880-bbf3-c6fcd7980822"
               },
               {
                 "CommandList": [
@@ -2021,6 +2090,10 @@
                           "SerializeProperty": "=請求登録編集!K4"
                         },
                         "ParamName": "P_売上区分"
+                      },
+                      {
+                        "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                        "ParamName": "P_請求番号"
                       },
                       {
                         "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
@@ -2152,7 +2225,7 @@
                     "CheckDataValidation": false
                   }
                 ],
-                "ID": "f96786e3-240d-44d5-b53f-a18dcf908c8c"
+                "ID": "4f76499c-845c-4fc2-bb89-dfd6d230c9b4"
               }
             ]
           },
@@ -2185,7 +2258,7 @@
                     "ReloadData": true
                   }
                 ],
-                "ID": "da8e4d17-3c91-405d-9cf9-67e4449f68b1"
+                "ID": "bf71c040-681d-4137-a532-289500008586"
               },
               {
                 "CommandList": [
@@ -2197,7 +2270,7 @@
                     }
                   }
                 ],
-                "ID": "4db1b6f4-3d5d-4791-bd9e-c329761450b2"
+                "ID": "fcb7a045-ee1b-4b49-8715-4ffdbd051598"
               }
             ]
           }
@@ -2244,8 +2317,13 @@
         "FontFamily": 0
       },
       {
+        "Background": 6,
         "FontFamily": 0,
-        "Formatter": 6,
+        "Formatter": 2
+      },
+      {
+        "FontFamily": 0,
+        "Formatter": 7,
         "TextIndent": 4,
         "BorderBottom": null
       },
@@ -2255,7 +2333,7 @@
       },
       {
         "FontFamily": 0,
-        "Formatter": 6
+        "Formatter": 7
       },
       {
         "FontFamily": 0,
@@ -2267,12 +2345,8 @@
       },
       {
         "FontFamily": 0,
-        "Formatter": 8,
+        "Formatter": 9,
         "TextIndent": 4
-      },
-      {
-        "FontFamily": 0,
-        "Formatter": 9
       },
       {
         "FontFamily": 0,
@@ -2280,32 +2354,36 @@
       },
       {
         "FontFamily": 0,
+        "Formatter": 11
+      },
+      {
+        "Background": 8,
+        "FontFamily": 0
+      },
+      {
+        "FontFamily": 0,
+        "Formatter": 10,
+        "HorizontalAlignment": 12,
+        "BorderBottom": 0
+      },
+      {
+        "FontFamily": 0,
+        "BorderBottom": 0
+      },
+      {
+        "FontFamily": 0,
         "Formatter": 9,
-        "HorizontalAlignment": 11,
-        "BorderBottom": 0
-      },
-      {
-        "FontFamily": 0,
-        "BorderBottom": 0
-      },
-      {
-        "FontFamily": 0,
-        "Formatter": 8,
         "TextIndent": 0
       },
       {
         "FontFamily": 0,
-        "Formatter": 12,
+        "Formatter": 13,
         "TextIndent": 4,
         "HorizontalAlignment": 1,
         "BorderBottom": null
       },
       {
         "BorderBottom": null
-      },
-      {
-        "Background": 7,
-        "FontFamily": 0
       }
     ],
     "Types": {
@@ -2316,6 +2394,7 @@
         "Bold",
         "#FFFFFF00",
         "#FFFFC000",
+        "Accent 6 80",
         "@",
         "Background 1 -15",
         "General",
@@ -2326,7 +2405,7 @@
       ],
       "Borders": [
         {
-          "Color": 7
+          "Color": 8
         }
       ]
     },
@@ -2355,6 +2434,9 @@
       "3,16": 3,
       "3,17": 3,
       "3,45": 7,
+      "4,57": 1,
+      "4,58": 3,
+      "4,59": 3,
       "5,3": 3,
       "5,4": 3,
       "5,5": 3,
@@ -2396,6 +2478,9 @@
       "5,41": 3,
       "5,42": 3,
       "5,48": 8,
+      "5,57": 9,
+      "5,58": 3,
+      "5,59": 3,
       "6,3": 3,
       "6,4": 3,
       "6,5": 3,
@@ -2443,39 +2528,39 @@
       "7,7": 3,
       "7,8": 3,
       "7,9": 3,
-      "7,10": 9,
-      "7,11": 10,
-      "7,12": 10,
-      "7,13": 10,
-      "7,14": 10,
-      "7,15": 10,
-      "7,16": 10,
-      "7,17": 10,
-      "7,18": 10,
-      "7,19": 10,
-      "7,20": 10,
-      "7,21": 10,
-      "7,22": 10,
-      "7,23": 10,
-      "7,24": 10,
-      "7,25": 10,
-      "7,26": 10,
-      "7,27": 10,
-      "7,28": 10,
-      "7,29": 10,
-      "7,30": 10,
-      "7,31": 10,
-      "7,32": 10,
-      "7,33": 10,
-      "7,34": 10,
-      "7,35": 10,
-      "7,36": 10,
-      "7,37": 10,
-      "7,38": 10,
-      "7,39": 10,
-      "7,40": 10,
-      "7,41": 10,
-      "7,42": 10,
+      "7,10": 10,
+      "7,11": 11,
+      "7,12": 11,
+      "7,13": 11,
+      "7,14": 11,
+      "7,15": 11,
+      "7,16": 11,
+      "7,17": 11,
+      "7,18": 11,
+      "7,19": 11,
+      "7,20": 11,
+      "7,21": 11,
+      "7,22": 11,
+      "7,23": 11,
+      "7,24": 11,
+      "7,25": 11,
+      "7,26": 11,
+      "7,27": 11,
+      "7,28": 11,
+      "7,29": 11,
+      "7,30": 11,
+      "7,31": 11,
+      "7,32": 11,
+      "7,33": 11,
+      "7,34": 11,
+      "7,35": 11,
+      "7,36": 11,
+      "7,37": 11,
+      "7,38": 11,
+      "7,39": 11,
+      "7,40": 11,
+      "7,41": 11,
+      "7,42": 11,
       "7,48": 1,
       "7,49": 3,
       "7,50": 3,
@@ -2538,7 +2623,7 @@
       "9,7": 3,
       "9,8": 3,
       "9,9": 3,
-      "9,10": 11,
+      "9,10": 12,
       "9,11": 3,
       "9,12": 3,
       "9,13": 3,
@@ -2624,7 +2709,7 @@
       "11,7": 3,
       "11,8": 3,
       "11,9": 3,
-      "11,10": 11,
+      "11,10": 12,
       "11,48": 8,
       "11,49": 3,
       "11,50": 3,
@@ -2693,35 +2778,35 @@
       "13,7": 3,
       "13,8": 3,
       "13,9": 3,
-      "13,10": 12,
-      "13,11": 13,
-      "13,12": 13,
-      "13,13": 13,
-      "13,14": 13,
-      "13,15": 13,
-      "13,16": 13,
-      "13,17": 13,
-      "13,18": 13,
-      "13,19": 13,
-      "13,20": 13,
-      "13,21": 13,
-      "13,22": 13,
-      "13,23": 13,
-      "13,24": 13,
-      "13,25": 13,
-      "13,26": 13,
-      "13,27": 13,
-      "13,28": 13,
-      "13,29": 13,
-      "13,30": 13,
-      "13,31": 13,
-      "13,32": 13,
-      "13,33": 13,
-      "13,34": 13,
-      "13,35": 13,
-      "13,36": 13,
-      "13,37": 13,
-      "13,38": 10,
+      "13,10": 13,
+      "13,11": 14,
+      "13,12": 14,
+      "13,13": 14,
+      "13,14": 14,
+      "13,15": 14,
+      "13,16": 14,
+      "13,17": 14,
+      "13,18": 14,
+      "13,19": 14,
+      "13,20": 14,
+      "13,21": 14,
+      "13,22": 14,
+      "13,23": 14,
+      "13,24": 14,
+      "13,25": 14,
+      "13,26": 14,
+      "13,27": 14,
+      "13,28": 14,
+      "13,29": 14,
+      "13,30": 14,
+      "13,31": 14,
+      "13,32": 14,
+      "13,33": 14,
+      "13,34": 14,
+      "13,35": 14,
+      "13,36": 14,
+      "13,37": 14,
+      "13,38": 11,
       "13,39": 3,
       "13,40": 3,
       "13,41": 3,
@@ -2797,14 +2882,14 @@
       "15,7": 3,
       "15,8": 3,
       "15,9": 3,
-      "15,10": 14,
+      "15,10": 15,
       "15,11": 3,
       "15,12": 3,
       "15,13": 3,
       "15,14": 3,
       "15,15": 3,
       "15,16": 3,
-      "15,17": 15,
+      "15,17": 16,
       "15,18": 3,
       "15,19": 3,
       "15,20": 3,
@@ -2889,8 +2974,6 @@
       "16,52": 3,
       "16,53": 3,
       "16,54": 3,
-      "16,55": 3,
-      "16,56": 3,
       "16,57": 3,
       "16,58": 3,
       "16,59": 3,
@@ -2901,21 +2984,21 @@
       "17,7": 3,
       "17,8": 3,
       "17,9": 3,
-      "17,10": 14,
+      "17,10": 15,
       "17,11": 3,
       "17,12": 3,
       "17,13": 3,
       "17,14": 3,
       "17,15": 3,
       "17,16": 3,
-      "17,17": 15,
+      "17,17": 16,
       "17,18": 3,
       "17,19": 3,
       "17,20": 3,
       "17,21": 3,
       "17,22": 3,
       "17,23": 3,
-      "17,24": 15,
+      "17,24": 16,
       "17,25": 3,
       "17,26": 3,
       "17,27": 3,
@@ -2924,7 +3007,7 @@
       "17,30": 3,
       "17,31": 3,
       "17,32": 3,
-      "17,33": 16,
+      "17,33": 17,
       "17,34": 3,
       "17,35": 3,
       "17,36": 3,
@@ -2941,9 +3024,7 @@
       "17,52": 3,
       "17,53": 3,
       "17,54": 3,
-      "17,55": 3,
-      "17,56": 3,
-      "17,57": 3,
+      "17,57": 18,
       "17,58": 3,
       "17,59": 3,
       "18,3": 3,
@@ -3005,20 +3086,20 @@
       "19,7": 3,
       "19,8": 3,
       "19,9": 3,
-      "19,10": 14,
+      "19,10": 15,
       "19,11": 3,
       "19,12": 3,
       "19,13": 3,
       "19,14": 3,
       "19,15": 3,
       "19,16": 3,
-      "19,17": 17,
-      "19,18": 18,
-      "19,19": 18,
-      "19,20": 18,
-      "19,21": 18,
-      "19,22": 18,
-      "19,23": 18,
+      "19,17": 19,
+      "19,18": 20,
+      "19,19": 20,
+      "19,20": 20,
+      "19,21": 20,
+      "19,22": 20,
+      "19,23": 20,
       "19,24": 3,
       "19,25": 3,
       "19,26": 3,
@@ -3104,19 +3185,19 @@
       "20,57": 3,
       "20,58": 3,
       "20,59": 3,
-      "21,3": 19,
+      "21,3": 21,
       "21,4": 3,
       "21,5": 3,
       "21,6": 3,
       "21,7": 3,
       "21,8": 3,
       "21,9": 3,
-      "21,10": 20,
-      "21,11": 21,
-      "21,12": 21,
-      "21,13": 21,
-      "21,14": 21,
-      "21,15": 21,
+      "21,10": 22,
+      "21,11": 23,
+      "21,12": 23,
+      "21,13": 23,
+      "21,14": 23,
+      "21,15": 23,
       "21,16": 3,
       "21,23": 3,
       "21,24": 3,
@@ -3198,7 +3279,7 @@
       "22,57": 3,
       "22,58": 3,
       "22,59": 3,
-      "23,3": 19,
+      "23,3": 21,
       "23,4": 3,
       "23,5": 3,
       "23,6": 3,
@@ -3271,14 +3352,14 @@
       "24,57": 3,
       "24,58": 3,
       "24,59": 3,
-      "25,3": 19,
+      "25,3": 21,
       "25,4": 3,
       "25,5": 3,
       "25,6": 3,
       "25,7": 3,
       "25,8": 3,
       "25,9": 3,
-      "25,10": 11,
+      "25,10": 12,
       "25,16": 3,
       "25,17": 3,
       "25,48": 3,
@@ -3293,9 +3374,7 @@
       "25,57": 3,
       "25,58": 3,
       "25,59": 3,
-      "26,48": 3,
-      "26,49": 3,
-      "26,50": 3,
+      "26,48": 8,
       "26,51": 3,
       "26,52": 3,
       "26,53": 3,
@@ -3331,9 +3410,6 @@
       "27,32": 3,
       "27,33": 3,
       "27,34": 3,
-      "27,48": 22,
-      "27,49": 3,
-      "27,50": 3,
       "27,51": 3,
       "27,52": 3,
       "27,53": 3,
@@ -3397,12 +3473,14 @@
     "20,48,1,3",
     "11,48,1,3",
     "23,48,1,3",
-    "27,48,1,3",
     "11,10,1,33",
     "25,10,1,6",
     "1,33,1,10",
     "31,48,1,3",
-    "13,10,1,28"
+    "13,10,1,28",
+    "5,57,1,3",
+    "17,57,1,3",
+    "26,48,1,3"
   ],
   "PageInfo": {
     "$type": "Forguncy.Model.Pages.NormalPage, ServerDesignerCommon",
@@ -3449,7 +3527,7 @@
                 ]
               }
             ],
-            "ID": "40418932-cea6-41c6-b501-991fdbfff6bd"
+            "ID": "d62d2fc5-3dcd-4f7c-a010-d0536fe72846"
           }
         ]
       }
@@ -3469,7 +3547,7 @@
   "CustomNames": [
     {
       "Name": "工事ID",
-      "Formula": "請求登録編集!$BD$18"
+      "Formula": "請求登録編集!$BF$18"
     },
     {
       "Name": "申込ID",
@@ -3488,4 +3566,4 @@
       "Formula": "請求登録編集!$BD$15"
     }
   ]
-}//mJ8O2enljgRs9vJrdj98G6dTdpMNwFhJubEQI6wR210f/tEnSNvLbacC7KJ7Xrf+QcimD9eoL8RmQUQN2sOeG3ObVxPT9vpbnRV8rOblUSrWDSAYkoMlXK4fklLQAz6XAeF27DCsR+PmyaaLZQ4XjGXkoIyRpVjwkOqDGO7yF3Inhqd1n+Ayb2TxDVO6eTWByUnkD+sL6XR7NgPrlWAc83ezW87pBWoPrpLO0GsMW55YNXO86chrGS66wIFp/7IcwyDs7VirTYNw9fqyBd0mFlyR90ehNTUn5JzQ4Kp3oIIkyNsmu/KlGSRg5tzyXC48HD/dvF/dasRtfyeiY06sAfYZUj5vRDhQX19Ua2IKSaZ+Km4PU6I5MSNNAHgoXM/7O1JYepfzC7ziqGKJsSCBi0xIISRhtCzao0tJutUuYFdy3i2K6/DJOFaqKmvKHwvA2InZKR3/eJKjf/+jF+OVIwLKCRjCquwdPX6CrJm1zKovS9FUQYc1iS+22OizeK6u4IFTp3w1vd1ffY4MjC4QDbn7aeZbKijomoaZv3kpeXeV3gik/nJm7C8Mh/AG9iw9ssxkckKT8dAzEpl/GPduqIm+flqW3qogk/fsBtk2uxkKHvMSv9SsOIDJl1IbbfAjIqDwnVJyN5nY0GL0XUaFOCc6SaBjj2xVgNCxvUqd8zJqQ0ocRnplBkAHAfVhAayazGO0PVC39xuO75Gp0rClHXNTIIJaNHZu1pwoqflZMFU2mBU1Xy/uzzPr4V3a4bRA9shhK978Rn3MnS7I5iuA5GZRUdV4qeOzV/pK6Sl4FUuZQDygJt+vbZqMBA0DuFzQUW627xrdWYM5BYmnxlyAbJUJlWK4m+AitoH8nOm624bzVqXdpbpnaCMoZJ3sVmy4Jz6AOEClsrjp5wIS64a3Cw==|920
+}//HyTlYf4Dg8/2ZSUU3/K7jVA2LvZtX7ZmEyLWgWLP9vvqKhW8JV/42rNM4heHDeqqqGjLiU2mXgnzXXrKIHLEgS24DM0kGfP7IzOP71ZlJDl3jmnwevZAgC8jZf0k9Ah+x1YOsr5rjkI6NuSm5SfMzmcwOmJLT8DJSWTnfk8aj67iIF/drAyg50v/EIpub3I1RG7RbjoAcGDFdiaRM3wpA7sGl1UhfLriyrNfBHC6bH+jmBSIiHVlFva09uIQHBVucOhf2UEGc1H8DOB6Zg7mUSN7KN+HsLjdHUXncNTRROG63TULeqjotSeUu92azMD/gQzNyBSk1oh1BhwBZlxx3himmCHTRm7ILKyf/U6inatO86zDAwE5s7WQEndt2XCn+mN5I7GOqiM5R5flbN6hv895dhfv2YQEFASrxnY+aafkaAcCPGVKYxV6RDZKBpWoi7Gk/Lkk4quruCkg/AEGtCmZAEe98W/sp8tUzRkHheGgO3/8R2y0EFzOgzzm8aGlbrIG26E/ZfHOl3EuFwZgu6n7nxxvsjGuAe7ei2IoQ74VLONwuPSWRPtpQ1AYDlCvVKvx9pqcdM/sDzr8NZo/kDLkrUGXIM8InpQlVn8jwDeCS3FZVazIjjg7k8hAG//hL7dxQLV4w1u7V3CLnQNUw8HkHRrB4vS9EeT2zGeaK7TUIr1IY6yXi6wIWCZlzGocCgtJwuWVuVTf6Z44ADjpxEYeHr5fSBSoQZ3DrEHPKAHpVZPNwBErF7iLNiNNxTfDGNyZkeCMYuBJxnIv0VdMsz0paALsu5NNhsAWvCl00eEpGMzF0MopS4zuhqa4SQCEe+HCe8T0xJQgI7WSmvcuSUkNSKalv+9C8U/yCN5FwCl1MgRHrhoc2CrTdS8yuGbFK56aGteZRh7gZt4MvpZwGQ==|920
