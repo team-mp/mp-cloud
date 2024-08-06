@@ -737,6 +737,7 @@
     "18,128": "▼共有事項件数",
     "18,133": "▼申込事業者ID",
     "19,140": "▼最新保証ID",
+    "19,155": "▼保証辞退フラグ",
     "21,128": "▼グループ",
     "21,133": "▼住宅事業者ID",
     "21,147": "▼フォローカウント",
@@ -768,7 +769,8 @@
     "22,155": "IF(申込ID>0,IFERROR(ODATA(\"t_object_attachment/$count?$filter=object_order_id eq \"&IF(ISBLANK(申込ID),\"null\",申込ID)&\" and active_flg eq 1\"),0),0)",
     "7,163": "IF(申込ID>0,IFERROR(ODATA(\"t_object_product/$count?$filter=object_order_id eq \"&IF(ISBLANK(申込ID),\"null\",申込ID)&\" and purchase_required_flg eq 1 and purchase_receipt_date eq null\"),0),0)",
     "10,163": "IF(申込ID>0,ODATA(\"t_object_product/$count?$filter=object_order_id eq \"&IF(ISBLANK(申込ID),\"null\",申込ID)&\" and (accounting_type eq 1 and (sales_account_complete_flg eq 0 or purchase_account_complete_flg eq 0) or (accounting_type eq 2 and sales_account_complete_flg eq 0) or (accounting_type eq 3 and purchase_account_complete_flg eq 0))\"),0)",
-    "16,133": "IF(申込ID>0,ODATA(\"t_object_wait_documents/$count?$filter=receipt_flg eq 0 and object_order_id eq \"&IF(ISBLANK(申込ID),\"null\",申込ID)),0)"
+    "16,133": "IF(申込ID>0,ODATA(\"t_object_wait_documents/$count?$filter=receipt_flg eq 0 and object_order_id eq \"&IF(ISBLANK(申込ID),\"null\",申込ID)),0)",
+    "1,66": "IF(EZ21=1,\"保証辞退解除\",\"保証辞退\")"
   },
   "AttachInfos": {
     "1,8": {
@@ -860,7 +862,7 @@
                     "LoadBindingDataOption": 1
                   }
                 ],
-                "ID": "a65de5e7-3cb6-4986-a2e6-0c7e0ed99de4"
+                "ID": "2a3f2450-ffd1-40f2-aa59-c3096c70892a"
               },
               {
                 "CommandList": [
@@ -881,7 +883,7 @@
                     "LoadBindingDataOption": 1
                   }
                 ],
-                "ID": "e6b61680-0c61-4a0f-8940-de88110a5139"
+                "ID": "ba66645f-770c-40a4-b4fd-b5b2c7bb9918"
               }
             ]
           }
@@ -1042,7 +1044,7 @@
                                     "ReturnPropertiesTo": []
                                   }
                                 ],
-                                "ID": "d268b0fd-89a5-4963-b22f-2075bf3421bc"
+                                "ID": "80ed3dec-38de-4720-8871-fbe6bc1ec8b4"
                               },
                               {
                                 "CommandList": [
@@ -1057,17 +1059,17 @@
                                     "$type": "LoadingCommand.EndLoadingCommand, LoadingCommand"
                                   }
                                 ],
-                                "ID": "6cb2651b-5a45-4455-b9a6-64c533c4e490"
+                                "ID": "bcdc6085-9f1d-486b-a8d7-f7ed67f3258c"
                               }
                             ]
                           }
                         ],
-                        "ID": "89314380-e853-4064-9fd5-ff8b1a885c73"
+                        "ID": "1a62f371-6c2b-4c31-8a30-ca21f6ba6f04"
                       }
                     ]
                   }
                 ],
-                "ID": "408e61a3-9be2-40c5-ba76-e0e04bd98d79"
+                "ID": "1a35a4eb-a696-4333-aceb-f94636a56ad7"
               },
               {
                 "CommandList": [
@@ -1077,7 +1079,7 @@
                     "PassValues": []
                   }
                 ],
-                "ID": "630799e3-f83f-419b-b546-e2d8ef389271"
+                "ID": "c99ea9b6-d42b-4e3d-8567-f878a225cef8"
               }
             ]
           }
@@ -1212,445 +1214,548 @@
         "$type": "Forguncy.ButtonCellType, ServerDesignerCommon",
         "CommandList": [
           {
-            "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
-            "ParameterName": "保証料請求件数",
-            "TableValue": {
-              "TableName": "t_sales",
-              "TableValueType": 3,
-              "SqlCondition": {
-                "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
-                "Condition1": {
-                  "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
-                  "Condition1": {
-                    "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
-                    "ColumnBindingInfo": {
+            "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+            "ConditionAndCommandPairList": [
+              {
+                "Condition": {
+                  "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                  "param": {
+                    "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+                    "cellLocations": [
+                      {
+                        "SerializeProperty": "=申込詳細_内容!EZ21"
+                      }
+                    ]
+                  },
+                  "value": "0"
+                },
+                "CommandList": [
+                  {
+                    "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                    "ParameterName": "保証料請求件数",
+                    "TableValue": {
                       "TableName": "t_sales",
-                      "ColumnName": "object_order_id"
-                    },
-                    "Value": {
-                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                      "SerializeProperty": "=申込詳細_内容!申込ID"
-                    }
-                  },
-                  "Condition2": {
-                    "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
-                    "ColumnBindingInfo": {
-                      "TableName": "t_sales",
-                      "ColumnName": "billing_product_id",
-                      "RelationBinding": {
-                        "RelatedTable": "m_product",
-                        "RelatedColumn": "product_id",
-                        "DisplayColumn": "product_type_id"
+                      "TableValueType": 3,
+                      "SqlCondition": {
+                        "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                        "Condition1": {
+                          "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                          "Condition1": {
+                            "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                            "ColumnBindingInfo": {
+                              "TableName": "t_sales",
+                              "ColumnName": "object_order_id"
+                            },
+                            "Value": {
+                              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                              "SerializeProperty": "=申込詳細_内容!申込ID"
+                            }
+                          },
+                          "Condition2": {
+                            "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                            "ColumnBindingInfo": {
+                              "TableName": "t_sales",
+                              "ColumnName": "billing_product_id",
+                              "RelationBinding": {
+                                "RelatedTable": "m_product",
+                                "RelatedColumn": "product_id",
+                                "DisplayColumn": "product_type_id"
+                              }
+                            },
+                            "Value": "3"
+                          }
+                        },
+                        "Condition2": {
+                          "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                          "ColumnBindingInfo": {
+                            "TableName": "t_sales",
+                            "ColumnName": "delete_flg"
+                          },
+                          "Value": "0"
+                        }
                       }
                     },
-                    "Value": "3"
-                  }
-                },
-                "Condition2": {
-                  "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
-                  "ColumnBindingInfo": {
-                    "TableName": "t_sales",
-                    "ColumnName": "delete_flg"
+                    "ID": "9a329851fc594c06b953c0001d189eac"
                   },
-                  "Value": "0"
-                }
-              }
-            },
-            "ID": "8a0df28681ee4f42bc3204d313a4b48c"
-          },
-          {
-            "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
-            "ConditionAndCommandPairList": [
-              {
-                "Condition": {
-                  "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
-                  "param": {
-                    "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
-                    "cellLocations": [
-                      {
-                        "SerializeProperty": "=申込詳細_内容!保証料請求件数"
-                      }
-                    ]
-                  },
-                  "value": "0",
-                  "compareType": 2
-                },
-                "CommandList": [
                   {
                     "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
                     "ConditionAndCommandPairList": [
                       {
-                        "ConfirmDialogSettings": {
-                          "Title": "確認",
-                          "FormulaText": "保証料の請求データが作成済みです。\r\n保証辞退する場合は、請求データの削除または取り消しをしてください。\r\n処理を継続します。よろしいですか？",
-                          "YesButtonText": "はい",
-                          "NoButtonText": "いいえ",
-                          "ConfirmIcon": 4
+                        "Condition": {
+                          "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                          "param": {
+                            "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+                            "cellLocations": [
+                              {
+                                "SerializeProperty": "=申込詳細_内容!保証料請求件数"
+                              }
+                            ]
+                          },
+                          "value": "0",
+                          "compareType": 2
                         },
                         "CommandList": [
                           {
-                            "$type": "Forguncy.Model.RunJavaScriptCommand, ServerDesignerCommon",
-                            "JavaScript": "return true;",
-                            "ID": "ce868fef26424e33bae5d7814e98551d"
+                            "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+                            "ConditionAndCommandPairList": [
+                              {
+                                "ConfirmDialogSettings": {
+                                  "Title": "確認",
+                                  "FormulaText": "保証料の請求データが作成済みです。\r\n保証辞退する場合は、請求データの削除または取り消しをしてください。\r\n処理を継続します。よろしいですか？",
+                                  "YesButtonText": "はい",
+                                  "NoButtonText": "いいえ",
+                                  "ConfirmIcon": 4
+                                },
+                                "CommandList": [
+                                  {
+                                    "$type": "Forguncy.Model.RunJavaScriptCommand, ServerDesignerCommon",
+                                    "JavaScript": "return true;",
+                                    "ID": "5c75da8829044edaa91017fc2a67d6c7"
+                                  }
+                                ],
+                                "ID": "f4180236-ad8e-43b0-95c9-cb80d5e6d233"
+                              },
+                              {
+                                "CommandList": [
+                                  {
+                                    "$type": "Forguncy.Model.StopCommand, ServerDesignerCommon"
+                                  }
+                                ],
+                                "ID": "5f477962-19eb-44b8-a91a-1644a97cb745"
+                              }
+                            ]
                           }
                         ],
-                        "ID": "42cf93f7-1ee3-40c7-98e1-f327d1aa7c67"
-                      },
-                      {
-                        "CommandList": [
-                          {
-                            "$type": "Forguncy.Model.StopCommand, ServerDesignerCommon"
-                          }
-                        ],
-                        "ID": "f571ab83-bdad-40df-b879-11776c9dba7a"
-                      }
-                    ]
-                  }
-                ],
-                "ID": "09cb7d67-1f9c-4320-99e3-35f1020cc9ca"
-              }
-            ]
-          },
-          {
-            "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
-            "ParameterName": "保証セットフラグ",
-            "TableValue": {
-              "TableName": "t_object_order_product",
-              "TableValueType": 3,
-              "SqlCondition": {
-                "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
-                "Condition1": {
-                  "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
-                  "Condition1": {
-                    "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
-                    "ColumnBindingInfo": {
-                      "TableName": "t_object_order_product",
-                      "ColumnName": "object_order_id"
-                    },
-                    "Value": {
-                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                      "SerializeProperty": "=申込詳細_内容!申込ID"
-                    }
-                  },
-                  "Condition2": {
-                    "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
-                    "ColumnBindingInfo": {
-                      "TableName": "t_object_order_product",
-                      "ColumnName": "product_order_type"
-                    },
-                    "Value": "1"
-                  }
-                },
-                "Condition2": {
-                  "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
-                  "Condition1": {
-                    "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
-                    "ColumnBindingInfo": {
-                      "TableName": "t_object_order_product",
-                      "ColumnName": "product_id",
-                      "RelationBinding": {
-                        "RelatedTable": "m_product",
-                        "RelatedColumn": "product_id",
-                        "DisplayColumn": "product_type_id",
-                        "NextRelationBinding": {
-                          "RelatedTable": "m_product_type",
-                          "RelatedColumn": "product_type_id",
-                          "DisplayColumn": "survey_warranty_set_flg"
-                        }
-                      }
-                    },
-                    "Value": "1",
-                    "LeftBracket": 1
-                  },
-                  "Condition2": {
-                    "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
-                    "ColumnBindingInfo": {
-                      "TableName": "t_object_order_product",
-                      "ColumnName": "product_id",
-                      "RelationBinding": {
-                        "RelatedTable": "m_product",
-                        "RelatedColumn": "product_id",
-                        "DisplayColumn": "product_type_id",
-                        "NextRelationBinding": {
-                          "RelatedTable": "m_product_type",
-                          "RelatedColumn": "product_type_id",
-                          "DisplayColumn": "analysis_warranty_set_flg"
-                        }
-                      }
-                    },
-                    "Value": "1",
-                    "RightBracket": 1
-                  },
-                  "RelationType": 1
-                }
-              }
-            },
-            "ID": "dd26f6c3143947eba4ae4cc1d104b9d4",
-            "Comments": "受付商品の商品区分より保証セットフラグをカウント"
-          },
-          {
-            "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
-            "ConditionAndCommandPairList": [
-              {
-                "Condition": {
-                  "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
-                  "param": {
-                    "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
-                    "cellLocations": [
-                      {
-                        "SerializeProperty": "=申込詳細_内容!保証セットフラグ"
+                        "ID": "295db47e-05bf-4e4a-9c42-d0065594cde2"
                       }
                     ]
                   },
-                  "value": "1"
-                },
-                "CommandList": [
+                  {
+                    "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                    "ParameterName": "保証セットフラグ",
+                    "TableValue": {
+                      "TableName": "t_object_order_product",
+                      "TableValueType": 3,
+                      "SqlCondition": {
+                        "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                        "Condition1": {
+                          "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                          "Condition1": {
+                            "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                            "ColumnBindingInfo": {
+                              "TableName": "t_object_order_product",
+                              "ColumnName": "object_order_id"
+                            },
+                            "Value": {
+                              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                              "SerializeProperty": "=申込詳細_内容!申込ID"
+                            }
+                          },
+                          "Condition2": {
+                            "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                            "ColumnBindingInfo": {
+                              "TableName": "t_object_order_product",
+                              "ColumnName": "product_order_type"
+                            },
+                            "Value": "1"
+                          }
+                        },
+                        "Condition2": {
+                          "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                          "Condition1": {
+                            "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                            "ColumnBindingInfo": {
+                              "TableName": "t_object_order_product",
+                              "ColumnName": "product_id",
+                              "RelationBinding": {
+                                "RelatedTable": "m_product",
+                                "RelatedColumn": "product_id",
+                                "DisplayColumn": "product_type_id",
+                                "NextRelationBinding": {
+                                  "RelatedTable": "m_product_type",
+                                  "RelatedColumn": "product_type_id",
+                                  "DisplayColumn": "survey_warranty_set_flg"
+                                }
+                              }
+                            },
+                            "Value": "1",
+                            "LeftBracket": 1
+                          },
+                          "Condition2": {
+                            "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                            "ColumnBindingInfo": {
+                              "TableName": "t_object_order_product",
+                              "ColumnName": "product_id",
+                              "RelationBinding": {
+                                "RelatedTable": "m_product",
+                                "RelatedColumn": "product_id",
+                                "DisplayColumn": "product_type_id",
+                                "NextRelationBinding": {
+                                  "RelatedTable": "m_product_type",
+                                  "RelatedColumn": "product_type_id",
+                                  "DisplayColumn": "analysis_warranty_set_flg"
+                                }
+                              }
+                            },
+                            "Value": "1",
+                            "RightBracket": 1
+                          },
+                          "RelationType": 1
+                        }
+                      }
+                    },
+                    "ID": "857ba9b60b8d4d18990e2b03828cc14a",
+                    "Comments": "受付商品の商品区分より保証セットフラグをカウント"
+                  },
                   {
                     "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
                     "ConditionAndCommandPairList": [
                       {
-                        "ConfirmDialogSettings": {
-                          "Title": "確認",
-                          "FormulaText": "この申込は、保証セットの申込タイプで受付しています。\r\n保証辞退する場合は、申込タイプを修正してください。\r\n処理を継続します。よろしいですか？",
-                          "YesButtonText": "はい",
-                          "NoButtonText": "いいえ",
-                          "ConfirmIcon": 4
+                        "Condition": {
+                          "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                          "param": {
+                            "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+                            "cellLocations": [
+                              {
+                                "SerializeProperty": "=申込詳細_内容!保証セットフラグ"
+                              }
+                            ]
+                          },
+                          "value": "1"
                         },
                         "CommandList": [
                           {
-                            "$type": "Forguncy.Model.RunJavaScriptCommand, ServerDesignerCommon",
-                            "JavaScript": "return true;",
-                            "ID": "b38ffbdbf1c542c182e21c2a9b52f54f"
+                            "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+                            "ConditionAndCommandPairList": [
+                              {
+                                "ConfirmDialogSettings": {
+                                  "Title": "確認",
+                                  "FormulaText": "この申込は、保証セットの申込タイプで受付しています。\r\n保証辞退する場合は、申込タイプを修正してください。\r\n処理を継続します。よろしいですか？",
+                                  "YesButtonText": "はい",
+                                  "NoButtonText": "いいえ",
+                                  "ConfirmIcon": 4
+                                },
+                                "CommandList": [
+                                  {
+                                    "$type": "Forguncy.Model.RunJavaScriptCommand, ServerDesignerCommon",
+                                    "JavaScript": "return true;",
+                                    "ID": "b07fbfb98ee345cd8d854989219dd9de"
+                                  }
+                                ],
+                                "ID": "dfdb6cd1-b473-40c1-a0f2-59241e7bde81"
+                              },
+                              {
+                                "CommandList": [
+                                  {
+                                    "$type": "Forguncy.Model.StopCommand, ServerDesignerCommon"
+                                  }
+                                ],
+                                "ID": "27de1084-2ade-4cc9-82ab-b2a23776568e"
+                              }
+                            ]
                           }
                         ],
-                        "ID": "41caa73b-9ea6-4b83-aaeb-171374b97e45"
-                      },
-                      {
-                        "CommandList": [
-                          {
-                            "$type": "Forguncy.Model.StopCommand, ServerDesignerCommon"
-                          }
-                        ],
-                        "ID": "2eaf8c7d-9c3f-4b15-bbec-540467439174"
+                        "ID": "f9c938d6-bd32-4772-836c-4e1048d1cf18"
                       }
                     ]
-                  }
-                ],
-                "ID": "a6118f57-f4ea-4864-a8d9-39b073c4e751"
-              }
-            ]
-          },
-          {
-            "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
-            "ParameterName": "転圧ST",
-            "TableValue": {
-              "TableName": "t_object_order",
-              "TableValueType": 1,
-              "BindingInfos": [
-                {
-                  "BindingInfo": {
-                    "TableName": "t_object_order",
-                    "ColumnName": "latest_compaction_id",
-                    "RelationBinding": {
-                      "RelatedTable": "t_object_compaction",
-                      "RelatedColumn": "compaction_id",
-                      "DisplayColumn": "compaction_status_id",
-                      "NextRelationBinding": {
-                        "RelatedTable": "m_compaction_status",
-                        "RelatedColumn": "compaction_status_id",
-                        "DisplayColumn": "complete_flg"
-                      }
-                    }
                   },
-                  "ColumnName": "完了フラグ"
-                },
-                {
-                  "BindingInfo": {
-                    "TableName": "t_object_order",
-                    "ColumnName": "latest_compaction_id",
-                    "RelationBinding": {
-                      "RelatedTable": "t_object_compaction",
-                      "RelatedColumn": "compaction_id",
-                      "DisplayColumn": "compaction_status_id",
-                      "NextRelationBinding": {
-                        "RelatedTable": "m_compaction_status",
-                        "RelatedColumn": "compaction_status_id",
-                        "DisplayColumn": "design_wait_flg"
-                      }
-                    }
-                  },
-                  "ColumnName": "転圧設計待ちフラグ"
-                }
-              ],
-              "SqlCondition": {
-                "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
-                "ColumnBindingInfo": {
-                  "TableName": "t_object_order",
-                  "ColumnName": "object_order_id"
-                },
-                "Value": {
-                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=申込詳細_内容!申込ID"
-                }
-              }
-            },
-            "ID": "d27744c3b87e44a7aa6d64b11ce461e6"
-          },
-          {
-            "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
-            "ConditionAndCommandPairList": [
-              {
-                "Condition": {
-                  "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
-                  "Condition1": {
-                    "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
-                    "param": {
-                      "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
-                      "cellLocations": [
+                  {
+                    "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                    "ParameterName": "転圧ST",
+                    "TableValue": {
+                      "TableName": "t_object_order",
+                      "TableValueType": 1,
+                      "BindingInfos": [
                         {
-                          "SerializeProperty": "=申込詳細_内容!転圧ST.完了フラグ"
-                        }
-                      ]
-                    },
-                    "value": "0"
-                  },
-                  "Condition2": {
-                    "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
-                    "param": {
-                      "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
-                      "cellLocations": [
+                          "BindingInfo": {
+                            "TableName": "t_object_order",
+                            "ColumnName": "latest_compaction_id",
+                            "RelationBinding": {
+                              "RelatedTable": "t_object_compaction",
+                              "RelatedColumn": "compaction_id",
+                              "DisplayColumn": "compaction_status_id",
+                              "NextRelationBinding": {
+                                "RelatedTable": "m_compaction_status",
+                                "RelatedColumn": "compaction_status_id",
+                                "DisplayColumn": "complete_flg"
+                              }
+                            }
+                          },
+                          "ColumnName": "完了フラグ"
+                        },
                         {
-                          "SerializeProperty": "=申込詳細_内容!転圧ST.転圧設計待ちフラグ"
+                          "BindingInfo": {
+                            "TableName": "t_object_order",
+                            "ColumnName": "latest_compaction_id",
+                            "RelationBinding": {
+                              "RelatedTable": "t_object_compaction",
+                              "RelatedColumn": "compaction_id",
+                              "DisplayColumn": "compaction_status_id",
+                              "NextRelationBinding": {
+                                "RelatedTable": "m_compaction_status",
+                                "RelatedColumn": "compaction_status_id",
+                                "DisplayColumn": "design_wait_flg"
+                              }
+                            }
+                          },
+                          "ColumnName": "転圧設計待ちフラグ"
                         }
-                      ]
+                      ],
+                      "SqlCondition": {
+                        "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                        "ColumnBindingInfo": {
+                          "TableName": "t_object_order",
+                          "ColumnName": "object_order_id"
+                        },
+                        "Value": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=申込詳細_内容!申込ID"
+                        }
+                      }
                     },
-                    "value": "0"
-                  }
-                },
-                "CommandList": [
+                    "ID": "945884fae0db4e09be58b2111de7cf6e"
+                  },
                   {
                     "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
                     "ConditionAndCommandPairList": [
                       {
-                        "ConfirmDialogSettings": {
-                          "Title": "確認",
-                          "FormulaText": "仕掛中の転圧データが存在ます。\r\n保証辞退する場合は、転圧ステータスを「手配取り下げ」に更新します。\r\n処理を継続します。よろしいですか？",
-                          "YesButtonText": "はい",
-                          "NoButtonText": "いいえ",
-                          "ConfirmIcon": 4
+                        "Condition": {
+                          "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                          "Condition1": {
+                            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                            "param": {
+                              "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+                              "cellLocations": [
+                                {
+                                  "SerializeProperty": "=申込詳細_内容!転圧ST.完了フラグ"
+                                }
+                              ]
+                            },
+                            "value": "0"
+                          },
+                          "Condition2": {
+                            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                            "param": {
+                              "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+                              "cellLocations": [
+                                {
+                                  "SerializeProperty": "=申込詳細_内容!転圧ST.転圧設計待ちフラグ"
+                                }
+                              ]
+                            },
+                            "value": "0"
+                          }
                         },
                         "CommandList": [
                           {
-                            "$type": "Forguncy.Model.RunJavaScriptCommand, ServerDesignerCommon",
-                            "JavaScript": "return true;",
-                            "ID": "7861de9379cf40baa4347db92efd3aff"
+                            "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+                            "ConditionAndCommandPairList": [
+                              {
+                                "ConfirmDialogSettings": {
+                                  "Title": "確認",
+                                  "FormulaText": "仕掛中の転圧データが存在ます。\r\n保証辞退する場合は、転圧ステータスを「手配取り下げ」に更新します。\r\n処理を継続します。よろしいですか？",
+                                  "YesButtonText": "はい",
+                                  "NoButtonText": "いいえ",
+                                  "ConfirmIcon": 4
+                                },
+                                "CommandList": [
+                                  {
+                                    "$type": "Forguncy.Model.RunJavaScriptCommand, ServerDesignerCommon",
+                                    "JavaScript": "return true;",
+                                    "ID": "d89dd4f940bd44d1b9f1944eeeffc765"
+                                  }
+                                ],
+                                "ID": "310358cb-6cb5-427e-8c3f-a535e9bf02f6"
+                              },
+                              {
+                                "CommandList": [
+                                  {
+                                    "$type": "Forguncy.Model.StopCommand, ServerDesignerCommon"
+                                  }
+                                ],
+                                "ID": "23c39b60-b7c6-4059-8c9c-79b58a76cbd2"
+                              }
+                            ]
                           }
                         ],
-                        "ID": "65d140ff-b6ee-4d97-bef4-776af5bbba90"
-                      },
+                        "ID": "5fa59cd2-500b-431a-970e-0bdc7e03a01f"
+                      }
+                    ]
+                  },
+                  {
+                    "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                    "ParameterName": "工事見積中件数",
+                    "TableValue": {
+                      "TableName": "t_object_construction_estimate",
+                      "TableValueType": 3,
+                      "SqlCondition": {
+                        "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                        "Condition1": {
+                          "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                          "Condition1": {
+                            "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                            "ColumnBindingInfo": {
+                              "TableName": "t_object_construction_estimate",
+                              "ColumnName": "object_order_id"
+                            },
+                            "Value": {
+                              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                              "SerializeProperty": "=申込詳細_内容!申込ID"
+                            }
+                          },
+                          "Condition2": {
+                            "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                            "ColumnBindingInfo": {
+                              "TableName": "t_object_construction_estimate",
+                              "ColumnName": "construction_estimate_status_id",
+                              "RelationBinding": {
+                                "RelatedTable": "m_construction_estimate_status",
+                                "RelatedColumn": "construction_estimate_status_id",
+                                "DisplayColumn": "complete_flg"
+                              }
+                            },
+                            "Value": "0"
+                          }
+                        },
+                        "Condition2": {
+                          "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                          "ColumnBindingInfo": {
+                            "TableName": "t_object_construction_estimate",
+                            "ColumnName": "construction_estimate_status_id",
+                            "RelationBinding": {
+                              "RelatedTable": "m_construction_estimate_status",
+                              "RelatedColumn": "construction_estimate_status_id",
+                              "DisplayColumn": "estimate_arrange_wait_flg"
+                            }
+                          },
+                          "Value": "0"
+                        }
+                      }
+                    },
+                    "ID": "4548db7e09de42b0b86db731fd9f1ae3",
+                    "Comments": "完了または手配待ち以外の工事見積中件数を取得"
+                  },
+                  {
+                    "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+                    "ConditionAndCommandPairList": [
                       {
+                        "Condition": {
+                          "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                          "param": {
+                            "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+                            "cellLocations": [
+                              {
+                                "SerializeProperty": "=申込詳細_内容!工事見積中件数"
+                              }
+                            ]
+                          },
+                          "value": "0",
+                          "compareType": 2
+                        },
                         "CommandList": [
+                          {
+                            "$type": "Forguncy.Model.ShowMessageCommand, ServerDesignerCommon",
+                            "MessageFormula": "工事見積中の工事会社が存在します。\r\n工事見積ステータスを「手配取り下げ」に変更して下さい。\r\n※詳細は工事タブよりご確認下さい。\r\n"
+                          },
                           {
                             "$type": "Forguncy.Model.StopCommand, ServerDesignerCommon"
                           }
                         ],
-                        "ID": "36748460-925e-48c9-ae07-1d8f12a6c576"
+                        "ID": "6ff9d8c5-75cf-458a-b7c8-453950bddc9a"
                       }
                     ]
-                  }
-                ],
-                "ID": "e42746e6-8b44-411d-9e81-3cfa2ef68e46"
-              }
-            ]
-          },
-          {
-            "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
-            "ParameterName": "工事見積中件数",
-            "TableValue": {
-              "TableName": "t_object_construction_estimate",
-              "TableValueType": 3,
-              "SqlCondition": {
-                "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
-                "Condition1": {
-                  "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
-                  "Condition1": {
-                    "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
-                    "ColumnBindingInfo": {
-                      "TableName": "t_object_construction_estimate",
-                      "ColumnName": "object_order_id"
-                    },
-                    "Value": {
-                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                      "SerializeProperty": "=申込詳細_内容!申込ID"
-                    }
                   },
-                  "Condition2": {
-                    "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
-                    "ColumnBindingInfo": {
+                  {
+                    "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                    "ParameterName": "見積手配待ち件数",
+                    "TableValue": {
                       "TableName": "t_object_construction_estimate",
-                      "ColumnName": "construction_estimate_status_id",
-                      "RelationBinding": {
-                        "RelatedTable": "m_construction_estimate_status",
-                        "RelatedColumn": "construction_estimate_status_id",
-                        "DisplayColumn": "complete_flg"
+                      "TableValueType": 3,
+                      "SqlCondition": {
+                        "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                        "Condition1": {
+                          "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                          "ColumnBindingInfo": {
+                            "TableName": "t_object_construction_estimate",
+                            "ColumnName": "object_order_id"
+                          },
+                          "Value": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=申込詳細_内容!申込ID"
+                          }
+                        },
+                        "Condition2": {
+                          "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                          "ColumnBindingInfo": {
+                            "TableName": "t_object_construction_estimate",
+                            "ColumnName": "construction_estimate_status_id",
+                            "RelationBinding": {
+                              "RelatedTable": "m_construction_estimate_status",
+                              "RelatedColumn": "construction_estimate_status_id",
+                              "DisplayColumn": "estimate_arrange_wait_flg"
+                            }
+                          },
+                          "Value": "1"
+                        }
                       }
                     },
-                    "Value": "0"
-                  }
-                },
-                "Condition2": {
-                  "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
-                  "ColumnBindingInfo": {
-                    "TableName": "t_object_construction_estimate",
-                    "ColumnName": "construction_estimate_status_id",
-                    "RelationBinding": {
-                      "RelatedTable": "m_construction_estimate_status",
-                      "RelatedColumn": "construction_estimate_status_id",
-                      "DisplayColumn": "estimate_arrange_wait_flg"
-                    }
+                    "ID": "f474e9529c674907b412bc81b2b47ddb",
+                    "Comments": "見積手配待ち件数"
                   },
-                  "Value": "0"
-                }
-              }
-            },
-            "ID": "7d5eccc825bc49d09d07b6ef33bb160c",
-            "Comments": "完了または手配待ち以外の工事見積中件数を取得"
-          },
-          {
-            "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
-            "ConditionAndCommandPairList": [
-              {
-                "Condition": {
-                  "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
-                  "param": {
-                    "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
-                    "cellLocations": [
+                  {
+                    "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+                    "ConditionAndCommandPairList": [
                       {
-                        "SerializeProperty": "=申込詳細_内容!工事見積中件数"
+                        "Condition": {
+                          "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                          "param": {
+                            "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+                            "cellLocations": [
+                              {
+                                "SerializeProperty": "=申込詳細_内容!見積手配待ち件数"
+                              }
+                            ]
+                          },
+                          "value": "0",
+                          "compareType": 2
+                        },
+                        "CommandList": [
+                          {
+                            "$type": "Forguncy.Model.ShowMessageCommand, ServerDesignerCommon",
+                            "MessageFormula": "見積手配待ちの工事会社が存在します。\r\n対象の工事会社は「見積依頼先リスト」より削除してください。\r\n※詳細は工事タブよりご確認下さい。\r\n"
+                          },
+                          {
+                            "$type": "Forguncy.Model.SetCellPropertyCommand, ServerDesignerCommon",
+                            "PropertyItemsList": [
+                              {
+                                "TargetCells": {
+                                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                  "SerializeProperty": "=申込詳細_内容!ER4"
+                                },
+                                "Value": "6"
+                              }
+                            ],
+                            "Comments": "工事タブへ"
+                          },
+                          {
+                            "$type": "Forguncy.Model.StopCommand, ServerDesignerCommon"
+                          }
+                        ],
+                        "ID": "aff7aadc-2ed8-44d5-9d75-7a31e0d60324"
                       }
                     ]
                   },
-                  "value": "0",
-                  "compareType": 2
-                },
-                "CommandList": [
                   {
-                    "$type": "Forguncy.Model.ShowMessageCommand, ServerDesignerCommon",
-                    "MessageFormula": "工事見積中の工事会社が存在します。\r\n工事見積ステータスを「手配取り下げ」に変更して下さい。\r\n※詳細は工事タブよりご確認下さい\r\n"
-                  },
-                  {
-                    "$type": "Forguncy.Model.StopCommand, ServerDesignerCommon"
+                    "$type": "Forguncy.Model.ShowPopupCommand, ServerDesignerCommon",
+                    "PageName": "保証辞退登録",
+                    "PassValues": [],
+                    "LoadBindingDataOption": 1
                   }
                 ],
-                "ID": "0e1bf2cf-298a-4fd9-a3ab-dbdd747bce23"
+                "Comments": "保証辞退ではない場合",
+                "ID": "ea1b4df9-b305-4cc3-a232-f946f82d928c"
               }
             ]
-          },
-          {
-            "$type": "Forguncy.Model.ShowPopupCommand, ServerDesignerCommon",
-            "PageName": "保証辞退登録",
-            "PassValues": [],
-            "LoadBindingDataOption": 1
           }
         ],
         "Text": "保証辞退",
@@ -1669,7 +1774,7 @@
             "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
             "Formula": {
               "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-              "SerializeProperty": "=OR(申込詳細_内容!$EZ$17<>1,申込詳細_内容!$EZ$19=1,申込詳細_内容!$EZ$15<>1)"
+              "SerializeProperty": "=AND(OR(申込詳細_内容!$EZ$17<>1,申込詳細_内容!$EZ$19=1,申込詳細_内容!$EZ$15<>1),申込詳細_内容!$EZ$21=0)"
             },
             "StyleInfo": {
               "Underline": null,
@@ -2181,7 +2286,7 @@
                   }
                 ],
                 "Comments": "申込タブの場合",
-                "ID": "919b6cc9-dd0e-4a04-b5f7-e3437e6ee0a9"
+                "ID": "223e26ff-f7b3-40f9-8cd8-0e38f44691aa"
               }
             ]
           }
@@ -2236,7 +2341,7 @@
                   }
                 ],
                 "Comments": "申込",
-                "ID": "501363e9-0eac-4a60-b257-ce9695a476e7"
+                "ID": "445841c7-7ebd-45e5-ba3e-583af6dc3685"
               },
               {
                 "Condition": {
@@ -2273,7 +2378,7 @@
                   }
                 ],
                 "Comments": "調査",
-                "ID": "17b53675-b859-42d7-a57b-3fcd22575289"
+                "ID": "92b1fb32-62af-4df9-9af3-e224c439ba42"
               },
               {
                 "Condition": {
@@ -2310,7 +2415,7 @@
                   }
                 ],
                 "Comments": "測量",
-                "ID": "dadaabbd-85e5-486f-af35-290b735e3572"
+                "ID": "3acc318d-ac68-48b9-a7e9-87f17064cdf9"
               },
               {
                 "Condition": {
@@ -2347,7 +2452,7 @@
                   }
                 ],
                 "Comments": "解析",
-                "ID": "3c560e60-7398-45dc-b4a4-2da40dd9399e"
+                "ID": "0523705b-925e-4252-b1f5-b750b90d9739"
               },
               {
                 "Condition": {
@@ -2384,7 +2489,7 @@
                   }
                 ],
                 "Comments": "転圧",
-                "ID": "dfd70089-69b9-48b9-b673-12ad7fc51f53"
+                "ID": "235b031e-e086-48eb-bcf5-3b2642ff64a4"
               },
               {
                 "Condition": {
@@ -2421,7 +2526,7 @@
                   }
                 ],
                 "Comments": "工事",
-                "ID": "ec5b74cb-a834-4282-875a-d27d73301ded"
+                "ID": "cd0c9b67-6b72-4713-ba40-b229480c00df"
               },
               {
                 "Condition": {
@@ -2458,7 +2563,7 @@
                   }
                 ],
                 "Comments": "保証",
-                "ID": "a0712414-debd-482c-a330-bb363ecb4f3e"
+                "ID": "331c46ee-a2ee-40be-8b82-3679094f73dc"
               },
               {
                 "Condition": {
@@ -2495,7 +2600,7 @@
                   }
                 ],
                 "Comments": "請求",
-                "ID": "55eb5538-d06a-42f3-8bf1-987535b8c716"
+                "ID": "d1d2a428-f2b6-4705-8594-ef73d5260375"
               },
               {
                 "Condition": {
@@ -2525,7 +2630,7 @@
                   }
                 ],
                 "Comments": "メール",
-                "ID": "7c62e3ab-74bc-4f0a-9512-64de79bd1fea"
+                "ID": "32bfdb28-ab8b-4c6a-b312-02b832612a3a"
               },
               {
                 "Condition": {
@@ -2555,7 +2660,7 @@
                   }
                 ],
                 "Comments": "フォロー",
-                "ID": "cb76956c-e096-49a1-9d22-b3ab6cbfdca0"
+                "ID": "56c67fbd-5e01-4da3-ac24-cef1e420bf0b"
               }
             ]
           },
@@ -3095,6 +3200,17 @@
         "ColumnName": "latest_warranty_id"
       }
     },
+    "20,155": {
+      "BindingInfo": {
+        "TableName": "t_object_order",
+        "ColumnName": "order_status_id",
+        "RelationBinding": {
+          "RelatedTable": "m_order_status",
+          "RelatedColumn": "order_status_id",
+          "DisplayColumn": "warranty_decline_flg"
+        }
+      }
+    },
     "22,128": {
       "BindingInfo": {
         "TableName": "t_object_order",
@@ -3454,7 +3570,7 @@
                     "ReturnPropertiesTo": []
                   }
                 ],
-                "ID": "acc263f4-2b93-46d0-b3f8-6e48df59d659"
+                "ID": "eca4423d-37cd-46ac-90d3-6646af21b6b5"
               }
             ]
           }
@@ -4929,7 +5045,7 @@
       "19,152": 12,
       "19,153": 12,
       "19,154": 12,
-      "19,155": 12,
+      "19,155": 16,
       "19,156": 12,
       "19,157": 12,
       "20,89": 12,
@@ -4961,9 +5077,7 @@
       "20,152": 12,
       "20,153": 12,
       "20,154": 12,
-      "20,155": 12,
-      "20,156": 12,
-      "20,157": 12,
+      "20,155": 32,
       "21,89": 12,
       "21,123": 12,
       "21,124": 6,
@@ -5459,7 +5573,8 @@
     "7,163,1,3",
     "10,163,1,3",
     "16,133,1,3",
-    "27,128,1,25"
+    "27,128,1,25",
+    "20,155,1,3"
   ],
   "PageInfo": {
     "$type": "Forguncy.Model.Pages.NormalPage, ServerDesignerCommon",
@@ -5502,7 +5617,7 @@
                 }
               }
             ],
-            "ID": "0c7d0f90-4b65-425e-8f0b-dd57c07b776c"
+            "ID": "c3c3e94a-027f-45a1-becc-83a6aa00aa98"
           },
           {
             "CommandList": [
@@ -5542,7 +5657,7 @@
                             }
                           }
                         },
-                        "ID": "e93035ee930a434bb5cd45f52c7187e4"
+                        "ID": "5ec0a77851c54c588b63ec207c708309"
                       },
                       {
                         "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
@@ -5576,7 +5691,7 @@
                                 }
                               }
                             ],
-                            "ID": "a25aaea6-91e0-41ae-8e1c-2d23e31c0c39"
+                            "ID": "770bc99d-1c44-41f5-b861-ace31b2b571b"
                           },
                           {
                             "CommandList": [
@@ -5593,12 +5708,12 @@
                                 ]
                               }
                             ],
-                            "ID": "659f2554-2114-4b74-a3c3-8744db911628"
+                            "ID": "e63368b7-81eb-47f1-a76d-e328bc63dac7"
                           }
                         ]
                       }
                     ],
-                    "ID": "9d096c6b-ad1f-4901-acfd-4a8f29b5e132"
+                    "ID": "53b22185-c998-48fb-bed1-00b30c1bcb9d"
                   },
                   {
                     "CommandList": [
@@ -5616,13 +5731,13 @@
                       }
                     ],
                     "Comments": "申込IDがあれば申込IDからカレントレコードセット",
-                    "ID": "14544ab6-27fc-468e-ac09-120440aec9e5"
+                    "ID": "acd72271-25e1-44df-aecb-48c2318cb7bb"
                   }
                 ],
                 "Comments": "ランダムIDがあればカレントレコードをセット"
               }
             ],
-            "ID": "88424402-b346-4c88-947a-ac17e26d6261"
+            "ID": "af70e86d-7362-43e8-b6b3-35eedfbcff3c"
           }
         ]
       },
@@ -5683,7 +5798,7 @@
                 "RetrunParamNames": {}
               }
             ],
-            "ID": "a834fdb9-f71d-4860-a148-c061bc52e67e"
+            "ID": "85875231-72fb-4b96-a16d-89f7a0022060"
           }
         ]
       },
@@ -5718,7 +5833,7 @@
                 "RetrunParamNames": {}
               }
             ],
-            "ID": "4657325c-789b-4e32-a8c0-226521df5399"
+            "ID": "1da93c80-fdac-4466-9960-d4ba3e4a23c3"
           }
         ]
       },
@@ -5753,7 +5868,7 @@
                 "RetrunParamNames": {}
               }
             ],
-            "ID": "9acbf77d-ea48-4d0d-8b42-094b71e52c84"
+            "ID": "fcba6344-686d-4aa6-9465-c4f5ad41f2bd"
           }
         ]
       },
@@ -5788,7 +5903,7 @@
                 "RetrunParamNames": {}
               }
             ],
-            "ID": "12187507-54fd-4313-960e-f32f0d0e3ee3"
+            "ID": "a92955d8-da14-4708-bbda-96bf1d545a6f"
           }
         ]
       },
@@ -5823,7 +5938,7 @@
                 "RetrunParamNames": {}
               }
             ],
-            "ID": "31bd2c57-a80f-4acc-9710-b45365573db1"
+            "ID": "9cde8c2a-263b-453e-babe-e7876f6f4415"
           }
         ]
       },
@@ -5858,7 +5973,7 @@
                 "RetrunParamNames": {}
               }
             ],
-            "ID": "cdea4686-2714-4759-822d-030003897f01"
+            "ID": "39543f61-ef38-405b-91eb-b6f86020b4b3"
           }
         ]
       },
@@ -5906,7 +6021,7 @@
                 "RetrunParamNames": {}
               }
             ],
-            "ID": "4a335690-ffca-442a-b207-5b875e1dc34c"
+            "ID": "e76db680-ca4a-4a7c-a3ba-9cf038e7880c"
           }
         ]
       },
@@ -5957,7 +6072,7 @@
                 "RetrunParamNames": {}
               }
             ],
-            "ID": "d2d0d918-3a44-4c48-b3cb-2bd79d2aa853"
+            "ID": "937f9ab0-6c75-4ee3-81a0-22aaac662db0"
           }
         ]
       },
@@ -5992,7 +6107,7 @@
                 "RetrunParamNames": {}
               }
             ],
-            "ID": "efa3c931-e8e2-48d0-b847-b812db620f31"
+            "ID": "da904631-1663-40eb-b5d7-acdc53fc5f67"
           }
         ],
         "Comments": "発注書待ちが無ければ非表示"
@@ -6031,7 +6146,7 @@
                 ]
               }
             ],
-            "ID": "8ab4ad77-fa45-4b15-baf1-3c982606d7d8"
+            "ID": "b456097d-282b-44df-8fdb-5cfb65fcb77e"
           }
         ]
       }
@@ -6041,7 +6156,7 @@
     },
     "RowBreakLines": [],
     "RepeatRangeSettings": [],
-    "RelatedDataTableName": "t_object_notice",
+    "RelatedDataTableName": "t_object_order",
     "PageResponsiveMode": 4
   },
   "PrintInfo": {
@@ -6118,4 +6233,4 @@
       "Formula": "申込詳細_内容!$CW$2"
     }
   ]
-}//688gUcgi9k/EO/7bAHaAt0szIpMOcQ7IQGdtUNxcc2s6jRq46NXM/3xVDEOeAogaLDscAflFmHUhkjkgfDJBmcoRBzXGOcjcZvaEh9P8b/YL3O7uaImYW+73h36WeHVViQa5jQI+r/y1UnUxYF5aqY8cLFCzRKc1Uaa7FtcAHLWHrK3DPygfzCdbRgaXKVlVaAP8h9K5RijwLcepWjlMiF20Ty7WiShh3AAPXomJKO0B7ScP+4iJ3LV5XfpkATz5B2bIwcnOapELhupkPYmoIV/DR2j/XVnfZiRTwSCtaLa5/G+oWSEAzcDQ1UTttYRtMFj3V42uMYiBy4AHW/5yK+CUruoxk7UNj54s6jvE4PXb1zvfCYNzf8PIemL34jWcmQonLUHCmwugn9euvsk7CYCmx+6eBT29vdOe7vKmuD7i8SfwO4WtU4734j2bWTGp/K9r6a+EAYt+sLzCHEy7Kq0lbYGkaiw5it8s/1UDeHIrAT/0+L+k1fdtMj+14Co4p0VXYYTiIK+m30Ro9oja9rqTxwkTOcjWZTBYBLwfs+eajfDMuc6baPxi3dkYF0Oxh+U/5osCnlnIwNKi2Sd5hkfCuDbbQKrpFJ3RnvuAq5HmEA3ac1KhITUV+TX2cFpu3hHY5CEBCvnT8rggv8tKNtcBkzxpIrzot6e7r2M120EUj2NMsfo3+Q/sx8MVXW/qt2k0gkXu43u6A6osxryrh8mcYrRaibfVQfOA2z04RnqYBIHisG5Ns5dF5hjIylKOKDizhUqBLUfsqgrT1VTBN8o0YgzHWWlJi//yQhy0Uz4r15SvElEX6voRMWRkdrtOC/hF8ITP4CeZrYKs/nMF36I5jeO2GiaeR3BeF2uLy8c9Oeo+xZL911l+XZ+iNM3348op+Z/DVWUghn2V6FRA2Q==|920
+}//jCFdQAyEqW62jjqncmztR322BsXsa3dRmFzbZ36tApSq4nAsSKZSllJdVWIYou75dVWJ6TN78H6wOLRc4puyibavA92MN9a8zTsJ9Lrv4Kd8CsuJNzS6AILlpymBkgS+5im+j6ReogtiEqRKhY5M3orwELCJ7fpLkYtoRFojSZEtz8EkiZu914VB6aO4Fp1CYTkbSnwElCv8iBQNxUKN2x+rQzmmtDBG37fEt5/hGzvSvgZ1Kx/qQqNVzmzZSDsvtxt3BbeN4VDowXVip5d5I9w6yZtywCx2VUmzLKpTX6+U12oE+tRgFq6HAk3KaqiDwkFRIxRYIeIAf8lE88IGeAHq+ASblFc3XTYsTwjX8zTwR+Wq5EqVmSCN9D1Vj7ihFPVsCBPQuICtevdj48E6MeKmJezB5DdZ1wzCoDFRxBffzgjtveQF4DsIT2XqaGKp5AGQS+lGG7tOmZ9jo5B8zRS1m3LRm6wjueyczFxaGpfcuFPNsU4RO8nX0jpCVlyo4krDyGYaMAbRfviel02dkrC4SBZOPrHVoyzUKzkrzVPYjmxlST4kiEdpeLBCqYs9xnlGj7+sICOBMiYn5V8gXPZUiMiy5Lm1sBcdJsJ5uMZYhdthVXe1N0cKV5dK2WutLJhH5caXZ/VBlq3MRiu+1U448lt1REbn6lfA9v3mnBh3KvmfUicOuH2ZnurjQxQijHrB9L1I0Vs6ikC3yYsQyCXwMifr5p316Q5wvRUMpA1ylTUp5R8E3x6hIpxemxW2O7C7UuJ8V0bvE+DlvkvCQPPKZ/jx25QBQj17B8cC+aWlkFlop93DnFCBUBW83+UlsUEBlA4TkKvmSQUuI9p2TLSEuA7rb7YFdDpga5rJLTNON/1jzcZq2OX+Hn4jUQ39IvekswpIBFBceeaOhk0T6A==|920

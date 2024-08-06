@@ -407,9 +407,14 @@
       91,
       92,
       93,
-      94
+      94,
+      95,
+      96,
+      97,
+      98,
+      99
     ],
-    "Count": 95
+    "Count": 100
   },
   "Values": {
     "1,0": "申込詳細_補足情報",
@@ -445,8 +450,8 @@
     "25,69": 21,
     "27,54": "▼保証ビュー",
     "28,56": "保証履歴番号",
-    "28,81": "売",
-    "28,82": "仕",
+    "28,82": "売",
+    "28,83": "仕",
     "33,54": "▼登録件数",
     "37,54": "以下は、保証データ更新前の元データです（差分チェック、排他チェックに使用）",
     "39,54": "保証書発行区分",
@@ -466,24 +471,24 @@
     "53,54": "保証ステータスID"
   },
   "Formulas": {
-    "29,86": "ODATA(\"t_object_attachment/$count?$filter=warranty_id eq \"&IF(ISBLANK(BD30),\"null\",BD30)&\" and file_attribute_id eq \"&IF(ISBLANK(保証書ファイル属性ID),\"null\",保証書ファイル属性ID)&\" and active_flg eq 1\")",
+    "29,92": "ODATA(\"t_object_warranty/$count?$filter=object_order_id eq \"&IF(ISBLANK(BC30),\"null\",BC30)&\" and warranty_id gt \"&IF(ISBLANK(BD30),\"null\",BD30))",
     "14,79": "ODATA(\"t_object_insurance/$count?$filter=insurance_id gt \"&IF(ISBLANK(BI15),\"null\",BI15)&\" and object_order_id eq \"&IF(ISBLANK(BC23),\"null\",BC23))",
-    "29,84": "IF(OR(BX30=1,BY30=1,BZ30=1),1,0)",
+    "29,91": "IF(CM30<>\"\",\"最終更新日時：\"&CM30,\"\")",
     "29,56": "$BC$35-ROW(BC30)+1",
     "11,28": "BE14",
     "13,81": "COUNTIF(BJ15,\"<>\")",
-    "29,87": "\"地盤保証書(\"&CI30&\")\"",
+    "29,88": "\"地盤保証書(\"&CJ30&\")\"",
     "14,70": "ODATA(\"t_object_attachment/$count?$filter=insurance_id eq \"&IF(ISBLANK(BI15),\"null\",BI15)&\" and file_attribute_id eq \"&IF(ISBLANK(付保証明書ファイル属性ID),\"null\",付保証明書ファイル属性ID)&\" and active_flg eq 1\")",
     "11,12": "IF(BC14=0,\"\",BC14)",
     "11,38": "BG14",
     "34,54": "COUNT(BD30)",
-    "29,81": "IFERROR(ODATA(\"v_warranty_product_summary?$select=売上合計&$filter=保証ID eq \"&IF(ISBLANK(BD30),\"null\",BD30)),0)",
+    "29,87": "ODATA(\"t_object_attachment/$count?$filter=warranty_id eq \"&IF(ISBLANK(BD30),\"null\",BD30)&\" and file_attribute_id eq \"&IF(ISBLANK(保証書ファイル属性ID),\"null\",保証書ファイル属性ID)&\" and active_flg eq 1\")",
     "11,18": "BD14",
-    "29,83": "IF($BC$35=BE30,1,0)",
+    "29,85": "IF(OR(BX30=1,BY30=1,BZ30=1),1,0)",
     "14,71": "\"添付(\"&BS15&\")\"",
-    "29,82": "IFERROR(ODATA(\"v_warranty_product_summary?$select=仕入合計&$filter=保証ID eq \"&IF(ISBLANK(BD30),\"null\",BD30)),0)",
-    "29,90": "IF(CL30<>\"\",\"最終更新日時：\"&CL30,\"\")",
-    "29,91": "ODATA(\"t_object_warranty/$count?$filter=object_order_id eq \"&IF(ISBLANK(BC30),\"null\",BC30)&\" and warranty_id gt \"&IF(ISBLANK(BD30),\"null\",BD30))",
+    "29,84": "IF($BC$35=BE30,1,0)",
+    "29,83": "IFERROR(ODATA(\"v_warranty_product_summary?$select=仕入合計&$filter=保証ID eq \"&IF(ISBLANK(BD30),\"null\",BD30)),0)",
+    "29,82": "IFERROR(ODATA(\"v_warranty_product_summary?$select=売上合計&$filter=保証ID eq \"&IF(ISBLANK(BD30),\"null\",BD30)),0)",
     "14,63": "$CD$14-ROW(BJ15)+1"
   },
   "ArrayFormulas": {
@@ -856,7 +861,7 @@
                 }
               }
             },
-            "ID": "9bd970a70b844d01bb1bcc3c1ab2c05c"
+            "ID": "57e8f1f31964484da3649eaa65df0d46"
           },
           {
             "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
@@ -884,7 +889,7 @@
                     "$type": "Forguncy.Model.StopCommand, ServerDesignerCommon"
                   }
                 ],
-                "ID": "76a5bbc9-26ca-482c-91c5-05ba99e4b689"
+                "ID": "578b0cfe-1af3-4bb1-beaf-e98757a05f54"
               }
             ]
           },
@@ -1011,7 +1016,7 @@
         "TableName": "t_object_warranty",
         "RowIndex": 28,
         "ColumnIndex": 54,
-        "ColumnCount": 40,
+        "ColumnCount": 42,
         "RowCount": 4,
         "ColumnOperation": 2,
         "ShowEditStatusIcon": true,
@@ -1248,11 +1253,23 @@
     "29,79": {
       "BindingInfo": {
         "TableName": "t_object_warranty",
+        "ColumnName": "warranty_status_id",
+        "RelationBinding": {
+          "RelatedTable": "m_warranty_status",
+          "RelatedColumn": "warranty_status_id",
+          "DisplayColumn": "warranty_decline_flg"
+        }
+      },
+      "NameUsedInJavaScript": "保証辞退フラグ"
+    },
+    "29,80": {
+      "BindingInfo": {
+        "TableName": "t_object_warranty",
         "ColumnName": "warranty_cancel_date"
       },
       "NameUsedInJavaScript": "保証キャンセル日"
     },
-    "29,80": {
+    "29,81": {
       "BindingInfo": {
         "TableName": "t_object_warranty",
         "ColumnName": "warranty_status_id",
@@ -1264,37 +1281,37 @@
       },
       "NameUsedInJavaScript": "保証ステータス名"
     },
-    "29,81": {
+    "29,82": {
       "NameUsedInJavaScript": "保証売上合計"
     },
-    "29,82": {
+    "29,83": {
       "NameUsedInJavaScript": "保証仕入合計"
     },
-    "29,83": {
+    "29,84": {
       "NameUsedInJavaScript": "最終発行フラグ"
     },
-    "29,84": {
+    "29,85": {
       "NameUsedInJavaScript": "画面ロックフラグ"
     },
-    "29,86": {
+    "29,87": {
       "NameUsedInJavaScript": "保証書添付カウント"
     },
-    "29,87": {
+    "29,88": {
       "NameUsedInJavaScript": "保証書添付ラベル"
     },
-    "29,89": {
+    "29,90": {
       "BindingInfo": {
         "TableName": "t_object_warranty",
         "ColumnName": "last_updated_label"
       }
     },
-    "29,90": {
+    "29,91": {
       "NameUsedInJavaScript": "最終更新ラベル"
     },
-    "29,91": {
+    "29,92": {
       "NameUsedInJavaScript": "保証履歴件数"
     },
-    "29,92": {
+    "29,93": {
       "BindingInfo": {
         "TableName": "t_object_warranty",
         "ColumnName": "object_order_id",
@@ -2088,11 +2105,21 @@
       "28,76": 4,
       "28,77": 4,
       "28,78": 4,
-      "28,79": 29,
+      "28,79": 4,
       "28,80": 29,
       "28,81": 29,
-      "28,82": 4,
+      "28,82": 29,
       "28,83": 4,
+      "28,84": 4,
+      "28,85": 4,
+      "28,86": 4,
+      "28,87": 4,
+      "28,88": 4,
+      "28,89": 4,
+      "28,90": 4,
+      "28,91": 4,
+      "28,92": 4,
+      "28,93": 4,
       "29,51": 25,
       "29,55": 31,
       "29,56": 4,
@@ -2128,6 +2155,9 @@
       "29,88": 4,
       "29,89": 4,
       "29,90": 4,
+      "29,91": 4,
+      "29,92": 4,
+      "29,93": 4,
       "30,51": 25,
       "30,54": 31,
       "30,55": 4,
@@ -2496,7 +2526,7 @@
     "53,62,1,5",
     "15,60,2,20",
     "1,0,2,53",
-    "30,54,2,40"
+    "30,54,2,42"
   ],
   "PageInfo": {
     "$type": "Forguncy.Model.Pages.NormalPage, ServerDesignerCommon",
@@ -2607,4 +2637,4 @@
       "Formula": "物件詳細_保証!$BR$23"
     }
   ]
-}//1CEx2ish1N9SuB1DhLgdtBiHjQlk8frtuuBCTGFYUmjsOvd7lYWmqkqp+/5phUUe0KutBjCnNzYl1oZlS5Mkxl3yXyLSIalGX04NMmT0AIYa+ZjGvjov0c3YzqNv3y1EkOzevCJu013DpKEU/H9+36YTawEy2QfOezA7aP964s6+JEgUECj0K970nY5Hai4T84VMXbTIZFEgFhNr9yi3YDhJnNrgib0HrhxTu0GRQqAPMQd4Yje5Z20Ueue0iN4s4AZbhyM2Y9srFLLPz/IB70sWrpHQIy5Umt54UIL7PHjpzBavOP+V8/9C/oMcPOZ666JFfXTztBV3Axwv4t/cMtpCWg8LUEL8e0lv2vvQyvUs4zyo83gfFQo+jxemlgVPNLA32tZK+drKRb5SJT8AgdSU3b1kN1Cnx4URy/VlBHL5OfAlh7BuzuzblzjE2rW7QhIPA9qUHbPY3XpZw0dXsIWjkaCi4gqJ6Qw6t8bZUYE5t948zQFZhapogxITx8B7+XS6a6gC+ubtkWFby8CiqWsSvUg2XmcYeealfW9Cu/8hMVCqPX11fzpZtdKkL8/xnpPPB15PYQpkE7qwenqI9OL2Ly/OsUr7p9GXElZRDOIa8yLNihSwSC0t3b/By9+WoJ+672ojU3f86HgrhSFV34rqI23v9trcN0RQ8UaBCDkPOTdq5EsJ5DSkyFQl2GcPBuKPyaQl72kz+aL2CYslqwoykNDlH1mU8o43QhDkqKBFKqzYOdN/LOZm3Q1d3OBtMb3dUHXZ+oI++xPU/2ajvhzchy/PNZr1zOmh8WydeTUr/pitU0U43bq/1I4WdZLReWDr29Kb/rJGaqoKupsJ5wYKgY4cVl9/VtSASnpcIZJDDUJJj4J8pROz63BJ2sQz9pHPQtijJWbFGzrZqFlleA==|920
+}//Cnt/VMoS6v099pZ8kuf4aKoLuJkSSMmQ06ZUd9UZSBoypQKMsB4OPnBOHWn+NohIzz+5HTcCHVkVX1k4fDEkFz4yNhM8VWe1Q5zyGPp2lUAD7otjk/r/R0v6CnauyfLjgtKzvpzwdTtiLdFrqWMcCKr4KqJWwguxxSKYyPr1ruBiFXsdrhzS/NkScoFahBk0TRaYniifNjV/f5J3pfDF1FyNN38Rzdp5sOP+/BFNNLHa9OxycDUq2dx5CR3SKE6KDhfqIUkjyKXsYCxLX4u/p4bAcRhZJ8y1gpGEnqTBhoENsmwpvH4we+Z0cAHutQYj5vk4UZpr0DeB/VbtR/pLuASCqDX/d4dHUvJko6f3koXjySHv92drozCwO01JnE+S/laNvyJiz2voBuThpIANM/4Y5l+/nFk4rIRq1fh0PsgIt2sPISVsC9u30/elxJTwFPRn3X06/TjtayRT2aUymmFEUA6fZGr65SiIvxkES8vnhfUDnvD+X/GAqI+8OPRF3yloZPdmB+o3XIanzpW0GFddDnGRYmrvB/ahmfcHMUEYiusFOyGe2hiyWVv6AsrXNOqJFAWlSUtZz5O3ybX8SwGYIJ11G7/sOM4yXVOs2SiauaGQo9FRCAeifNl6sAF9DsGv0spRvcaguMdH5Whw+4Me/oY/QomLB99+XSBLk8s1wWELMePwQtljmyK6zIuDkbJRPH2pIfDc0so6ZYqtpul0eXhSCVlZ+7Iuk53CRVDPEmuy/QO2/248iim7dDDslkKWdWvADtepKW9TgMkKDD1pzDPiG6MFROniQXevZovomM4LhBLIvwTxJyEbOm+Ot3aoKKgfpaZJdTSjNU1DrBEbpEpR3nvO7tTVd9Wqlpb33jF5yKy6Gftwh8QggknD4isAAVHvTv/XF4wFyB3iNg==|920
