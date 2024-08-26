@@ -10,20 +10,7 @@
       },
       "Parameters": [
         {
-          "Type": 1,
-          "ArrayParamItems": [
-            {
-              "Name": "P_選択フラグ"
-            },
-            {
-              "Name": "P_資料待ちID"
-            }
-          ],
-          "OnlySendChangedData": true,
-          "PrimaryKeys": [
-            "資料待ちID"
-          ],
-          "Name": "P_資料待ちリスト"
+          "Name": "P_資料待ちIDs"
         },
         {
           "Name": "P_受領済み更新フラグ"
@@ -59,12 +46,48 @@
           "CheckDataValidation": true
         },
         {
+          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+          "ParameterName": "資料待ち",
+          "TableValue": {
+            "TableName": "t_object_wait_documents",
+            "BindingInfos": [
+              {
+                "BindingInfo": {
+                  "TableName": "t_object_wait_documents",
+                  "ColumnName": "wait_document_id"
+                },
+                "ColumnName": "資料待ちID"
+              },
+              {
+                "BindingInfo": {
+                  "TableName": "t_object_wait_documents",
+                  "ColumnName": "object_order_id"
+                },
+                "ColumnName": "申込ID"
+              }
+            ],
+            "SqlCondition": {
+              "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+              "CompareType": 8,
+              "ColumnBindingInfo": {
+                "TableName": "t_object_wait_documents",
+                "ColumnName": "wait_document_id"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_資料待ちIDs"
+              }
+            }
+          },
+          "ID": "7f312748874c4a88ad3ab542c637b785"
+        },
+        {
           "$type": "Forguncy.Model.LoopCommand, ServerDesignerCommon",
           "LoopInfo": {
             "$type": "Forguncy.Model.CountLoopInfo, ServerDesignerCommon",
             "LoopCount": {
               "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-              "SerializeProperty": "=P_資料待ちリスト.EditRows"
+              "SerializeProperty": "=資料待ち"
             },
             "LoopItemParamName": "Item"
           },
@@ -79,132 +102,224 @@
                       "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
                       "ParamObject": {
                         "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                        "SerializeProperty": "=Item.P_選択フラグ"
+                        "SerializeProperty": "=P_受領済み更新フラグ"
                       }
                     },
                     "value": "1"
                   },
                   "CommandList": [
                     {
-                      "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
-                      "ConditionAndCommandPairList": [
+                      "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+                      "TableName": "t_object_wait_documents",
+                      "ShowConfirm": false,
+                      "ConfirmText": "本当に更新してもよろしいですか？",
+                      "RowsToUpdate": 1,
+                      "RowsToUpdateCondition": {
+                        "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                        "ColumnBindingInfo": {
+                          "TableName": "t_object_wait_documents",
+                          "ColumnName": "wait_document_id"
+                        },
+                        "Value": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=Item.資料待ちID"
+                        }
+                      },
+                      "UpdateValues": [
                         {
-                          "Condition": {
-                            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
-                            "param": {
-                              "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
-                              "ParamObject": {
-                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                                "SerializeProperty": "=P_受領済み更新フラグ"
-                              }
-                            },
-                            "value": "1"
-                          },
-                          "CommandList": [
-                            {
-                              "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
-                              "TableName": "t_object_wait_documents",
-                              "ShowConfirm": false,
-                              "ConfirmText": "本当に更新してもよろしいですか？",
-                              "RowsToUpdate": 1,
-                              "RowsToUpdateCondition": {
-                                "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
-                                "ColumnBindingInfo": {
-                                  "TableName": "t_object_wait_documents",
-                                  "ColumnName": "wait_document_id"
-                                },
-                                "Value": {
-                                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                                  "SerializeProperty": "=Item.P_資料待ちID"
-                                }
-                              },
-                              "UpdateValues": [
-                                {
-                                  "ColumnName": "receipt_flg",
-                                  "Value": "1"
-                                },
-                                {
-                                  "ColumnName": "receipt_user_id",
-                                  "Value": "%CurrentUser.user_id%"
-                                },
-                                {
-                                  "ColumnName": "receipt_date",
-                                  "Value": {
-                                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                                    "SerializeProperty": "=TODAY()"
-                                  }
-                                },
-                                {
-                                  "ColumnName": "last_updated_label",
-                                  "Value": {
-                                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                                    "SerializeProperty": "=ラベル名"
-                                  }
-                                }
-                              ]
-                            }
-                          ],
-                          "ID": "f07836bf-0b6a-4f80-b8be-9cf8407ee644"
+                          "ColumnName": "receipt_flg",
+                          "Value": "1"
                         },
                         {
-                          "Condition": {
-                            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
-                            "param": {
-                              "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
-                              "ParamObject": {
-                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                                "SerializeProperty": "=P_未受領戻しフラグ"
-                              }
-                            },
-                            "value": "1"
-                          },
-                          "CommandList": [
-                            {
-                              "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
-                              "TableName": "t_object_wait_documents",
-                              "ShowConfirm": false,
-                              "ConfirmText": "本当に更新してもよろしいですか？",
-                              "RowsToUpdate": 1,
-                              "RowsToUpdateCondition": {
-                                "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
-                                "ColumnBindingInfo": {
-                                  "TableName": "t_object_wait_documents",
-                                  "ColumnName": "wait_document_id"
-                                },
-                                "Value": {
-                                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                                  "SerializeProperty": "=Item.P_資料待ちID"
-                                }
-                              },
-                              "UpdateValues": [
-                                {
-                                  "ColumnName": "receipt_flg",
-                                  "Value": "0"
-                                },
-                                {
-                                  "ColumnName": "receipt_user_id"
-                                },
-                                {
-                                  "ColumnName": "receipt_date"
-                                },
-                                {
-                                  "ColumnName": "last_updated_label",
-                                  "Value": {
-                                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                                    "SerializeProperty": "=ラベル名"
-                                  }
-                                }
-                              ]
-                            }
-                          ],
-                          "ID": "27d584e4-bf70-4a69-a397-4ce1494b1d85"
+                          "ColumnName": "receipt_user_id",
+                          "Value": "%CurrentUser.user_id%"
+                        },
+                        {
+                          "ColumnName": "receipt_date",
+                          "Value": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=TODAY()"
+                          }
+                        },
+                        {
+                          "ColumnName": "last_updated_label",
+                          "Value": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=ラベル名"
+                          }
                         }
                       ]
                     }
                   ],
-                  "ID": "34bbb285-3e64-4d42-9cde-26d140b3f76b"
+                  "ID": "9b6d9362-e2be-435a-bef2-934a39845ce4"
+                },
+                {
+                  "Condition": {
+                    "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                    "param": {
+                      "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                      "ParamObject": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=P_未受領戻しフラグ"
+                      }
+                    },
+                    "value": "1"
+                  },
+                  "CommandList": [
+                    {
+                      "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+                      "TableName": "t_object_wait_documents",
+                      "ShowConfirm": false,
+                      "ConfirmText": "本当に更新してもよろしいですか？",
+                      "RowsToUpdate": 1,
+                      "RowsToUpdateCondition": {
+                        "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                        "ColumnBindingInfo": {
+                          "TableName": "t_object_wait_documents",
+                          "ColumnName": "wait_document_id"
+                        },
+                        "Value": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=Item.資料待ちID"
+                        }
+                      },
+                      "UpdateValues": [
+                        {
+                          "ColumnName": "receipt_flg",
+                          "Value": "0"
+                        },
+                        {
+                          "ColumnName": "receipt_user_id"
+                        },
+                        {
+                          "ColumnName": "receipt_date"
+                        },
+                        {
+                          "ColumnName": "last_updated_label",
+                          "Value": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=ラベル名"
+                          }
+                        }
+                      ]
+                    }
+                  ],
+                  "ID": "85048600-c07b-4da4-bf35-0e74999792ac"
                 }
               ]
+            },
+            {
+              "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+              "ParameterName": "資料待ち件数",
+              "TableValue": {
+                "TableName": "t_object_wait_documents",
+                "TableValueType": 3,
+                "SqlCondition": {
+                  "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                  "Condition1": {
+                    "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                    "ColumnBindingInfo": {
+                      "TableName": "t_object_wait_documents",
+                      "ColumnName": "object_order_id"
+                    },
+                    "Value": {
+                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                      "SerializeProperty": "=Item.申込ID"
+                    }
+                  },
+                  "Condition2": {
+                    "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                    "ColumnBindingInfo": {
+                      "TableName": "t_object_wait_documents",
+                      "ColumnName": "receipt_flg"
+                    },
+                    "Value": "0"
+                  }
+                }
+              },
+              "ID": "e65d649c064f4a9eaa0f4656757873d9"
+            },
+            {
+              "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+              "ConditionAndCommandPairList": [
+                {
+                  "Condition": {
+                    "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                    "param": {
+                      "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                      "ParamObject": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=資料待ち件数"
+                      }
+                    },
+                    "value": "0"
+                  },
+                  "CommandList": [
+                    {
+                      "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+                      "TableName": "t_object_order",
+                      "ShowConfirm": false,
+                      "ConfirmText": "本当に更新してもよろしいですか？",
+                      "RowsToUpdate": 1,
+                      "RowsToUpdateCondition": {
+                        "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                        "ColumnBindingInfo": {
+                          "TableName": "t_object_order",
+                          "ColumnName": "object_order_id"
+                        },
+                        "Value": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=Item.申込ID"
+                        }
+                      },
+                      "UpdateValues": [
+                        {
+                          "ColumnName": "wait_ducoment_flg",
+                          "Value": "0"
+                        },
+                        {
+                          "ColumnName": "document_wait_count",
+                          "Value": "0"
+                        }
+                      ]
+                    }
+                  ],
+                  "ID": "165ab8b9-6e97-405f-9cbb-5c91e0d0020f"
+                },
+                {
+                  "CommandList": [
+                    {
+                      "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+                      "TableName": "t_object_order",
+                      "ShowConfirm": false,
+                      "ConfirmText": "本当に更新してもよろしいですか？",
+                      "RowsToUpdate": 1,
+                      "RowsToUpdateCondition": {
+                        "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                        "ColumnBindingInfo": {
+                          "TableName": "t_object_order",
+                          "ColumnName": "object_order_id"
+                        },
+                        "Value": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=Item.申込ID"
+                        }
+                      },
+                      "UpdateValues": [
+                        {
+                          "ColumnName": "document_wait_count",
+                          "Value": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=資料待ち件数"
+                          }
+                        }
+                      ]
+                    }
+                  ],
+                  "ID": "3412520f-4d36-4c3a-b5d9-a767604e4b0e"
+                }
+              ],
+              "Comments": "資料待ちが無ければ、資料待ちフラグを更新"
             }
           ]
         }

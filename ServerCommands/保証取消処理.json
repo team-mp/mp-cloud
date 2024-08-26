@@ -16,7 +16,7 @@
           "Name": "P_保証ID"
         },
         {
-          "Name": "P_保証キャンセル理由"
+          "Name": "P_保証取消理由"
         }
       ]
     }
@@ -26,58 +26,64 @@
       "$type": "Forguncy.Model.ServerTransactionCommand, ServerDesignerCommon",
       "CommandList": [
         {
+          "$type": "Forguncy.Model.RequestServerCommand, ServerDesignerCommon",
+          "ServerCommandName": "登録更新ラベル取得",
+          "ResultErrorCodeTo": {
+            "SerializeProperty": "リターンコード"
+          },
+          "ResultMessageTo": {
+            "SerializeProperty": "リターンメッセージ"
+          },
+          "ReturnPropertiesTo": [
+            {
+              "ResultPropertyName": "R_ラベル名",
+              "ResultTo": {
+                "SerializeProperty": "最終更新ラベル"
+              }
+            }
+          ],
+          "RefreshAfterFinish": true,
+          "CheckDataValidation": true
+        },
+        {
           "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
-          "ParameterName": "保証_保証キャンセルST",
+          "ParameterName": "保証取消ST",
           "TableValue": {
             "TableName": "m_warranty_status",
-            "OnlyGetValue": true,
-            "TableValueType": 0,
+            "TableValueType": 1,
             "BindingInfos": [
               {
                 "BindingInfo": {
                   "TableName": "m_warranty_status",
                   "ColumnName": "warranty_status_id"
                 },
-                "ColumnName": "warranty_status_id"
+                "ColumnName": "保証ステータスID"
+              },
+              {
+                "BindingInfo": {
+                  "TableName": "m_warranty_status",
+                  "ColumnName": "order_status_id"
+                },
+                "ColumnName": "申込ステータスID"
+              },
+              {
+                "BindingInfo": {
+                  "TableName": "m_warranty_status",
+                  "ColumnName": "complete_flg"
+                },
+                "ColumnName": "完了フラグ"
               }
             ],
             "SqlCondition": {
               "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
               "ColumnBindingInfo": {
                 "TableName": "m_warranty_status",
-                "ColumnName": "cancel_flg"
+                "ColumnName": "warranty_withdrawn_flg"
               },
               "Value": "1"
             }
           },
-          "ID": "88c66c3d2f524bb8bc6a614dd213f122"
-        },
-        {
-          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
-          "ParameterName": "申込_保証キャンセルST",
-          "TableValue": {
-            "TableName": "m_order_status",
-            "OnlyGetValue": true,
-            "TableValueType": 0,
-            "BindingInfos": [
-              {
-                "BindingInfo": {
-                  "TableName": "m_order_status",
-                  "ColumnName": "order_status_id"
-                },
-                "ColumnName": "order_status_id"
-              }
-            ],
-            "SqlCondition": {
-              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
-              "ColumnBindingInfo": {
-                "TableName": "m_order_status",
-                "ColumnName": "warranty_cancel_flg"
-              },
-              "Value": "1"
-            }
-          },
-          "ID": "a3faf26388024a94abd0fcfc54cd3567"
+          "ID": "d56de2d58cdd408f88eafbe4bd0066b3"
         },
         {
           "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
@@ -101,7 +107,7 @@
               "ColumnName": "order_status_id",
               "Value": {
                 "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                "SerializeProperty": "=申込_保証キャンセルST"
+                "SerializeProperty": "=保証取消ST.申込ステータスID"
               }
             }
           ]
@@ -128,14 +134,28 @@
               "ColumnName": "warranty_status_id",
               "Value": {
                 "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                "SerializeProperty": "=保証_保証キャンセルST"
+                "SerializeProperty": "=保証取消ST.保証ステータスID"
               }
             },
             {
-              "ColumnName": "warranty_cancel_date",
+              "ColumnName": "withdrawn_date",
               "Value": {
                 "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
                 "SerializeProperty": "=TODAY()"
+              }
+            },
+            {
+              "ColumnName": "last_updated_label",
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=最終更新ラベル"
+              }
+            },
+            {
+              "ColumnName": "warranty_complete_flg",
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=保証取消ST.完了フラグ"
               }
             }
           ]
@@ -174,7 +194,7 @@
               }
             }
           },
-          "ID": "5c4183e20ef146e1a63b530d51756bba"
+          "ID": "7acd5a248dda48278f2ceb1cdc4218cd"
         },
         {
           "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
@@ -225,7 +245,7 @@
                   "UpdateValues": []
                 }
               ],
-              "ID": "0b05cf8f-afcc-4346-accb-6cb01844d459"
+              "ID": "66d97a38-e42b-4b4f-bbe3-b96b4c8f5550"
             }
           ],
           "Comments": "付保申請待ちを削除する"
@@ -282,7 +302,7 @@
               }
             }
           },
-          "ID": "1abf967b46ee47eebe4b63fe5cdb1c00"
+          "ID": "034fab7902af4824a4b2258b192e4e7f"
         },
         {
           "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
@@ -326,7 +346,7 @@
                       "Value": "1"
                     }
                   },
-                  "ID": "a5cd2b5b33284d55bdbae4bcb932261b"
+                  "ID": "dc10931b9ab64d8295e772804d6f2f1c"
                 },
                 {
                   "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
@@ -356,7 +376,7 @@
                   ]
                 }
               ],
-              "ID": "ad2d3208-bfd8-4b46-8c56-91138664ff94"
+              "ID": "3255371c-7d4a-4b1e-9dfc-800fd36f7021"
             }
           ],
           "Comments": "付保キャンセルする"
@@ -371,7 +391,7 @@
                   "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
                   "ParamObject": {
                     "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                    "SerializeProperty": "=P_保証キャンセル理由"
+                    "SerializeProperty": "=P_保証取消理由"
                   }
                 },
                 "value": "%Null%",
@@ -383,12 +403,12 @@
                   "ParameterName": "連絡事項",
                   "ParameterValue": {
                     "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                    "SerializeProperty": "=\"保証キャンセル理由：\"&P_保証キャンセル理由"
+                    "SerializeProperty": "=\"保証取消理由：\"&P_保証取消理由"
                   },
-                  "ID": "5e499d43fdd24cd58bd0e2b25448dd32"
+                  "ID": "16bbf7b172a94adc9a4c4f305ab7aca4"
                 }
               ],
-              "ID": "5af2c6ba-c745-4f6c-8ff0-a5eca581bc32"
+              "ID": "63634739-bdbe-4302-b4b9-9a74eb759128"
             },
             {
               "CommandList": [
@@ -397,12 +417,12 @@
                   "ParameterName": "連絡事項",
                   "ParameterValue": {
                     "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                    "SerializeProperty": "=\"保証キャンセルに更新しました\""
+                    "SerializeProperty": "=\"保証取消に更新しました\""
                   },
-                  "ID": "73d497451ed04e71b6f86a170df75193"
+                  "ID": "f9715452bfe048fab11c514a7441ff1b"
                 }
               ],
-              "ID": "0df946b7-7c31-45de-936f-ffd896c6bf11"
+              "ID": "d9bcc87f-b638-40fe-99de-dd4c6a264da4"
             }
           ]
         },
@@ -557,5 +577,5 @@
       ]
     }
   ],
-  "Name": "保証キャンセル処理"
+  "Name": "保証取消処理"
 }
