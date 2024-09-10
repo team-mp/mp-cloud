@@ -525,10 +525,12 @@
     "9,27": "郵便番号",
     "9,77": "▼検索ワード",
     "9,84": "▼参照顧客グループIDs",
+    "9,94": "▼グループマスタ参照",
     "12,77": "▼抽出カウント",
     "12,84": "▼参照顧客本社フラグ",
     "15,77": "▼詳細表示フラグ",
     "15,84": "▼参照顧客代理店フラグ",
+    "15,94": "▼関連付け顧客IDs",
     "16,77": "0",
     "18,84": "▼参照顧客取次店フラグ",
     "21,84": "▼参照顧客ID",
@@ -545,7 +547,8 @@
     "10,77": "IF(N2=0,\"\",N2)",
     "22,84": "参照顧客ID",
     "10,84": "参照顧客グループIDs",
-    "25,84": "参照管理顧客IDs"
+    "25,84": "参照管理顧客IDs",
+    "16,94": "TEXTJOIN(\",\",TRUE,CQ12)"
   },
   "AttachInfos": {
     "1,13": {
@@ -574,24 +577,24 @@
             "PopupDisplayMode": 3,
             "DrawerDirection": 3,
             "ShowDrawerHeader": true,
-            "PageName": "ユーザーマスタ登録フレーム_申込事業者",
+            "PageName": "顧客マスタ登録フレーム_申込事業者",
             "PassValues": [
               {
                 "Source": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=住宅事業者メンテナンス_申込事業者!CP17"
+                  "SerializeProperty": "=住宅事業者メンテナンス_申込事業者!CG23"
                 },
                 "TargetCell": {
-                  "SerializeProperty": "=ユーザーマスタ登録フレーム_申込事業者!参照関連付け顧客IDs"
+                  "SerializeProperty": "=顧客マスタ登録フレーム_申込事業者!参照顧客ID"
                 }
               },
               {
                 "Source": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=住宅事業者メンテナンス_申込事業者!CG29"
+                  "SerializeProperty": "=住宅事業者メンテナンス_申込事業者!CQ17"
                 },
                 "TargetCell": {
-                  "SerializeProperty": "=ユーザーマスタ登録フレーム_申込事業者!参照管理顧客IDs"
+                  "SerializeProperty": "=顧客マスタ登録フレーム_申込事業者!参照関連付け顧客IDs"
                 }
               }
             ],
@@ -774,6 +777,7 @@
         "ColumnIndex": 1,
         "ColumnCount": 74,
         "RowCount": 22,
+        "FrozenIndex": 2,
         "ColumnOperation": 2,
         "ShowEditStatusIcon": true,
         "UseSimpleBar": true,
@@ -781,32 +785,112 @@
         "SqlCondition": {
           "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
           "Condition1": {
-            "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
-            "ColumnBindingInfo": {
-              "TableName": "m_customer_group",
-              "ColumnName": "customer_id",
-              "RelationBinding": {
-                "RelatedTable": "m_customer",
-                "RelatedColumn": "customer_id",
-                "DisplayColumn": "active_flg"
+            "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+            "Condition1": {
+              "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+              "Condition1": {
+                "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                "ColumnBindingInfo": {
+                  "TableName": "m_customer_group",
+                  "ColumnName": "customer_id",
+                  "RelationBinding": {
+                    "RelatedTable": "m_customer",
+                    "RelatedColumn": "customer_id",
+                    "DisplayColumn": "active_flg"
+                  }
+                },
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=住宅事業者メンテナンス_申込事業者!R8"
+                }
+              },
+              "Condition2": {
+                "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                "CompareType": 8,
+                "ColumnBindingInfo": {
+                  "TableName": "m_customer_group",
+                  "ColumnName": "group_id"
+                },
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=住宅事業者メンテナンス_申込事業者!CG11"
+                }
               }
             },
-            "Value": {
-              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-              "SerializeProperty": "=住宅事業者メンテナンス_申込事業者!R8"
+            "Condition2": {
+              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+              "ColumnBindingInfo": {
+                "TableName": "m_customer_group",
+                "ColumnName": "customer_id",
+                "RelationBinding": {
+                  "RelatedTable": "m_customer",
+                  "RelatedColumn": "customer_id",
+                  "DisplayColumn": "builder_flg"
+                }
+              },
+              "Value": "1"
             }
           },
           "Condition2": {
-            "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
-            "CompareType": 8,
-            "ColumnBindingInfo": {
-              "TableName": "m_customer_group",
-              "ColumnName": "group_id"
+            "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+            "Condition1": {
+              "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+              "Condition1": {
+                "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                "CompareType": 6,
+                "ColumnBindingInfo": {
+                  "TableName": "m_customer_group",
+                  "ColumnName": "customer_id",
+                  "RelationBinding": {
+                    "RelatedTable": "m_customer",
+                    "RelatedColumn": "customer_id",
+                    "DisplayColumn": "customer_name"
+                  }
+                },
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=住宅事業者メンテナンス_申込事業者!N2"
+                },
+                "LeftBracket": 1
+              },
+              "Condition2": {
+                "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                "CompareType": 6,
+                "ColumnBindingInfo": {
+                  "TableName": "m_customer_group",
+                  "ColumnName": "customer_id",
+                  "RelationBinding": {
+                    "RelatedTable": "m_customer",
+                    "RelatedColumn": "customer_id",
+                    "DisplayColumn": "customer_abbr"
+                  }
+                },
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=住宅事業者メンテナンス_申込事業者!N2"
+                }
+              },
+              "RelationType": 1
             },
-            "Value": {
-              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-              "SerializeProperty": "=住宅事業者メンテナンス_申込事業者!CG11"
-            }
+            "Condition2": {
+              "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+              "CompareType": 6,
+              "ColumnBindingInfo": {
+                "TableName": "m_customer_group",
+                "ColumnName": "customer_id",
+                "RelationBinding": {
+                  "RelatedTable": "m_customer",
+                  "RelatedColumn": "customer_id",
+                  "DisplayColumn": "住所"
+                }
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=住宅事業者メンテナンス_申込事業者!N2"
+              },
+              "RightBracket": 1
+            },
+            "RelationType": 1
           }
         },
         "TopCondition": null,
@@ -843,6 +927,8 @@
             }
           ]
         },
+        "CommitType": 1,
+        "DoNotLoadDataWhenLoadPage": true,
         "ListViewStyleName": "_RS_Medium1"
       }
     },
@@ -863,6 +949,35 @@
       }
     },
     "10,14": {
+      "CellType": {
+        "$type": "Forguncy.HyperlinkCellType, ServerDesignerCommon",
+        "CommandList": [
+          {
+            "$type": "SetCurrentRowCommand.SetCurrentRowCommand, SetCurrentRowCommand",
+            "CurrentRowInfo": {
+              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+              "ColumnBindingInfo": {
+                "TableName": "m_customer",
+                "ColumnName": "customer_id"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=住宅事業者メンテナンス_申込事業者!BS11"
+              }
+            }
+          },
+          {
+            "$type": "Forguncy.Model.ShowPopupCommand, ServerDesignerCommon",
+            "PopupDisplayMode": 3,
+            "DrawerDirection": 3,
+            "ShowDrawerHeader": true,
+            "PageName": "顧客マスタ登録フレーム_申込事業者",
+            "PassValues": [],
+            "LoadBindingDataOption": 1
+          }
+        ],
+        "ClickMode": 1
+      },
       "BindingInfo": {
         "TableName": "m_customer_group",
         "ColumnName": "customer_id",
@@ -927,6 +1042,42 @@
     "10,84": {
       "CellComment": {
         "Comments": "メインフォームから参照"
+      }
+    },
+    "10,94": {
+      "ListViewInfo": {
+        "ShowColumnHeaderInDesigner": true,
+        "TableName": "m_group",
+        "RowIndex": 10,
+        "ColumnIndex": 94,
+        "ColumnCount": 4,
+        "RowCount": 4,
+        "ColumnOperation": 2,
+        "ShowEditStatusIcon": true,
+        "UseSimpleBar": true,
+        "Name": "リストビュー1",
+        "SqlCondition": {
+          "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+          "CompareType": 8,
+          "ColumnBindingInfo": {
+            "TableName": "m_group",
+            "ColumnName": "group_id"
+          },
+          "Value": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=住宅事業者メンテナンス_申込事業者!CG11"
+          }
+        },
+        "TopCondition": null,
+        "CommitType": 1,
+        "DoNotLoadDataWhenLoadPage": true,
+        "ListViewStyleName": "_RS_Medium1"
+      }
+    },
+    "11,94": {
+      "BindingInfo": {
+        "TableName": "m_group",
+        "ColumnName": "customer_id"
       }
     },
     "13,84": {
@@ -1305,6 +1456,10 @@
       "9,84": 1,
       "9,85": 1,
       "9,86": 1,
+      "9,94": 1,
+      "9,95": 1,
+      "9,96": 1,
+      "9,97": 1,
       "10,1": 10,
       "10,2": 11,
       "10,3": 11,
@@ -1362,6 +1517,10 @@
       "10,84": 16,
       "10,85": 1,
       "10,86": 1,
+      "10,94": 1,
+      "10,95": 1,
+      "10,96": 1,
+      "10,97": 1,
       "11,1": 3,
       "11,2": 3,
       "11,3": 3,
@@ -1442,6 +1601,10 @@
       "11,84": 1,
       "11,85": 1,
       "11,86": 1,
+      "11,94": 1,
+      "11,95": 1,
+      "11,96": 1,
+      "11,97": 1,
       "12,1": 3,
       "12,2": 3,
       "12,3": 3,
@@ -1522,6 +1685,10 @@
       "12,84": 18,
       "12,85": 1,
       "12,86": 1,
+      "12,94": 1,
+      "12,95": 1,
+      "12,96": 1,
+      "12,97": 1,
       "13,1": 3,
       "13,2": 3,
       "13,3": 3,
@@ -1602,6 +1769,10 @@
       "13,84": 16,
       "13,85": 1,
       "13,86": 1,
+      "13,94": 1,
+      "13,95": 1,
+      "13,96": 1,
+      "13,97": 1,
       "14,1": 3,
       "14,2": 3,
       "14,3": 3,
@@ -1682,6 +1853,10 @@
       "14,84": 1,
       "14,85": 1,
       "14,86": 1,
+      "14,94": 1,
+      "14,95": 1,
+      "14,96": 1,
+      "14,97": 1,
       "15,1": 3,
       "15,2": 3,
       "15,3": 3,
@@ -1759,6 +1934,10 @@
       "15,84": 18,
       "15,85": 1,
       "15,86": 1,
+      "15,94": 1,
+      "15,95": 1,
+      "15,96": 1,
+      "15,97": 1,
       "16,1": 3,
       "16,2": 3,
       "16,3": 3,
@@ -1837,6 +2016,10 @@
       "16,84": 16,
       "16,85": 1,
       "16,86": 1,
+      "16,94": 16,
+      "16,95": 1,
+      "16,96": 1,
+      "16,97": 1,
       "17,1": 3,
       "17,2": 3,
       "17,3": 3,
@@ -3073,19 +3256,23 @@
     "16,77,1,3",
     "11,1,20,74",
     "10,1,1,13",
-    "10,14,1,13",
     "10,27,1,6",
     "10,33,1,24",
     "10,57,1,7",
     "10,64,1,6",
     "10,70,1,4",
+    "10,14,1,13",
+    "16,94,1,3",
+    "12,94,2,4",
+    "11,94,1,4",
     "9,1,1,13",
     "9,14,1,13",
     "9,27,1,6",
     "9,33,1,24",
     "9,57,1,7",
     "9,64,1,6",
-    "9,70,1,4"
+    "9,70,1,4",
+    "10,94,1,4"
   ],
   "PageInfo": {
     "$type": "Forguncy.Model.Pages.NormalPage, ServerDesignerCommon",
@@ -3106,4 +3293,4 @@
     "Margin": {},
     "PaperSize": {}
   }
-}//YXaEvCYm1rmIcwNXLEC1kYtHiZZr4GPOCyw4ffppYuiZcHdRvr2fMMANWWrz9nM2AwMXYsIK/XbUpuAnwcsu5XQKcUe7HanvOHzyXva2To/C0ILyNazjKVzjHU97wVsLk60EI7h++LJwiIb5ltfn2ReD8WX9PoaYglVnvKsgGgzjhBd/zy/+j9fFAbXtOLvgez26lCSC/S9rSLzrMoJ0ywQz5sWMxD9MRUt335xe7vLPSaZrsduikz0dGQ//6mTtXQ3iXVf9QHBCkaIf2ipTWwUaJ93aQ8lh3dw2zEQoD/xCa418sM1RP1Gkh47X7JoRZxWsGuMy4tACbgN1/a6jZ9LOhpoeA/Og1CcrJUsy8dMqRZXNsc7NHRGf5twDhmnXwGgL5ZEb3jZEENLnCY7N/U5AGo+uKKSYg/9i+duZ4ysQjqXcrSzwqk55asauElTvF1INeN0NZGsRqjqDVamZ7KeZRfUKEsK6UKxAcT6yeXxuBURrdxQoMCrdV6cpsnklOxNStMPDY6s2KYBpP5w+xNgIkqjrBULqrgFuuRWRMK6rExs4ifl/YkKTyhuRo1UjBvZJdSfObRHUrrn9cSUqEkEYTF6ipMWkYmfty5p/LHNSbdWshNwYhFV9ox7OqopKMDLTUoTlSh9NG8qxTXR9ApbqqHq8r5lWjYKK/jOuSr7B+3UzsFUMhLszlJaRFufBQlEikouhi3TCkvevs+X/XAEt+eyXvfzxdAakiL/fA51ANayDFP3wA6kHlQO+7ia5U8PD/W4dGQw44ka4X+zg9cyFwgSyST8MOO/ycHQWMKTEapuB0VkvWb32wW8T9jAgETCcl2ssON42tMde19l8TJrF4FvojojyQbLCWHS7BZxO5lCOThcTnjXGM86yl6rpaCrA7YTlL9niN4IJ9HuF+w==|920
+}//KSDti0PZKJGyLmeqM6CCttWa34BLwx4fUOyMnI0VSrkp9/dzrpuwFXiuAvb2gHm0KMLVG5qfyc7BC0/ZvrPc+m5r1AEQfra5LSIbWX+RvJuaBB0VMT9wUHFRHTvybP13B44qII8AG6UtCEvc3Y439gaQ8RiAAyyz+DCGKBRKirKhgt2rv017qY2wTRGbHV2VMkcw/a3sgNNe6H+rrKYiuJGqDBbZuO9RBr8Z01BZXAPFkLa1ZSUnyukpHt2vrMNhpSPoLojPf3kRsN8+bTLpPW+X/bHoRH+AQcMABwvT6Lwrn1reYjLgw3VUkCFKAU32HxmRTUGr+Wtf8nSOGhxnrAafPI/o9ofk2TLfg1/9JAuXGI3/J6huFbztWnXHRYvjSdwgIhnyUlEddqZlxdejTi09mZoc/o5WprF8aJeW8fUxYyXqSMku5lZ3L75vf7NKONnmL2q3LtYyuWXk8fG/JXblBEjuvgNSqtkfRTz+azlLtiwqpQ5nnzb8UkyGWnNMODZWgZgdvvoT+I/GOynh7p8+ggOTUNn0uU85HzRnCxI2BxY2rwv5BHP7wzz52+x+f3NoDlC7y7GQU10x7lWIMbMOzMQCYbkhOhVJhg3Bx+FoVhenxlGYJVkGtiCccqednmujQLVMxXQR73TKMsvEZK+iQqomu84TOBdkqAUCMXorTkDwC/yoyd8Wja2ARp+w9gObO9QBbDtbVBTCfTokfNpUYAgmya3nbvI0fpZKFCyKQDKCfYeP6a4FCNRJNY4Bn2qbtNaiIuYUXaxF6pLmp4IDlbKrNMixbulggI+ssMEEwd+g7SQtNDlJCK0LBUoSN3pHDM2dI1K3gVqJSQLSNMbgpLMzq0z57I3ix5rgub4wjf7hK63ymSkmMF6XZu0CLqv5C2xymLSthTswBAPVTA==|920

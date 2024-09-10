@@ -10,6 +10,9 @@
       },
       "Parameters": [
         {
+          "Name": "P_申込ID"
+        },
+        {
           "Name": "P_調査ID"
         },
         {
@@ -199,7 +202,7 @@
           }
         }
       },
-      "ID": "9774e4781a8e4549a2b2b740457f2311"
+      "ID": "2f6f0e072c4d46eab47755e110d0b5f8"
     },
     {
       "$type": "Forguncy.Model.LoopCommand, ServerDesignerCommon",
@@ -237,6 +240,93 @@
           ]
         }
       ]
+    },
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "申込事業者添付ファイル数",
+      "TableValue": {
+        "TableName": "t_object_attachment",
+        "TableValueType": 3,
+        "SqlCondition": {
+          "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+          "Condition1": {
+            "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+            "Condition1": {
+              "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+              "Condition1": {
+                "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                "ColumnBindingInfo": {
+                  "TableName": "t_object_attachment",
+                  "ColumnName": "object_order_id"
+                },
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=P_申込ID"
+                }
+              },
+              "Condition2": {
+                "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                "ColumnBindingInfo": {
+                  "TableName": "t_object_attachment",
+                  "ColumnName": "active_flg"
+                },
+                "Value": "1"
+              }
+            },
+            "Condition2": {
+              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+              "ColumnBindingInfo": {
+                "TableName": "t_object_attachment",
+                "ColumnName": "publish_flg"
+              },
+              "Value": "1"
+            }
+          },
+          "Condition2": {
+            "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+            "CompareType": 2,
+            "ColumnBindingInfo": {
+              "TableName": "t_object_attachment",
+              "ColumnName": "file_attribute_id",
+              "RelationBinding": {
+                "RelatedTable": "m_file_attirbute",
+                "RelatedColumn": "file_attribute_id",
+                "DisplayColumn": "applicant_company_authority"
+              }
+            },
+            "Value": "0"
+          }
+        }
+      },
+      "ID": "ed53d431f16c429da8005a2edfa46f23"
+    },
+    {
+      "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+      "TableName": "t_object_order",
+      "ShowConfirm": false,
+      "ConfirmText": "本当に更新してもよろしいですか？",
+      "RowsToUpdate": 1,
+      "RowsToUpdateCondition": {
+        "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+        "ColumnBindingInfo": {
+          "TableName": "t_object_order",
+          "ColumnName": "object_order_id"
+        },
+        "Value": {
+          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+          "SerializeProperty": "=P_申込ID"
+        }
+      },
+      "UpdateValues": [
+        {
+          "ColumnName": "applicant_attachment_file_count",
+          "Value": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=申込事業者添付ファイル数"
+          }
+        }
+      ],
+      "Comments": "添付ファイル数を更新する"
     }
   ],
   "Name": "添付ファイル非公開処理"
