@@ -46,6 +46,9 @@
           "Name": "P_既定グループID"
         },
         {
+          "Name": "P_所属グループIDs"
+        },
+        {
           "Name": "P_有効フラグ"
         }
       ]
@@ -154,11 +157,39 @@
                         "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
                         "SerializeProperty": "=P_既定グループID"
                       }
+                    },
+                    {
+                      "ColumnName": "belong_group_ids",
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=P_所属グループIDs"
+                      }
+                    },
+                    {
+                      "ColumnName": "builder_flg",
+                      "Value": "1"
+                    }
+                  ],
+                  "ParamNameToSaveNewRowValue": "New顧客情報"
+                },
+                {
+                  "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+                  "TableName": "m_customer_default",
+                  "UpdateType": "add",
+                  "ShowConfirm": false,
+                  "ConfirmText": "本当に追加してもよろしいですか？",
+                  "UpdateValues": [
+                    {
+                      "ColumnName": "customer_id",
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=New顧客情報.顧客ID"
+                      }
                     }
                   ]
                 }
               ],
-              "ID": "00defb1f-5362-45b5-9341-99e6b024ca1e"
+              "ID": "c950078b-49d6-4e25-a325-b7ac18c279bd"
             },
             {
               "CommandList": [
@@ -256,11 +287,112 @@
                         "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
                         "SerializeProperty": "=P_既定グループID"
                       }
+                    },
+                    {
+                      "ColumnName": "belong_group_ids",
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=P_所属グループIDs"
+                      }
+                    },
+                    {
+                      "ColumnName": "active_flg",
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=P_有効フラグ"
+                      }
                     }
                   ]
                 }
               ],
-              "ID": "0dfc1464-88c2-4f33-a88f-3030994eaa9e"
+              "ID": "63a3d7e3-0d3d-4c65-a54c-8bf4bcbcc8ae"
+            }
+          ]
+        },
+        {
+          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+          "ParameterName": "顧客ID",
+          "ParameterValue": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=IF(P_顧客ID<>\"\",P_顧客ID,New顧客情報.顧客ID)"
+          },
+          "ID": "607ea3a126674438b4bb520300b1fd46"
+        },
+        {
+          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+          "ParameterName": "グループ登録済みカウント",
+          "TableValue": {
+            "TableName": "m_customer_group",
+            "TableValueType": 3,
+            "SqlCondition": {
+              "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+              "Condition1": {
+                "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                "ColumnBindingInfo": {
+                  "TableName": "m_customer_group",
+                  "ColumnName": "customer_id"
+                },
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=顧客ID"
+                }
+              },
+              "Condition2": {
+                "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                "ColumnBindingInfo": {
+                  "TableName": "m_customer_group",
+                  "ColumnName": "group_id"
+                },
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=P_既定グループID"
+                }
+              }
+            }
+          },
+          "ID": "7f63d8adfcd34e42a3f02f889228e64d"
+        },
+        {
+          "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+          "ConditionAndCommandPairList": [
+            {
+              "Condition": {
+                "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                "param": {
+                  "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                  "ParamObject": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=グループ登録済みカウント"
+                  }
+                },
+                "value": "0"
+              },
+              "CommandList": [
+                {
+                  "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+                  "TableName": "m_customer_group",
+                  "UpdateType": "add",
+                  "ShowConfirm": false,
+                  "ConfirmText": "本当に追加してもよろしいですか？",
+                  "UpdateValues": [
+                    {
+                      "ColumnName": "customer_id",
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=顧客ID"
+                      }
+                    },
+                    {
+                      "ColumnName": "group_id",
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=P_既定グループID"
+                      }
+                    }
+                  ]
+                }
+              ],
+              "ID": "245ad112-eae9-4ac7-9a1a-75841630ba8c"
             }
           ]
         }
