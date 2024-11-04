@@ -10,26 +10,10 @@
       },
       "Parameters": [
         {
-          "Name": "P_消費税率"
+          "Name": "P_売上IDs"
         },
         {
-          "Type": 1,
-          "ArrayParamItems": [
-            {
-              "Name": "P_選択フラグ"
-            },
-            {
-              "Name": "P_売上ID"
-            },
-            {
-              "Name": "P_税抜金額"
-            }
-          ],
-          "OnlySendChangedData": true,
-          "PrimaryKeys": [
-            "売上ID"
-          ],
-          "Name": "P_請求データビュー"
+          "Name": "P_消費税率"
         }
       ]
     }
@@ -39,96 +23,106 @@
       "$type": "Forguncy.Model.ServerTransactionCommand, ServerDesignerCommon",
       "CommandList": [
         {
+          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+          "ParameterName": "売上情報",
+          "TableValue": {
+            "TableName": "t_sales",
+            "BindingInfos": [
+              {
+                "BindingInfo": {
+                  "TableName": "t_sales",
+                  "ColumnName": "sales_id"
+                },
+                "ColumnName": "売上ID"
+              },
+              {
+                "BindingInfo": {
+                  "TableName": "t_sales",
+                  "ColumnName": "excluding_tax_amount"
+                },
+                "ColumnName": "税抜金額"
+              }
+            ],
+            "SqlCondition": {
+              "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+              "CompareType": 8,
+              "ColumnBindingInfo": {
+                "TableName": "t_sales",
+                "ColumnName": "sales_id"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_売上IDs"
+              }
+            }
+          },
+          "ID": "a5f6468a12634e1e9c87b9685951ae65"
+        },
+        {
           "$type": "Forguncy.Model.LoopCommand, ServerDesignerCommon",
           "LoopInfo": {
             "$type": "Forguncy.Model.CountLoopInfo, ServerDesignerCommon",
             "LoopCount": {
               "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-              "SerializeProperty": "=P_請求データビュー.EditRows"
+              "SerializeProperty": "=売上情報"
             },
             "LoopIndexParamName": "カウンター",
             "LoopItemParamName": "Item"
           },
           "CommandList": [
             {
-              "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
-              "ConditionAndCommandPairList": [
+              "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+              "ParameterName": "更新後消費税額",
+              "ParameterValue": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=ROUNDDOWN(Item.税抜金額*P_消費税率,0)"
+              },
+              "ID": "8d8976f0c0c6479ab80f1820e2a1f698"
+            },
+            {
+              "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+              "TableName": "t_sales",
+              "ShowConfirm": false,
+              "ConfirmText": "本当に更新してもよろしいですか？",
+              "RowsToUpdate": 1,
+              "RowsToUpdateCondition": {
+                "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                "ColumnBindingInfo": {
+                  "TableName": "t_sales",
+                  "ColumnName": "sales_id"
+                },
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=Item.売上ID"
+                }
+              },
+              "UpdateValues": [
                 {
-                  "Condition": {
-                    "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
-                    "param": {
-                      "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
-                      "ParamObject": {
-                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                        "SerializeProperty": "=Item.P_選択フラグ"
-                      }
-                    },
-                    "value": "1"
-                  },
-                  "CommandList": [
-                    {
-                      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
-                      "ParameterName": "更新後消費税額",
-                      "ParameterValue": {
-                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                        "SerializeProperty": "=ROUNDDOWN(Item.P_税抜金額*P_消費税率,0)"
-                      },
-                      "ID": "75b4049c20f948c68fa68906580598e8"
-                    },
-                    {
-                      "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
-                      "TableName": "t_sales",
-                      "ShowConfirm": false,
-                      "ConfirmText": "本当に更新してもよろしいですか？",
-                      "RowsToUpdate": 1,
-                      "RowsToUpdateCondition": {
-                        "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
-                        "ColumnBindingInfo": {
-                          "TableName": "t_sales",
-                          "ColumnName": "sales_id"
-                        },
-                        "Value": {
-                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                          "SerializeProperty": "=Item.P_売上ID"
-                        }
-                      },
-                      "UpdateValues": [
-                        {
-                          "ColumnName": "tax_rate",
-                          "Value": {
-                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                            "SerializeProperty": "=P_消費税率"
-                          }
-                        },
-                        {
-                          "ColumnName": "tax_amount",
-                          "Value": {
-                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                            "SerializeProperty": "=更新後消費税額"
-                          }
-                        },
-                        {
-                          "ColumnName": "billing_amount",
-                          "Value": {
-                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                            "SerializeProperty": "=Item.P_税抜金額+更新後消費税額"
-                          }
-                        }
-                      ]
-                    }
-                  ],
-                  "ID": "942f4d8a-9fbb-4747-9853-072cac18d6fb"
+                  "ColumnName": "tax_rate",
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=P_消費税率"
+                  }
+                },
+                {
+                  "ColumnName": "tax_amount",
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=更新後消費税額"
+                  }
+                },
+                {
+                  "ColumnName": "billing_amount",
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=Item.税抜金額+更新後消費税額"
+                  }
                 }
               ]
             }
           ]
         }
       ]
-    },
-    {
-      "$type": "Forguncy.Model.ReturnCommand, ServerDesignerCommon",
-      "ErrorCode": "0",
-      "CustomReturns": []
     }
   ],
   "Name": "消費税率一括更新"

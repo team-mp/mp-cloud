@@ -250,7 +250,7 @@
     "10,19": "物件住所",
     "10,31": "税率",
     "10,34": "回収予定日",
-    "10,39": "支払備考",
+    "10,39": "備考",
     "10,52": "消費税",
     "10,57": "専用請求番号",
     "10,59": "備考2",
@@ -566,46 +566,116 @@
         "$type": "Forguncy.ButtonCellType, ServerDesignerCommon",
         "CommandList": [
           {
-            "$type": "LoadingCommand.StartLoadingCommand, LoadingCommand",
-            "LoadingText": "お待ちください",
-            "LoadingTextColor": "Background 1 0"
-          },
-          {
-            "$type": "Forguncy.Model.UpdateListviewCommand, ServerDesignerCommon",
-            "ListviewName": "請求データビュー",
-            "UpdateValues": [
+            "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+            "ConditionAndCommandPairList": [
               {
-                "Column": {
-                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=請求データメンテナンス!BT12"
+                "ConfirmDialogSettings": {
+                  "Title": "確認",
+                  "FormulaText": "編集内容を一括更新します。\r\nよろしいですか？",
+                  "YesButtonText": "はい",
+                  "NoButtonText": "いいえ",
+                  "ConfirmIcon": 1
                 },
-                "Value": "0"
-              }
-            ],
-            "UpdateRowType": 2
-          },
-          {
-            "$type": "Forguncy.Model.UpdateListviewCommand, ServerDesignerCommon",
-            "UpdateType": 3,
-            "ListviewName": "請求データビュー"
-          },
-          {
-            "$type": "Forguncy.Model.ShareCommand, ServerDesignerCommon",
-            "ShareCommandContainerRefer": {
-              "ShareCommandContainerID": "de66a115-ade0-422c-9d10-db03223efd9b"
-            },
-            "Params": [
-              {
-                "ParamReferObject": {
-                  "ParamID": "1163bbdf-62b1-43af-9906-e63bfc780ec3",
-                  "ShareCommandContainerReferObject": {
-                    "ShareCommandContainerID": "de66a115-ade0-422c-9d10-db03223efd9b"
+                "CommandList": [
+                  {
+                    "$type": "LoadingCommand.StartLoadingCommand, LoadingCommand",
+                    "LoadingText": "お待ちください",
+                    "LoadingTextColor": "Background 1 0"
+                  },
+                  {
+                    "$type": "Forguncy.Model.RequestServerCommand, ServerDesignerCommon",
+                    "ServerCommandName": "請求データ一括更新処理",
+                    "Parameters": [
+                      {
+                        "$type": "Forguncy.Model.RequestServerCommandListviewParam, ServerDesignerCommon",
+                        "ListviewName": "請求データビュー",
+                        "Columns": [
+                          {
+                            "ArrayItemName": "P_売上ID",
+                            "Column": "売上ID"
+                          },
+                          {
+                            "ArrayItemName": "P_物件名",
+                            "Column": "物件名"
+                          },
+                          {
+                            "ArrayItemName": "P_物件住所",
+                            "Column": "物件住所"
+                          },
+                          {
+                            "ArrayItemName": "P_請求品名",
+                            "Column": "請求品名"
+                          },
+                          {
+                            "ArrayItemName": "P_請求備考",
+                            "Column": "請求備考"
+                          },
+                          {
+                            "ArrayItemName": "P_請求備考2",
+                            "Column": "請求備考2"
+                          },
+                          {
+                            "ArrayItemName": "P_税抜金額",
+                            "Column": "税抜金額"
+                          },
+                          {
+                            "ArrayItemName": "P_消費税",
+                            "Column": "消費税"
+                          },
+                          {
+                            "ArrayItemName": "P_専用請求番号",
+                            "Column": "専用請求番号"
+                          }
+                        ],
+                        "ParamName": "P_請求データリスト"
+                      }
+                    ],
+                    "ResultErrorCodeTo": {
+                      "SerializeProperty": "リターンコード"
+                    },
+                    "ResultMessageTo": {
+                      "SerializeProperty": "リターンメッセージ"
+                    },
+                    "RefreshAfterFinish": true,
+                    "CheckDataValidation": false
+                  },
+                  {
+                    "$type": "LoadingCommand.EndLoadingCommand, LoadingCommand"
+                  },
+                  {
+                    "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+                    "ConditionAndCommandPairList": [
+                      {
+                        "Condition": {
+                          "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                          "param": {
+                            "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+                            "cellLocations": [
+                              {
+                                "SerializeProperty": "=請求データメンテナンス!リターンコード"
+                              }
+                            ]
+                          },
+                          "value": "0",
+                          "compareType": 1
+                        },
+                        "CommandList": [
+                          {
+                            "$type": "Forguncy.Model.ShowMessageCommand, ServerDesignerCommon",
+                            "MessageFormula": {
+                              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                              "SerializeProperty": "=請求データメンテナンス!リターンメッセージ"
+                            }
+                          }
+                        ],
+                        "ID": "ebaa3772-bd63-4eef-a641-191fdf0d46cb"
+                      }
+                    ]
                   }
-                },
-                "Value": "編集内容を確定しました"
+                ],
+                "ID": "330d2a50-fc1b-488a-af59-7c077989becb"
               }
-            ],
-            "ReturnPropertiesTo": []
+            ]
           }
         ],
         "Text": "編集内容を確定する",
@@ -777,7 +847,7 @@
                     ]
                   }
                 ],
-                "ID": "a9a17e41-c039-4fa4-b755-28063a97c4f9"
+                "ID": "8a064236-407c-4888-98b5-beb9255809ee"
               }
             ]
           }
@@ -857,7 +927,7 @@
                     ]
                   }
                 ],
-                "ID": "e320d605-e079-4074-ae28-5230171b97f4"
+                "ID": "bffd8d1d-42be-41b3-97a5-82576102bb80"
               }
             ]
           }
@@ -1351,7 +1421,7 @@
                       ]
                     }
                   ],
-                  "ID": "357e10d2-702e-43df-9f4b-01d924bf035c"
+                  "ID": "2315fa84-cf5f-4d47-a7ee-cea724dca982"
                 },
                 {
                   "CommandList": [
@@ -1366,7 +1436,7 @@
                       ]
                     }
                   ],
-                  "ID": "da87ba0f-c1ef-4aaf-b8dc-ff9f0ce3980f"
+                  "ID": "171dc013-2f4d-4c53-8c0e-580e15772bb9"
                 }
               ]
             }
@@ -2015,7 +2085,7 @@
                 }
               }
             },
-            "ID": "9e92f3453c8740dfab065891bd3a1f3c"
+            "ID": "c26423105fcb4decafb26efc25644235"
           },
           {
             "$type": "Forguncy.Model.SetCellPropertyCommand, ServerDesignerCommon",
@@ -2098,7 +2168,7 @@
                   }
                 ],
                 "Comments": "請求日修正",
-                "ID": "59b90d5c-69ee-43e4-9ee3-c8d46806b645"
+                "ID": "a0ac1ce7-747f-40df-9ba7-2798b5f09be3"
               },
               {
                 "Condition": {
@@ -2165,7 +2235,7 @@
                   }
                 ],
                 "Comments": "請求先修正",
-                "ID": "7e4c8213-004c-4831-8117-5e8d8bd23cac"
+                "ID": "9566c50d-5779-4e13-b017-09d68565304b"
               },
               {
                 "Condition": {
@@ -2217,7 +2287,7 @@
                   }
                 ],
                 "Comments": "回収予定日修正",
-                "ID": "2db7ca60-1945-4892-b613-979cb2063649"
+                "ID": "7fdad174-8d24-44bb-9f60-d1a14165b9b9"
               },
               {
                 "Condition": {
@@ -2264,7 +2334,7 @@
                   }
                 ],
                 "Comments": "税率修正",
-                "ID": "19a66d29-5c3f-45b6-a2ba-bc67350e09cc"
+                "ID": "838b6d56-5614-49f4-b6ca-79e52ab29d5f"
               },
               {
                 "Condition": {
@@ -2326,7 +2396,7 @@
                   }
                 ],
                 "Comments": "物件名修正",
-                "ID": "ed155788-9c52-443b-a877-a912366b1921"
+                "ID": "7706c03d-96d7-40ff-a3cd-ba25e8840c7b"
               },
               {
                 "Condition": {
@@ -2387,7 +2457,7 @@
                     "Comments": ""
                   }
                 ],
-                "ID": "8ab800fa-b235-499a-8d7e-3b50dcca17c8"
+                "ID": "6ff86a35-c21b-4df3-9ce2-7f1f0bd3dff4"
               }
             ]
           }
@@ -2432,32 +2502,17 @@
                         "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
                         "Value": {
                           "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=請求データメンテナンス!BY23"
+                        },
+                        "ParamName": "P_売上IDs"
+                      },
+                      {
+                        "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                        "Value": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
                           "SerializeProperty": "=請求データメンテナンス!BT28"
                         },
                         "ParamName": "P_請求日"
-                      },
-                      {
-                        "$type": "Forguncy.Model.RequestServerCommandListviewParam, ServerDesignerCommon",
-                        "ListviewName": "請求データビュー",
-                        "Columns": [
-                          {
-                            "ArrayItemName": "P_選択フラグ",
-                            "Column": "選択フラグ"
-                          },
-                          {
-                            "ArrayItemName": "P_売上ID",
-                            "Column": "売上ID"
-                          },
-                          {
-                            "ArrayItemName": "P_請求先ID",
-                            "Column": "請求先ID"
-                          },
-                          {
-                            "ArrayItemName": "P_物件ID",
-                            "Column": "物件ID"
-                          }
-                        ],
-                        "ParamName": "P_請求データビュー"
                       }
                     ],
                     "ResultErrorCodeTo": {
@@ -2521,7 +2576,7 @@
                             "ReturnPropertiesTo": []
                           }
                         ],
-                        "ID": "34641923-53a3-4653-88d6-d4e1976c1d40"
+                        "ID": "6b122adf-2c1a-40b3-8acf-68dcd0491014"
                       },
                       {
                         "CommandList": [
@@ -2533,12 +2588,12 @@
                             }
                           }
                         ],
-                        "ID": "a19e3063-a660-4760-aaa0-cf18cad51dd6"
+                        "ID": "65e4380a-2910-40ab-9c94-09a1c8c94eea"
                       }
                     ]
                   }
                 ],
-                "ID": "be2302fd-40bc-4f16-98e5-c1a4b372e454"
+                "ID": "d2268b12-3608-4988-a89e-e1fc19f885ec"
               },
               {
                 "CommandList": [
@@ -2556,7 +2611,7 @@
                     "Comments": "値リセット"
                   }
                 ],
-                "ID": "74290fb3-9d85-4c21-a969-df19a6f40383"
+                "ID": "9cfbc303-3885-4105-9338-81d01c8fe273"
               }
             ]
           }
@@ -2600,17 +2655,17 @@
                         "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
                         "Value": {
                           "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                          "SerializeProperty": "=請求データメンテナンス!BY28"
+                          "SerializeProperty": "=請求データメンテナンス!BY23"
                         },
-                        "ParamName": "P_請求先ID"
+                        "ParamName": "P_売上IDs"
                       },
                       {
                         "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
                         "Value": {
                           "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                          "SerializeProperty": "=請求データメンテナンス!BY23"
+                          "SerializeProperty": "=請求データメンテナンス!BY28"
                         },
-                        "ParamName": "P_売上IDs"
+                        "ParamName": "P_請求先ID"
                       }
                     ],
                     "ResultErrorCodeTo": {
@@ -2674,7 +2729,7 @@
                             "ReturnPropertiesTo": []
                           }
                         ],
-                        "ID": "0e628903-7d19-430a-92b3-f92ac15661ee"
+                        "ID": "5b88cd5e-e443-4beb-8bc2-6061dbaafa8b"
                       },
                       {
                         "CommandList": [
@@ -2686,12 +2741,12 @@
                             }
                           }
                         ],
-                        "ID": "c6e83f57-5504-48e6-a5b4-31a3c46b2f6c"
+                        "ID": "6d515d8c-f5f0-4932-af9f-3c248b48554b"
                       }
                     ]
                   }
                 ],
-                "ID": "6d761cb8-6fca-4c40-9388-c5f9436c54f2"
+                "ID": "83a36d40-1208-4bee-b94f-56406d0a14ab"
               },
               {
                 "CommandList": [
@@ -2709,7 +2764,7 @@
                     "Comments": "値リセット"
                   }
                 ],
-                "ID": "d56a2f72-0b8c-4e01-ac0d-d78062e098c9"
+                "ID": "9df6f51d-c36d-4d52-a7e6-61ce4d6786dc"
               }
             ]
           }
@@ -2753,17 +2808,17 @@
                         "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
                         "Value": {
                           "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                          "SerializeProperty": "=請求データメンテナンス!CD28"
+                          "SerializeProperty": "=請求データメンテナンス!BY23"
                         },
-                        "ParamName": "P_回収予定日"
+                        "ParamName": "P_売上IDs"
                       },
                       {
                         "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
                         "Value": {
                           "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                          "SerializeProperty": "=請求データメンテナンス!BY23"
+                          "SerializeProperty": "=請求データメンテナンス!CD28"
                         },
-                        "ParamName": "P_売上IDs"
+                        "ParamName": "P_回収予定日"
                       }
                     ],
                     "ResultErrorCodeTo": {
@@ -2827,7 +2882,7 @@
                             "ReturnPropertiesTo": []
                           }
                         ],
-                        "ID": "659f5834-c546-4b78-97a1-79ab6c00afb2"
+                        "ID": "f6955f02-18bc-42b4-ae50-76bcd1e082f0"
                       },
                       {
                         "CommandList": [
@@ -2839,12 +2894,12 @@
                             }
                           }
                         ],
-                        "ID": "a277bbec-02dd-45db-9806-743d412b7d7f"
+                        "ID": "3afaeaba-4059-401e-8817-4fa3b92c7729"
                       }
                     ]
                   }
                 ],
-                "ID": "56d75b8c-d539-4ba1-b2ef-f84e23487639"
+                "ID": "a7dc7f5e-9b1f-4503-b670-1f65b25915a0"
               },
               {
                 "CommandList": [
@@ -2862,7 +2917,7 @@
                     "Comments": "値リセット"
                   }
                 ],
-                "ID": "a05e6383-9719-472a-af97-8bf23e26ae15"
+                "ID": "73a4fa5e-c50a-4cd5-93fd-a2c31c798db3"
               }
             ]
           }
@@ -2906,28 +2961,17 @@
                         "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
                         "Value": {
                           "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=請求データメンテナンス!BY23"
+                        },
+                        "ParamName": "P_売上IDs"
+                      },
+                      {
+                        "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                        "Value": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
                           "SerializeProperty": "=請求データメンテナンス!CI28"
                         },
                         "ParamName": "P_消費税率"
-                      },
-                      {
-                        "$type": "Forguncy.Model.RequestServerCommandListviewParam, ServerDesignerCommon",
-                        "ListviewName": "請求データビュー",
-                        "Columns": [
-                          {
-                            "ArrayItemName": "P_選択フラグ",
-                            "Column": "選択フラグ"
-                          },
-                          {
-                            "ArrayItemName": "P_売上ID",
-                            "Column": "売上ID"
-                          },
-                          {
-                            "ArrayItemName": "P_税抜金額",
-                            "Column": "税抜金額"
-                          }
-                        ],
-                        "ParamName": "P_請求データビュー"
                       }
                     ],
                     "ResultErrorCodeTo": {
@@ -2991,7 +3035,7 @@
                             "ReturnPropertiesTo": []
                           }
                         ],
-                        "ID": "052a209a-576c-45eb-9878-893c983b803a"
+                        "ID": "1e8d8355-cf3c-4983-89f9-37654e95f004"
                       },
                       {
                         "CommandList": [
@@ -3003,12 +3047,12 @@
                             }
                           }
                         ],
-                        "ID": "64d0bf24-7a25-4a0c-98a7-0c8e4d8a0183"
+                        "ID": "5db76b64-ae17-4211-8609-528c8451ce44"
                       }
                     ]
                   }
                 ],
-                "ID": "9d370f32-a3b3-417b-b8d1-2e131c1de45d"
+                "ID": "897c4c04-3de6-4a1d-a95e-5d4572b950c0"
               },
               {
                 "CommandList": [
@@ -3026,7 +3070,7 @@
                     "Comments": "値リセット"
                   }
                 ],
-                "ID": "1d5d454a-8bd9-4e67-8917-82ca1f88ddcc"
+                "ID": "b74ebc03-0d23-459c-99e5-aa64b0a4bd9a"
               }
             ]
           }
@@ -3070,17 +3114,17 @@
                         "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
                         "Value": {
                           "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                          "SerializeProperty": "=請求データメンテナンス!CN28"
+                          "SerializeProperty": "=請求データメンテナンス!BY23"
                         },
-                        "ParamName": "P_物件名"
+                        "ParamName": "P_売上IDs"
                       },
                       {
                         "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
                         "Value": {
                           "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                          "SerializeProperty": "=請求データメンテナンス!BY23"
+                          "SerializeProperty": "=請求データメンテナンス!CN28"
                         },
-                        "ParamName": "P_売上IDs"
+                        "ParamName": "P_物件名"
                       }
                     ],
                     "ResultErrorCodeTo": {
@@ -3144,7 +3188,7 @@
                             "ReturnPropertiesTo": []
                           }
                         ],
-                        "ID": "b47283db-94c5-4083-8ea3-424453fa1c1b"
+                        "ID": "35d511df-2615-406a-bc61-c396f2e64139"
                       },
                       {
                         "CommandList": [
@@ -3156,12 +3200,12 @@
                             }
                           }
                         ],
-                        "ID": "d251a73f-821a-4617-a309-31a24f030a3c"
+                        "ID": "59f6421f-87e1-4cf0-bc97-875e4bd4b6b1"
                       }
                     ]
                   }
                 ],
-                "ID": "9ea65567-626d-4b67-80c4-06307c7f5687"
+                "ID": "7f66f30a-39c7-4187-b865-c8529a67a302"
               },
               {
                 "CommandList": [
@@ -3179,7 +3223,7 @@
                     "Comments": "値リセット"
                   }
                 ],
-                "ID": "96c55d4d-53cd-4c0c-a3c6-7fe7c1ec4092"
+                "ID": "8f8f9ace-14f1-4424-aa6a-94af0eedaebd"
               }
             ]
           }
@@ -3297,7 +3341,7 @@
                             "ReturnPropertiesTo": []
                           }
                         ],
-                        "ID": "b5704ca9-003c-496e-b0fe-8f693e490f38"
+                        "ID": "849ddb49-31b0-4982-bea7-afe018b7666b"
                       },
                       {
                         "CommandList": [
@@ -3309,12 +3353,12 @@
                             }
                           }
                         ],
-                        "ID": "dc2071f5-243b-4ef2-bc47-dca9df91cd2a"
+                        "ID": "5d9bdb92-da27-4319-87b0-0c4965791ab2"
                       }
                     ]
                   }
                 ],
-                "ID": "f7f9f191-2b9e-43e5-9d57-ce685ed60808"
+                "ID": "bd904043-1d88-413c-bdc6-010371e4c41c"
               },
               {
                 "CommandList": [
@@ -3332,7 +3376,7 @@
                     "Comments": "値リセット"
                   }
                 ],
-                "ID": "c4fe32b8-7f9a-494d-bda7-27ddc900544b"
+                "ID": "1513a7be-93b3-40a0-8cbf-0153d37a592c"
               }
             ]
           }
@@ -4601,4 +4645,4 @@
       "Formula": "請求データメンテナンス!$CN$31"
     }
   ]
-}//kEe7HkpbBy3cm5kFDtfm0ZJwvaoBrd0vzmoAxGxQr8BLbYtH0+728DxqMTMO02rOr3NlhYLxpK6BFzOVaDQO75H3E7D5jDag1QNZEIAE2S1eI7+Se9qDj807W1EKXuiz8L9KGi+zFY786GqE1KwPOONOaqkznmaEGmtRwgmWT64FIl7nZYwdE8kbkNYj8XBsYcefW+ICG8CqW8jr2ou5TTB/QL+b4ksd0DxVjOYBV7IwGm6fBuuHRPxrF5CwhwJRxA1il1pm1006GsSdBwASWN4tBwmhfDDVYLJ45hwh7vAsaiSzjHFs6wvA0rnLMR6iA9XauSltnNn/41Xqz9IkiwnL+sN5HpZCwMQiwijsooqbBebLVan+hQN0nwu4mkmadSYBfHog5fcbCz12c89cAc60lcW+Ff965cTCBEcNimdDZV0x7aGIxIVcostrfa5yfVKl9UNxwD+g9Ii+sHZEGT46TDkG6dCA+Nd7XnWkP0c8tbAdCXgx8RTasCTNwdVhCkTDOjgM8ThI2a/rPpIqlD5ox+5HuUN2o7hOMqcxACDRMqTW9cEALqyh0B1ItMIGaPSxoAbYETRHChb0uat6CBjwQGnZjqPO4Wu9x506Nq73MSawwZbFmSACESUkEKzF6117V6Ag2pBKMEU+yoC88k0RvNFAu2Drv7bRQiKXtxGafrTswWF5baH9IAdksUkqfxhn1DzSF1dTnwX8rKw4l2luGRafR7792S3cG5DFWtivLnHOA01sQUsZROvXbkskMqJeWWtIX2xg0nKwRdp4tLv6dE6xuwlVjfL3dJkAeJS+tzrIQp6tmGgqu5UsqV3vajyQNIovHEGNcAi0dNtQn1IOVAwe6BUPR3+Z7N+uTC64x2jDOn4Y3fqF3S4pFkLsuaKWk4AKodofX3PEUlrnmw==|920
+}//aZp9TgVfRhCdZq6yFpgFrSLKHGs/y+q3pvm1+CM8U0agYPzq8Z/DL8vP2K4gEFS+AynsGsKA/FozIH74K4Gbar5O5Mt/7CFrUvkIhscdah368R2JNLXOZr6EIl0CLLRvzZPeIGpsSo5+EXWCy8pTrCOo/26Tcxm0GZLicB73HrAMAn0ofOOdRMxLnD3514436v1F8YcAHXOmRswBVkIVOpfPBcrnTyUVF9+OLZ285GK5PrxDkvWelOsQQjvsZHwXahSwTmUuFdnsXtCCRyAtsWTOeQ23YWyHWOlx95bfN06//qYMF9ZGh7nlgvv/q6Z9K7d4bvfq/HjD0pW/LZNSOzFjDwzY1j4/YsfyId+C5Dkglk0yQPkgInfLOHRFmyOuYsVeQEgZGmqH5m+d5P67f0HH0A9c22SjcI/lVweAphZr626aGsHN3OVRTRAZJDxgSqGd+UCgNVYA1+r578SEBbbzoIf//3XUTDqhDHMhJm2Jsr2PL50kk84dO7gvA7/UNt5NGrn06OdAg7fxgx+0HWdPadlVrdh+yAv+Q+liQLZKjsJ8+M4WuS6NcJO616IMWWSro8ehRyoF2qOOsqT81yY4LUoU8Qqsgq0TNUK8ZX3zO612HxxIoLccmGzKGvRU9Jw9Djo79U4c6IPUUW29QRTBTDzZvUHX1ffEYskVUcF3mIY2EiyzbMJJlCMzDlnE4FQfL7ghnkMhKszik+4TkvjsTUgP+M3WMJsyJnYXWIYGIcDGFvV/vSDU892l7fMzjqVYPNrlLi+hFAXwhvp4SsngX5eJWikBuBjn6XqMqCgH7Tquvva8rt2GigyDxzJ/MiR9niWKx0fWrwVap9RWXjiFp8pRR5gmvmBNGMO3do+uzfQbjLlmxE4PJcsCc0UXPmI3oCymHHApkVLSWxwXCw==|920
