@@ -1,19 +1,33 @@
 {
+  "Name": "測量データ解除処理",
   "Enabled": true,
   "Triggers": [
     {
-      "$type": "Forguncy.ServerCommands.Models.PostRequestTrigger, ServerDesignerCommon",
+      "$type": "Forguncy.SaveLoad.PostRequestTriggerSaveData, ServerDesignerCommon",
       "Permission": {
-        "AllowRoles": [
-          "FGC_LoginUser"
-        ]
+        "PermissionData": {
+          "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionData, Forguncy.RbacPermission.Core",
+          "permissionResource": {
+            "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionResource, Forguncy.RbacPermission.Core"
+          },
+          "permissionBindings": [
+            {
+              "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionBinding, Forguncy.RbacPermission.Core",
+              "roleNames": [
+                "FGC_LoginUser"
+              ]
+            }
+          ]
+        }
       },
       "Parameters": [
         {
-          "Name": "P_申込ID"
+          "Name": "P_申込ID",
+          "DataValidationInfo": {}
         },
         {
-          "Name": "P_測量ID"
+          "Name": "P_測量ID",
+          "DataValidationInfo": {}
         }
       ]
     }
@@ -30,16 +44,20 @@
             "TableValueType": 1,
             "BindingInfos": [
               {
+                "GUID": "c2244887-ab01-4875-8b0a-0eb080dad34a",
                 "BindingInfo": {
                   "TableName": "m_surveying_status",
-                  "ColumnName": "surveying_status_id"
+                  "ColumnName": "surveying_status_id",
+                  "GUID": "24fde322-6bdf-41db-b6e7-282e13e9e481"
                 },
                 "ColumnName": "測量ステータスID"
               },
               {
+                "GUID": "52e78c64-fa6e-4ae6-a30a-de00ed12ace2",
                 "BindingInfo": {
                   "TableName": "m_surveying_status",
-                  "ColumnName": "order_status_id"
+                  "ColumnName": "order_status_id",
+                  "GUID": "c02e9923-5564-4398-8b71-66f92dc78fd2"
                 },
                 "ColumnName": "申込ステータスID"
               }
@@ -48,7 +66,8 @@
               "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
               "ColumnBindingInfo": {
                 "TableName": "m_surveying_status",
-                "ColumnName": "surveying_complete_wait_flg"
+                "ColumnName": "surveying_complete_wait_flg",
+                "GUID": "2b996873-6301-4ec3-b4ee-7d6f35b6d9c3"
               },
               "Value": "1"
             }
@@ -79,39 +98,59 @@
           "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
           "TableName": "t_object_surveying",
           "ShowConfirm": false,
-          "ConfirmText": "本当に更新してもよろしいですか？",
           "RowsToUpdate": 1,
           "RowsToUpdateCondition": {
             "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
             "ColumnBindingInfo": {
               "TableName": "t_object_surveying",
-              "ColumnName": "surveying_id"
+              "ColumnName": "surveying_id",
+              "GUID": "4d0c8ff4-134c-4999-b07e-ba08b7cfd7a9"
             },
             "Value": {
               "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
               "SerializeProperty": "=P_測量ID"
             }
           },
-          "UpdateValues": [
+          "UpdateBindingValues": [
             {
-              "ColumnName": "surveying_status_id",
+              "BindingInfo": {
+                "TableName": "t_object_surveying",
+                "ColumnName": "surveying_status_id",
+                "GUID": "7a732908-0b64-44ea-8d79-58bdd0f48a28"
+              },
               "Value": {
                 "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
                 "SerializeProperty": "=測量完了待ちST.測量ステータスID"
               }
             },
             {
-              "ColumnName": "surveying_complete_flg",
+              "BindingInfo": {
+                "TableName": "t_object_surveying",
+                "ColumnName": "surveying_complete_flg",
+                "GUID": "317389db-70da-44cc-82dc-f5c8999a5075"
+              },
               "Value": "0"
             },
             {
-              "ColumnName": "surveying_complete_user_id"
+              "BindingInfo": {
+                "TableName": "t_object_surveying",
+                "ColumnName": "surveying_complete_user_id",
+                "GUID": "d33703db-6a46-45b9-b0bc-677c24a049f5"
+              }
             },
             {
-              "ColumnName": "surveying_complete_datetime"
+              "BindingInfo": {
+                "TableName": "t_object_surveying",
+                "ColumnName": "surveying_complete_datetime",
+                "GUID": "59691e23-5b87-4016-8e9b-40c3f6ea071e"
+              }
             },
             {
-              "ColumnName": "last_updated_label",
+              "BindingInfo": {
+                "TableName": "t_object_surveying",
+                "ColumnName": "last_updated_label",
+                "GUID": "c30380a5-e0cf-41fb-8546-532bbb82ccf0"
+              },
               "Value": {
                 "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
                 "SerializeProperty": "=最終更新ラベル"
@@ -140,22 +179,26 @@
                   "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
                   "TableName": "t_object_order",
                   "ShowConfirm": false,
-                  "ConfirmText": "本当に更新してもよろしいですか？",
                   "RowsToUpdate": 1,
                   "RowsToUpdateCondition": {
                     "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
                     "ColumnBindingInfo": {
                       "TableName": "t_object_order",
-                      "ColumnName": "object_order_id"
+                      "ColumnName": "object_order_id",
+                      "GUID": "13ea92b0-d53c-4961-871a-88226f869310"
                     },
                     "Value": {
                       "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
                       "SerializeProperty": "=P_申込ID"
                     }
                   },
-                  "UpdateValues": [
+                  "UpdateBindingValues": [
                     {
-                      "ColumnName": "order_status_id",
+                      "BindingInfo": {
+                        "TableName": "t_object_order",
+                        "ColumnName": "order_status_id",
+                        "GUID": "c2d54f49-3227-4096-9728-c2f6c297cc45"
+                      },
                       "Value": {
                         "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
                         "SerializeProperty": "=測量完了待ちST.申込ステータスID"
@@ -164,7 +207,7 @@
                   ]
                 }
               ],
-              "ID": "47e576dc-1e36-4482-827c-39a55a0aedd4"
+              "ID": "ae427f57-500e-44d9-bdcd-a0ab069d51aa"
             }
           ]
         },
@@ -178,11 +221,11 @@
             },
             {
               "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+              "ParamName": "P_測量ID",
               "Value": {
                 "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
                 "SerializeProperty": "=P_測量ID"
-              },
-              "ParamName": "P_測量ID"
+              }
             },
             {
               "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
@@ -216,11 +259,11 @@
           "Parameters": [
             {
               "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+              "ParamName": "P_申込ID",
               "Value": {
                 "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
                 "SerializeProperty": "=P_申込ID"
-              },
-              "ParamName": "P_申込ID"
+              }
             },
             {
               "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
@@ -228,11 +271,11 @@
             },
             {
               "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+              "ParamName": "P_測量ID",
               "Value": {
                 "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
                 "SerializeProperty": "=P_測量ID"
-              },
-              "ParamName": "P_測量ID"
+              }
             },
             {
               "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
@@ -295,16 +338,14 @@
                   "Message": {
                     "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
                     "SerializeProperty": "=リターンメッセージ"
-                  },
-                  "CustomReturns": []
+                  }
                 }
               ],
-              "ID": "66e1b4be-53ec-44ef-92fe-3b7d013b939b"
+              "ID": "12c6110e-de48-460c-ba60-b987f31fa4c3"
             }
           ]
         }
       ]
     }
-  ],
-  "Name": "測量データ解除処理"
+  ]
 }

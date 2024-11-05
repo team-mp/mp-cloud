@@ -1,19 +1,33 @@
 {
+  "Name": "工事見積会社登録",
   "Enabled": true,
   "Triggers": [
     {
-      "$type": "Forguncy.ServerCommands.Models.PostRequestTrigger, ServerDesignerCommon",
+      "$type": "Forguncy.SaveLoad.PostRequestTriggerSaveData, ServerDesignerCommon",
       "Permission": {
-        "AllowRoles": [
-          "FGC_LoginUser"
-        ]
+        "PermissionData": {
+          "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionData, Forguncy.RbacPermission.Core",
+          "permissionResource": {
+            "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionResource, Forguncy.RbacPermission.Core"
+          },
+          "permissionBindings": [
+            {
+              "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionBinding, Forguncy.RbacPermission.Core",
+              "roleNames": [
+                "FGC_LoginUser"
+              ]
+            }
+          ]
+        }
       },
       "Parameters": [
         {
-          "Name": "P_申込ID"
+          "Name": "P_申込ID",
+          "DataValidationInfo": {}
         },
         {
-          "Name": "P_工事会社IDs"
+          "Name": "P_工事会社IDs",
+          "DataValidationInfo": {}
         }
       ]
     }
@@ -51,9 +65,11 @@
             "TableValueType": 0,
             "BindingInfos": [
               {
+                "GUID": "3f47d1be-8047-46ad-b302-5de44213fb21",
                 "BindingInfo": {
                   "TableName": "m_construction_estimate_status",
-                  "ColumnName": "construction_estimate_status_id"
+                  "ColumnName": "construction_estimate_status_id",
+                  "GUID": "a37c3724-f373-4c79-9f38-f5e9adf7067d"
                 },
                 "ColumnName": "construction_estimate_status_id"
               }
@@ -62,7 +78,8 @@
               "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
               "ColumnBindingInfo": {
                 "TableName": "m_construction_estimate_status",
-                "ColumnName": "estimate_arrange_wait_flg"
+                "ColumnName": "estimate_arrange_wait_flg",
+                "GUID": "f2b79bc4-90ee-4a59-970a-7a5641fdf7cc"
               },
               "Value": "1"
             }
@@ -76,9 +93,11 @@
             "TableName": "m_customer",
             "BindingInfos": [
               {
+                "GUID": "3e5ee051-9828-4deb-aa5f-f2740759f022",
                 "BindingInfo": {
                   "TableName": "m_customer",
-                  "ColumnName": "customer_id"
+                  "ColumnName": "customer_id",
+                  "GUID": "50b01a5c-36a5-4b8e-b145-4f1d22891c14"
                 },
                 "ColumnName": "顧客ID"
               }
@@ -88,7 +107,8 @@
               "CompareType": 8,
               "ColumnBindingInfo": {
                 "TableName": "m_customer",
-                "ColumnName": "customer_id"
+                "ColumnName": "customer_id",
+                "GUID": "04941e9c-5d91-4864-baa5-0ed8d082f0fd"
               },
               "Value": {
                 "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
@@ -117,28 +137,32 @@
                 "TableValueType": 3,
                 "SqlCondition": {
                   "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
-                  "Condition1": {
-                    "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
-                    "ColumnBindingInfo": {
-                      "TableName": "t_object_construction_estimate",
-                      "ColumnName": "object_order_id"
+                  "SubConditions": [
+                    {
+                      "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                      "ColumnBindingInfo": {
+                        "TableName": "t_object_construction_estimate",
+                        "ColumnName": "object_order_id",
+                        "GUID": "a5573dd6-1bea-45a4-b8c2-aff6a62cb860"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=P_申込ID"
+                      }
                     },
-                    "Value": {
-                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                      "SerializeProperty": "=P_申込ID"
+                    {
+                      "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                      "ColumnBindingInfo": {
+                        "TableName": "t_object_construction_estimate",
+                        "ColumnName": "construction_customer_id",
+                        "GUID": "05a79459-3c24-4531-941a-1fa495740c69"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=Item.顧客ID"
+                      }
                     }
-                  },
-                  "Condition2": {
-                    "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
-                    "ColumnBindingInfo": {
-                      "TableName": "t_object_construction_estimate",
-                      "ColumnName": "construction_customer_id"
-                    },
-                    "Value": {
-                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                      "SerializeProperty": "=Item.顧客ID"
-                    }
-                  }
+                  ]
                 }
               },
               "ID": "008bcbb2bb54405b9de987ddfe5ca836"
@@ -164,38 +188,57 @@
                       "TableName": "t_object_construction_estimate",
                       "UpdateType": "add",
                       "ShowConfirm": false,
-                      "ConfirmText": "本当に追加してもよろしいですか？",
-                      "UpdateValues": [
+                      "UpdateBindingValues": [
                         {
-                          "ColumnName": "construction_estimate_register_date",
+                          "BindingInfo": {
+                            "TableName": "t_object_construction_estimate",
+                            "ColumnName": "construction_estimate_register_date",
+                            "GUID": "275d720b-09cc-4fdd-9e25-95ffa2a4e184"
+                          },
                           "Value": {
                             "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
                             "SerializeProperty": "=TODAY()"
                           }
                         },
                         {
-                          "ColumnName": "object_order_id",
+                          "BindingInfo": {
+                            "TableName": "t_object_construction_estimate",
+                            "ColumnName": "object_order_id",
+                            "GUID": "efb3aa5e-fee6-43f3-acfd-c4304788fa14"
+                          },
                           "Value": {
                             "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
                             "SerializeProperty": "=P_申込ID"
                           }
                         },
                         {
-                          "ColumnName": "construction_customer_id",
+                          "BindingInfo": {
+                            "TableName": "t_object_construction_estimate",
+                            "ColumnName": "construction_customer_id",
+                            "GUID": "8fa40f76-9625-4c9b-a855-dcaa7aa58915"
+                          },
                           "Value": {
                             "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
                             "SerializeProperty": "=Item.顧客ID"
                           }
                         },
                         {
-                          "ColumnName": "construction_estimate_status_id",
+                          "BindingInfo": {
+                            "TableName": "t_object_construction_estimate",
+                            "ColumnName": "construction_estimate_status_id",
+                            "GUID": "a3dadf11-33d3-4bfd-a5d0-f3e1fc2de43e"
+                          },
                           "Value": {
                             "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
                             "SerializeProperty": "=工事見積ステータスID"
                           }
                         },
                         {
-                          "ColumnName": "last_updated_label",
+                          "BindingInfo": {
+                            "TableName": "t_object_construction_estimate",
+                            "ColumnName": "last_updated_label",
+                            "GUID": "f1597185-bdb8-4035-bb64-0c7ccfa9687c"
+                          },
                           "Value": {
                             "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
                             "SerializeProperty": "=最終更新ラベル"
@@ -205,7 +248,7 @@
                       "ParamNameToSaveNewRowValue": "New工事見積"
                     }
                   ],
-                  "ID": "e804bd18-cfbf-4866-9fd5-f8313867f42b"
+                  "ID": "4f64c07c-07f9-4997-9a51-0ee3638adb65"
                 }
               ]
             }
@@ -213,11 +256,9 @@
         },
         {
           "$type": "Forguncy.Model.ReturnCommand, ServerDesignerCommon",
-          "ErrorCode": "0",
-          "CustomReturns": []
+          "ErrorCode": "0"
         }
       ]
     }
-  ],
-  "Name": "工事見積会社登録"
+  ]
 }

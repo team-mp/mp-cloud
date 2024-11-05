@@ -1,19 +1,33 @@
 {
+  "Name": "タスク担当者一括更新",
   "Enabled": true,
   "Triggers": [
     {
-      "$type": "Forguncy.ServerCommands.Models.PostRequestTrigger, ServerDesignerCommon",
+      "$type": "Forguncy.SaveLoad.PostRequestTriggerSaveData, ServerDesignerCommon",
       "Permission": {
-        "AllowRoles": [
-          "FGC_LoginUser"
-        ]
+        "PermissionData": {
+          "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionData, Forguncy.RbacPermission.Core",
+          "permissionResource": {
+            "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionResource, Forguncy.RbacPermission.Core"
+          },
+          "permissionBindings": [
+            {
+              "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionBinding, Forguncy.RbacPermission.Core",
+              "roleNames": [
+                "FGC_LoginUser"
+              ]
+            }
+          ]
+        }
       },
       "Parameters": [
         {
-          "Name": "P_変更担当者ID"
+          "Name": "P_変更担当者ID",
+          "DataValidationInfo": {}
         },
         {
-          "Name": "P_タスクIDs"
+          "Name": "P_タスクIDs",
+          "DataValidationInfo": {}
         }
       ]
     }
@@ -26,23 +40,27 @@
           "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
           "TableName": "t_task",
           "ShowConfirm": false,
-          "ConfirmText": "本当に更新してもよろしいですか？",
           "RowsToUpdate": 1,
           "RowsToUpdateCondition": {
             "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
             "CompareType": 8,
             "ColumnBindingInfo": {
               "TableName": "t_task",
-              "ColumnName": "task_id"
+              "ColumnName": "task_id",
+              "GUID": "c9e8f227-5b13-44dd-8490-1c0a74e90b29"
             },
             "Value": {
               "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
               "SerializeProperty": "=P_タスクIDs"
             }
           },
-          "UpdateValues": [
+          "UpdateBindingValues": [
             {
-              "ColumnName": "oparete_user_id",
+              "BindingInfo": {
+                "TableName": "t_task",
+                "ColumnName": "oparete_user_id",
+                "GUID": "9b86549a-c2b1-4953-8352-b3f7302134c5"
+              },
               "Value": {
                 "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
                 "SerializeProperty": "=P_変更担当者ID"
@@ -52,11 +70,9 @@
         },
         {
           "$type": "Forguncy.Model.ReturnCommand, ServerDesignerCommon",
-          "ErrorCode": "0",
-          "CustomReturns": []
+          "ErrorCode": "0"
         }
       ]
     }
-  ],
-  "Name": "タスク担当者一括更新"
+  ]
 }

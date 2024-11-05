@@ -1,19 +1,33 @@
 {
+  "Name": "タスク一括更新処理",
   "Enabled": true,
   "Triggers": [
     {
-      "$type": "Forguncy.ServerCommands.Models.PostRequestTrigger, ServerDesignerCommon",
+      "$type": "Forguncy.SaveLoad.PostRequestTriggerSaveData, ServerDesignerCommon",
       "Permission": {
-        "AllowRoles": [
-          "FGC_LoginUser"
-        ]
+        "PermissionData": {
+          "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionData, Forguncy.RbacPermission.Core",
+          "permissionResource": {
+            "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionResource, Forguncy.RbacPermission.Core"
+          },
+          "permissionBindings": [
+            {
+              "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionBinding, Forguncy.RbacPermission.Core",
+              "roleNames": [
+                "FGC_LoginUser"
+              ]
+            }
+          ]
+        }
       },
       "Parameters": [
         {
-          "Name": "P_タスクIDs"
+          "Name": "P_タスクIDs",
+          "DataValidationInfo": {}
         },
         {
-          "Name": "P_処理済み更新フラグ"
+          "Name": "P_処理済み更新フラグ",
+          "DataValidationInfo": {}
         }
       ]
     }
@@ -42,23 +56,27 @@
                   "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
                   "TableName": "t_task",
                   "ShowConfirm": false,
-                  "ConfirmText": "本当に更新してもよろしいですか？",
                   "RowsToUpdate": 1,
                   "RowsToUpdateCondition": {
                     "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
                     "CompareType": 8,
                     "ColumnBindingInfo": {
                       "TableName": "t_task",
-                      "ColumnName": "task_id"
+                      "ColumnName": "task_id",
+                      "GUID": "48add265-4349-46cf-a4c5-8120f68c56bc"
                     },
                     "Value": {
                       "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
                       "SerializeProperty": "=P_タスクIDs"
                     }
                   },
-                  "UpdateValues": [
+                  "UpdateBindingValues": [
                     {
-                      "ColumnName": "processed_flg",
+                      "BindingInfo": {
+                        "TableName": "t_task",
+                        "ColumnName": "processed_flg",
+                        "GUID": "f9940cdb-fbf4-4676-ba49-621277caa347"
+                      },
                       "Value": "1"
                     }
                   ]
@@ -70,46 +88,47 @@
                     "TableName": "t_task",
                     "BindingInfos": [
                       {
+                        "GUID": "261a4921-4145-4eb3-a7b0-4fc69ddf1368",
                         "BindingInfo": {
                           "TableName": "t_task",
-                          "ColumnName": "schedule_mail_id"
+                          "ColumnName": "schedule_mail_id",
+                          "GUID": "5e1d2c18-3980-4e68-90e6-aa0d7beb771f"
                         },
                         "ColumnName": "スケジュールメールID"
                       }
                     ],
                     "SqlCondition": {
                       "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
-                      "Condition1": {
-                        "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
-                        "Condition1": {
-                          "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
-                          "Condition1": {
-                            "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
-                            "CompareType": 8,
-                            "ColumnBindingInfo": {
-                              "TableName": "t_task",
-                              "ColumnName": "task_id"
-                            },
-                            "Value": {
-                              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                              "SerializeProperty": "=P_タスクIDs"
-                            }
+                      "SubConditions": [
+                        {
+                          "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                          "CompareType": 8,
+                          "ColumnBindingInfo": {
+                            "TableName": "t_task",
+                            "ColumnName": "task_id",
+                            "GUID": "b78e17a6-a109-405c-bd1a-35b03e79cfce"
                           },
-                          "Condition2": {
-                            "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
-                            "CompareType": 1,
-                            "ColumnBindingInfo": {
-                              "TableName": "t_task",
-                              "ColumnName": "schedule_mail_id"
-                            },
-                            "Value": "%Null%"
+                          "Value": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=P_タスクIDs"
                           }
                         },
-                        "Condition2": {
+                        {
+                          "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                          "CompareType": 1,
+                          "ColumnBindingInfo": {
+                            "TableName": "t_task",
+                            "ColumnName": "schedule_mail_id",
+                            "GUID": "912b527c-cbf0-4008-8085-8ad1cfd9aa75"
+                          },
+                          "Value": "%Null%"
+                        },
+                        {
                           "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
                           "ColumnBindingInfo": {
                             "TableName": "t_task",
                             "ColumnName": "schedule_mail_id",
+                            "GUID": "faa57783-3de2-4c4f-a066-988f7aac6c6e",
                             "RelationBinding": {
                               "RelatedTable": "t_schedule_mail",
                               "RelatedColumn": "schedule_mail_id",
@@ -117,21 +136,22 @@
                             }
                           },
                           "Value": "1"
-                        }
-                      },
-                      "Condition2": {
-                        "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
-                        "ColumnBindingInfo": {
-                          "TableName": "t_task",
-                          "ColumnName": "schedule_mail_id",
-                          "RelationBinding": {
-                            "RelatedTable": "t_schedule_mail",
-                            "RelatedColumn": "schedule_mail_id",
-                            "DisplayColumn": "send_completed_flg"
-                          }
                         },
-                        "Value": "0"
-                      }
+                        {
+                          "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                          "ColumnBindingInfo": {
+                            "TableName": "t_task",
+                            "ColumnName": "schedule_mail_id",
+                            "GUID": "8c2c08c0-2dd9-4f8d-92f0-136802256ca0",
+                            "RelationBinding": {
+                              "RelatedTable": "t_schedule_mail",
+                              "RelatedColumn": "schedule_mail_id",
+                              "DisplayColumn": "send_completed_flg"
+                            }
+                          },
+                          "Value": "0"
+                        }
+                      ]
                     }
                   },
                   "ID": "00778b8b441f465cb7b53dde624d0f1e"
@@ -151,22 +171,26 @@
                       "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
                       "TableName": "t_schedule_mail",
                       "ShowConfirm": false,
-                      "ConfirmText": "本当に更新してもよろしいですか？",
                       "RowsToUpdate": 1,
                       "RowsToUpdateCondition": {
                         "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
                         "ColumnBindingInfo": {
                           "TableName": "t_schedule_mail",
-                          "ColumnName": "schedule_mail_id"
+                          "ColumnName": "schedule_mail_id",
+                          "GUID": "8a227866-4bde-4d5d-bcf5-58a4d02becaa"
                         },
                         "Value": {
                           "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
                           "SerializeProperty": "=Item.スケジュールメールID"
                         }
                       },
-                      "UpdateValues": [
+                      "UpdateBindingValues": [
                         {
-                          "ColumnName": "active_flg",
+                          "BindingInfo": {
+                            "TableName": "t_schedule_mail",
+                            "ColumnName": "active_flg",
+                            "GUID": "1a247e24-e35a-47ea-bfa3-76eb670d2317"
+                          },
                           "Value": "0"
                         }
                       ],
@@ -175,7 +199,7 @@
                   ]
                 }
               ],
-              "ID": "740b9dcd-b05c-44ef-9901-9c3869d69592"
+              "ID": "18c6b102-ce54-4d1e-96b2-2170f754e75a"
             },
             {
               "CommandList": [
@@ -183,23 +207,27 @@
                   "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
                   "TableName": "t_task",
                   "ShowConfirm": false,
-                  "ConfirmText": "本当に更新してもよろしいですか？",
                   "RowsToUpdate": 1,
                   "RowsToUpdateCondition": {
                     "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
                     "CompareType": 8,
                     "ColumnBindingInfo": {
                       "TableName": "t_task",
-                      "ColumnName": "task_id"
+                      "ColumnName": "task_id",
+                      "GUID": "ddd75ebb-4a16-4a56-bdb7-11c72b5d5a2d"
                     },
                     "Value": {
                       "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
                       "SerializeProperty": "=P_タスクIDs"
                     }
                   },
-                  "UpdateValues": [
+                  "UpdateBindingValues": [
                     {
-                      "ColumnName": "processed_flg",
+                      "BindingInfo": {
+                        "TableName": "t_task",
+                        "ColumnName": "processed_flg",
+                        "GUID": "cbabcc0d-2693-4282-bc69-ab41961ed78e"
+                      },
                       "Value": "0"
                     }
                   ]
@@ -211,46 +239,47 @@
                     "TableName": "t_task",
                     "BindingInfos": [
                       {
+                        "GUID": "3f68e34a-d6e7-442f-a0fd-89fc997f14de",
                         "BindingInfo": {
                           "TableName": "t_task",
-                          "ColumnName": "schedule_mail_id"
+                          "ColumnName": "schedule_mail_id",
+                          "GUID": "c2b03d5e-0b5b-466a-a782-af95e8d10fac"
                         },
                         "ColumnName": "スケジュールメールID"
                       }
                     ],
                     "SqlCondition": {
                       "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
-                      "Condition1": {
-                        "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
-                        "Condition1": {
-                          "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
-                          "Condition1": {
-                            "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
-                            "CompareType": 8,
-                            "ColumnBindingInfo": {
-                              "TableName": "t_task",
-                              "ColumnName": "task_id"
-                            },
-                            "Value": {
-                              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                              "SerializeProperty": "=P_タスクIDs"
-                            }
+                      "SubConditions": [
+                        {
+                          "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                          "CompareType": 8,
+                          "ColumnBindingInfo": {
+                            "TableName": "t_task",
+                            "ColumnName": "task_id",
+                            "GUID": "5f6b5c04-3329-4826-89b1-fdad2da93c18"
                           },
-                          "Condition2": {
-                            "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
-                            "CompareType": 1,
-                            "ColumnBindingInfo": {
-                              "TableName": "t_task",
-                              "ColumnName": "schedule_mail_id"
-                            },
-                            "Value": "%Null%"
+                          "Value": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=P_タスクIDs"
                           }
                         },
-                        "Condition2": {
+                        {
+                          "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                          "CompareType": 1,
+                          "ColumnBindingInfo": {
+                            "TableName": "t_task",
+                            "ColumnName": "schedule_mail_id",
+                            "GUID": "177cad40-d05e-4fff-ae4f-3e1d36d9db91"
+                          },
+                          "Value": "%Null%"
+                        },
+                        {
                           "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
                           "ColumnBindingInfo": {
                             "TableName": "t_task",
                             "ColumnName": "schedule_mail_id",
+                            "GUID": "759def8b-cbf6-4a5e-8cf4-50c185958f6f",
                             "RelationBinding": {
                               "RelatedTable": "t_schedule_mail",
                               "RelatedColumn": "schedule_mail_id",
@@ -258,21 +287,22 @@
                             }
                           },
                           "Value": "0"
-                        }
-                      },
-                      "Condition2": {
-                        "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
-                        "ColumnBindingInfo": {
-                          "TableName": "t_task",
-                          "ColumnName": "schedule_mail_id",
-                          "RelationBinding": {
-                            "RelatedTable": "t_schedule_mail",
-                            "RelatedColumn": "schedule_mail_id",
-                            "DisplayColumn": "send_completed_flg"
-                          }
                         },
-                        "Value": "0"
-                      }
+                        {
+                          "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                          "ColumnBindingInfo": {
+                            "TableName": "t_task",
+                            "ColumnName": "schedule_mail_id",
+                            "GUID": "baca94c9-c1c8-4385-830f-510a3dfe6f1c",
+                            "RelationBinding": {
+                              "RelatedTable": "t_schedule_mail",
+                              "RelatedColumn": "schedule_mail_id",
+                              "DisplayColumn": "send_completed_flg"
+                            }
+                          },
+                          "Value": "0"
+                        }
+                      ]
                     }
                   },
                   "ID": "db93626cd11e452bb79f06c3787c6f04"
@@ -292,22 +322,26 @@
                       "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
                       "TableName": "t_schedule_mail",
                       "ShowConfirm": false,
-                      "ConfirmText": "本当に更新してもよろしいですか？",
                       "RowsToUpdate": 1,
                       "RowsToUpdateCondition": {
                         "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
                         "ColumnBindingInfo": {
                           "TableName": "t_schedule_mail",
-                          "ColumnName": "schedule_mail_id"
+                          "ColumnName": "schedule_mail_id",
+                          "GUID": "a0330996-9608-4128-8cd9-d5ff41400a5f"
                         },
                         "Value": {
                           "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
                           "SerializeProperty": "=Item.スケジュールメールID"
                         }
                       },
-                      "UpdateValues": [
+                      "UpdateBindingValues": [
                         {
-                          "ColumnName": "active_flg",
+                          "BindingInfo": {
+                            "TableName": "t_schedule_mail",
+                            "ColumnName": "active_flg",
+                            "GUID": "6eea25c5-1cdc-463f-998f-7996336081eb"
+                          },
                           "Value": "1"
                         }
                       ],
@@ -316,17 +350,15 @@
                   ]
                 }
               ],
-              "ID": "8fccb513-2509-4519-86a8-464b3bee4f73"
+              "ID": "49d46405-d41e-4b56-ad59-4c1b797ea86b"
             }
           ]
         },
         {
           "$type": "Forguncy.Model.ReturnCommand, ServerDesignerCommon",
-          "ErrorCode": "0",
-          "CustomReturns": []
+          "ErrorCode": "0"
         }
       ]
     }
-  ],
-  "Name": "タスク一括更新処理"
+  ]
 }

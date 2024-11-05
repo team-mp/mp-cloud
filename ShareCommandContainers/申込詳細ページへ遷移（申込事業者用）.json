@@ -1,0 +1,150 @@
+{
+  "ID": "cbbfb29d-1492-418d-9e9e-d8741216d1a9",
+  "Name": "申込詳細ページへ遷移（申込事業者用）",
+  "Params": [
+    {
+      "ID": "e3f0c29a-8fa9-459b-ad3c-171ac0509be6",
+      "Name": "P_申込ID"
+    },
+    {
+      "ID": "cf75da8a-3a4e-41fd-bf66-8a54ee1b759e",
+      "Name": "P_タブ番号"
+    },
+    {
+      "ID": "ca97938c-8b1f-4323-a977-7fa00da274e4",
+      "Name": "P_連絡ID"
+    }
+  ],
+  "Commands": [
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "ランダムID",
+      "TableValue": {
+        "TableName": "t_object_order",
+        "OnlyGetValue": true,
+        "TableValueType": 0,
+        "BindingInfos": [
+          {
+            "GUID": "6684cd56-78cd-41b1-a2e4-e7adf3828212",
+            "BindingInfo": {
+              "TableName": "t_object_order",
+              "ColumnName": "random_id",
+              "GUID": "3ad06a2d-9dfc-4720-9a96-431120f1b4e5"
+            },
+            "ColumnName": "random_id"
+          }
+        ],
+        "SqlCondition": {
+          "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+          "ColumnBindingInfo": {
+            "TableName": "t_object_order",
+            "ColumnName": "object_order_id",
+            "GUID": "39e5a816-bc45-41f6-983e-97e654ebbb67"
+          },
+          "Value": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=P_申込ID"
+          }
+        }
+      },
+      "ID": "60e126980a8f46b8bcac663bf7f48fc7",
+      "Comments": "ランダムID取得"
+    },
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "URL",
+      "ParameterValue": {
+        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+        "SerializeProperty": "=ロケーションURL"
+      },
+      "ID": "2dfe70f0c2504595b498e2b33ebb0d91",
+      "Comments": "※メインフォームでセル定義されている値を参照"
+    },
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "削除文字列",
+      "ParameterValue": "%E3%83%A1%E3%82%A4%E3%83%B3%E3%83%95%E3%82%A9%E3%83%BC%E3%83%A0",
+      "ID": "b152c9edc4584d019281fd1dd15a863c",
+      "Comments": "メインフォームという文字列"
+    },
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "URL",
+      "ParameterValue": {
+        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+        "SerializeProperty": "=SUBSTITUTE(URL,削除文字列,\"\")"
+      },
+      "ID": "190f07decdab4f0e8440d52d8e91a427",
+      "Comments": "補正する"
+    },
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "URL",
+      "ParameterValue": {
+        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+        "SerializeProperty": "=URL&IF(RIGHT(URL,1)=\"/\",\"\",\"/\")"
+      },
+      "ID": "8b24b855fb0b457f9f7c6677d5b684fe",
+      "Comments": "最後の文字に「/」が無ければ付加する"
+    },
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "URL",
+      "ParameterValue": {
+        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+        "SerializeProperty": "=URL&\"申込詳細_申込事業者用\"&\"?tab=\"&P_タブ番号"
+      },
+      "ID": "166d4cdb2bf94091ba9c4e704efa502b"
+    },
+    {
+      "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+      "ConditionAndCommandPairList": [
+        {
+          "Condition": {
+            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+            "param": {
+              "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+              "cellLocations": [
+                {
+                  "SerializeProperty": "=P_連絡ID"
+                }
+              ]
+            },
+            "value": "%Null%",
+            "compareType": 1
+          },
+          "CommandList": [
+            {
+              "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+              "ParameterName": "URL",
+              "ParameterValue": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=URL&\"&notice_id=\"&P_連絡ID"
+              },
+              "ID": "92defce21bb4430db2b90fc4d11ca693"
+            }
+          ],
+          "ID": "cb7e11e0-38f2-45fe-9b5d-11fbd6427cc3"
+        }
+      ],
+      "Comments": "連絡IDがあればパラメータセット"
+    },
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "URL",
+      "ParameterValue": {
+        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+        "SerializeProperty": "=URL&\"&id=\"&ランダムID"
+      },
+      "ID": "b99f59fdbdf047a597ef5d1d13d5dda8"
+    },
+    {
+      "$type": "Forguncy.Model.NavigateCommand, ServerDesignerCommon",
+      "ValueFormula": {
+        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+        "SerializeProperty": "=URL"
+      },
+      "IsOpenInNewTab": true
+    }
+  ]
+}

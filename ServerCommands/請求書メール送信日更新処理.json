@@ -1,16 +1,29 @@
 {
+  "Name": "請求書メール送信日更新処理",
   "Enabled": true,
   "Triggers": [
     {
-      "$type": "Forguncy.ServerCommands.Models.PostRequestTrigger, ServerDesignerCommon",
+      "$type": "Forguncy.SaveLoad.PostRequestTriggerSaveData, ServerDesignerCommon",
       "Permission": {
-        "AllowRoles": [
-          "FGC_LoginUser"
-        ]
+        "PermissionData": {
+          "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionData, Forguncy.RbacPermission.Core",
+          "permissionResource": {
+            "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionResource, Forguncy.RbacPermission.Core"
+          },
+          "permissionBindings": [
+            {
+              "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionBinding, Forguncy.RbacPermission.Core",
+              "roleNames": [
+                "FGC_LoginUser"
+              ]
+            }
+          ]
+        }
       },
       "Parameters": [
         {
-          "Name": "P_請求番号"
+          "Name": "P_請求番号",
+          "DataValidationInfo": {}
         }
       ]
     }
@@ -23,35 +36,42 @@
           "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
           "TableName": "t_sales",
           "ShowConfirm": false,
-          "ConfirmText": "本当に更新してもよろしいですか？",
           "RowsToUpdate": 1,
           "RowsToUpdateCondition": {
             "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
             "ColumnBindingInfo": {
               "TableName": "t_sales",
-              "ColumnName": "billing_no"
+              "ColumnName": "billing_no",
+              "GUID": "86b20fb8-1506-4c69-94d3-18c05992b5b7"
             },
             "Value": {
               "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
               "SerializeProperty": "=P_請求番号"
             }
           },
-          "UpdateValues": [
+          "UpdateBindingValues": [
             {
-              "ColumnName": "mail_send_date",
+              "BindingInfo": {
+                "TableName": "t_sales",
+                "ColumnName": "mail_send_date",
+                "GUID": "566a87c7-fbb9-4507-b66a-1b137b067cda"
+              },
               "Value": {
                 "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
                 "SerializeProperty": "=TODAY()"
               }
             },
             {
-              "ColumnName": "mail_send_flg",
+              "BindingInfo": {
+                "TableName": "t_sales",
+                "ColumnName": "mail_send_flg",
+                "GUID": "0b40e6fe-3e56-44d7-89ab-3bb2cdbf7b8a"
+              },
               "Value": "1"
             }
           ]
         }
       ]
     }
-  ],
-  "Name": "請求書メール送信日更新処理"
+  ]
 }

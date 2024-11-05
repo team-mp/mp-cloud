@@ -1,0 +1,305 @@
+{
+  "ID": "3ddda311-1147-4192-a86f-f2ef4aae9e07",
+  "Name": "工事見積ステータス件数更新",
+  "Params": [
+    {
+      "ID": "fd71ba79-36b7-4ce2-83d2-4c4930527959",
+      "Name": "P_ステータスID"
+    }
+  ],
+  "Commands": [
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "工事見積ST",
+      "TableValue": {
+        "TableName": "m_construction_estimate_status",
+        "TableValueType": 1,
+        "BindingInfos": [
+          {
+            "GUID": "eff60f4b-cea7-4934-8b5e-b2f3e32989a5",
+            "BindingInfo": {
+              "TableName": "m_construction_estimate_status",
+              "ColumnName": "estimate_arrange_wait_flg",
+              "GUID": "e114839f-1f92-4caa-b746-5676c176d03e"
+            },
+            "ColumnName": "見積手配待ちフラグ"
+          },
+          {
+            "GUID": "26894951-05bb-41f2-a837-f3ab4b9fe4c6",
+            "BindingInfo": {
+              "TableName": "m_construction_estimate_status",
+              "ColumnName": "design_wait_flg",
+              "GUID": "618fbedd-1655-4b2e-9bee-cc847299a0b0"
+            },
+            "ColumnName": "設計待ちフラグ"
+          },
+          {
+            "GUID": "724950e8-8164-4f04-bb0f-4f4b0d61150a",
+            "BindingInfo": {
+              "TableName": "m_construction_estimate_status",
+              "ColumnName": "design_examination_flg",
+              "GUID": "6df31bc6-6d48-405c-99b9-f612474d852b"
+            },
+            "ColumnName": "設計審査中フラグ"
+          },
+          {
+            "GUID": "abe964ad-45a2-46ad-ab5f-cbbcc2b89527",
+            "BindingInfo": {
+              "TableName": "m_construction_estimate_status",
+              "ColumnName": "examination_complete_flg",
+              "GUID": "f25361cd-a921-49df-a888-3501c2687350"
+            },
+            "ColumnName": "審査完了フラグ"
+          },
+          {
+            "GUID": "200cc874-9b22-47fc-b75e-cb0f03620c77",
+            "BindingInfo": {
+              "TableName": "m_construction_estimate_status",
+              "ColumnName": "order_wait_flg",
+              "GUID": "15bbae43-9b02-4797-a4f6-5a5c9243c613"
+            },
+            "ColumnName": "受注確定待ちフラグ"
+          }
+        ],
+        "SqlCondition": {
+          "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+          "ColumnBindingInfo": {
+            "TableName": "m_construction_estimate_status",
+            "ColumnName": "construction_estimate_status_id",
+            "GUID": "6c0936e9-2792-4437-a4b8-0684af245dcf"
+          },
+          "Value": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=P_ステータスID"
+          }
+        }
+      },
+      "ID": "c4b670157c6343ee8593fa6c0b7c46ef"
+    },
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "件数",
+      "TableValue": {
+        "TableName": "t_object_construction_estimate",
+        "TableValueType": 3,
+        "SqlCondition": {
+          "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+          "SubConditions": [
+            {
+              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+              "ColumnBindingInfo": {
+                "TableName": "t_object_construction_estimate",
+                "ColumnName": "construction_estimate_status_id",
+                "GUID": "4d0ada14-59b3-4ca2-abfa-a556d453765c"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_ステータスID"
+              }
+            },
+            {
+              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+              "ColumnBindingInfo": {
+                "TableName": "t_object_construction_estimate",
+                "ColumnName": "object_order_id",
+                "GUID": "2f26d95a-7b0d-4637-a6cf-cb083ade22f3",
+                "RelationBinding": {
+                  "RelatedTable": "t_object_order",
+                  "RelatedColumn": "object_order_id",
+                  "DisplayColumn": "active_flg"
+                }
+              },
+              "Value": "1"
+            }
+          ]
+        }
+      },
+      "ID": "dc19cf9b8d6c44568a89031b71351f39"
+    },
+    {
+      "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+      "ConditionAndCommandPairList": [
+        {
+          "Condition": {
+            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+            "param": {
+              "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+              "cellLocations": [
+                {
+                  "SerializeProperty": "=工事見積ST.見積手配待ちフラグ"
+                }
+              ]
+            },
+            "value": "1"
+          },
+          "CommandList": [
+            {
+              "$type": "Forguncy.Model.SetCellPropertyCommand, ServerDesignerCommon",
+              "PropertyItemsList": [
+                {
+                  "TargetCells": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=工事見積_見積手配待ち件数"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=件数"
+                  }
+                }
+              ]
+            }
+          ],
+          "ID": "6abca8a6-e4c1-4fe9-8bc6-91bd29344b01"
+        }
+      ]
+    },
+    {
+      "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+      "ConditionAndCommandPairList": [
+        {
+          "Condition": {
+            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+            "param": {
+              "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+              "cellLocations": [
+                {
+                  "SerializeProperty": "=工事見積ST.設計待ちフラグ"
+                }
+              ]
+            },
+            "value": "1"
+          },
+          "CommandList": [
+            {
+              "$type": "Forguncy.Model.SetCellPropertyCommand, ServerDesignerCommon",
+              "PropertyItemsList": [
+                {
+                  "TargetCells": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=工事見積_設計待ち件数"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=件数"
+                  }
+                }
+              ]
+            }
+          ],
+          "ID": "6459a9aa-d27f-44eb-9451-032103104ba4"
+        }
+      ]
+    },
+    {
+      "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+      "ConditionAndCommandPairList": [
+        {
+          "Condition": {
+            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+            "param": {
+              "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+              "cellLocations": [
+                {
+                  "SerializeProperty": "=工事見積ST.設計審査中フラグ"
+                }
+              ]
+            },
+            "value": "1"
+          },
+          "CommandList": [
+            {
+              "$type": "Forguncy.Model.SetCellPropertyCommand, ServerDesignerCommon",
+              "PropertyItemsList": [
+                {
+                  "TargetCells": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=工事見積_設計審査中件数"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=件数"
+                  }
+                }
+              ]
+            }
+          ],
+          "ID": "d35387d1-a1e8-4017-97a5-5c901eb08b49"
+        }
+      ]
+    },
+    {
+      "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+      "ConditionAndCommandPairList": [
+        {
+          "Condition": {
+            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+            "param": {
+              "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+              "cellLocations": [
+                {
+                  "SerializeProperty": "=工事見積ST.審査完了フラグ"
+                }
+              ]
+            },
+            "value": "1"
+          },
+          "CommandList": [
+            {
+              "$type": "Forguncy.Model.SetCellPropertyCommand, ServerDesignerCommon",
+              "PropertyItemsList": [
+                {
+                  "TargetCells": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=工事見積_審査完了件数"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=件数"
+                  }
+                }
+              ]
+            }
+          ],
+          "ID": "6e0b4e43-be73-4a86-b625-a19e8ce2f008"
+        }
+      ]
+    },
+    {
+      "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+      "ConditionAndCommandPairList": [
+        {
+          "Condition": {
+            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+            "param": {
+              "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+              "cellLocations": [
+                {
+                  "SerializeProperty": "=工事見積ST.受注確定待ちフラグ"
+                }
+              ]
+            },
+            "value": "1"
+          },
+          "CommandList": [
+            {
+              "$type": "Forguncy.Model.SetCellPropertyCommand, ServerDesignerCommon",
+              "PropertyItemsList": [
+                {
+                  "TargetCells": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=工事見積_受注確定待ち件数"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=件数"
+                  }
+                }
+              ]
+            }
+          ],
+          "ID": "610d04ad-6992-4aaf-bb97-4a588e22a876"
+        }
+      ]
+    }
+  ]
+}

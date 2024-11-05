@@ -1,16 +1,29 @@
 {
+  "Name": "転圧商品確定処理",
   "Enabled": true,
   "Triggers": [
     {
-      "$type": "Forguncy.ServerCommands.Models.PostRequestTrigger, ServerDesignerCommon",
+      "$type": "Forguncy.SaveLoad.PostRequestTriggerSaveData, ServerDesignerCommon",
       "Permission": {
-        "AllowRoles": [
-          "FGC_LoginUser"
-        ]
+        "PermissionData": {
+          "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionData, Forguncy.RbacPermission.Core",
+          "permissionResource": {
+            "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionResource, Forguncy.RbacPermission.Core"
+          },
+          "permissionBindings": [
+            {
+              "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionBinding, Forguncy.RbacPermission.Core",
+              "roleNames": [
+                "FGC_LoginUser"
+              ]
+            }
+          ]
+        }
       },
       "Parameters": [
         {
-          "Name": "P_転圧ID"
+          "Name": "P_転圧ID",
+          "DataValidationInfo": {}
         }
       ]
     }
@@ -25,9 +38,11 @@
         "TableValueType": 0,
         "BindingInfos": [
           {
+            "GUID": "0f534cbc-739e-4c71-9e80-c289b6d92a82",
             "BindingInfo": {
               "TableName": "m_product",
-              "ColumnName": "product_id"
+              "ColumnName": "product_id",
+              "GUID": "dc95ef22-88ef-434f-bf51-5187eaafaed6"
             },
             "ColumnName": "product_id"
           }
@@ -36,7 +51,8 @@
           "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
           "ColumnBindingInfo": {
             "TableName": "m_product",
-            "ColumnName": "compaction_account_product_flg"
+            "ColumnName": "compaction_account_product_flg",
+            "GUID": "10a8ac86-7e59-44bc-8dd1-e1510836fd20"
           },
           "Value": "1"
         }
@@ -50,30 +66,38 @@
         "TableName": "t_object_product",
         "BindingInfos": [
           {
+            "GUID": "9b99bab9-37b4-41b9-aeb7-89e34babda3a",
             "BindingInfo": {
               "TableName": "t_object_product",
-              "ColumnName": "object_product_id"
+              "ColumnName": "object_product_id",
+              "GUID": "1470a6b2-1383-43b5-b179-7ad9cdf34ef4"
             },
             "ColumnName": "物件商品ID"
           },
           {
+            "GUID": "a0d05140-d006-4650-b8f7-8050ab5bb1e4",
             "BindingInfo": {
               "TableName": "t_object_product",
-              "ColumnName": "product_id"
+              "ColumnName": "product_id",
+              "GUID": "a7d5aed6-cd49-421a-b4d7-228ed4adfe8a"
             },
             "ColumnName": "商品ID"
           },
           {
+            "GUID": "cfb539a9-c9e4-4ee4-a42b-f29ca14572e8",
             "BindingInfo": {
               "TableName": "t_object_product",
-              "ColumnName": "remarks"
+              "ColumnName": "remarks",
+              "GUID": "79d9824e-0b1f-41a2-9f6b-0441d030b6fb"
             },
             "ColumnName": "備考"
           },
           {
+            "GUID": "4057946f-193a-4d78-9b01-b761b455bfb5",
             "BindingInfo": {
               "TableName": "t_object_product",
               "ColumnName": "compaction_id",
+              "GUID": "65d9928e-17a6-476f-9822-6a6537388d9c",
               "RelationBinding": {
                 "RelatedTable": "t_object_compaction",
                 "RelatedColumn": "compaction_id",
@@ -83,9 +107,11 @@
             "ColumnName": "転圧区分"
           },
           {
+            "GUID": "08f69c80-eb20-40e9-83e7-22149a35525a",
             "BindingInfo": {
               "TableName": "t_object_product",
               "ColumnName": "compaction_id",
+              "GUID": "541bda67-8a9d-423c-94a8-4117a056e44b",
               "RelationBinding": {
                 "RelatedTable": "t_object_compaction",
                 "RelatedColumn": "compaction_id",
@@ -97,39 +123,46 @@
         ],
         "SqlCondition": {
           "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
-          "Condition1": {
-            "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
-            "ColumnBindingInfo": {
-              "TableName": "t_object_product",
-              "ColumnName": "compaction_id"
+          "SubConditions": [
+            {
+              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+              "ColumnBindingInfo": {
+                "TableName": "t_object_product",
+                "ColumnName": "compaction_id",
+                "GUID": "c9406453-d564-4b98-99c5-5c86aa93c812"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_転圧ID"
+              }
             },
-            "Value": {
-              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-              "SerializeProperty": "=P_転圧ID"
+            {
+              "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+              "SubConditions": [
+                {
+                  "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                  "ColumnBindingInfo": {
+                    "TableName": "t_object_product",
+                    "ColumnName": "sales_account_complete_flg",
+                    "GUID": "9d394b22-5b37-4e3e-b450-131b490233e1"
+                  },
+                  "Value": "0",
+                  "LeftBracket": 1
+                },
+                {
+                  "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                  "ColumnBindingInfo": {
+                    "TableName": "t_object_product",
+                    "ColumnName": "purchase_account_complete_flg",
+                    "GUID": "68097007-eb82-4c3e-878d-5de5fbb91a98"
+                  },
+                  "Value": "0",
+                  "RightBracket": 1
+                }
+              ],
+              "RelationType": 1
             }
-          },
-          "Condition2": {
-            "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
-            "Condition1": {
-              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
-              "ColumnBindingInfo": {
-                "TableName": "t_object_product",
-                "ColumnName": "sales_account_complete_flg"
-              },
-              "Value": "0",
-              "LeftBracket": 1
-            },
-            "Condition2": {
-              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
-              "ColumnBindingInfo": {
-                "TableName": "t_object_product",
-                "ColumnName": "purchase_account_complete_flg"
-              },
-              "Value": "0",
-              "RightBracket": 1
-            },
-            "RelationType": 1
-          }
+          ]
         }
       },
       "ID": "a453a123f9fa4b51ab58d4bfd568a1e6"
@@ -151,9 +184,8 @@
             {
               "Condition": {
                 "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
-                "Condition1": {
-                  "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
-                  "Condition1": {
+                "SubConditions": [
+                  {
                     "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
                     "param": {
                       "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
@@ -164,7 +196,7 @@
                     },
                     "value": "1"
                   },
-                  "Condition2": {
+                  {
                     "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
                     "param": {
                       "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
@@ -177,19 +209,19 @@
                       "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
                       "SerializeProperty": "=転圧計上商品ID"
                     }
-                  }
-                },
-                "Condition2": {
-                  "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
-                  "param": {
-                    "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
-                    "ParamObject": {
-                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                      "SerializeProperty": "=Item.備考"
-                    }
                   },
-                  "value": "%Null%"
-                }
+                  {
+                    "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                    "param": {
+                      "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                      "ParamObject": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=Item.備考"
+                      }
+                    },
+                    "value": "%Null%"
+                  }
+                ]
               },
               "CommandList": [
                 {
@@ -205,22 +237,26 @@
                   "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
                   "TableName": "t_object_product",
                   "ShowConfirm": false,
-                  "ConfirmText": "本当に更新してもよろしいですか？",
                   "RowsToUpdate": 1,
                   "RowsToUpdateCondition": {
                     "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
                     "ColumnBindingInfo": {
                       "TableName": "t_object_product",
-                      "ColumnName": "object_product_id"
+                      "ColumnName": "object_product_id",
+                      "GUID": "050b06be-3471-48c2-9b00-e036ff87f3d2"
                     },
                     "Value": {
                       "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
                       "SerializeProperty": "=Item.物件商品ID"
                     }
                   },
-                  "UpdateValues": [
+                  "UpdateBindingValues": [
                     {
-                      "ColumnName": "remarks",
+                      "BindingInfo": {
+                        "TableName": "t_object_product",
+                        "ColumnName": "remarks",
+                        "GUID": "cd9c1cd1-15e5-408d-9f4f-a414c9d672cd"
+                      },
                       "Value": {
                         "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
                         "SerializeProperty": "=転圧備考"
@@ -229,7 +265,7 @@
                   ]
                 }
               ],
-              "ID": "77d6568f-c1a5-4859-82f8-da4491559cfa"
+              "ID": "7b64ce00-7bef-4513-89e9-c24c428401da"
             }
           ],
           "Comments": "自社施工、転圧計上商品、備考無の場合"
@@ -240,11 +276,11 @@
           "Parameters": [
             {
               "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+              "ParamName": "P_物件商品ID",
               "Value": {
                 "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
                 "SerializeProperty": "=Item.物件商品ID"
-              },
-              "ParamName": "P_物件商品ID"
+              }
             }
           ],
           "ReturnPropertiesTo": [
@@ -286,29 +322,37 @@
           "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
           "TableName": "t_object_product",
           "ShowConfirm": false,
-          "ConfirmText": "本当に更新してもよろしいですか？",
           "RowsToUpdate": 1,
           "RowsToUpdateCondition": {
             "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
             "ColumnBindingInfo": {
               "TableName": "t_object_product",
-              "ColumnName": "object_product_id"
+              "ColumnName": "object_product_id",
+              "GUID": "6a2bc381-81fb-4e26-871a-41a0ddf2aafe"
             },
             "Value": {
               "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
               "SerializeProperty": "=Item.物件商品ID"
             }
           },
-          "UpdateValues": [
+          "UpdateBindingValues": [
             {
-              "ColumnName": "sales_account_status_id",
+              "BindingInfo": {
+                "TableName": "t_object_product",
+                "ColumnName": "sales_account_status_id",
+                "GUID": "01623224-fec4-4f48-b451-231205287bd2"
+              },
               "Value": {
                 "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
                 "SerializeProperty": "=売上計上ステータスID"
               }
             },
             {
-              "ColumnName": "purchase_account_status_id",
+              "BindingInfo": {
+                "TableName": "t_object_product",
+                "ColumnName": "purchase_account_status_id",
+                "GUID": "fa9388d7-3220-47d3-8d71-4b93d5e77cc1"
+              },
               "Value": {
                 "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
                 "SerializeProperty": "=仕入計上ステータスID"
@@ -338,11 +382,11 @@
                   "Parameters": [
                     {
                       "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                      "ParamName": "P_物件商品ID",
                       "Value": {
                         "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
                         "SerializeProperty": "=Item.物件商品ID"
-                      },
-                      "ParamName": "P_物件商品ID"
+                      }
                     }
                   ],
                   "ResultErrorCodeTo": {
@@ -380,16 +424,15 @@
                           "Message": {
                             "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
                             "SerializeProperty": "=リターンメッセージ"
-                          },
-                          "CustomReturns": []
+                          }
                         }
                       ],
-                      "ID": "95b766f0-ecf8-44d3-a0d9-7cd0b2ff8b94"
+                      "ID": "43a6ca65-cd37-4acd-9648-d7a1f9dfaf58"
                     }
                   ]
                 }
               ],
-              "ID": "cda6b937-001b-4c01-9bf3-da39a8a5c2d3"
+              "ID": "361305ce-2d93-4654-a5e8-49e719d0c493"
             }
           ]
         },
@@ -415,11 +458,11 @@
                   "Parameters": [
                     {
                       "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                      "ParamName": "P_物件商品ID",
                       "Value": {
                         "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
                         "SerializeProperty": "=Item.物件商品ID"
-                      },
-                      "ParamName": "P_物件商品ID"
+                      }
                     }
                   ],
                   "ResultErrorCodeTo": {
@@ -457,16 +500,15 @@
                           "Message": {
                             "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
                             "SerializeProperty": "=リターンメッセージ"
-                          },
-                          "CustomReturns": []
+                          }
                         }
                       ],
-                      "ID": "9e3bfd05-7127-43c8-8c54-b6ce43337bc7"
+                      "ID": "90bed603-2aca-458d-a703-fd480ec7133a"
                     }
                   ]
                 }
               ],
-              "ID": "496255b5-ae7e-443b-859d-f94458771eb3"
+              "ID": "82be3cb4-8898-42a3-bdc6-65150aee3c91"
             }
           ]
         }
@@ -475,9 +517,7 @@
     },
     {
       "$type": "Forguncy.Model.ReturnCommand, ServerDesignerCommon",
-      "ErrorCode": "0",
-      "CustomReturns": []
+      "ErrorCode": "0"
     }
-  ],
-  "Name": "転圧商品確定処理"
+  ]
 }

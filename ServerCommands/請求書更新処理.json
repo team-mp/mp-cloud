@@ -1,46 +1,69 @@
 {
+  "Name": "請求書更新処理",
   "Enabled": true,
   "Triggers": [
     {
-      "$type": "Forguncy.ServerCommands.Models.PostRequestTrigger, ServerDesignerCommon",
+      "$type": "Forguncy.SaveLoad.PostRequestTriggerSaveData, ServerDesignerCommon",
       "Permission": {
-        "AllowRoles": [
-          "FGC_LoginUser"
-        ]
+        "PermissionData": {
+          "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionData, Forguncy.RbacPermission.Core",
+          "permissionResource": {
+            "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionResource, Forguncy.RbacPermission.Core"
+          },
+          "permissionBindings": [
+            {
+              "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionBinding, Forguncy.RbacPermission.Core",
+              "roleNames": [
+                "FGC_LoginUser"
+              ]
+            }
+          ]
+        }
       },
       "Parameters": [
         {
-          "Name": "P_請求番号s"
+          "Name": "P_請求番号s",
+          "DataValidationInfo": {}
         },
         {
-          "Name": "P_郵送済み更新フラグ"
+          "Name": "P_郵送済み更新フラグ",
+          "DataValidationInfo": {}
         },
         {
-          "Name": "P_郵送済み解除フラグ"
+          "Name": "P_郵送済み解除フラグ",
+          "DataValidationInfo": {}
         },
         {
-          "Name": "P_メール送信済み更新フラグ"
+          "Name": "P_メール送信済み更新フラグ",
+          "DataValidationInfo": {}
         },
         {
-          "Name": "P_メール送信済み解除フラグ"
+          "Name": "P_メール送信済み解除フラグ",
+          "DataValidationInfo": {}
         },
         {
-          "Name": "P_システム登録済み更新フラグ"
+          "Name": "P_システム登録済み更新フラグ",
+          "DataValidationInfo": {}
         },
         {
-          "Name": "P_システム登録済み解除フラグ"
+          "Name": "P_システム登録済み解除フラグ",
+          "DataValidationInfo": {}
         },
         {
-          "Name": "P_FAX送信済み更新フラグ"
+          "Name": "P_FAX送信済み更新フラグ",
+          "DataValidationInfo": {}
         },
         {
-          "Name": "P_FAX送信済み解除フラグ"
+          "Name": "P_FAX送信済み解除フラグ",
+          "DataValidationInfo": {}
         },
         {
-          "Name": "P_更新日付"
+          "Name": "P_更新日付",
+          "DataValidationInfo": {}
         },
         {
-          "Name": "P_請求書ダウンロードフラグ"
+          "Name": "P_請求書ダウンロードフラグ",
+          "DataValidationInfo": {}
         }
       ]
     }
@@ -69,47 +92,58 @@
                   "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
                   "TableName": "t_sales",
                   "ShowConfirm": false,
-                  "ConfirmText": "本当に更新してもよろしいですか？",
                   "RowsToUpdate": 1,
                   "RowsToUpdateCondition": {
                     "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
-                    "Condition1": {
-                      "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
-                      "CompareType": 8,
-                      "ColumnBindingInfo": {
-                        "TableName": "t_sales",
-                        "ColumnName": "billing_no"
+                    "SubConditions": [
+                      {
+                        "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                        "CompareType": 8,
+                        "ColumnBindingInfo": {
+                          "TableName": "t_sales",
+                          "ColumnName": "billing_no",
+                          "GUID": "313bb733-6d34-4a84-bb4c-2a60abdb8ee2"
+                        },
+                        "Value": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=P_請求番号s"
+                        }
                       },
-                      "Value": {
-                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                        "SerializeProperty": "=P_請求番号s"
+                      {
+                        "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                        "ColumnBindingInfo": {
+                          "TableName": "t_sales",
+                          "ColumnName": "delete_flg",
+                          "GUID": "8dfa7f0f-ae15-4d7f-8e2f-830e0c132c5d"
+                        },
+                        "Value": "0"
                       }
-                    },
-                    "Condition2": {
-                      "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
-                      "ColumnBindingInfo": {
-                        "TableName": "t_sales",
-                        "ColumnName": "delete_flg"
-                      },
-                      "Value": "0"
-                    }
+                    ]
                   },
-                  "UpdateValues": [
+                  "UpdateBindingValues": [
                     {
-                      "ColumnName": "invoice_mailing_date",
+                      "BindingInfo": {
+                        "TableName": "t_sales",
+                        "ColumnName": "invoice_mailing_date",
+                        "GUID": "a84f7df7-4695-47af-9615-005b6899de33"
+                      },
                       "Value": {
                         "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
                         "SerializeProperty": "=P_更新日付"
                       }
                     },
                     {
-                      "ColumnName": "invoice_mailing_flg",
+                      "BindingInfo": {
+                        "TableName": "t_sales",
+                        "ColumnName": "invoice_mailing_flg",
+                        "GUID": "0522ca55-c0e7-46f4-a9c3-10cbee606f5c"
+                      },
                       "Value": "1"
                     }
                   ]
                 }
               ],
-              "ID": "d1c447db-8939-45fd-8c2e-61997cc2f9dd"
+              "ID": "7a042b96-49cb-4844-b67f-ec01dbb439bb"
             }
           ]
         },
@@ -133,32 +167,40 @@
                   "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
                   "TableName": "t_sales",
                   "ShowConfirm": false,
-                  "ConfirmText": "本当に更新してもよろしいですか？",
                   "RowsToUpdate": 1,
                   "RowsToUpdateCondition": {
                     "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
                     "CompareType": 8,
                     "ColumnBindingInfo": {
                       "TableName": "t_sales",
-                      "ColumnName": "billing_no"
+                      "ColumnName": "billing_no",
+                      "GUID": "93ba7738-ff95-47ef-9b2b-844de7e845e1"
                     },
                     "Value": {
                       "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
                       "SerializeProperty": "=P_請求番号s"
                     }
                   },
-                  "UpdateValues": [
+                  "UpdateBindingValues": [
                     {
-                      "ColumnName": "invoice_mailing_date"
+                      "BindingInfo": {
+                        "TableName": "t_sales",
+                        "ColumnName": "invoice_mailing_date",
+                        "GUID": "fe827432-a876-41c7-bc77-7699fd7279d1"
+                      }
                     },
                     {
-                      "ColumnName": "invoice_mailing_flg",
+                      "BindingInfo": {
+                        "TableName": "t_sales",
+                        "ColumnName": "invoice_mailing_flg",
+                        "GUID": "6fba2287-ece4-4bc9-88c3-783c664b44f1"
+                      },
                       "Value": "0"
                     }
                   ]
                 }
               ],
-              "ID": "d6e09b3d-b366-49b5-a81b-9f8aa55b44bc"
+              "ID": "3d10da19-2772-436b-a64a-707caa9e43b3"
             }
           ]
         },
@@ -182,36 +224,44 @@
                   "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
                   "TableName": "t_sales",
                   "ShowConfirm": false,
-                  "ConfirmText": "本当に更新してもよろしいですか？",
                   "RowsToUpdate": 1,
                   "RowsToUpdateCondition": {
                     "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
                     "CompareType": 8,
                     "ColumnBindingInfo": {
                       "TableName": "t_sales",
-                      "ColumnName": "billing_no"
+                      "ColumnName": "billing_no",
+                      "GUID": "80e1e2f2-6377-4904-8f74-bcef17e670bf"
                     },
                     "Value": {
                       "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
                       "SerializeProperty": "=P_請求番号s"
                     }
                   },
-                  "UpdateValues": [
+                  "UpdateBindingValues": [
                     {
-                      "ColumnName": "mail_send_date",
+                      "BindingInfo": {
+                        "TableName": "t_sales",
+                        "ColumnName": "mail_send_date",
+                        "GUID": "071ce860-fabd-445e-b1ae-f9d5ca046aba"
+                      },
                       "Value": {
                         "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
                         "SerializeProperty": "=P_更新日付"
                       }
                     },
                     {
-                      "ColumnName": "mail_send_flg",
+                      "BindingInfo": {
+                        "TableName": "t_sales",
+                        "ColumnName": "mail_send_flg",
+                        "GUID": "e9dc6913-c96b-4b6f-bfc2-7ceb5d4c48a6"
+                      },
                       "Value": "1"
                     }
                   ]
                 }
               ],
-              "ID": "be1666a5-cd0a-4669-93c8-4248457a6283"
+              "ID": "86468a65-8f0d-4267-822e-f5b5f759b2ff"
             }
           ]
         },
@@ -235,32 +285,40 @@
                   "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
                   "TableName": "t_sales",
                   "ShowConfirm": false,
-                  "ConfirmText": "本当に更新してもよろしいですか？",
                   "RowsToUpdate": 1,
                   "RowsToUpdateCondition": {
                     "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
                     "CompareType": 8,
                     "ColumnBindingInfo": {
                       "TableName": "t_sales",
-                      "ColumnName": "billing_no"
+                      "ColumnName": "billing_no",
+                      "GUID": "1b607ed8-009c-482e-8e3b-2d2f64fea30b"
                     },
                     "Value": {
                       "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
                       "SerializeProperty": "=P_請求番号s"
                     }
                   },
-                  "UpdateValues": [
+                  "UpdateBindingValues": [
                     {
-                      "ColumnName": "mail_send_date"
+                      "BindingInfo": {
+                        "TableName": "t_sales",
+                        "ColumnName": "mail_send_date",
+                        "GUID": "a1cb3b9a-f58d-4821-9b3a-640b08868d73"
+                      }
                     },
                     {
-                      "ColumnName": "mail_send_flg",
+                      "BindingInfo": {
+                        "TableName": "t_sales",
+                        "ColumnName": "mail_send_flg",
+                        "GUID": "f586dc0d-e40f-4005-88f9-766debda95bc"
+                      },
                       "Value": "0"
                     }
                   ]
                 }
               ],
-              "ID": "14baa079-5f50-49af-8042-4d3c76d2e6e0"
+              "ID": "4a3885bd-1fb6-46e9-be97-b4da313818fa"
             }
           ]
         },
@@ -284,36 +342,44 @@
                   "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
                   "TableName": "t_sales",
                   "ShowConfirm": false,
-                  "ConfirmText": "本当に更新してもよろしいですか？",
                   "RowsToUpdate": 1,
                   "RowsToUpdateCondition": {
                     "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
                     "CompareType": 8,
                     "ColumnBindingInfo": {
                       "TableName": "t_sales",
-                      "ColumnName": "billing_no"
+                      "ColumnName": "billing_no",
+                      "GUID": "a1501d41-2fe4-4266-9c97-a540b24eed4e"
                     },
                     "Value": {
                       "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
                       "SerializeProperty": "=P_請求番号s"
                     }
                   },
-                  "UpdateValues": [
+                  "UpdateBindingValues": [
                     {
-                      "ColumnName": "system_entry_date",
+                      "BindingInfo": {
+                        "TableName": "t_sales",
+                        "ColumnName": "system_entry_date",
+                        "GUID": "0dc0ba66-e3d2-4292-8843-fa5b38640936"
+                      },
                       "Value": {
                         "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
                         "SerializeProperty": "=P_更新日付"
                       }
                     },
                     {
-                      "ColumnName": "system_entry_flg",
+                      "BindingInfo": {
+                        "TableName": "t_sales",
+                        "ColumnName": "system_entry_flg",
+                        "GUID": "88feb708-dff7-4a99-8e0c-5f9ca2f582b0"
+                      },
                       "Value": "1"
                     }
                   ]
                 }
               ],
-              "ID": "9aeef45e-3f51-4265-8a72-c15a0873afcf"
+              "ID": "ac1a2b43-54c3-4610-8de7-bbd4ea6a375a"
             }
           ]
         },
@@ -337,32 +403,40 @@
                   "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
                   "TableName": "t_sales",
                   "ShowConfirm": false,
-                  "ConfirmText": "本当に更新してもよろしいですか？",
                   "RowsToUpdate": 1,
                   "RowsToUpdateCondition": {
                     "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
                     "CompareType": 8,
                     "ColumnBindingInfo": {
                       "TableName": "t_sales",
-                      "ColumnName": "billing_no"
+                      "ColumnName": "billing_no",
+                      "GUID": "37904750-9c58-49cf-9ffe-e426fbc83d15"
                     },
                     "Value": {
                       "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
                       "SerializeProperty": "=P_請求番号s"
                     }
                   },
-                  "UpdateValues": [
+                  "UpdateBindingValues": [
                     {
-                      "ColumnName": "system_entry_date"
+                      "BindingInfo": {
+                        "TableName": "t_sales",
+                        "ColumnName": "system_entry_date",
+                        "GUID": "084b1ad3-8576-4994-a41d-d08d13e45cb2"
+                      }
                     },
                     {
-                      "ColumnName": "system_entry_flg",
+                      "BindingInfo": {
+                        "TableName": "t_sales",
+                        "ColumnName": "system_entry_flg",
+                        "GUID": "5adbc8f8-7776-4bd4-a2d5-3600ebd77f39"
+                      },
                       "Value": "0"
                     }
                   ]
                 }
               ],
-              "ID": "e162b085-3d9a-4e58-94d2-d723e2c0cd4d"
+              "ID": "02cbc7df-fcd7-436c-b546-02c861605b8c"
             }
           ]
         },
@@ -386,36 +460,44 @@
                   "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
                   "TableName": "t_sales",
                   "ShowConfirm": false,
-                  "ConfirmText": "本当に更新してもよろしいですか？",
                   "RowsToUpdate": 1,
                   "RowsToUpdateCondition": {
                     "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
                     "CompareType": 8,
                     "ColumnBindingInfo": {
                       "TableName": "t_sales",
-                      "ColumnName": "billing_no"
+                      "ColumnName": "billing_no",
+                      "GUID": "bcf2f019-4e08-48c4-90a6-eae5459914ea"
                     },
                     "Value": {
                       "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
                       "SerializeProperty": "=P_請求番号s"
                     }
                   },
-                  "UpdateValues": [
+                  "UpdateBindingValues": [
                     {
-                      "ColumnName": "fax_send_date",
+                      "BindingInfo": {
+                        "TableName": "t_sales",
+                        "ColumnName": "fax_send_date",
+                        "GUID": "81ba6202-fec1-418d-b18c-ea9279cc0aa8"
+                      },
                       "Value": {
                         "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
                         "SerializeProperty": "=P_更新日付"
                       }
                     },
                     {
-                      "ColumnName": "fax_send_flg",
+                      "BindingInfo": {
+                        "TableName": "t_sales",
+                        "ColumnName": "fax_send_flg",
+                        "GUID": "9c423a79-1bc0-4d47-ad42-501ab8ba431b"
+                      },
                       "Value": "1"
                     }
                   ]
                 }
               ],
-              "ID": "1c1c5b85-0f0a-41ac-bf55-b734836723f0"
+              "ID": "aed0452e-6d5a-4791-96d6-fea362dbd356"
             }
           ]
         },
@@ -439,37 +521,44 @@
                   "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
                   "TableName": "t_sales",
                   "ShowConfirm": false,
-                  "ConfirmText": "本当に更新してもよろしいですか？",
                   "RowsToUpdate": 1,
                   "RowsToUpdateCondition": {
                     "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
                     "CompareType": 8,
                     "ColumnBindingInfo": {
                       "TableName": "t_sales",
-                      "ColumnName": "billing_no"
+                      "ColumnName": "billing_no",
+                      "GUID": "ff9eb5eb-20df-4d60-a692-22c7e8de1e31"
                     },
                     "Value": {
                       "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
                       "SerializeProperty": "=P_請求番号s"
                     }
                   },
-                  "UpdateValues": [
+                  "UpdateBindingValues": [
                     {
-                      "ColumnName": "fax_send_date"
+                      "BindingInfo": {
+                        "TableName": "t_sales",
+                        "ColumnName": "fax_send_date",
+                        "GUID": "b13b34d9-8a28-47d1-a309-2f5098c29eee"
+                      }
                     },
                     {
-                      "ColumnName": "fax_send_flg",
+                      "BindingInfo": {
+                        "TableName": "t_sales",
+                        "ColumnName": "fax_send_flg",
+                        "GUID": "c5cb0c00-f05e-41db-b117-4fc0485281be"
+                      },
                       "Value": "0"
                     }
                   ]
                 }
               ],
-              "ID": "e843fd83-0b27-49eb-bc65-cec1119349b8"
+              "ID": "9a30db64-6196-4fd0-9d8f-c59426f9fd87"
             }
           ]
         }
       ]
     }
-  ],
-  "Name": "請求書更新処理"
+  ]
 }

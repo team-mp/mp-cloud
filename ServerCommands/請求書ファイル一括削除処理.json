@@ -1,19 +1,29 @@
 {
+  "Name": "請求書ファイル一括削除処理",
   "Enabled": true,
   "Triggers": [
     {
-      "$type": "Forguncy.ServerCommands.Models.PostRequestTrigger, ServerDesignerCommon",
+      "$type": "Forguncy.SaveLoad.PostRequestTriggerSaveData, ServerDesignerCommon",
       "Permission": {
-        "AllowRoles": [
-          "FGC_LoginUser"
-        ]
+        "PermissionData": {
+          "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionData, Forguncy.RbacPermission.Core",
+          "permissionResource": {
+            "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionResource, Forguncy.RbacPermission.Core"
+          },
+          "permissionBindings": [
+            {
+              "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionBinding, Forguncy.RbacPermission.Core",
+              "roleNames": [
+                "FGC_LoginUser"
+              ]
+            }
+          ]
+        }
       },
       "Parameters": [
         {
-          "PrimaryKeys": [
-            "ID"
-          ],
-          "Name": "P_請求番号s"
+          "Name": "P_請求番号s",
+          "DataValidationInfo": {}
         }
       ]
     }
@@ -26,9 +36,11 @@
         "TableName": "v_billing_no_summary",
         "BindingInfos": [
           {
+            "GUID": "d4e7afa9-4563-4c92-8d21-8197b9ba21a8",
             "BindingInfo": {
               "TableName": "v_billing_no_summary",
-              "ColumnName": "請求番号"
+              "ColumnName": "請求番号",
+              "GUID": "af86fb4f-76f8-46ff-a3b0-038fc564a5e8"
             },
             "ColumnName": "請求番号"
           }
@@ -38,7 +50,8 @@
           "CompareType": 8,
           "ColumnBindingInfo": {
             "TableName": "v_billing_no_summary",
-            "ColumnName": "請求番号"
+            "ColumnName": "請求番号",
+            "GUID": "e57b744c-0b56-449e-8f34-d12357ade677"
           },
           "Value": {
             "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
@@ -66,34 +79,40 @@
             "TableName": "t_invoice_attachment",
             "BindingInfos": [
               {
+                "GUID": "444f1dce-a146-46ad-9db6-93dd760a432e",
                 "BindingInfo": {
                   "TableName": "t_invoice_attachment",
-                  "ColumnName": "invoice_attachment_id"
+                  "ColumnName": "invoice_attachment_id",
+                  "GUID": "2fdf9388-b6b7-437c-866b-0dcfb2c29d17"
                 },
                 "ColumnName": "請求書添付ID"
               }
             ],
             "SqlCondition": {
               "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
-              "Condition1": {
-                "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
-                "ColumnBindingInfo": {
-                  "TableName": "t_invoice_attachment",
-                  "ColumnName": "billing_no"
+              "SubConditions": [
+                {
+                  "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                  "ColumnBindingInfo": {
+                    "TableName": "t_invoice_attachment",
+                    "ColumnName": "billing_no",
+                    "GUID": "fd9dcaa0-cb0a-44dc-abe1-37bc5e0e2bd2"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=Item.請求番号"
+                  }
                 },
-                "Value": {
-                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=Item.請求番号"
+                {
+                  "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                  "ColumnBindingInfo": {
+                    "TableName": "t_invoice_attachment",
+                    "ColumnName": "active_flg",
+                    "GUID": "546b891c-84b3-4771-9fa2-2c17168ecf3d"
+                  },
+                  "Value": "1"
                 }
-              },
-              "Condition2": {
-                "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
-                "ColumnBindingInfo": {
-                  "TableName": "t_invoice_attachment",
-                  "ColumnName": "active_flg"
-                },
-                "Value": "1"
-              }
+              ]
             }
           },
           "ID": "b6bc5bd683c247b7825d8d90d0eba575"
@@ -115,11 +134,11 @@
               "Parameters": [
                 {
                   "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                  "ParamName": "P_請求書添付ID",
                   "Value": {
                     "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
                     "SerializeProperty": "=Item.請求書添付ID"
-                  },
-                  "ParamName": "P_請求書添付ID"
+                  }
                 }
               ],
               "RefreshAfterFinish": true,
@@ -129,6 +148,5 @@
         }
       ]
     }
-  ],
-  "Name": "請求書ファイル一括削除処理"
+  ]
 }

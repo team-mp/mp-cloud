@@ -1,0 +1,206 @@
+{
+  "ID": "b20525b9-9e3d-4b13-a9f6-764edb4ca5d5",
+  "Name": "調査メールアドレスチェック",
+  "Params": [
+    {
+      "ID": "db7701bc-cc2e-4f53-9906-190a46a4efcc",
+      "Name": "P_調査会社ID"
+    },
+    {
+      "ID": "3a5460f9-64f2-4d63-9639-0d692e98da44",
+      "Name": "P_調査会社略称名"
+    }
+  ],
+  "Commands": [
+    {
+      "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+      "ConditionAndCommandPairList": [
+        {
+          "Condition": {
+            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+            "param": {
+              "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+              "cellLocations": [
+                {
+                  "SerializeProperty": "=調査情報.調査会社ID"
+                }
+              ]
+            },
+            "value": "%Null%"
+          },
+          "CommandList": [
+            {
+              "$type": "Forguncy.Model.ShowMessageCommand, ServerDesignerCommon",
+              "MessageFormula": "調査会社が登録されていないため送信できません\r\n調査会社を選択後、更新ボタンを押してください"
+            },
+            {
+              "$type": "LoadingCommand.EndLoadingCommand, LoadingCommand"
+            },
+            {
+              "$type": "Forguncy.Model.RunJavaScriptCommand, ServerDesignerCommon",
+              "JavaScript": "return false;",
+              "ID": "b8ea7f71f3e244b1b68696b60412f6ea"
+            }
+          ],
+          "ID": "f4cabe66-ffba-4ad8-9ee6-ec3c6591dc07"
+        }
+      ]
+    },
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "調査宛先TO件数",
+      "TableValue": {
+        "TableName": "m_customer_mail",
+        "TableValueType": 3,
+        "SqlCondition": {
+          "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+          "SubConditions": [
+            {
+              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+              "ColumnBindingInfo": {
+                "TableName": "m_customer_mail",
+                "ColumnName": "customer_id",
+                "GUID": "72c1f556-42a1-48b4-bf0a-6d82a75e8f24"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_調査会社ID"
+              }
+            },
+            {
+              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+              "ColumnBindingInfo": {
+                "TableName": "m_customer_mail",
+                "ColumnName": "send_type",
+                "GUID": "037ac887-0275-4cbd-9896-c8b68acee6fe"
+              },
+              "Value": "1"
+            },
+            {
+              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+              "ColumnBindingInfo": {
+                "TableName": "m_customer_mail",
+                "ColumnName": "mail_type_id",
+                "GUID": "86895cf5-c83f-4e6a-836f-273c0b5326bc",
+                "RelationBinding": {
+                  "RelatedTable": "m_mail_type",
+                  "RelatedColumn": "mail_type_id",
+                  "DisplayColumn": "survey_flg"
+                }
+              },
+              "Value": "1"
+            },
+            {
+              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+              "ColumnBindingInfo": {
+                "TableName": "m_customer_mail",
+                "ColumnName": "user_id",
+                "GUID": "fa91ed5e-77ba-4104-afbf-c842a2cb0592",
+                "RelationBinding": {
+                  "RelatedTable": "m_user",
+                  "RelatedColumn": "user_id",
+                  "DisplayColumn": "active_flg"
+                }
+              },
+              "Value": "1"
+            }
+          ]
+        }
+      },
+      "ID": "4aae39e65bf142fb81d381fb5cd8443c"
+    },
+    {
+      "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+      "ConditionAndCommandPairList": [
+        {
+          "Condition": {
+            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+            "param": {
+              "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+              "cellLocations": [
+                {
+                  "SerializeProperty": "=調査宛先TO件数"
+                }
+              ]
+            },
+            "value": "0"
+          },
+          "CommandList": [
+            {
+              "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+              "ConditionAndCommandPairList": [
+                {
+                  "ConfirmDialogSettings": {
+                    "Title": "確認",
+                    "FormulaText": "この調査会社は調査依頼のメールアドレスが設定されていません。\r\nメールアドレスの登録画面に遷移します。よろしいですか？",
+                    "YesButtonText": "はい",
+                    "NoButtonText": "いいえ",
+                    "ConfirmIcon": 4
+                  },
+                  "CommandList": [
+                    {
+                      "$type": "Forguncy.Model.ShareCommand, ServerDesignerCommon",
+                      "ShareCommandContainerRefer": {
+                        "ShareCommandContainerID": "30b77a2a-3bbe-4dfc-ad1e-379d7a20b12d"
+                      },
+                      "Params": [
+                        {
+                          "ParamReferObject": {
+                            "ParamID": "4cfcf938-3d44-4ff5-88b5-7e3948728bae",
+                            "ShareCommandContainerReferObject": {
+                              "ShareCommandContainerID": "30b77a2a-3bbe-4dfc-ad1e-379d7a20b12d"
+                            }
+                          },
+                          "Value": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=P_調査会社ID"
+                          }
+                        },
+                        {
+                          "ParamReferObject": {
+                            "ParamID": "d5ceb5de-3705-4384-9bcb-ef9bae461e19",
+                            "ShareCommandContainerReferObject": {
+                              "ShareCommandContainerID": "30b77a2a-3bbe-4dfc-ad1e-379d7a20b12d"
+                            }
+                          },
+                          "Value": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=P_調査会社略称名"
+                          }
+                        },
+                        {
+                          "ParamReferObject": {
+                            "ParamID": "739dbe7f-2972-4ba5-be96-ccfdc7cf9499",
+                            "ShareCommandContainerReferObject": {
+                              "ShareCommandContainerID": "30b77a2a-3bbe-4dfc-ad1e-379d7a20b12d"
+                            }
+                          },
+                          "Value": "3"
+                        }
+                      ]
+                    }
+                  ],
+                  "ID": "036a99f7-115e-4fde-8ab3-eac9a2e57a33"
+                },
+                {
+                  "CommandList": [
+                    {
+                      "$type": "Forguncy.Model.RunJavaScriptCommand, ServerDesignerCommon",
+                      "JavaScript": "return false;",
+                      "ID": "6b0e7ea3402543fe88bae4cd982eb44b"
+                    },
+                    {
+                      "$type": "LoadingCommand.EndLoadingCommand, LoadingCommand"
+                    }
+                  ],
+                  "ID": "4a791228-4eb2-4b88-9665-3791064db205"
+                }
+              ]
+            }
+          ],
+          "ID": "cc01475f-4832-45b5-8de3-1c7f9ee7843b"
+        }
+      ]
+    }
+  ]
+}

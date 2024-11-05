@@ -1,0 +1,190 @@
+{
+  "ID": "28838fcd-53f2-4c4e-bcff-3018d00a191c",
+  "Name": "請求書メール送信前チェック",
+  "Params": [
+    {
+      "ID": "ae3b2369-7b0f-4cd9-9568-cc2ea91d2063",
+      "Name": "P_通知先ID"
+    },
+    {
+      "ID": "e05ef4d7-dc1f-4de5-b70d-4049936e6caa",
+      "Name": "P_請求先名"
+    },
+    {
+      "ID": "ae279ba5-bd0f-457e-bd20-ddedd0c55d20",
+      "Name": "P_添付ファイル数"
+    },
+    {
+      "ID": "3c763b5f-fe59-40d7-9b77-6d19d80310fd",
+      "Name": "P_請求書送付方法"
+    }
+  ],
+  "Commands": [
+    {
+      "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+      "ConditionAndCommandPairList": [
+        {
+          "Condition": {
+            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+            "param": {
+              "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+              "cellLocations": [
+                {
+                  "SerializeProperty": "=P_請求書送付方法"
+                }
+              ]
+            },
+            "value": "1",
+            "compareType": 11
+          },
+          "CommandList": [
+            {
+              "$type": "Forguncy.Model.ShowMessageCommand, ServerDesignerCommon",
+              "MessageFormula": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=\"請求先名：\"&P_請求先名&CHAR(10)&\"請求書送付方法にメール通知が含まれません\r\nメール送信が必要な場合は、請求書送付方法を変更してください\""
+              }
+            },
+            {
+              "$type": "Forguncy.Model.RunJavaScriptCommand, ServerDesignerCommon",
+              "JavaScript": "return false;",
+              "ID": "83838ceaaf5e45ecbc52fc054c35809b"
+            }
+          ],
+          "ID": "a829b360-0cda-4f19-b414-98a3d8062954"
+        }
+      ]
+    },
+    {
+      "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+      "ConditionAndCommandPairList": [
+        {
+          "Condition": {
+            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+            "param": {
+              "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+              "cellLocations": [
+                {
+                  "SerializeProperty": "=P_添付ファイル数"
+                }
+              ]
+            },
+            "value": "0"
+          },
+          "CommandList": [
+            {
+              "$type": "Forguncy.Model.ShowMessageCommand, ServerDesignerCommon",
+              "MessageFormula": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=\"請求先名：\"&P_請求先名&CHAR(10)&\"添付可能な請求書ファイルがありません\r\n送信前にPDF保存するかファイルを添付してください\""
+              }
+            },
+            {
+              "$type": "Forguncy.Model.RunJavaScriptCommand, ServerDesignerCommon",
+              "JavaScript": "return false;",
+              "ID": "7bb143e22abf4b1c9d503323e0d7ddc2"
+            }
+          ],
+          "ID": "26d8a644-deac-4abd-991d-e2a8e92f2e8a"
+        }
+      ]
+    },
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "TOアドレス登録件数",
+      "TableValue": {
+        "TableName": "m_customer_mail",
+        "TableValueType": 3,
+        "SqlCondition": {
+          "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+          "SubConditions": [
+            {
+              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+              "ColumnBindingInfo": {
+                "TableName": "m_customer_mail",
+                "ColumnName": "customer_id",
+                "GUID": "9bca02ae-8643-45f4-bd1b-f42d47415fc4"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_通知先ID"
+              }
+            },
+            {
+              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+              "ColumnBindingInfo": {
+                "TableName": "m_customer_mail",
+                "ColumnName": "send_type",
+                "GUID": "5e77d1e5-8ce7-427b-8b65-1fcf4af6ad26"
+              },
+              "Value": "1"
+            },
+            {
+              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+              "ColumnBindingInfo": {
+                "TableName": "m_customer_mail",
+                "ColumnName": "mail_type_id",
+                "GUID": "73a4f985-163d-4cd0-af2f-47f42ef0c0ff",
+                "RelationBinding": {
+                  "RelatedTable": "m_mail_type",
+                  "RelatedColumn": "mail_type_id",
+                  "DisplayColumn": "billing_flg"
+                }
+              },
+              "Value": "1"
+            },
+            {
+              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+              "ColumnBindingInfo": {
+                "TableName": "m_customer_mail",
+                "ColumnName": "user_id",
+                "GUID": "cbbbce20-5c95-4d9c-9090-9c5a5588deb3",
+                "RelationBinding": {
+                  "RelatedTable": "m_user",
+                  "RelatedColumn": "user_id",
+                  "DisplayColumn": "active_flg"
+                }
+              },
+              "Value": "1"
+            }
+          ]
+        }
+      },
+      "ID": "40b82e972b8b401ca27d051e265f5239"
+    },
+    {
+      "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+      "ConditionAndCommandPairList": [
+        {
+          "Condition": {
+            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+            "param": {
+              "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+              "cellLocations": [
+                {
+                  "SerializeProperty": "=TOアドレス登録件数"
+                }
+              ]
+            },
+            "value": "0"
+          },
+          "CommandList": [
+            {
+              "$type": "Forguncy.Model.ShowMessageCommand, ServerDesignerCommon",
+              "MessageFormula": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=\"請求先名：\"&P_請求先名&CHAR(10)&\"請求書通知先のメールアドレスが設定されていません。\"&CHAR(10)&\"顧客メール設定に追加登録してください。\""
+              }
+            },
+            {
+              "$type": "Forguncy.Model.RunJavaScriptCommand, ServerDesignerCommon",
+              "JavaScript": "return false;",
+              "ID": "79f1ab4230fb4760ba88afc45da17ae6"
+            }
+          ],
+          "ID": "43716afc-68c2-4c7e-ad37-b7df42ea6c30"
+        }
+      ]
+    }
+  ]
+}
