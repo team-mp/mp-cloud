@@ -5,8 +5,8 @@
   "Formulas": {
     "14,54": "COUNT(BL10)",
     "20,47": "TEXTJOINIF(\",\",TRUE,AV10,1,AW10)",
-    "14,47": "COUNTIF(AX10,\"<>\")",
-    "17,54": "TEXTJOINIF(\",\",TRUE,AV10,1,BF10)",
+    "14,47": "COUNTIF(AY10,\"<>\")",
+    "17,54": "TEXTJOINIF(\",\",TRUE,AV10,1,BG10)",
     "17,47": "COUNTIF(AV10,1)"
   },
   "CustomNames": [
