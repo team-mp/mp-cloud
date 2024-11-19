@@ -786,20 +786,20 @@
     "21,145": "▼結合顧客IDs"
   },
   "Formulas": {
-    "10,145": "参照顧客代理店フラグ",
-    "27,1": "\"該当データ件数：\"&TEXT(申込全データ該当カウント,\"#,##0\")&\"件　　表示データ件数：\"&TEXT(抽出カウント,\"#,##0\")&\"件\"",
-    "10,130": "COUNT(CS5)",
-    "7,123": "IF(DT5>0,LEFT(I2,DT5-1),IF(I2<>\"\",I2,\"\"))",
-    "7,145": "参照顧客本社フラグ",
-    "16,145": "参照顧客ID",
-    "19,145": "参照管理顧客IDs",
     "16,130": "TEXTJOINIF(\",\",TRUE,DM5,1,CS5)",
-    "13,145": "参照顧客取次店フラグ",
-    "4,145": "参照顧客グループIDs",
-    "22,145": "TEXTJOIN(\",\",TRUE,EP17,EP20)",
-    "13,130": "COUNTIF(DM5,1)",
-    "4,123": "IF(IFERROR(FIND(\"　\",検索ワード),0)>0,FIND(\"　\",検索ワード),IF(IFERROR(FIND(\" \",検索ワード),0)>0,FIND(\" \",検索ワード),0))",
+    "27,1": "\"該当データ件数：\"&TEXT(申込全データ該当カウント,\"#,##0\")&\"件　　表示データ件数：\"&TEXT(抽出カウント,\"#,##0\")&\"件\"",
     "10,123": "IF(DT5>0,MID(I2,DT5+1,1000),\"\")",
+    "7,145": "参照顧客本社フラグ",
+    "10,145": "参照顧客代理店フラグ",
+    "7,123": "IF(DT5>0,LEFT(I2,DT5-1),IF(I2<>\"\",I2,\"\"))",
+    "16,145": "参照顧客ID",
+    "22,145": "TEXTJOIN(\",\",TRUE,EP17,EP20)",
+    "10,130": "COUNT(CS5)",
+    "4,123": "IF(IFERROR(FIND(\"　\",検索ワード),0)>0,FIND(\"　\",検索ワード),IF(IFERROR(FIND(\" \",検索ワード),0)>0,FIND(\" \",検索ワード),0))",
+    "13,145": "参照顧客取次店フラグ",
+    "13,130": "COUNTIF(DM5,1)",
+    "4,145": "参照顧客グループIDs",
+    "19,145": "参照管理顧客IDs",
     "4,111": "ODATA(\"t_object_wait_documents/$count?$filter=object_order_id eq \"&IF(ISBLANK(CS5),\"null\",CS5)&\" and target_customer_id eq \"&IF(ISBLANK(CX5),\"null\",CX5)&\" and receipt_flg eq 0\")",
     "4,21": "IF(DH5>0,\"●\",\"\")"
   },
@@ -967,10 +967,55 @@
             "LoadingTextColor": "Background 1 0"
           },
           {
-            "$type": "Forguncy.Model.ExportListViewToExcelCommand, ServerDesignerCommon",
-            "ListViewName": "物件リストビュー",
-            "NewOtherName": "",
-            "IsOnlyExportValue": false
+            "$type": "Forguncy.Model.RequestServerCommand, ServerDesignerCommon",
+            "ServerCommandName": "申込データエクスポート",
+            "Parameters": [
+              {
+                "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                "ParamName": "P_検索ワード1",
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=申込検索リスト_住宅事業者!検索ワード1"
+                }
+              },
+              {
+                "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                "ParamName": "P_検索ワード2",
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=申込検索リスト_住宅事業者!検索ワード2"
+                }
+              },
+              {
+                "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                "ParamName": "P_申込グループIDs"
+              },
+              {
+                "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                "ParamName": "P_住宅事業者IDs",
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=申込検索リスト_住宅事業者!EP23"
+                }
+              },
+              {
+                "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                "ParamName": "P_当該営業担当ID"
+              },
+              {
+                "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                "ParamName": "P_現在営業担当ID"
+              },
+              {
+                "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                "ParamName": "P_有効フラグ",
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=申込検索リスト_住宅事業者!EA20"
+                }
+              }
+            ],
+            "CheckDataValidation": false
           },
           {
             "$type": "LoadingCommand.EndLoadingCommand, LoadingCommand"
@@ -1032,7 +1077,7 @@
               "ColumnBindingInfo": {
                 "TableName": "t_object_order",
                 "ColumnName": "active_flg",
-                "GUID": "19fb18ee-5b0b-456a-ad85-741c31f9fcb3"
+                "GUID": "31e1502f-38bd-4c5b-9607-adcfe9cfbd7e"
               },
               "Value": {
                 "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
@@ -1044,7 +1089,7 @@
               "ColumnBindingInfo": {
                 "TableName": "t_object_order",
                 "ColumnName": "object_order_id",
-                "GUID": "f8e356c8-3448-4b97-aef2-458ceadcf0c0"
+                "GUID": "1713fa55-f81f-46a9-8da0-ad2b3d8f56cf"
               },
               "Value": {
                 "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
@@ -1057,7 +1102,7 @@
               "ColumnBindingInfo": {
                 "TableName": "t_object_order",
                 "ColumnName": "builder_id",
-                "GUID": "24cc4849-0a40-476b-9890-f2c3ccc84f29"
+                "GUID": "1395277c-eba4-4042-8656-923f07d7e882"
               },
               "Value": {
                 "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
@@ -1073,7 +1118,7 @@
                   "ColumnBindingInfo": {
                     "TableName": "t_object_order",
                     "ColumnName": "object_id",
-                    "GUID": "ba39bc0e-f9f6-4263-89d9-56098d29352a",
+                    "GUID": "5ec9f62e-3521-4ca8-a172-e5b83c941f69",
                     "RelationBinding": {
                       "RelatedTable": "t_object",
                       "RelatedColumn": "object_id",
@@ -1091,7 +1136,7 @@
                   "ColumnBindingInfo": {
                     "TableName": "t_object_order",
                     "ColumnName": "order_date",
-                    "GUID": "6dde36df-e395-4bee-8d5a-3d365541e4c4"
+                    "GUID": "f5d1f5b7-4c44-4390-bebe-0f2e97f95bdc"
                   },
                   "Value": {
                     "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
@@ -1104,7 +1149,7 @@
                   "ColumnBindingInfo": {
                     "TableName": "t_object_order",
                     "ColumnName": "order_status_id",
-                    "GUID": "4e360ba8-d6e1-48f1-b5fd-600c2c20df59",
+                    "GUID": "05a7ebd4-0426-4d2e-8e2e-e1b41692a38b",
                     "RelationBinding": {
                       "RelatedTable": "m_order_status",
                       "RelatedColumn": "order_status_id",
@@ -1122,7 +1167,7 @@
                   "ColumnBindingInfo": {
                     "TableName": "t_object_order",
                     "ColumnName": "order_type_id",
-                    "GUID": "77a5767f-14b3-42ff-873f-800a8d6c35ee",
+                    "GUID": "df126819-3210-4170-9abb-348c0541292a",
                     "RelationBinding": {
                       "RelatedTable": "m_order_type",
                       "RelatedColumn": "order_type_id",
@@ -1140,7 +1185,7 @@
                   "ColumnBindingInfo": {
                     "TableName": "t_object_order",
                     "ColumnName": "group_id",
-                    "GUID": "c886ddf4-989a-4cf4-a0da-959b629a3dc1",
+                    "GUID": "8a3d416a-9ea4-4c3f-96a1-1deb2172e858",
                     "RelationBinding": {
                       "RelatedTable": "m_group",
                       "RelatedColumn": "group_id",
@@ -1158,7 +1203,7 @@
                   "ColumnBindingInfo": {
                     "TableName": "t_object_order",
                     "ColumnName": "builder_id",
-                    "GUID": "2484c320-6589-4aee-a556-7743b76191bc",
+                    "GUID": "6bb26f2a-660c-466e-8471-ae564ed34e73",
                     "RelationBinding": {
                       "RelatedTable": "m_customer",
                       "RelatedColumn": "customer_id",
@@ -1176,7 +1221,7 @@
                   "ColumnBindingInfo": {
                     "TableName": "t_object_order",
                     "ColumnName": "object_id",
-                    "GUID": "ae70baa6-915c-4e8c-bdff-66eac13c8777",
+                    "GUID": "8d89d534-7757-414d-9477-b9dfefe7419e",
                     "RelationBinding": {
                       "RelatedTable": "t_object",
                       "RelatedColumn": "object_id",
@@ -1194,7 +1239,7 @@
                   "ColumnBindingInfo": {
                     "TableName": "t_object_order",
                     "ColumnName": "object_id",
-                    "GUID": "063d91e5-2947-4004-a243-7a9e4a928adb",
+                    "GUID": "12e56f04-cc45-451e-9a02-7011c4d54b7a",
                     "RelationBinding": {
                       "RelatedTable": "t_object",
                       "RelatedColumn": "object_id",
@@ -1219,7 +1264,7 @@
                   "ColumnBindingInfo": {
                     "TableName": "t_object_order",
                     "ColumnName": "object_id",
-                    "GUID": "00a90cd4-a26a-4c9f-be80-4aface57bf03",
+                    "GUID": "f123032f-353f-471a-ba13-d3d72606a77c",
                     "RelationBinding": {
                       "RelatedTable": "t_object",
                       "RelatedColumn": "object_id",
@@ -1237,7 +1282,7 @@
                   "ColumnBindingInfo": {
                     "TableName": "t_object_order",
                     "ColumnName": "order_date",
-                    "GUID": "0c322c89-5b0b-4516-8824-a3e2aa5ccc83"
+                    "GUID": "585cc5d0-e4f9-43ae-a88e-0b066f868c66"
                   },
                   "Value": {
                     "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
@@ -1250,7 +1295,7 @@
                   "ColumnBindingInfo": {
                     "TableName": "t_object_order",
                     "ColumnName": "order_status_id",
-                    "GUID": "ca373cdc-19b7-4f5c-ad6f-c91f883180d9",
+                    "GUID": "8504a8af-a98a-4c93-8fb2-68df54d5975a",
                     "RelationBinding": {
                       "RelatedTable": "m_order_status",
                       "RelatedColumn": "order_status_id",
@@ -1268,7 +1313,7 @@
                   "ColumnBindingInfo": {
                     "TableName": "t_object_order",
                     "ColumnName": "order_type_id",
-                    "GUID": "1592ee40-4440-4140-9ec1-230a023f189a",
+                    "GUID": "bfd94cef-f977-4822-883f-91d1415bbf8b",
                     "RelationBinding": {
                       "RelatedTable": "m_order_type",
                       "RelatedColumn": "order_type_id",
@@ -1286,7 +1331,7 @@
                   "ColumnBindingInfo": {
                     "TableName": "t_object_order",
                     "ColumnName": "group_id",
-                    "GUID": "c16d8487-6697-44da-90f6-78f9d9bb1084",
+                    "GUID": "587c34e7-b762-4ca2-8d44-47dcd684ac52",
                     "RelationBinding": {
                       "RelatedTable": "m_group",
                       "RelatedColumn": "group_id",
@@ -1304,7 +1349,7 @@
                   "ColumnBindingInfo": {
                     "TableName": "t_object_order",
                     "ColumnName": "builder_id",
-                    "GUID": "d40aad94-9e2b-44db-850c-cccea03f671f",
+                    "GUID": "528bbf1d-6f67-4ad8-9c03-b841717d0bbc",
                     "RelationBinding": {
                       "RelatedTable": "m_customer",
                       "RelatedColumn": "customer_id",
@@ -1322,7 +1367,7 @@
                   "ColumnBindingInfo": {
                     "TableName": "t_object_order",
                     "ColumnName": "object_id",
-                    "GUID": "ce737341-92ed-41a6-afdf-3c24f07d13ae",
+                    "GUID": "6e9cf715-e28e-44e9-9f5e-47f6c18ce446",
                     "RelationBinding": {
                       "RelatedTable": "t_object",
                       "RelatedColumn": "object_id",
@@ -1340,7 +1385,7 @@
                   "ColumnBindingInfo": {
                     "TableName": "t_object_order",
                     "ColumnName": "object_id",
-                    "GUID": "a0dec043-4938-4372-ae8e-d4186c91f816",
+                    "GUID": "9fd72144-0631-4d41-a60e-c53e7bb08b52",
                     "RelationBinding": {
                       "RelatedTable": "t_object",
                       "RelatedColumn": "object_id",
@@ -1364,7 +1409,7 @@
               "ColumnBindingInfo": {
                 "TableName": "t_object_order",
                 "ColumnName": "object_order_id",
-                "GUID": "9ff705da-1555-4734-8348-36729bf30c02"
+                "GUID": "6ea7e590-7761-4956-85bd-c3c5eb10a484"
               },
               "Order": 1
             }
@@ -1560,7 +1605,7 @@
                     "LoadBindingDataOption": 1
                   }
                 ],
-                "ID": "0ef7eb84-d67c-46ed-873a-6584d2762d79"
+                "ID": "6b4137ef-4130-429b-8e4c-f576bcae21ec"
               }
             ]
           }
@@ -1577,11 +1622,11 @@
       "BindingInfo": {
         "TableName": "t_object_order",
         "ColumnName": "latest_analysis_id",
-        "GUID": "3742b42b-3e01-4049-acd5-7e91e21447c2",
+        "GUID": "a794aa03-4fb2-4d34-a44f-6f77f04e8150",
         "RelationBinding": {
           "RelatedTable": "t_object_analysis",
           "RelatedColumn": "analysis_id",
-          "DisplayColumn": "analysis_result_id",
+          "DisplayColumn": "解析済み解析結果ID",
           "NextRelationBinding": {
             "RelatedTable": "m_analysis_result",
             "RelatedColumn": "analysis_result_id",
@@ -2330,7 +2375,7 @@
                     "UpdateRowType": 3
                   }
                 ],
-                "ID": "5a544797-1e83-4726-8f26-72254a9c4c49"
+                "ID": "ac70f6f9-1259-402b-ba2c-99c29cf748bc"
               },
               {
                 "CommandList": [
@@ -2346,7 +2391,7 @@
                     "UpdateRowType": 3
                   }
                 ],
-                "ID": "2f3f279a-34d0-4fa8-90b9-0cc1fd491b3e"
+                "ID": "6fcb47d6-5217-47d0-bd7b-72642df63c30"
               }
             ]
           },
@@ -2445,7 +2490,7 @@
                             "$type": "Forguncy.Model.StopCommand, ServerDesignerCommon"
                           }
                         ],
-                        "ID": "9c8c388b-094a-4b2e-af57-534dc8b561ce"
+                        "ID": "3bb2d04e-9e0c-40b7-be6b-f22bd9a4569d"
                       }
                     ]
                   },
@@ -2552,7 +2597,7 @@
                     ]
                   }
                 ],
-                "ID": "a38f497f-9ca8-4d55-a433-3ce0be435483"
+                "ID": "c47d801a-f60f-4a67-b8c3-13324b46c1d5"
               }
             ]
           }
@@ -3499,7 +3544,6 @@
     "4,8,1,5",
     "4,13,1,6",
     "4,19,1,2",
-    "4,25,1,3",
     "4,28,1,12",
     "4,40,1,16",
     "4,56,1,15",
@@ -3543,6 +3587,7 @@
     "4,106,1,5",
     "4,111,1,5",
     "4,21,1,4",
+    "4,25,1,3",
     "3,1,1,2",
     "3,3,1,5",
     "3,8,1,5",
@@ -3614,250 +3659,10 @@
           "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
           "Formula": {
             "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-            "SerializeProperty": "=申込検索リスト_住宅事業者!抽出カウント-申込検索リスト_住宅事業者!選択カウント=0"
-          },
-          "GUID": "7f52f5d2-bb7e-46c6-9823-8ed83a3fafef",
-          "StyleInfo": {
-            "Underline": null,
-            "Strikethrough": null
-          },
-          "IsDisabled": true,
-          "IsInvisible": false,
-          "IsReadOnly": false
-        },
-        {
-          "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
-          "Formula": {
-            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-            "SerializeProperty": "=申込検索リスト_住宅事業者!選択カウント=0"
-          },
-          "Priority": 1,
-          "GUID": "9d114ada-7f45-4b9e-8f6d-39a10a0d009b",
-          "StyleInfo": {
-            "Underline": null,
-            "Strikethrough": null
-          },
-          "IsDisabled": true,
-          "IsInvisible": false,
-          "IsReadOnly": false
-        },
-        {
-          "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
-          "Formula": {
-            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-            "SerializeProperty": "=申込検索リスト_住宅事業者!選択カウント=0"
-          },
-          "Priority": 2,
-          "GUID": "84f056ea-11b7-4df4-9c6f-5aeabf25ec27",
-          "StyleInfo": {
-            "Underline": null,
-            "Strikethrough": null
-          },
-          "IsDisabled": true,
-          "IsInvisible": false,
-          "IsReadOnly": false
-        },
-        {
-          "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
-          "Formula": {
-            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-            "SerializeProperty": "=申込検索リスト_住宅事業者!抽出カウント=0"
-          },
-          "Priority": 3,
-          "GUID": "3f6667f6-3121-40c3-8537-e4a6f0c0fb52",
-          "StyleInfo": {
-            "Underline": null,
-            "Strikethrough": null
-          },
-          "IsDisabled": true,
-          "IsInvisible": false,
-          "IsReadOnly": false
-        },
-        {
-          "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
-          "Formula": {
-            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
             "SerializeProperty": "=申込検索リスト_住宅事業者!DM5=1"
           },
-          "Priority": 4,
-          "GUID": "f1cc4487-e0dd-4e39-ad28-9be7d0c86cf9",
-          "StyleInfo": {
-            "BorderBottom": "Background 1 -15|1",
-            "Background": "#FFE5FFF0",
-            "Foreground": "Accent 1 0",
-            "Underline": null,
-            "Strikethrough": null
-          }
-        },
-        {
-          "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
-          "Formula": {
-            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-            "SerializeProperty": "=申込検索リスト_住宅事業者!DM5=1"
-          },
-          "Priority": 5,
-          "GUID": "e76e81e0-86c9-40d0-8f48-9720ed3e620a",
-          "StyleInfo": {
-            "BorderBottom": "Background 1 -15|1",
-            "Background": "#FFE5FFF0",
-            "Underline": null,
-            "Strikethrough": null
-          }
-        },
-        {
-          "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
-          "Formula": {
-            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-            "SerializeProperty": "=申込検索リスト_住宅事業者!DM5=1"
-          },
-          "Priority": 6,
-          "GUID": "79fc217e-903a-4b74-885b-9c90095fb6f8",
-          "StyleInfo": {
-            "BorderBottom": "Background 1 -15|1",
-            "Background": "#FFE5FFF0",
-            "Underline": null,
-            "Strikethrough": null
-          }
-        },
-        {
-          "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
-          "Formula": {
-            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-            "SerializeProperty": "=申込検索リスト_住宅事業者!DM5=1"
-          },
-          "Priority": 7,
-          "GUID": "b79058ff-9d9c-46b5-a50d-71516b0e689f",
-          "StyleInfo": {
-            "BorderBottom": "Background 1 -15|1",
-            "Background": "#FFE5FFF0",
-            "Underline": null,
-            "Strikethrough": null
-          }
-        },
-        {
-          "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
-          "Formula": {
-            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-            "SerializeProperty": "=申込検索リスト_住宅事業者!DC5=0"
-          },
-          "Priority": 8,
-          "GUID": "dc8bf438-1ca4-4a26-8e72-2a7699f7ebd2",
-          "StyleInfo": {
-            "Foreground": "Background 1 -15",
-            "Underline": null,
-            "Strikethrough": null
-          }
-        },
-        {
-          "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
-          "Formula": {
-            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-            "SerializeProperty": "=申込検索リスト_住宅事業者!DM5=1"
-          },
-          "Priority": 9,
-          "GUID": "5640e3e0-5d21-4728-9db7-fff1379b8774",
-          "StyleInfo": {
-            "BorderBottom": "Background 1 -15|1",
-            "Background": "#FFE5FFF0",
-            "Underline": null,
-            "Strikethrough": null
-          }
-        },
-        {
-          "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
-          "Formula": {
-            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-            "SerializeProperty": "=申込検索リスト_住宅事業者!DM5=1"
-          },
-          "Priority": 10,
-          "GUID": "8c75392b-b703-4410-8274-0e1fb8d51b12",
-          "StyleInfo": {
-            "BorderBottom": "Background 1 -15|1",
-            "Background": "#FFE5FFF0",
-            "Underline": null,
-            "Strikethrough": null
-          }
-        },
-        {
-          "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
-          "Formula": {
-            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-            "SerializeProperty": "=申込検索リスト_住宅事業者!DM5=1"
-          },
-          "Priority": 11,
-          "GUID": "e7471172-e92c-4cb3-b58f-e712e6e1b08b",
-          "StyleInfo": {
-            "BorderBottom": "Background 1 -15|1",
-            "Background": "#FFE5FFF0",
-            "Underline": null,
-            "Strikethrough": null
-          }
-        },
-        {
-          "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
-          "Formula": {
-            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-            "SerializeProperty": "=申込検索リスト_住宅事業者!Z5=\"〇\""
-          },
-          "Priority": 12,
-          "GUID": "43199891-691f-40ea-bd16-7cee8f61c4f9",
-          "StyleInfo": {
-            "Foreground": "#FF0070C0",
-            "Underline": null,
-            "Strikethrough": null
-          }
-        },
-        {
-          "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
-          "Formula": {
-            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-            "SerializeProperty": "=申込検索リスト_住宅事業者!Z5=\"△\""
-          },
-          "Priority": 13,
-          "GUID": "ea9caa5b-79ed-4404-8b32-7a47eb99515a",
-          "StyleInfo": {
-            "Foreground": "#FFFFC000",
-            "Underline": null,
-            "Strikethrough": null
-          }
-        },
-        {
-          "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
-          "Formula": {
-            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-            "SerializeProperty": "=申込検索リスト_住宅事業者!Z5=\"×\""
-          },
-          "Priority": 14,
-          "GUID": "13b700ac-586a-4d69-85b8-2f01b2df6ffb",
-          "StyleInfo": {
-            "Foreground": "#FFC00000",
-            "Underline": null,
-            "Strikethrough": null
-          }
-        },
-        {
-          "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
-          "Formula": {
-            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-            "SerializeProperty": "=申込検索リスト_住宅事業者!DM5=1"
-          },
-          "Priority": 15,
-          "GUID": "32ef7dae-8368-4764-a573-ebf6680c9556",
-          "StyleInfo": {
-            "BorderBottom": "Background 1 -15|1",
-            "Background": "#FFE5FFF0",
-            "Underline": null,
-            "Strikethrough": null
-          }
-        },
-        {
-          "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
-          "Formula": {
-            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-            "SerializeProperty": "=申込検索リスト_住宅事業者!DM5=1"
-          },
-          "Priority": 16,
-          "GUID": "d052fd08-7509-44c3-946f-ca4889fa17f0",
+          "Priority": 18,
+          "GUID": "9db426b3-8304-425e-920b-b37f53d86644",
           "StyleInfo": {
             "BorderBottom": "Background 1 -15|1",
             "Background": "#FFE5FFF0",
@@ -3886,14 +3691,248 @@
             "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
             "SerializeProperty": "=申込検索リスト_住宅事業者!DM5=1"
           },
-          "Priority": 18,
-          "GUID": "9db426b3-8304-425e-920b-b37f53d86644",
+          "Priority": 16,
+          "GUID": "d052fd08-7509-44c3-946f-ca4889fa17f0",
           "StyleInfo": {
             "BorderBottom": "Background 1 -15|1",
             "Background": "#FFE5FFF0",
             "Underline": null,
             "Strikethrough": null
           }
+        },
+        {
+          "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
+          "Formula": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=申込検索リスト_住宅事業者!DM5=1"
+          },
+          "Priority": 15,
+          "GUID": "32ef7dae-8368-4764-a573-ebf6680c9556",
+          "StyleInfo": {
+            "BorderBottom": "Background 1 -15|1",
+            "Background": "#FFE5FFF0",
+            "Underline": null,
+            "Strikethrough": null
+          }
+        },
+        {
+          "$type": "Forguncy.ConditionFormat.CellValueRule, ServerDesignerCommon",
+          "Operator": 3,
+          "Value1": "=\"×\"",
+          "Priority": 14,
+          "GUID": "13b700ac-586a-4d69-85b8-2f01b2df6ffb",
+          "StyleInfo": {
+            "Foreground": "#FFC00000",
+            "Underline": null,
+            "Strikethrough": null
+          }
+        },
+        {
+          "$type": "Forguncy.ConditionFormat.CellValueRule, ServerDesignerCommon",
+          "Operator": 3,
+          "Value1": "=\"△\"",
+          "Priority": 13,
+          "GUID": "ea9caa5b-79ed-4404-8b32-7a47eb99515a",
+          "StyleInfo": {
+            "Foreground": "#FFFFC000",
+            "Underline": null,
+            "Strikethrough": null
+          }
+        },
+        {
+          "$type": "Forguncy.ConditionFormat.CellValueRule, ServerDesignerCommon",
+          "Operator": 3,
+          "Value1": "=\"〇\"",
+          "Priority": 12,
+          "GUID": "43199891-691f-40ea-bd16-7cee8f61c4f9",
+          "StyleInfo": {
+            "Foreground": "#FF0070C0",
+            "Underline": null,
+            "Strikethrough": null
+          }
+        },
+        {
+          "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
+          "Formula": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=申込検索リスト_住宅事業者!DM5=1"
+          },
+          "Priority": 11,
+          "GUID": "e7471172-e92c-4cb3-b58f-e712e6e1b08b",
+          "StyleInfo": {
+            "BorderBottom": "Background 1 -15|1",
+            "Background": "#FFE5FFF0",
+            "Underline": null,
+            "Strikethrough": null
+          }
+        },
+        {
+          "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
+          "Formula": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=申込検索リスト_住宅事業者!DM5=1"
+          },
+          "Priority": 10,
+          "GUID": "8c75392b-b703-4410-8274-0e1fb8d51b12",
+          "StyleInfo": {
+            "BorderBottom": "Background 1 -15|1",
+            "Background": "#FFE5FFF0",
+            "Underline": null,
+            "Strikethrough": null
+          }
+        },
+        {
+          "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
+          "Formula": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=申込検索リスト_住宅事業者!DM5=1"
+          },
+          "Priority": 9,
+          "GUID": "5640e3e0-5d21-4728-9db7-fff1379b8774",
+          "StyleInfo": {
+            "BorderBottom": "Background 1 -15|1",
+            "Background": "#FFE5FFF0",
+            "Underline": null,
+            "Strikethrough": null
+          }
+        },
+        {
+          "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
+          "Formula": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=申込検索リスト_住宅事業者!DC5=0"
+          },
+          "Priority": 8,
+          "GUID": "dc8bf438-1ca4-4a26-8e72-2a7699f7ebd2",
+          "StyleInfo": {
+            "Foreground": "Background 1 -15",
+            "Underline": null,
+            "Strikethrough": null
+          }
+        },
+        {
+          "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
+          "Formula": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=申込検索リスト_住宅事業者!DM5=1"
+          },
+          "Priority": 7,
+          "GUID": "b79058ff-9d9c-46b5-a50d-71516b0e689f",
+          "StyleInfo": {
+            "BorderBottom": "Background 1 -15|1",
+            "Background": "#FFE5FFF0",
+            "Underline": null,
+            "Strikethrough": null
+          }
+        },
+        {
+          "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
+          "Formula": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=申込検索リスト_住宅事業者!DM5=1"
+          },
+          "Priority": 6,
+          "GUID": "79fc217e-903a-4b74-885b-9c90095fb6f8",
+          "StyleInfo": {
+            "BorderBottom": "Background 1 -15|1",
+            "Background": "#FFE5FFF0",
+            "Underline": null,
+            "Strikethrough": null
+          }
+        },
+        {
+          "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
+          "Formula": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=申込検索リスト_住宅事業者!DM5=1"
+          },
+          "Priority": 5,
+          "GUID": "e76e81e0-86c9-40d0-8f48-9720ed3e620a",
+          "StyleInfo": {
+            "BorderBottom": "Background 1 -15|1",
+            "Background": "#FFE5FFF0",
+            "Underline": null,
+            "Strikethrough": null
+          }
+        },
+        {
+          "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
+          "Formula": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=申込検索リスト_住宅事業者!DM5=1"
+          },
+          "Priority": 4,
+          "GUID": "f1cc4487-e0dd-4e39-ad28-9be7d0c86cf9",
+          "StyleInfo": {
+            "BorderBottom": "Background 1 -15|1",
+            "Background": "#FFE5FFF0",
+            "Foreground": "Accent 1 0",
+            "Underline": null,
+            "Strikethrough": null
+          }
+        },
+        {
+          "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
+          "Formula": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=申込検索リスト_住宅事業者!抽出カウント=0"
+          },
+          "Priority": 3,
+          "GUID": "3f6667f6-3121-40c3-8537-e4a6f0c0fb52",
+          "StyleInfo": {
+            "Underline": null,
+            "Strikethrough": null
+          },
+          "IsDisabled": true,
+          "IsInvisible": false,
+          "IsReadOnly": false
+        },
+        {
+          "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
+          "Formula": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=申込検索リスト_住宅事業者!選択カウント=0"
+          },
+          "Priority": 2,
+          "GUID": "84f056ea-11b7-4df4-9c6f-5aeabf25ec27",
+          "StyleInfo": {
+            "Underline": null,
+            "Strikethrough": null
+          },
+          "IsDisabled": true,
+          "IsInvisible": false,
+          "IsReadOnly": false
+        },
+        {
+          "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
+          "Formula": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=申込検索リスト_住宅事業者!選択カウント=0"
+          },
+          "Priority": 1,
+          "GUID": "9d114ada-7f45-4b9e-8f6d-39a10a0d009b",
+          "StyleInfo": {
+            "Underline": null,
+            "Strikethrough": null
+          },
+          "IsDisabled": true,
+          "IsInvisible": false,
+          "IsReadOnly": false
+        },
+        {
+          "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
+          "Formula": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=申込検索リスト_住宅事業者!抽出カウント-申込検索リスト_住宅事業者!選択カウント=0"
+          },
+          "GUID": "7f52f5d2-bb7e-46c6-9823-8ed83a3fafef",
+          "StyleInfo": {
+            "Underline": null,
+            "Strikethrough": null
+          },
+          "IsDisabled": true,
+          "IsInvisible": false,
+          "IsReadOnly": false
         }
       ]
     }
@@ -3936,4 +3975,4 @@
       "Formula": "申込検索リスト_住宅事業者!$EA$11"
     }
   ]
-}//GXHl17Xt0yR6pOsCQVGvzaB8hrKrf76CcWFoxCFaHGC3SDsiRKXS7/BQjIVijuKjMjuH/GCKtJCkeI0GE3N1a81Ar7VuupFPXV/dJnloNuIn9qPLNiIx73liYoeVbCo4LiAIxN9t7Ha5nwf0ch/3i22agL9xV1mxR/4BSehplN9Jmo5Lpj+1YC/mww9F6pbJqBTuxfjq/whZ69R3ee0OQy6Ff4fJCmtmW8hNFveZHEmolDWeBMVmnLayNcNo439i/b8yIfxDnFMV+DXMNpO2GGUMwm6rnppOPdLdWc7dmwXGrWFICnB8YEVY7Z8gkf/r6Xm7Sgh3tjvH6a2NCFnz8ch2S5Rb4BuX/iGl7ne4GrNrHVD+uS6KqQDzjHrwQHUJlmLqZorTtAkahv6E4H2wjDW8y5B678UKEj6LWdD0c07E5UtNX9Bewy2gfT7yPaQ82cElKrISFUaLxegsoaI7WpgEM1rbwKd2c80hgr43cYtoERj58iSQVBcduouSJrgeTwQtQJcZoR5DZ8qOSk8bO86E6rPXBDB3gRVksOBE7XrxENnuKw5c8I+LIen7VwVQQ+WIt36etxJvD93CuTMHMRAM349Z5N9PcKs8tCvos09p6BlfR2IOgOou/sBhM5+VuWIJPFQzuKgiPZ1HIvbCPxxdw9imkK4GIyzMVldCWxfoGwlgWy3IPbBur9xjubO4qPvHiJRb9UIcpB5vVKaog71jKeTrq70Rklea8XzSfTWP26VeKelRQkC94h6t3jDmDMyObOzgkJgRxQ+VSyqH1cdndKgz0jb255aubBMuiyV2qPG1yGookwJWP+g1LieNwsh9Qjyh8Nig9OFe1iB0ZKWWBeo/IzlpYaCeVUMpegk+zDDq5wsFHrACN9o/6TOZa6jzMWf82oMI0c0c/3i2oA==|920
+}//RZhx8rpwJ1B6Uns6Q/pVmjjQ85WMvlTTyS7gjxG8IcNo2LA1Y3uc2ikPtRuK6+cmLLkR4ZEHwv4azMrhVuzneEussMtBGyem9iEg1RMToCno3akTF5kHGdRt3G66CAQAyWa8x10AdD5ce//tNBDpVjZMWu0OxKvzdLuLH00DA47Q+hZnqYkmWlAKnI6kgN8yYKZlc2tRdYSbTxftr7HcPrha5ElwSaaGlvzKecg38FZVyza3j96j7rz3XYdOjDP2pLkicWWF6mpgXX3DzoEcZd7eFwTwYYIwAwPoWu1lVAH6vTrHYPWsWDkMzF3Td9q0+ttvpPBmGwrskgJQtGsj7GoIKEJt/TPgiaD7gt//z0OZR+74Zy0ndQlYsbkEY6y8Uhl6SD9e9MyXPOLZknnh3f2gvbq9zYZKNhV7gh4tXuXXQ1r7+WAcfP+IMyK2BUv/ooY2TJbxg9HZ1v104aqmUD/lIwakq9GfP29e+7scrlX7+ux8fJp6ehySfaQtXrD4+v9d1KMjOvdwiPjuHJ3qYTmfmG05GGaswOI/Ow5aqfG1EUdQkZAgerDBFqL0pCSn4K1lEPwpIwO6B4kcispG7bxoeelPU4VBsu1qZrRBv0/918KYb1igA4w4x12g/EXyhAT2KU3vBzChQ8LqcjiCIw5GMN4vlXvvOMfKM1ryHYzNcFqlILlvbmu3w8ebI6NMfSmFrRmqjVBkrTKsC/jBEnEGDeStiafduUd6KoHeyq+s5+wDB9qA/0iN1qyBM1bQwGuCMx0AdoSQzMwA8emVpp1J86/rpDEGDc++na8pEghNwuEH6Uba54Xon5iK4PJYzWmkRpN+/wFwnLnGc+WyIEbu6zmxvZ/ToqFxBTT+VAwqe76rFwgXgvMPQh6XDrNNdhtyC28vR/DkPmUFU6qpOw==|920

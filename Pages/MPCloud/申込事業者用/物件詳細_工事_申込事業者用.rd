@@ -5,20 +5,21 @@
   "Formulas": {
     "22,112": "IF(OR(DF23=1,DG23=1,DH23=1),1,0)",
     "22,83": "$CD$28-ROW(CD23)+1",
-    "3,17": "IF(DJ10>0,\"※現在、\"&DJ10&\"社の工事会社が設定されています\",\"\")",
+    "3,17": "IF(DN10>0,\"※現在、\"&DN10&\"社の工事会社が設定されています\",\"\")",
     "22,103": "IFERROR(ODATA(\"v_construction_product_summary?$select=売上合計&$filter=工事ID eq \"&IF(ISBLANK(CE23),\"null\",CE23)),0)",
-    "9,107": "ROW(CI10)",
+    "9,108": "\"見積書(\"&DD10&\")\"",
     "18,88": "ODATA(\"m_customer_specify_construction/$count?$filter=customer_id eq \"&IF(ISBLANK(CJ4),\"null\",CJ4))",
-    "9,108": "ODATA(\"t_object_attachment/$count?$filter=construction_estimate_id eq \"&IF(ISBLANK(CF10),\"null\",CF10)&\" and file_attribute_id eq \"&IF(ISBLANK(工事見積書ファイル属性ID),\"null\",工事見積書ファイル属性ID)&\" and publish_flg eq 1 and active_flg eq 1\")",
+    "9,107": "ODATA(\"t_object_attachment/$count?$filter=construction_estimate_id eq \"&IF(ISBLANK(CE10),\"null\",CE10)&\" and file_attribute_id eq \"&IF(ISBLANK(工事見積書ファイル属性ID),\"null\",工事見積書ファイル属性ID)&\" and publish_flg eq 1 and active_flg eq 1\")",
     "22,104": "IFERROR(ODATA(\"v_construction_product_summary?$select=仕入合計&$filter=工事ID eq \"&IF(ISBLANK(CE23),\"null\",CE23)),0)",
-    "9,109": "\"見積書(\"&DE10&\")\"",
+    "9,106": "ROW(CH10)",
     "22,113": "ODATA(\"t_object_attachment/$count?$filter=construction_id eq \"&IF(ISBLANK(CE23),\"null\",CE23)&\" and file_attribute_id eq \"&IF(ISBLANK(施工報告書ファイル属性ID),\"null\",施工報告書ファイル属性ID)&\" and publish_flg eq 1 and active_flg eq 1\")",
-    "9,89": "IFERROR(ODATA(\"m_customer_specify_construction?$select=priority_type&$filter=customer_id eq \"&IF(ISBLANK(CK10),\"null\",CK10)&\" and construction_id eq \"&IF(ISBLANK(CI10),\"null\",CI10)),0)",
+    "9,88": "IFERROR(ODATA(\"m_customer_specify_construction?$select=priority_type&$filter=customer_id eq \"&IF(ISBLANK(CJ10),\"null\",CJ10)&\" and construction_id eq \"&IF(ISBLANK(CH10),\"null\",CH10)),0)",
     "22,114": "\"施工報告書(\"&DJ23&\")\"",
     "22,117": "IF(DM23<>\"\",\"最終更新日時：\"&DM23,\"\")",
     "27,81": "COUNT(CE23)",
     "22,118": "ODATA(\"t_object_construction/$count?$filter=object_order_id eq \"&IF(ISBLANK(CD23),\"null\",CD23)&\" and construction_id gt \"&IF(ISBLANK(CE23),\"null\",CE23))",
-    "9,113": "COUNT(CE10)"
+    "9,117": "COUNT(CD10)",
+    "9,114": "DG10+DH10+DI10+DJ10"
   },
   "CustomNames": [
     {

@@ -1,0 +1,251 @@
+{
+  "Name": "外注原価マスタデータエクスポート",
+  "Enabled": true,
+  "Triggers": [
+    {
+      "$type": "Forguncy.SaveLoad.PostRequestTriggerSaveData, ServerDesignerCommon",
+      "Permission": {
+        "PermissionData": {
+          "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionData, Forguncy.RbacPermission.Core",
+          "permissionResource": {
+            "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionResource, Forguncy.RbacPermission.Core"
+          },
+          "permissionBindings": [
+            {
+              "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionBinding, Forguncy.RbacPermission.Core",
+              "roleNames": [
+                "FGC_LoginUser"
+              ]
+            }
+          ]
+        }
+      },
+      "Parameters": [
+        {
+          "Name": "P_検索ワード",
+          "DataValidationInfo": {}
+        }
+      ]
+    }
+  ],
+  "Commands": [
+    {
+      "$type": "Forguncy.Model.RequestServerCommand, ServerDesignerCommon",
+      "ServerCommandName": "個人フォルダパス取得",
+      "ReturnPropertiesTo": [
+        {
+          "ResultPropertyName": "R_個人フォルダパス名",
+          "ResultTo": {
+            "SerializeProperty": "個人フォルダパス名"
+          }
+        }
+      ],
+      "RefreshAfterFinish": true,
+      "CheckDataValidation": true
+    },
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "EXCELのファイルパス",
+      "ParameterValue": {
+        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+        "SerializeProperty": "=個人フォルダパス名&\"外注原価マスタデータ.xlsx\""
+      },
+      "ID": "4724cce58c46411c92b627dbc2a8dfd0"
+    },
+    {
+      "$type": "Forguncy.Model.Commands.ServerImportExportExcelCommand, ServerDesignerCommon",
+      "ExcelOperation": 1,
+      "FilePath": {
+        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+        "SerializeProperty": "=EXCELのファイルパス"
+      },
+      "TableName": "m_outsourcing_cost",
+      "Columns": [
+        {
+          "BindingColumn": {
+            "TableName": "m_outsourcing_cost",
+            "ColumnName": "customer_id",
+            "GUID": "c04f6577-9c9e-4cc1-a2df-8728a6bed9a5",
+            "RelationBinding": {
+              "RelatedTable": "m_customer",
+              "RelatedColumn": "customer_id",
+              "DisplayColumn": "内部顧客名"
+            }
+          },
+          "ExcelColumnNameOrIndex": "外注先名"
+        },
+        {
+          "BindingColumn": {
+            "TableName": "m_outsourcing_cost",
+            "ColumnName": "product_id",
+            "GUID": "86f8adaf-9072-4a45-be1a-9971e86cd54a",
+            "RelationBinding": {
+              "RelatedTable": "m_product",
+              "RelatedColumn": "product_id",
+              "DisplayColumn": "product_name"
+            }
+          },
+          "ExcelColumnNameOrIndex": "商品名"
+        },
+        {
+          "BindingColumn": {
+            "TableName": "m_outsourcing_cost",
+            "ColumnName": "group_id",
+            "GUID": "5242f70d-6fa4-43ac-82b4-e285ba8a2101",
+            "RelationBinding": {
+              "RelatedTable": "m_group",
+              "RelatedColumn": "group_id",
+              "DisplayColumn": "group_name"
+            }
+          },
+          "ExcelColumnNameOrIndex": "グループ名"
+        },
+        {
+          "BindingColumn": {
+            "TableName": "m_outsourcing_cost",
+            "ColumnName": "builder_id",
+            "GUID": "ba579107-d321-4015-ba09-9db8351e87de",
+            "RelationBinding": {
+              "RelatedTable": "m_customer",
+              "RelatedColumn": "customer_id",
+              "DisplayColumn": "内部顧客名"
+            }
+          },
+          "ExcelColumnNameOrIndex": "住宅事業者名"
+        },
+        {
+          "BindingColumn": {
+            "TableName": "m_outsourcing_cost",
+            "ColumnName": "cost_price",
+            "GUID": "39e31f7d-08e3-48c2-9b26-7904c812a1ab"
+          },
+          "ExcelColumnNameOrIndex": "原価"
+        },
+        {
+          "BindingColumn": {
+            "TableName": "m_outsourcing_cost",
+            "ColumnName": "last_updated_label",
+            "GUID": "d7339e92-ed63-4053-9297-40c9023c874a"
+          },
+          "ExcelColumnNameOrIndex": "最終更新ラベル"
+        }
+      ],
+      "QueryCondition": {
+        "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+        "SubConditions": [
+          {
+            "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+            "CompareType": 6,
+            "ColumnBindingInfo": {
+              "TableName": "m_outsourcing_cost",
+              "ColumnName": "customer_id",
+              "GUID": "42a6c63f-1c36-4a7a-a9e2-8e84f36fab07",
+              "RelationBinding": {
+                "RelatedTable": "m_customer",
+                "RelatedColumn": "customer_id",
+                "DisplayColumn": "内部顧客名"
+              }
+            },
+            "Value": {
+              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+              "SerializeProperty": "=P_検索ワード"
+            }
+          },
+          {
+            "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+            "CompareType": 6,
+            "ColumnBindingInfo": {
+              "TableName": "m_outsourcing_cost",
+              "ColumnName": "product_id",
+              "GUID": "c6a1c006-7c06-4db8-abb3-43d9f376a2e7",
+              "RelationBinding": {
+                "RelatedTable": "m_product",
+                "RelatedColumn": "product_id",
+                "DisplayColumn": "product_name"
+              }
+            },
+            "Value": {
+              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+              "SerializeProperty": "=P_検索ワード"
+            }
+          },
+          {
+            "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+            "CompareType": 6,
+            "ColumnBindingInfo": {
+              "TableName": "m_outsourcing_cost",
+              "ColumnName": "group_id",
+              "GUID": "8afb1d8e-a770-43db-b0a4-e22629fdab08",
+              "RelationBinding": {
+                "RelatedTable": "m_group",
+                "RelatedColumn": "group_id",
+                "DisplayColumn": "group_name"
+              }
+            },
+            "Value": {
+              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+              "SerializeProperty": "=P_検索ワード"
+            }
+          },
+          {
+            "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+            "CompareType": 6,
+            "ColumnBindingInfo": {
+              "TableName": "m_outsourcing_cost",
+              "ColumnName": "builder_id",
+              "GUID": "6016d5c4-601a-4acd-aa23-9bf31a673619",
+              "RelationBinding": {
+                "RelatedTable": "m_customer",
+                "RelatedColumn": "customer_id",
+                "DisplayColumn": "内部顧客名"
+              }
+            },
+            "Value": {
+              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+              "SerializeProperty": "=P_検索ワード"
+            }
+          }
+        ],
+        "RelationType": 1
+      },
+      "NullFormulaValueQueryPolicy": 1,
+      "OrderBySqlCondition": {
+        "OrderByColumns": [
+          {
+            "ColumnBindingInfo": {
+              "TableName": "m_outsourcing_cost",
+              "ColumnName": "customer_id",
+              "GUID": "31060272-314b-41b1-8612-9b29813c394b",
+              "RelationBinding": {
+                "RelatedTable": "m_customer",
+                "RelatedColumn": "customer_id",
+                "DisplayColumn": "customer_name"
+              }
+            },
+            "Order": 0
+          },
+          {
+            "ColumnBindingInfo": {
+              "TableName": "m_outsourcing_cost",
+              "ColumnName": "product_id",
+              "GUID": "838d83ba-b54a-4021-bf53-f14c725f375c",
+              "RelationBinding": {
+                "RelatedTable": "m_product",
+                "RelatedColumn": "product_id",
+                "DisplayColumn": "product_name"
+              }
+            },
+            "Order": 0
+          }
+        ]
+      }
+    },
+    {
+      "$type": "OperateFilesCommand.DownloadFileCommand, OperateFilesCommand",
+      "FilePath": {
+        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+        "SerializeProperty": "=EXCELのファイルパス"
+      }
+    }
+  ]
+}

@@ -11,7 +11,7 @@
     "26,139": "IF(EF27=2,EH27,\"\")",
     "26,138": "IF(EF27=1,EG27,\"\")",
     "7,133": "IF(タブ番号<>\"\",ODATA(\"m_tab_class?$select=tab_name&$filter=tab_id eq \"&IF(ISBLANK(タブ番号),\"null\",タブ番号)),\"申込\")",
-    "19,128": "IF(申込ID>0,ODATA(\"m_customer_notice/$count?$filter=customer_id eq \"&IF(ISBLANK(ED20),\"null\",ED20))+ODATA(\"m_customer_notice/$count?$filter=customer_id eq \"&IF(ISBLANK(顧客ID),\"null\",顧客ID)),0)",
+    "19,128": "IF(申込ID>0,ODATA(\"m_group_notice/$count?$filter=group_id eq \"&IF(ISBLANK(DY23),\"null\",DY23))+ODATA(\"m_customer_notice/$count?$filter=customer_id eq \"&IF(ISBLANK(顧客ID),\"null\",顧客ID)),0)",
     "16,147": "IF(申込ID>0,ODATA(\"t_object/$count?$filter=parent_object_id eq \"&IF(ISBLANK(ER15),\"null\",ER15)),0)",
     "13,128": "IFERROR(GETURLQUERYVALUE(\"follow_id\"),0)",
     "10,128": "IFERROR(GETURLQUERYVALUE(\"notice_id\"),0)",
@@ -94,6 +94,14 @@
     {
       "Name": "連絡事項タブ検索",
       "Formula": "申込詳細_内容!$CW$2"
+    },
+    {
+      "Name": "メニュータブ",
+      "Formula": "申込詳細_内容!$W$7"
+    },
+    {
+      "Name": "タブ移動フラグ",
+      "Formula": "申込詳細_内容!$ER$4"
     }
   ]
 }
