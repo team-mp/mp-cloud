@@ -1,0 +1,452 @@
+{
+  "Name": "顧客メール設定マスタエクスポート",
+  "Enabled": true,
+  "Triggers": [
+    {
+      "$type": "Forguncy.SaveLoad.PostRequestTriggerSaveData, ServerDesignerCommon",
+      "Permission": {
+        "PermissionData": {
+          "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionData, Forguncy.RbacPermission.Core",
+          "permissionResource": {
+            "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionResource, Forguncy.RbacPermission.Core"
+          },
+          "permissionBindings": [
+            {
+              "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionBinding, Forguncy.RbacPermission.Core",
+              "roleNames": [
+                "FGC_LoginUser"
+              ]
+            }
+          ]
+        }
+      },
+      "Parameters": [
+        {
+          "Name": "P_検索ワード1",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_検索ワード2",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_有効フラグ",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_メールタイプIDs",
+          "DataValidationInfo": {}
+        }
+      ]
+    }
+  ],
+  "Commands": [
+    {
+      "$type": "Forguncy.Model.RequestServerCommand, ServerDesignerCommon",
+      "ServerCommandName": "個人フォルダパス取得",
+      "ReturnPropertiesTo": [
+        {
+          "ResultPropertyName": "R_個人フォルダパス名",
+          "ResultTo": {
+            "SerializeProperty": "個人フォルダパス名"
+          }
+        }
+      ],
+      "RefreshAfterFinish": true,
+      "CheckDataValidation": true
+    },
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "EXCELのファイルパス",
+      "ParameterValue": {
+        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+        "SerializeProperty": "=個人フォルダパス名&\"顧客メール設定マスタデータ.xlsx\""
+      },
+      "ID": "d6f25d6dd0984f53a941a96eccd398a3"
+    },
+    {
+      "$type": "Forguncy.Model.Commands.ServerImportExportExcelCommand, ServerDesignerCommon",
+      "ExcelOperation": 1,
+      "FilePath": {
+        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+        "SerializeProperty": "=EXCELのファイルパス"
+      },
+      "TableName": "m_customer_mail",
+      "Columns": [
+        {
+          "BindingColumn": {
+            "TableName": "m_customer_mail",
+            "ColumnName": "customer_id",
+            "GUID": "30a9ceb9-0346-4801-b8a9-bcd4d7035fe4",
+            "RelationBinding": {
+              "RelatedTable": "m_customer",
+              "RelatedColumn": "customer_id",
+              "DisplayColumn": "内部顧客名"
+            }
+          },
+          "ExcelColumnNameOrIndex": "顧客名"
+        },
+        {
+          "BindingColumn": {
+            "TableName": "m_customer_mail",
+            "ColumnName": "送信区分名",
+            "GUID": "e84528a7-0f2f-42c9-b263-04c3fc3b5ddd"
+          },
+          "ExcelColumnNameOrIndex": "送信区分名"
+        },
+        {
+          "BindingColumn": {
+            "TableName": "m_customer_mail",
+            "ColumnName": "mail_type_id",
+            "GUID": "f7238f62-8c78-459c-92ae-70aa6f1cce3c",
+            "RelationBinding": {
+              "RelatedTable": "m_mail_type",
+              "RelatedColumn": "mail_type_id",
+              "DisplayColumn": "mail_type_name"
+            }
+          },
+          "ExcelColumnNameOrIndex": "メールタイプ名"
+        },
+        {
+          "BindingColumn": {
+            "TableName": "m_customer_mail",
+            "ColumnName": "user_id",
+            "GUID": "7921d2ad-0ead-4acd-8ac3-1310e031d28a",
+            "RelationBinding": {
+              "RelatedTable": "m_user",
+              "RelatedColumn": "user_id",
+              "DisplayColumn": "customer_id",
+              "NextRelationBinding": {
+                "RelatedTable": "m_customer",
+                "RelatedColumn": "customer_id",
+                "DisplayColumn": "内部顧客名"
+              }
+            }
+          },
+          "ExcelColumnNameOrIndex": "所属会社名"
+        },
+        {
+          "BindingColumn": {
+            "TableName": "m_customer_mail",
+            "ColumnName": "user_id",
+            "GUID": "e7707b7c-a981-4d31-9172-a03b756b21b3",
+            "RelationBinding": {
+              "RelatedTable": "m_user",
+              "RelatedColumn": "user_id",
+              "DisplayColumn": "user_name"
+            }
+          },
+          "ExcelColumnNameOrIndex": "ユーザー名"
+        },
+        {
+          "BindingColumn": {
+            "TableName": "m_customer_mail",
+            "ColumnName": "user_id",
+            "GUID": "da1948af-9630-4b71-b220-37508948cdfe",
+            "RelationBinding": {
+              "RelatedTable": "m_user",
+              "RelatedColumn": "user_id",
+              "DisplayColumn": "mail_address"
+            }
+          },
+          "ExcelColumnNameOrIndex": "メールアドレス"
+        },
+        {
+          "BindingColumn": {
+            "TableName": "m_customer_mail",
+            "ColumnName": "builder_id",
+            "GUID": "62bda02f-ff1f-481b-a806-585c672fcbf5",
+            "RelationBinding": {
+              "RelatedTable": "m_customer",
+              "RelatedColumn": "customer_id",
+              "DisplayColumn": "内部顧客名"
+            }
+          },
+          "ExcelColumnNameOrIndex": "通知対象住宅事業者名"
+        }
+      ],
+      "QueryCondition": {
+        "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+        "SubConditions": [
+          {
+            "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+            "ColumnBindingInfo": {
+              "TableName": "m_customer_mail",
+              "ColumnName": "user_id",
+              "GUID": "17bf0442-744b-4139-85b2-d246a1aca4f7",
+              "RelationBinding": {
+                "RelatedTable": "m_user",
+                "RelatedColumn": "user_id",
+                "DisplayColumn": "active_flg"
+              }
+            },
+            "Value": {
+              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+              "SerializeProperty": "=P_有効フラグ"
+            }
+          },
+          {
+            "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+            "CompareType": 8,
+            "ColumnBindingInfo": {
+              "TableName": "m_customer_mail",
+              "ColumnName": "mail_type_id",
+              "GUID": "fb22159d-6d69-42a9-91ef-77d7f18fab3e"
+            },
+            "Value": {
+              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+              "SerializeProperty": "=P_メールタイプIDs"
+            }
+          },
+          {
+            "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+            "SubConditions": [
+              {
+                "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                "CompareType": 6,
+                "ColumnBindingInfo": {
+                  "TableName": "m_customer_mail",
+                  "ColumnName": "customer_id",
+                  "GUID": "55982a24-49cb-40ff-9655-af4a924d8ab4",
+                  "RelationBinding": {
+                    "RelatedTable": "m_customer",
+                    "RelatedColumn": "customer_id",
+                    "DisplayColumn": "内部顧客名"
+                  }
+                },
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=P_検索ワード1"
+                },
+                "LeftBracket": 1
+              },
+              {
+                "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                "CompareType": 6,
+                "ColumnBindingInfo": {
+                  "TableName": "m_customer_mail",
+                  "ColumnName": "mail_type_id",
+                  "GUID": "9e3596ed-2da2-4f94-b0ea-402a1cfdd97c",
+                  "RelationBinding": {
+                    "RelatedTable": "m_mail_type",
+                    "RelatedColumn": "mail_type_id",
+                    "DisplayColumn": "mail_type_name"
+                  }
+                },
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=P_検索ワード1"
+                }
+              },
+              {
+                "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                "CompareType": 6,
+                "ColumnBindingInfo": {
+                  "TableName": "m_customer_mail",
+                  "ColumnName": "user_id",
+                  "GUID": "757e5457-fb64-4915-a6ec-47b24a7c57d6",
+                  "RelationBinding": {
+                    "RelatedTable": "m_user",
+                    "RelatedColumn": "user_id",
+                    "DisplayColumn": "customer_id",
+                    "NextRelationBinding": {
+                      "RelatedTable": "m_customer",
+                      "RelatedColumn": "customer_id",
+                      "DisplayColumn": "内部顧客名"
+                    }
+                  }
+                },
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=P_検索ワード1"
+                }
+              },
+              {
+                "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                "CompareType": 6,
+                "ColumnBindingInfo": {
+                  "TableName": "m_customer_mail",
+                  "ColumnName": "user_id",
+                  "GUID": "0d23818c-24b4-4a33-aaec-e00519753a0c",
+                  "RelationBinding": {
+                    "RelatedTable": "m_user",
+                    "RelatedColumn": "user_id",
+                    "DisplayColumn": "user_name"
+                  }
+                },
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=P_検索ワード1"
+                }
+              },
+              {
+                "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                "CompareType": 6,
+                "ColumnBindingInfo": {
+                  "TableName": "m_customer_mail",
+                  "ColumnName": "user_id",
+                  "GUID": "a7e83b25-5e00-4959-b87a-00aba6772573",
+                  "RelationBinding": {
+                    "RelatedTable": "m_user",
+                    "RelatedColumn": "user_id",
+                    "DisplayColumn": "mail_address"
+                  }
+                },
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=P_検索ワード1"
+                },
+                "RightBracket": 1
+              }
+            ],
+            "RelationType": 1
+          },
+          {
+            "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+            "SubConditions": [
+              {
+                "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                "CompareType": 6,
+                "ColumnBindingInfo": {
+                  "TableName": "m_customer_mail",
+                  "ColumnName": "customer_id",
+                  "GUID": "a65e86eb-922c-46ba-9fdd-78d60a736e63",
+                  "RelationBinding": {
+                    "RelatedTable": "m_customer",
+                    "RelatedColumn": "customer_id",
+                    "DisplayColumn": "内部顧客名"
+                  }
+                },
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=P_検索ワード2"
+                },
+                "LeftBracket": 1
+              },
+              {
+                "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                "CompareType": 6,
+                "ColumnBindingInfo": {
+                  "TableName": "m_customer_mail",
+                  "ColumnName": "mail_type_id",
+                  "GUID": "aad2e4b6-53d7-410e-b0a4-37e0d85dc96c",
+                  "RelationBinding": {
+                    "RelatedTable": "m_mail_type",
+                    "RelatedColumn": "mail_type_id",
+                    "DisplayColumn": "mail_type_name"
+                  }
+                },
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=P_検索ワード2"
+                }
+              },
+              {
+                "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                "CompareType": 6,
+                "ColumnBindingInfo": {
+                  "TableName": "m_customer_mail",
+                  "ColumnName": "user_id",
+                  "GUID": "3ff4ef1e-c20e-4f91-9a3e-42a1cc000897",
+                  "RelationBinding": {
+                    "RelatedTable": "m_user",
+                    "RelatedColumn": "user_id",
+                    "DisplayColumn": "customer_id",
+                    "NextRelationBinding": {
+                      "RelatedTable": "m_customer",
+                      "RelatedColumn": "customer_id",
+                      "DisplayColumn": "内部顧客名"
+                    }
+                  }
+                },
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=P_検索ワード2"
+                }
+              },
+              {
+                "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                "CompareType": 6,
+                "ColumnBindingInfo": {
+                  "TableName": "m_customer_mail",
+                  "ColumnName": "user_id",
+                  "GUID": "e3110bbd-302b-4f1f-b79a-14461c65e9af",
+                  "RelationBinding": {
+                    "RelatedTable": "m_user",
+                    "RelatedColumn": "user_id",
+                    "DisplayColumn": "user_name"
+                  }
+                },
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=P_検索ワード2"
+                }
+              },
+              {
+                "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                "CompareType": 6,
+                "ColumnBindingInfo": {
+                  "TableName": "m_customer_mail",
+                  "ColumnName": "user_id",
+                  "GUID": "7be5e511-9207-4f18-b6e7-c3b10d5f5e7b",
+                  "RelationBinding": {
+                    "RelatedTable": "m_user",
+                    "RelatedColumn": "user_id",
+                    "DisplayColumn": "mail_address"
+                  }
+                },
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=P_検索ワード2"
+                },
+                "RightBracket": 1
+              }
+            ],
+            "RelationType": 1
+          }
+        ]
+      },
+      "NullFormulaValueQueryPolicy": 1,
+      "OrderBySqlCondition": {
+        "OrderByColumns": [
+          {
+            "ColumnBindingInfo": {
+              "TableName": "m_customer_mail",
+              "ColumnName": "customer_id",
+              "GUID": "d13fb6d9-f7ee-4ef0-a233-8fdac522ef1f",
+              "RelationBinding": {
+                "RelatedTable": "m_customer",
+                "RelatedColumn": "customer_id",
+                "DisplayColumn": "内部顧客名"
+              }
+            },
+            "Order": 0
+          },
+          {
+            "ColumnBindingInfo": {
+              "TableName": "m_customer_mail",
+              "ColumnName": "mail_type_id",
+              "GUID": "6b3314ca-9e22-42d8-a3f5-5712929c2d28"
+            },
+            "Order": 0
+          },
+          {
+            "ColumnBindingInfo": {
+              "TableName": "m_customer_mail",
+              "ColumnName": "send_type",
+              "GUID": "baee1f11-0203-4800-9025-9d33af80c38e"
+            },
+            "Order": 0
+          }
+        ]
+      }
+    },
+    {
+      "$type": "OperateFilesCommand.DownloadFileCommand, OperateFilesCommand",
+      "FilePath": {
+        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+        "SerializeProperty": "=EXCELのファイルパス"
+      }
+    }
+  ]
+}

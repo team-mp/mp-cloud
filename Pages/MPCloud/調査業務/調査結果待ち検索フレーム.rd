@@ -9,11 +9,11 @@
     "15,70": "IFERROR(MATCH(N5,BQ$13:BQ$25,0),0)",
     "21,70": "IFERROR(MATCH(AN5,BQ$13:BQ$25,0),0)",
     "12,70": "IFERROR(MATCH(B5,BQ$13:BQ$25,0),0)",
-    "7,5": "IF($M$2=1,COUNTIF($BM6,\"=\"&G5),COUNTIF($BI6,\"=\"&G5))",
+    "7,5": "IF($L$2=1,COUNTIF($BM6,\"=\"&G5),COUNTIF($BI6,\"=\"&G5))",
     "18,60": "IF(BI13>0,MID(B10,BI13+1,1000),\"\")",
-    "7,1": "IF($M$2=1,COUNTIF($BM6,\"<=\"&B5),COUNTIF($BI6,\"<=\"&B5))",
+    "7,1": "IF($L$2=1,COUNTIF($BM6,\"<=\"&B5),COUNTIF($BI6,\"<=\"&B5))",
     "4,35": "AF5+1",
-    "7,44": "IF($M$2=1,COUNTIF($BM6,\"=\"&AS5),COUNTIF($BI6,\"=\"&AS5))",
+    "7,44": "IF($L$2=1,COUNTIF($BM6,\"=\"&AS5),COUNTIF($BI6,\"=\"&AS5))",
     "3,9": "IF(MONTH(J5)<>MONTH(G5),TEXT(J5,\"yyyy年m月\"),\"\")",
     "3,13": "IF(MONTH(N5)<>MONTH(J5),TEXT(N5,\"yyyy年m月\"),\"\")",
     "4,9": "G5+1",
@@ -23,7 +23,7 @@
     "3,31": "IF(MONTH(AF5)<>MONTH(AB5),TEXT(AF5,\"yyyy年m月\"),\"\")",
     "4,18": "N5+1",
     "3,35": "IF(MONTH(AJ5)<>MONTH(AF5),TEXT(AJ5,\"yyyy年m月\"),\"\")",
-    "7,27": "IF($M$2=1,COUNTIF($BM6,\"=\"&AB5),COUNTIF($BI6,\"=\"&AB5))",
+    "7,27": "IF($L$2=1,COUNTIF($BM6,\"=\"&AB5),COUNTIF($BI6,\"=\"&AB5))",
     "3,39": "IF(MONTH(AN5)<>MONTH(AJ5),TEXT(AN5,\"yyyy年m月\"),\"\")",
     "16,70": "IFERROR(MATCH(S5,BQ$13:BQ$25,0),0)",
     "3,44": "IF(MONTH(AS5)<>MONTH(AN5),TEXT(AS5,\"yyyy年m月\"),\"\")",
@@ -47,28 +47,28 @@
     "4,44": "AN5+1",
     "4,48": "AS5+1",
     "4,53": "AW5+1",
-    "7,18": "IF($M$2=1,COUNTIF($BM6,\"=\"&S5),COUNTIF($BI6,\"=\"&S5))",
-    "7,48": "IF($M$2=1,COUNTIF($BM6,\"=\"&AW5),COUNTIF($BI6,\"=\"&AW5))",
+    "7,18": "IF($L$2=1,COUNTIF($BM6,\"=\"&S5),COUNTIF($BI6,\"=\"&S5))",
+    "7,48": "IF($L$2=1,COUNTIF($BM6,\"=\"&AW5),COUNTIF($BI6,\"=\"&AW5))",
     "24,70": "IFERROR(MATCH(BB5,BQ$13:BQ$25,0),0)",
     "23,70": "IFERROR(MATCH(AW5,BQ$13:BQ$25,0),0)",
-    "7,39": "IF($M$2=1,COUNTIF($BM6,\"=\"&AN5),COUNTIF($BI6,\"=\"&AN5))",
+    "7,39": "IF($L$2=1,COUNTIF($BM6,\"=\"&AN5),COUNTIF($BI6,\"=\"&AN5))",
     "5,13": "TEXT(N5,\"aaa\")",
-    "7,31": "IF($M$2=1,COUNTIF($BM6,\"=\"&AF5),COUNTIF($BI6,\"=\"&AF5))",
+    "7,31": "IF($L$2=1,COUNTIF($BM6,\"=\"&AF5),COUNTIF($BI6,\"=\"&AF5))",
     "4,27": "X5+1",
     "3,5": "IF(MONTH(G5)<>MONTH(B5),TEXT(G5,\"yyyy年m月\"),\"\")",
-    "7,23": "IF($M$2=1,COUNTIF($BM6,\"=\"&X5),COUNTIF($BI6,\"=\"&X5))",
-    "7,13": "IF($M$2=1,COUNTIF($BM6,\"=\"&N5),COUNTIF($BI6,\"=\"&N5))",
+    "7,23": "IF($L$2=1,COUNTIF($BM6,\"=\"&X5),COUNTIF($BI6,\"=\"&X5))",
+    "7,13": "IF($L$2=1,COUNTIF($BM6,\"=\"&N5),COUNTIF($BI6,\"=\"&N5))",
     "21,60": "検索_調査結果待ちステータスID",
     "15,60": "IF(BI13>0,LEFT(B10,BI13-1),IF(B10<>\"\",B10,\"\"))",
     "20,70": "IFERROR(MATCH(AJ5,BQ$13:BQ$25,0),0)",
     "5,48": "TEXT(AW5,\"aaa\")",
     "5,44": "TEXT(AS5,\"aaa\")",
     "5,9": "TEXT(J5,\"aaa\")",
-    "7,53": "IF($M$2=1,COUNTIF($BM6,\">=\"&BB5),COUNTIF($BI6,\">=\"&BB5))",
+    "7,53": "IF($L$2=1,COUNTIF($BM6,\">=\"&BB5),COUNTIF($BI6,\">=\"&BB5))",
     "19,70": "IFERROR(MATCH(AF5,BQ$13:BQ$25,0),0)",
-    "7,9": "IF($M$2=1,COUNTIF($BM6,\"=\"&J5),COUNTIF($BI6,\"=\"&J5))",
+    "7,9": "IF($L$2=1,COUNTIF($BM6,\"=\"&J5),COUNTIF($BI6,\"=\"&J5))",
     "12,60": "IF(IFERROR(FIND(\"　\",B10),0)>0,FIND(\"　\",B10),IF(IFERROR(FIND(\" \",B10),0)>0,FIND(\" \",B10),0))",
-    "7,35": "IF($M$2=1,COUNTIF($BM6,\"=\"&AJ5),COUNTIF($BI6,\"=\"&AJ5))",
+    "7,35": "IF($L$2=1,COUNTIF($BM6,\"=\"&AJ5),COUNTIF($BI6,\"=\"&AJ5))",
     "18,71": "IF(BS19>0,VLOOKUP(AB5,BQ$13:BR$25,2,FALSE),\"\")",
     "17,71": "IF(BS18>0,VLOOKUP(X5,BQ$13:BR$25,2,FALSE),\"\")",
     "16,71": "IF(BS17>0,VLOOKUP(S5,BQ$13:BR$25,2,FALSE),\"\")",
@@ -112,15 +112,15 @@
     },
     {
       "Name": "検索区分",
-      "Formula": "調査結果待ち検索フレーム!$M$2"
+      "Formula": "調査結果待ち検索フレーム!$L$2"
     },
     {
       "Name": "検索対象期間開始日",
-      "Formula": "調査結果待ち検索フレーム!$X$10"
+      "Formula": "調査結果待ち検索フレーム!$AM$2"
     },
     {
       "Name": "検索対象期間終了日",
-      "Formula": "調査結果待ち検索フレーム!$AD$10"
+      "Formula": "調査結果待ち検索フレーム!$AT$2"
     }
   ]
 }

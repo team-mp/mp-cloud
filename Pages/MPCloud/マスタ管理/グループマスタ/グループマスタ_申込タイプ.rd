@@ -1,9 +1,10 @@
 {
   "PageType": 0,
-  "ColumnCount": 50,
+  "ColumnCount": 54,
   "RowCount": 17,
   "Formulas": {
-    "4,36": "グループID",
-    "7,36": "COUNTIF(U5,1)"
+    "4,40": "グループID",
+    "7,40": "COUNTIF(U5,1)",
+    "10,40": "TEXTJOIN(\",\",TRUE,AI5)"
   }
 }
