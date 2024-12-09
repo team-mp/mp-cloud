@@ -1,11 +1,11 @@
 {
   "PageType": 0,
   "ColumnCount": 52,
-  "RowCount": 57,
+  "RowCount": 59,
   "CustomNames": [
     {
       "Name": "登録チェック",
-      "Formula": "申込タイプマスタ_詳細!$AU$43"
+      "Formula": "申込タイプマスタ_詳細!$AU$45"
     }
   ]
 }

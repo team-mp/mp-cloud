@@ -6,14 +6,14 @@
     "19,62": "$BH$25-ROW(BH20)+1",
     "19,69": "IF(BO20=1,\"以降\",\"～\")",
     "24,72": "IF(VALUE(CD25)=1,18,6)",
-    "19,102": "CW20",
+    "19,106": "ODATA(\"t_object_survey/$count?$filter=object_order_id eq \"&IF(ISBLANK(BH20),\"null\",BH20)&\" and survey_id gt \"&IF(ISBLANK(BJ20),\"null\",BJ20))",
     "24,59": "COUNT(BJ20)",
-    "19,97": "IFERROR(ODATA(\"v_survey_product_summary?$select=売上合計&$filter=調査ID eq \"&IF(ISBLANK(BJ20),\"null\",BJ20)),0)",
-    "19,101": "\"調査報告書(\"&CW20&\")\"",
-    "19,105": "ODATA(\"t_object_survey/$count?$filter=object_order_id eq \"&IF(ISBLANK(BH20),\"null\",BH20)&\" and survey_id gt \"&IF(ISBLANK(BJ20),\"null\",BJ20))",
-    "19,104": "IF(CZ20<>\"\",\"最終更新日時：\"&CZ20,\"\")",
-    "19,100": "ODATA(\"t_object_attachment/$count?$filter=file_attribute_id eq \"&IF(ISBLANK(調査報告書ファイル属性ID),\"null\",調査報告書ファイル属性ID)&\" and survey_id eq \"&IF(ISBLANK(BJ20),\"null\",BJ20)&\" and publish_flg eq 1 and active_flg eq 1\")",
-    "19,98": "IFERROR(ODATA(\"v_survey_product_summary?$select=仕入合計&$filter=調査ID eq \"&IF(ISBLANK(BJ20),\"null\",BJ20)),0)"
+    "19,103": "CX20",
+    "19,102": "\"調査報告書(\"&CX20&\")\"",
+    "19,101": "ODATA(\"t_object_attachment/$count?$filter=file_attribute_id eq \"&IF(ISBLANK(調査報告書ファイル属性ID),\"null\",調査報告書ファイル属性ID)&\" and survey_id eq \"&IF(ISBLANK(BJ20),\"null\",BJ20)&\" and publish_flg eq 1 and active_flg eq 1\")",
+    "19,99": "IFERROR(ODATA(\"v_survey_product_summary?$select=仕入合計&$filter=調査ID eq \"&IF(ISBLANK(BJ20),\"null\",BJ20)),0)",
+    "19,105": "IF(DA20<>\"\",\"最終更新日時：\"&DA20,\"\")",
+    "19,98": "IFERROR(ODATA(\"v_survey_product_summary?$select=売上合計&$filter=調査ID eq \"&IF(ISBLANK(BJ20),\"null\",BJ20)),0)"
   },
   "CustomNames": [
     {

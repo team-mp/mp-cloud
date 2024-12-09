@@ -3,17 +3,17 @@
   "ColumnCount": 123,
   "RowCount": 66,
   "Formulas": {
-    "28,90": "ODATA(\"t_object_attachment/$count?$filter=file_attribute_id eq \"&IF(ISBLANK(調査報告書ファイル属性ID),\"null\",調査報告書ファイル属性ID)&\" and survey_id eq \"&IF(ISBLANK(AZ29),\"null\",AZ29)&\" and active_flg eq 1\")",
-    "28,88": "IFERROR(ODATA(\"v_survey_product_summary?$select=仕入合計&$filter=調査ID eq \"&IF(ISBLANK(AZ29),\"null\",AZ29)),0)",
-    "28,91": "\"調査報告書(\"&CM29&\")\"",
+    "28,97": "ODATA(\"t_object_survey/$count?$filter=object_order_id eq \"&IF(ISBLANK(AX29),\"null\",AX29)&\" and survey_id gt \"&IF(ISBLANK(BA29),\"null\",BA29))",
+    "28,96": "IF(CR29<>\"\",\"最終更新日時：\"&CR29,\"\")",
+    "28,93": "\"調査報告書(\"&CO29&\")\"",
     "33,62": "IF(VALUE(BT34)=1,18,6)",
-    "28,94": "IF(CP29<>\"\",\"最終更新日時：\"&CP29,\"\")",
-    "28,59": "IF(BE29=1,\"以降\",\"～\")",
-    "28,87": "IFERROR(ODATA(\"v_survey_product_summary?$select=売上合計&$filter=調査ID eq \"&IF(ISBLANK(AZ29),\"null\",AZ29)),0)",
-    "28,52": "$AX$34-ROW(AX29)+1",
-    "33,49": "COUNT(AZ29)",
-    "28,95": "ODATA(\"t_object_survey/$count?$filter=object_order_id eq \"&IF(ISBLANK(AX29),\"null\",AX29)&\" and survey_id gt \"&IF(ISBLANK(AZ29),\"null\",AZ29))",
-    "28,92": "CM29"
+    "28,94": "CO29",
+    "28,92": "ODATA(\"t_object_attachment/$count?$filter=file_attribute_id eq \"&IF(ISBLANK(調査報告書ファイル属性ID),\"null\",調査報告書ファイル属性ID)&\" and survey_id eq \"&IF(ISBLANK(BA29),\"null\",BA29)&\" and active_flg eq 1\")",
+    "28,90": "IFERROR(ODATA(\"v_survey_product_summary?$select=仕入合計&$filter=調査ID eq \"&IF(ISBLANK(BA29),\"null\",BA29)),0)",
+    "28,60": "IF(BF29=1,\"以降\",\"～\")",
+    "33,49": "COUNT(BA29)",
+    "28,53": "$AX$34-ROW(AX29)+1",
+    "28,89": "IFERROR(ODATA(\"v_survey_product_summary?$select=売上合計&$filter=調査ID eq \"&IF(ISBLANK(BA29),\"null\",BA29)),0)"
   },
   "CustomNames": [
     {
@@ -30,7 +30,7 @@
     },
     {
       "Name": "元_調査ステータスID",
-      "Formula": "物件詳細_調査!$BF$60"
+      "Formula": "物件詳細_調査!$BF$61"
     },
     {
       "Name": "元_調査依頼日",
@@ -62,7 +62,7 @@
     },
     {
       "Name": "元_調査実施日",
-      "Formula": "物件詳細_調査!$BF$57"
+      "Formula": "物件詳細_調査!$BF$58"
     },
     {
       "Name": "元_調査承諾日",
@@ -78,15 +78,15 @@
     },
     {
       "Name": "元_調査報告書受領日",
-      "Formula": "物件詳細_調査!$BF$58"
+      "Formula": "物件詳細_調査!$BF$59"
     },
     {
       "Name": "元_調査報告書受領予定日",
-      "Formula": "物件詳細_調査!$BF$56"
+      "Formula": "物件詳細_調査!$BF$57"
     },
     {
       "Name": "元_調査報告書納品日",
-      "Formula": "物件詳細_調査!$BF$59"
+      "Formula": "物件詳細_調査!$BF$60"
     },
     {
       "Name": "元_調査方法ID",
@@ -115,6 +115,10 @@
     {
       "Name": "調査報告書ファイル属性ID",
       "Formula": "物件詳細_調査!$BK$34"
+    },
+    {
+      "Name": "元_調査予定時間",
+      "Formula": "物件詳細_調査!$BF$56"
     }
   ]
 }
