@@ -1,7 +1,7 @@
 {
   "PageType": 0,
   "ColumnCount": 174,
-  "RowCount": 30,
+  "RowCount": 40,
   "Formulas": {
     "21,157": "TEXTJOINIF(\",\",TRUE,EN7,1,DY7)",
     "6,150": "IF(IFERROR(FIND(\"　\",検索ワード),0)>0,FIND(\"　\",検索ワード),IF(IFERROR(FIND(\" \",検索ワード),0)>0,FIND(\" \",検索ワード),0))",

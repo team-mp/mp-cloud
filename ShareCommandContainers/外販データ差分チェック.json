@@ -1,0 +1,369 @@
+{
+  "ID": "17a14bed-aa94-42bd-bd49-12800533914e",
+  "Name": "外販データ差分チェック",
+  "Params": [
+    {
+      "ID": "0b4e7248-3249-4c42-842e-0e00e953f1ce",
+      "Name": "P_申込ID"
+    },
+    {
+      "ID": "33ea8204-4e57-4f46-9128-5490e1d30a8f",
+      "Name": "P_外販ID"
+    },
+    {
+      "ID": "a2c38345-abe2-44af-ae0f-5b2dd97ca4f4",
+      "Name": "P_納品日"
+    },
+    {
+      "ID": "b4d905de-188b-4a60-90f7-6a641f442e63",
+      "Name": "P_外販特記事項"
+    },
+    {
+      "ID": "39729f0d-eb32-45b3-89ba-e2a3a3bdafe3",
+      "Name": "P_外販ステータスID"
+    }
+  ],
+  "Commands": [
+    {
+      "$type": "Forguncy.Model.RequestServerCommand, ServerDesignerCommon",
+      "ServerCommandName": "外販データ排他チェック",
+      "Parameters": [
+        {
+          "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+          "ParamName": "P_外販ID",
+          "Value": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=P_外販ID"
+          }
+        },
+        {
+          "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+          "ParamName": "P_元_納品日",
+          "Value": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=元_納品日"
+          }
+        },
+        {
+          "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+          "ParamName": "P_元_外販特記事項",
+          "Value": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=元_外販特記事項"
+          }
+        },
+        {
+          "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+          "ParamName": "P_元_外販ステータスID",
+          "Value": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=元_外販ステータスID"
+          }
+        }
+      ],
+      "ResultErrorCodeTo": {
+        "SerializeProperty": "リターンコード"
+      },
+      "ResultMessageTo": {
+        "SerializeProperty": "リターンメッセージ"
+      },
+      "CheckDataValidation": false
+    },
+    {
+      "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+      "ConditionAndCommandPairList": [
+        {
+          "Condition": {
+            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+            "param": {
+              "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+              "cellLocations": [
+                {
+                  "SerializeProperty": "=リターンコード"
+                }
+              ]
+            },
+            "value": "0",
+            "compareType": 1
+          },
+          "CommandList": [
+            {
+              "$type": "Forguncy.Model.ShowMessageCommand, ServerDesignerCommon",
+              "MessageFormula": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=リターンメッセージ"
+              }
+            },
+            {
+              "$type": "Forguncy.Model.ShareCommand, ServerDesignerCommon",
+              "ShareCommandContainerRefer": {
+                "ShareCommandContainerID": "7e30fe40-8383-4b5b-a858-425311f1e1f7"
+              },
+              "Comments": "連結データを最新化する"
+            },
+            {
+              "$type": "Forguncy.Model.RunJavaScriptCommand, ServerDesignerCommon",
+              "JavaScript": "return false;",
+              "ID": "7f089dbde9204771940019053a3c20a7"
+            }
+          ],
+          "ID": "40cc60a6-b043-457d-bd12-09120ed04d57"
+        }
+      ]
+    },
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "差分存在フラグ",
+      "ParameterValue": "0",
+      "ID": "15542ba07d1f464390c498909ed20d95"
+    },
+    {
+      "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+      "ConditionAndCommandPairList": [
+        {
+          "Condition": {
+            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+            "param": {
+              "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+              "cellLocations": [
+                {
+                  "SerializeProperty": "=P_納品日"
+                }
+              ]
+            },
+            "value": {
+              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+              "SerializeProperty": "=元_納品日"
+            },
+            "compareType": 1
+          },
+          "CommandList": [
+            {
+              "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+              "ParameterName": "差分存在フラグ",
+              "ParameterValue": "1",
+              "ID": "77d6c68b92b041fdb30b359b8004902a"
+            }
+          ],
+          "ID": "744365c6-c83a-4a3e-9471-a6147cef4f97"
+        }
+      ]
+    },
+    {
+      "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+      "ConditionAndCommandPairList": [
+        {
+          "Condition": {
+            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+            "param": {
+              "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+              "cellLocations": [
+                {
+                  "SerializeProperty": "=P_外販特記事項"
+                }
+              ]
+            },
+            "value": {
+              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+              "SerializeProperty": "=元_外販特記事項"
+            },
+            "compareType": 1
+          },
+          "CommandList": [
+            {
+              "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+              "ParameterName": "差分存在フラグ",
+              "ParameterValue": "1",
+              "ID": "1e79ba3afe674670a58fdc84b982a92c"
+            }
+          ],
+          "ID": "014115ff-17e6-4218-9c92-10923afb6aeb"
+        }
+      ]
+    },
+    {
+      "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+      "ConditionAndCommandPairList": [
+        {
+          "Condition": {
+            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+            "param": {
+              "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+              "cellLocations": [
+                {
+                  "SerializeProperty": "=P_外販ステータスID"
+                }
+              ]
+            },
+            "value": {
+              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+              "SerializeProperty": "=元_外販ステータスID"
+            },
+            "compareType": 1
+          },
+          "CommandList": [
+            {
+              "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+              "ParameterName": "差分存在フラグ",
+              "ParameterValue": "1",
+              "ID": "563c64b35b9144b8be88e69a2830ba84"
+            }
+          ],
+          "ID": "aa6d3735-ea5b-4585-b935-e4766a52f9e3"
+        }
+      ]
+    },
+    {
+      "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+      "ConditionAndCommandPairList": [
+        {
+          "Condition": {
+            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+            "param": {
+              "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+              "cellLocations": [
+                {
+                  "SerializeProperty": "=差分存在フラグ"
+                }
+              ]
+            },
+            "value": "1"
+          },
+          "CommandList": [
+            {
+              "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+              "ConditionAndCommandPairList": [
+                {
+                  "ConfirmDialogSettings": {
+                    "Title": "確認",
+                    "FormulaText": "登録内容が編集されています。\r\n先に更新処理を実行します。よろしいですか？",
+                    "YesButtonText": "はい",
+                    "NoButtonText": "いいえ",
+                    "ConfirmIcon": 1
+                  },
+                  "CommandList": [
+                    {
+                      "$type": "Forguncy.Model.ShareCommand, ServerDesignerCommon",
+                      "ShareCommandContainerRefer": {
+                        "ShareCommandContainerID": "fc084096-ce30-45f1-95f2-75b5f48a117c"
+                      },
+                      "Params": [
+                        {
+                          "ParamReferObject": {
+                            "ParamID": "a0169b75-7fb9-4293-b7ef-50132c9fe332",
+                            "ShareCommandContainerReferObject": {
+                              "ShareCommandContainerID": "fc084096-ce30-45f1-95f2-75b5f48a117c"
+                            }
+                          },
+                          "Value": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=P_申込ID"
+                          }
+                        },
+                        {
+                          "ParamReferObject": {
+                            "ParamID": "5f1177ed-6374-407d-af25-bdb8084f5386",
+                            "ShareCommandContainerReferObject": {
+                              "ShareCommandContainerID": "fc084096-ce30-45f1-95f2-75b5f48a117c"
+                            }
+                          },
+                          "Value": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=P_外販ID"
+                          }
+                        },
+                        {
+                          "ParamReferObject": {
+                            "ParamID": "94532c78-15aa-4e87-868b-5fea2b0029c0",
+                            "ShareCommandContainerReferObject": {
+                              "ShareCommandContainerID": "fc084096-ce30-45f1-95f2-75b5f48a117c"
+                            }
+                          },
+                          "Value": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=P_納品日"
+                          }
+                        },
+                        {
+                          "ParamReferObject": {
+                            "ParamID": "249f2d22-80e6-4ce0-8b63-463c79ffe581",
+                            "ShareCommandContainerReferObject": {
+                              "ShareCommandContainerID": "fc084096-ce30-45f1-95f2-75b5f48a117c"
+                            }
+                          },
+                          "Value": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=P_外販特記事項"
+                          }
+                        },
+                        {
+                          "ParamReferObject": {
+                            "ParamID": "68acf6e0-099f-4357-baf2-48f22b98fcbf",
+                            "ShareCommandContainerReferObject": {
+                              "ShareCommandContainerID": "fc084096-ce30-45f1-95f2-75b5f48a117c"
+                            }
+                          },
+                          "Value": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=P_外販ステータスID"
+                          }
+                        }
+                      ],
+                      "ResultErrorCodeTo": {
+                        "SerializeProperty": "リターンコード"
+                      },
+                      "ResultMessageTo": {
+                        "SerializeProperty": "リターンメッセージ"
+                      }
+                    },
+                    {
+                      "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+                      "ConditionAndCommandPairList": [
+                        {
+                          "Condition": {
+                            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                            "param": {
+                              "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+                              "cellLocations": [
+                                {
+                                  "SerializeProperty": "=リターンコード"
+                                }
+                              ]
+                            },
+                            "value": "0",
+                            "compareType": 1
+                          },
+                          "CommandList": [
+                            {
+                              "$type": "Forguncy.Model.RunJavaScriptCommand, ServerDesignerCommon",
+                              "JavaScript": "return false;",
+                              "ID": "9769797d3cee4bbe9ee7a71652b0f343"
+                            }
+                          ],
+                          "ID": "f70ebb0e-2c99-4849-ac85-a8b4e2cbc443"
+                        }
+                      ]
+                    }
+                  ],
+                  "ID": "5e02ac2c-d331-404a-8f54-4c1028c005c7"
+                },
+                {
+                  "CommandList": [
+                    {
+                      "$type": "Forguncy.Model.RunJavaScriptCommand, ServerDesignerCommon",
+                      "JavaScript": "return false;",
+                      "ID": "1dce8cbf770c4ccfb7784f40ca6c7b0d"
+                    }
+                  ],
+                  "ID": "2626203f-8f1c-4177-b560-ef16b36bd977"
+                }
+              ]
+            }
+          ],
+          "Comments": "差分があったら更新確認する",
+          "ID": "fd151148-2242-4716-9331-0c4134936aef"
+        }
+      ]
+    }
+  ]
+}

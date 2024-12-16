@@ -1,7 +1,7 @@
 {
   "PageType": 0,
   "ColumnCount": 74,
-  "RowCount": 30,
+  "RowCount": 40,
   "Formulas": {
     "28,3": "IF(BL12<>\"\",\"最終更新日時：\"&BL12,\"\")"
   },

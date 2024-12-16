@@ -1,9 +1,9 @@
 {
   "PageType": 0,
   "ColumnCount": 47,
-  "RowCount": 34,
+  "RowCount": 40,
   "Formulas": {
-    "25,8": "IFERROR(ODATA(\"m_mail_signature?$select=signature&$filter=signature_id eq \"&IF(ISBLANK(I24),\"null\",I24)),\"\")"
+    "31,8": "IFERROR(ODATA(\"m_mail_signature?$select=signature&$filter=signature_id eq \"&IF(ISBLANK(I30),\"null\",I30)),\"\")"
   },
   "CustomNames": [
     {
@@ -20,11 +20,11 @@
     },
     {
       "Name": "更新ボタン",
-      "Formula": "メールテンプレートマスタ_登録編集!$AP$25"
+      "Formula": "メールテンプレートマスタ_登録編集!$AP$31"
     },
     {
       "Name": "削除ボタン",
-      "Formula": "メールテンプレートマスタ_登録編集!$AP$28"
+      "Formula": "メールテンプレートマスタ_登録編集!$AP$34"
     }
   ]
 }

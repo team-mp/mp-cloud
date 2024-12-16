@@ -1,6 +1,6 @@
 {
   "PageType": 0,
-  "ColumnCount": 131,
+  "ColumnCount": 133,
   "RowCount": 22,
   "Formulas": {
     "6,124": "IF(DU4<>\"\",1,0)",
@@ -25,7 +25,8 @@
     "9,116": "IF(DM4<>\"\",ODATA(\"t_object_compaction?$select=compaction_customer_id&$filter=compaction_id eq \"&IF(ISBLANK(DM4),\"null\",DM4)),\"\")",
     "9,104": "IF(DA4<>\"\",ODATA(\"t_object_survey?$select=survey_customer_id&$filter=survey_id eq \"&IF(ISBLANK(DA4),\"null\",DA4)),\"\")",
     "9,65": "COUNTIF(BN5,\"<>\")",
-    "4,86": "IF(OR(BQ5=1,BQ5=2),IF(CG5=0,\"設定無し\",IF(CH5=1,\"編集済み\",\"設定通り\")),\"\")"
+    "4,86": "IF(OR(BQ5=1,BQ5=2),IF(CG5=0,\"設定無し\",IF(CH5=1,\"編集済み\",\"設定通り\")),\"\")",
+    "6,128": "IF(DY4<>\"\",1,0)"
   },
   "CustomNames": [
     {
@@ -55,6 +56,34 @@
     {
       "Name": "タブID",
       "Formula": "商品登録リスト編集!$BN$16"
+    },
+    {
+      "Name": "調査ID",
+      "Formula": "商品登録リスト編集!$DA$4"
+    },
+    {
+      "Name": "測量ID",
+      "Formula": "商品登録リスト編集!$DE$4"
+    },
+    {
+      "Name": "解析ID",
+      "Formula": "商品登録リスト編集!$DI$4"
+    },
+    {
+      "Name": "転圧ID",
+      "Formula": "商品登録リスト編集!$DM$4"
+    },
+    {
+      "Name": "工事ID",
+      "Formula": "商品登録リスト編集!$DQ$4"
+    },
+    {
+      "Name": "保証ID",
+      "Formula": "商品登録リスト編集!$DU$4"
+    },
+    {
+      "Name": "外販ID",
+      "Formula": "商品登録リスト編集!$DY$4"
     }
   ]
 }

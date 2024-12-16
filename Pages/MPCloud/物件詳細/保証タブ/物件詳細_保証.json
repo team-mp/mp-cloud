@@ -458,7 +458,7 @@
     "13,25": "証明書納品日",
     "13,31": "ステータス",
     "13,40": "付保証明書",
-    "13,54": "{=ODATA(\"m_customer_default?$select=warranty_period,warranty_mailing_flg,mailing_commission_flg,mailing_method_id,insurance_certificate_need_flg&$filter=customer_id eq \"&IF(ISBLANK(BI6),\"null\",BI6))}",
+    "13,54": "{=ODATA(\"m_customer_default?$select=warranty_period,warranty_mailing_flg,mailing_commission_flg,mailing_method_id,insurance_certificate_need_flg&$filter=customer_id eq \"&IF(ISBLANK(BI7),\"null\",BI7))}",
     "13,63": "付保履歴",
     "17,1": "保証依頼",
     "17,6": "No",
@@ -472,15 +472,17 @@
     "25,54": "▼申込ID",
     "25,62": "▼申込タイプID",
     "25,69": "▼保証書ファイル属性ID",
+    "25,79": "▼グループ既定優先フラグ",
     "26,69": 13,
     "28,54": "▼申込キャンセル日時",
     "28,62": "▼グループID",
     "28,69": "▼付保証明書ファイル属性ID",
+    "28,79": "▼グループ顧客ID",
     "29,69": 21,
     "31,54": "▼保証ビュー",
-    "32,56": "保証履歴番号",
-    "32,83": "売",
-    "32,84": "仕",
+    "32,58": "保証履歴番号",
+    "32,85": "売",
+    "32,86": "仕",
     "37,54": "▼登録件数",
     "41,54": "以下は、保証データ更新前の元データです（差分チェック、排他チェックに使用）",
     "43,54": "保証書発行区分",
@@ -500,31 +502,31 @@
     "57,54": "保証ステータスID"
   },
   "Formulas": {
-    "33,86": "IF(OR(BX34=1,BY34=1,BZ34=1),1,0)",
+    "33,95": "ODATA(\"t_object_warranty/$count?$filter=object_order_id eq \"&IF(ISBLANK(BC34),\"null\",BC34)&\" and warranty_id gt \"&IF(ISBLANK(BD34),\"null\",BD34))",
     "14,79": "ODATA(\"t_object_insurance/$count?$filter=insurance_id gt \"&IF(ISBLANK(BI15),\"null\",BI15)&\" and object_order_id eq \"&IF(ISBLANK(BC27),\"null\",BC27))",
-    "33,83": "IFERROR(ODATA(\"v_warranty_product_summary?$select=売上合計&$filter=保証ID eq \"&IF(ISBLANK(BD34),\"null\",BD34)),0)",
-    "33,92": "IF(CN34<>\"\",\"最終更新日時：\"&CN34,\"\")",
+    "33,94": "IF(CP34<>\"\",\"最終更新日時：\"&CP34,\"\")",
+    "33,91": "\"地盤保証書(\"&CM34&\")\"",
     "11,28": "BE14",
     "13,81": "COUNTIF(BJ15,\"<>\")",
-    "33,85": "IF($BC$39=BE34,1,0)",
+    "33,90": "ODATA(\"t_object_attachment/$count?$filter=warranty_id eq \"&IF(ISBLANK(BD34),\"null\",BD34)&\" and file_attribute_id eq \"&IF(ISBLANK(保証書ファイル属性ID),\"null\",保証書ファイル属性ID)&\" and active_flg eq 1\")",
     "14,70": "ODATA(\"t_object_attachment/$count?$filter=insurance_id eq \"&IF(ISBLANK(BI15),\"null\",BI15)&\" and file_attribute_id eq \"&IF(ISBLANK(付保証明書ファイル属性ID),\"null\",付保証明書ファイル属性ID)&\" and active_flg eq 1\")",
     "11,12": "IF(BC14=0,\"\",BC14)",
     "11,38": "BG14",
-    "33,84": "IFERROR(ODATA(\"v_warranty_product_summary?$select=仕入合計&$filter=保証ID eq \"&IF(ISBLANK(BD34),\"null\",BD34)),0)",
-    "33,88": "ODATA(\"t_object_attachment/$count?$filter=warranty_id eq \"&IF(ISBLANK(BD34),\"null\",BD34)&\" and file_attribute_id eq \"&IF(ISBLANK(保証書ファイル属性ID),\"null\",保証書ファイル属性ID)&\" and active_flg eq 1\")",
+    "33,87": "IF($BC$39=BG34,1,0)",
+    "33,86": "IFERROR(ODATA(\"v_warranty_product_summary?$select=仕入合計&$filter=保証ID eq \"&IF(ISBLANK(BD34),\"null\",BD34)),0)",
     "11,18": "BD14",
-    "33,56": "$BC$39-ROW(BC34)+1",
+    "33,88": "IF(OR(BZ34=1,CA34=1,CB34=1),1,0)",
     "14,71": "\"添付(\"&BS15&\")\"",
-    "33,89": "\"地盤保証書(\"&CK34&\")\"",
+    "33,85": "IFERROR(ODATA(\"v_warranty_product_summary?$select=売上合計&$filter=保証ID eq \"&IF(ISBLANK(BD34),\"null\",BD34)),0)",
     "38,54": "COUNT(BD34)",
-    "33,93": "ODATA(\"t_object_warranty/$count?$filter=object_order_id eq \"&IF(ISBLANK(BC34),\"null\",BC34)&\" and warranty_id gt \"&IF(ISBLANK(BD34),\"null\",BD34))",
+    "33,58": "$BC$39-ROW(BC34)+1",
     "14,63": "$CD$14-ROW(BJ15)+1",
     "18,72": "COUNTIF(BI20,\"<>\")",
     "19,61": "$BU$19-ROW(BI20)+1",
     "19,64": "IF(BL20=1,\"処理済み\",IF(BL20=9,\"依頼取り下げ\",\"発行依頼中\"))"
   },
   "ArrayFormulas": {
-    "13,54,1,5": "ODATA(\"m_customer_default?$select=warranty_period,warranty_mailing_flg,mailing_commission_flg,mailing_method_id,insurance_certificate_need_flg&$filter=customer_id eq \"&IF(ISBLANK(BI7),\"null\",BI7))"
+    "13,54,1,5": "ODATA(\"v_group_customer_default?$select=既定保証期間,保証書原本郵送フラグ,郵送手数料フラグ,郵送方法ID,付保証明書必要フラグ&$filter=グループID eq \"&IF(ISBLANK(BK30),\"null\",BK30)&\" and 顧客ID eq \"&IF(ISBLANK(BI7),\"null\",BI7))"
   },
   "AttachInfos": {
     "1,0": {
@@ -579,52 +581,128 @@
         "$type": "Forguncy.ImageCellType, ServerDesignerCommon",
         "CommandList": [
           {
-            "$type": "Forguncy.Model.ShareCommand, ServerDesignerCommon",
-            "ShareCommandContainerRefer": {
-              "ShareCommandContainerID": "bd2b65b1-655e-487a-a5c4-a5e8eccac022"
-            },
-            "Params": [
+            "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+            "ConditionAndCommandPairList": [
               {
-                "ParamReferObject": {
-                  "ParamID": "f6049859-7213-4e57-91e1-feb1955b999c",
-                  "ShareCommandContainerReferObject": {
-                    "ShareCommandContainerID": "bd2b65b1-655e-487a-a5c4-a5e8eccac022"
-                  }
+                "Condition": {
+                  "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                  "param": {
+                    "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+                    "cellLocations": [
+                      {
+                        "SerializeProperty": "=物件詳細_保証!CB27"
+                      }
+                    ]
+                  },
+                  "value": "1"
                 },
-                "Value": {
-                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=物件詳細_保証!BI7"
-                }
+                "CommandList": [
+                  {
+                    "$type": "Forguncy.Model.ShareCommand, ServerDesignerCommon",
+                    "ShareCommandContainerRefer": {
+                      "ShareCommandContainerID": "bd2b65b1-655e-487a-a5c4-a5e8eccac022"
+                    },
+                    "Params": [
+                      {
+                        "ParamReferObject": {
+                          "ParamID": "f6049859-7213-4e57-91e1-feb1955b999c",
+                          "ShareCommandContainerReferObject": {
+                            "ShareCommandContainerID": "bd2b65b1-655e-487a-a5c4-a5e8eccac022"
+                          }
+                        },
+                        "Value": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=物件詳細_保証!CB30"
+                        }
+                      },
+                      {
+                        "ParamReferObject": {
+                          "ParamID": "6ba80694-0208-45aa-b052-beb9ca3569ca",
+                          "ShareCommandContainerReferObject": {
+                            "ShareCommandContainerID": "bd2b65b1-655e-487a-a5c4-a5e8eccac022"
+                          }
+                        },
+                        "Value": "1"
+                      },
+                      {
+                        "ParamReferObject": {
+                          "ParamID": "49fea88f-fcbe-42c8-b070-8439f90243b5",
+                          "ShareCommandContainerReferObject": {
+                            "ShareCommandContainerID": "bd2b65b1-655e-487a-a5c4-a5e8eccac022"
+                          }
+                        },
+                        "Value": "2"
+                      },
+                      {
+                        "ParamReferObject": {
+                          "ParamID": "6726d2b8-d94f-4aaf-99c3-01a1555a2778",
+                          "ShareCommandContainerReferObject": {
+                            "ShareCommandContainerID": "bd2b65b1-655e-487a-a5c4-a5e8eccac022"
+                          }
+                        },
+                        "Value": "7"
+                      }
+                    ],
+                    "Comments": "既定値タブへ"
+                  }
+                ],
+                "Comments": "グループ既定優先の場合",
+                "ID": "ec1439c7-3960-4a35-8bae-7297b4f5c192"
               },
               {
-                "ParamReferObject": {
-                  "ParamID": "6ba80694-0208-45aa-b052-beb9ca3569ca",
-                  "ShareCommandContainerReferObject": {
-                    "ShareCommandContainerID": "bd2b65b1-655e-487a-a5c4-a5e8eccac022"
+                "CommandList": [
+                  {
+                    "$type": "Forguncy.Model.ShareCommand, ServerDesignerCommon",
+                    "ShareCommandContainerRefer": {
+                      "ShareCommandContainerID": "bd2b65b1-655e-487a-a5c4-a5e8eccac022"
+                    },
+                    "Params": [
+                      {
+                        "ParamReferObject": {
+                          "ParamID": "f6049859-7213-4e57-91e1-feb1955b999c",
+                          "ShareCommandContainerReferObject": {
+                            "ShareCommandContainerID": "bd2b65b1-655e-487a-a5c4-a5e8eccac022"
+                          }
+                        },
+                        "Value": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=物件詳細_保証!BI7"
+                        }
+                      },
+                      {
+                        "ParamReferObject": {
+                          "ParamID": "6ba80694-0208-45aa-b052-beb9ca3569ca",
+                          "ShareCommandContainerReferObject": {
+                            "ShareCommandContainerID": "bd2b65b1-655e-487a-a5c4-a5e8eccac022"
+                          }
+                        },
+                        "Value": "1"
+                      },
+                      {
+                        "ParamReferObject": {
+                          "ParamID": "49fea88f-fcbe-42c8-b070-8439f90243b5",
+                          "ShareCommandContainerReferObject": {
+                            "ShareCommandContainerID": "bd2b65b1-655e-487a-a5c4-a5e8eccac022"
+                          }
+                        },
+                        "Value": "2"
+                      },
+                      {
+                        "ParamReferObject": {
+                          "ParamID": "6726d2b8-d94f-4aaf-99c3-01a1555a2778",
+                          "ShareCommandContainerReferObject": {
+                            "ShareCommandContainerID": "bd2b65b1-655e-487a-a5c4-a5e8eccac022"
+                          }
+                        },
+                        "Value": "7"
+                      }
+                    ],
+                    "Comments": "既定値タブへ"
                   }
-                },
-                "Value": "1"
-              },
-              {
-                "ParamReferObject": {
-                  "ParamID": "49fea88f-fcbe-42c8-b070-8439f90243b5",
-                  "ShareCommandContainerReferObject": {
-                    "ShareCommandContainerID": "bd2b65b1-655e-487a-a5c4-a5e8eccac022"
-                  }
-                },
-                "Value": "2"
-              },
-              {
-                "ParamReferObject": {
-                  "ParamID": "6726d2b8-d94f-4aaf-99c3-01a1555a2778",
-                  "ShareCommandContainerReferObject": {
-                    "ShareCommandContainerID": "bd2b65b1-655e-487a-a5c4-a5e8eccac022"
-                  }
-                },
-                "Value": "7"
+                ],
+                "ID": "80ebc016-5b41-49dc-9385-c8dc05054c81"
               }
-            ],
-            "Comments": "既定値タブへ"
+            ]
           }
         ],
         "ToolTip": "保証条件を編集できます",
@@ -647,7 +725,7 @@
           "ColumnBindingInfo": {
             "TableName": "t_object_insurance",
             "ColumnName": "object_order_id",
-            "GUID": "24a70f51-e2ef-403c-8f8a-956f9712fe08"
+            "GUID": "fd05c43c-3551-4830-a708-670f00d73efa"
           },
           "Value": {
             "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
@@ -660,7 +738,7 @@
               "ColumnBindingInfo": {
                 "TableName": "t_object_insurance",
                 "ColumnName": "insurance_id",
-                "GUID": "5b8142d8-2247-4957-89f0-7039375b7cae"
+                "GUID": "9ea7f0f4-efea-489f-a43f-194fbdeb2f7b"
               },
               "Order": 1
             }
@@ -919,7 +997,7 @@
           "ColumnBindingInfo": {
             "TableName": "t_warranty_request",
             "ColumnName": "object_order_id",
-            "GUID": "c4ce7348-5faf-4efa-9717-11d22cffcf8e"
+            "GUID": "bd114d74-eb3e-4249-8507-86aa7d4680a8"
           },
           "Value": {
             "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
@@ -932,7 +1010,7 @@
               "ColumnBindingInfo": {
                 "TableName": "t_warranty_request",
                 "ColumnName": "warranty_request_id",
-                "GUID": "76bd2057-727b-4cbf-81cb-018407e8a559"
+                "GUID": "472d75fc-0c96-411b-b137-4ef6c6c9743a"
               },
               "Order": 1
             }
@@ -1056,7 +1134,7 @@
                     "$type": "Forguncy.Model.StopCommand, ServerDesignerCommon"
                   }
                 ],
-                "ID": "45155cbf-d544-4567-a0be-d1db8f745bf0"
+                "ID": "2c080a82-bf16-4cac-aaba-b63ba8645cb8"
               }
             ]
           },
@@ -1152,6 +1230,18 @@
         "GUID": "8f65e3d7-36cb-4bfe-9a45-a9188f16b55b"
       }
     },
+    "26,79": {
+      "BindingInfo": {
+        "TableName": "t_object_order",
+        "ColumnName": "group_id",
+        "GUID": "4c22b189-39c3-49ae-a2eb-d4a3f471081b",
+        "RelationBinding": {
+          "RelatedTable": "m_group",
+          "RelatedColumn": "group_id",
+          "DisplayColumn": "group_default_priority_flg"
+        }
+      }
+    },
     "29,54": {
       "BindingInfo": {
         "TableName": "t_object_order",
@@ -1166,6 +1256,18 @@
         "GUID": "7ba99734-4d00-4d8c-9e54-29ffcce6ec08"
       }
     },
+    "29,79": {
+      "BindingInfo": {
+        "TableName": "t_object_order",
+        "ColumnName": "group_id",
+        "GUID": "b0f5577b-7425-4e8a-b62d-faa7a6556f7e",
+        "RelationBinding": {
+          "RelatedTable": "m_group",
+          "RelatedColumn": "group_id",
+          "DisplayColumn": "customer_id"
+        }
+      }
+    },
     "32,54": {
       "ListViewInfo": {
         "Name": "保証ビュー",
@@ -1173,13 +1275,13 @@
         "RowIndex": 32,
         "ColumnIndex": 54,
         "RowCount": 4,
-        "ColumnCount": 42,
+        "ColumnCount": 44,
         "SqlCondition": {
           "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
           "ColumnBindingInfo": {
             "TableName": "t_object_warranty",
             "ColumnName": "object_order_id",
-            "GUID": "67a6c3d8-a07f-49ad-8fa4-b1efc4685d4a"
+            "GUID": "74a7d058-de3a-4e60-a636-f9153ae03fef"
           },
           "Value": {
             "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
@@ -1192,7 +1294,7 @@
               "ColumnBindingInfo": {
                 "TableName": "t_object_warranty",
                 "ColumnName": "warranty_id",
-                "GUID": "f624c473-4cb8-4266-b9c6-aae9796ca920"
+                "GUID": "630e78d5-0aa3-4859-973a-4118a63bc475"
               },
               "Order": 1
             }
@@ -1225,16 +1327,42 @@
       }
     },
     "33,56": {
-      "NameUsedInJavaScript": "保証履歴番号"
+      "NameUsedInJavaScript": "グループID",
+      "BindingInfo": {
+        "TableName": "t_object_warranty",
+        "ColumnName": "object_order_id",
+        "GUID": "0b911803-76ed-4fa9-a59f-4323527b6d3b",
+        "RelationBinding": {
+          "RelatedTable": "t_object_order",
+          "RelatedColumn": "object_order_id",
+          "DisplayColumn": "group_id"
+        }
+      }
     },
     "33,57": {
+      "NameUsedInJavaScript": "住宅事業者ID",
+      "BindingInfo": {
+        "TableName": "t_object_warranty",
+        "ColumnName": "object_order_id",
+        "GUID": "64479867-be1f-4150-b349-f97334547953",
+        "RelationBinding": {
+          "RelatedTable": "t_object_order",
+          "RelatedColumn": "object_order_id",
+          "DisplayColumn": "builder_id"
+        }
+      }
+    },
+    "33,58": {
+      "NameUsedInJavaScript": "保証履歴番号"
+    },
+    "33,59": {
       "BindingInfo": {
         "TableName": "t_object_warranty",
         "ColumnName": "warannty_issue_type",
         "GUID": "9dc658c2-e05c-4bfc-bcc6-19cad829f288"
       }
     },
-    "33,58": {
+    "33,60": {
       "NameUsedInJavaScript": "保証書発行依頼日",
       "BindingInfo": {
         "TableName": "t_object_warranty",
@@ -1242,7 +1370,7 @@
         "GUID": "7beca4cd-ea16-4264-8014-4dd504552f6e"
       }
     },
-    "33,59": {
+    "33,61": {
       "NameUsedInJavaScript": "保証書発行依頼者名",
       "BindingInfo": {
         "TableName": "t_object_warranty",
@@ -1255,7 +1383,7 @@
         }
       }
     },
-    "33,60": {
+    "33,62": {
       "NameUsedInJavaScript": "保証書発行区分",
       "BindingInfo": {
         "TableName": "t_object_warranty",
@@ -1263,7 +1391,7 @@
         "GUID": "10942afe-0578-4b5f-9841-6f9721c18f5b"
       }
     },
-    "33,61": {
+    "33,63": {
       "NameUsedInJavaScript": "保証書区分ID",
       "BindingInfo": {
         "TableName": "t_object_warranty",
@@ -1271,7 +1399,7 @@
         "GUID": "86c0c016-5475-4e00-96f4-43c3e47da0a7"
       }
     },
-    "33,62": {
+    "33,64": {
       "NameUsedInJavaScript": "保証書区分名",
       "BindingInfo": {
         "TableName": "t_object_warranty",
@@ -1284,7 +1412,7 @@
         }
       }
     },
-    "33,63": {
+    "33,65": {
       "NameUsedInJavaScript": "保証書バージョンID",
       "BindingInfo": {
         "TableName": "t_object_warranty",
@@ -1292,7 +1420,7 @@
         "GUID": "c842d4db-eb61-47c4-b7f9-ad5d33f3fda2"
       }
     },
-    "33,64": {
+    "33,66": {
       "NameUsedInJavaScript": "保証書バージョン名",
       "BindingInfo": {
         "TableName": "t_object_warranty",
@@ -1305,7 +1433,7 @@
         }
       }
     },
-    "33,65": {
+    "33,67": {
       "NameUsedInJavaScript": "保証物件名",
       "BindingInfo": {
         "TableName": "t_object_warranty",
@@ -1313,7 +1441,7 @@
         "GUID": "57030852-3d47-42db-934b-1c5fee0697fb"
       }
     },
-    "33,66": {
+    "33,68": {
       "NameUsedInJavaScript": "保証物件住所",
       "BindingInfo": {
         "TableName": "t_object_warranty",
@@ -1321,7 +1449,7 @@
         "GUID": "50f6c9a0-77ea-43ea-b782-15b4b6d22d62"
       }
     },
-    "33,67": {
+    "33,69": {
       "NameUsedInJavaScript": "保証開始日",
       "BindingInfo": {
         "TableName": "t_object_warranty",
@@ -1329,7 +1457,7 @@
         "GUID": "d283aaae-ae18-454d-bded-a4cc6ea8f68d"
       }
     },
-    "33,68": {
+    "33,70": {
       "NameUsedInJavaScript": "保証期間",
       "BindingInfo": {
         "TableName": "t_object_warranty",
@@ -1337,7 +1465,7 @@
         "GUID": "30179fbc-cb85-45c2-9721-b61e3df3dc73"
       }
     },
-    "33,69": {
+    "33,71": {
       "NameUsedInJavaScript": "保証書発行日",
       "BindingInfo": {
         "TableName": "t_object_warranty",
@@ -1345,7 +1473,7 @@
         "GUID": "78cd4999-f6d0-43ba-a88c-3c1761919c63"
       }
     },
-    "33,70": {
+    "33,72": {
       "NameUsedInJavaScript": "特記事項",
       "BindingInfo": {
         "TableName": "t_object_warranty",
@@ -1353,7 +1481,7 @@
         "GUID": "975810aa-44a1-4c2d-8290-b58b206b118c"
       }
     },
-    "33,71": {
+    "33,73": {
       "NameUsedInJavaScript": "原本郵送フラグ",
       "BindingInfo": {
         "TableName": "t_object_warranty",
@@ -1361,7 +1489,7 @@
         "GUID": "318e145a-0da4-4140-87cc-547e48b2dfeb"
       }
     },
-    "33,72": {
+    "33,74": {
       "NameUsedInJavaScript": "郵送方法区分",
       "BindingInfo": {
         "TableName": "t_object_warranty",
@@ -1369,7 +1497,7 @@
         "GUID": "8858f4ba-1735-490f-86aa-76d67edb7750"
       }
     },
-    "33,73": {
+    "33,75": {
       "NameUsedInJavaScript": "原本郵送日",
       "BindingInfo": {
         "TableName": "t_object_warranty",
@@ -1377,7 +1505,7 @@
         "GUID": "34d5717d-ef3f-4d90-bd85-5ebb9985646d"
       }
     },
-    "33,74": {
+    "33,76": {
       "NameUsedInJavaScript": "保証ステータスID",
       "BindingInfo": {
         "TableName": "t_object_warranty",
@@ -1385,7 +1513,7 @@
         "GUID": "96c1963b-d332-4637-8bd4-15aea69d35da"
       }
     },
-    "33,75": {
+    "33,77": {
       "NameUsedInJavaScript": "保証完了フラグ",
       "BindingInfo": {
         "TableName": "t_object_warranty",
@@ -1393,7 +1521,7 @@
         "GUID": "031f25c6-3b2f-48e1-881a-379632b7cc33"
       }
     },
-    "33,76": {
+    "33,78": {
       "NameUsedInJavaScript": "完了フラグ",
       "BindingInfo": {
         "TableName": "t_object_warranty",
@@ -1406,7 +1534,7 @@
         }
       }
     },
-    "33,77": {
+    "33,79": {
       "NameUsedInJavaScript": "処理前フラグ",
       "BindingInfo": {
         "TableName": "t_object_warranty",
@@ -1419,7 +1547,7 @@
         }
       }
     },
-    "33,78": {
+    "33,80": {
       "NameUsedInJavaScript": "キャンセル終了フラグ",
       "BindingInfo": {
         "TableName": "t_object_warranty",
@@ -1432,7 +1560,7 @@
         }
       }
     },
-    "33,79": {
+    "33,81": {
       "NameUsedInJavaScript": "保証取消フラグ",
       "BindingInfo": {
         "TableName": "t_object_warranty",
@@ -1445,7 +1573,7 @@
         }
       }
     },
-    "33,80": {
+    "33,82": {
       "NameUsedInJavaScript": "保証辞退フラグ",
       "BindingInfo": {
         "TableName": "t_object_warranty",
@@ -1458,7 +1586,7 @@
         }
       }
     },
-    "33,81": {
+    "33,83": {
       "NameUsedInJavaScript": "保証取消日",
       "BindingInfo": {
         "TableName": "t_object_warranty",
@@ -1466,7 +1594,7 @@
         "GUID": "48b47275-3ff0-4d91-8636-b28df8e86a1c"
       }
     },
-    "33,82": {
+    "33,84": {
       "NameUsedInJavaScript": "保証ステータス名",
       "BindingInfo": {
         "TableName": "t_object_warranty",
@@ -1479,49 +1607,36 @@
         }
       }
     },
-    "33,83": {
+    "33,85": {
       "NameUsedInJavaScript": "保証売上合計"
     },
-    "33,84": {
+    "33,86": {
       "NameUsedInJavaScript": "保証仕入合計"
     },
-    "33,85": {
+    "33,87": {
       "NameUsedInJavaScript": "最終発行フラグ"
     },
-    "33,86": {
+    "33,88": {
       "NameUsedInJavaScript": "画面ロックフラグ"
     },
-    "33,88": {
+    "33,90": {
       "NameUsedInJavaScript": "保証書添付カウント"
     },
-    "33,89": {
+    "33,91": {
       "NameUsedInJavaScript": "保証書添付ラベル"
     },
-    "33,91": {
+    "33,93": {
       "BindingInfo": {
         "TableName": "t_object_warranty",
         "ColumnName": "last_updated_label",
         "GUID": "2577087a-d8c9-4f59-8628-79a0115a7b0d"
       }
     },
-    "33,92": {
+    "33,94": {
       "NameUsedInJavaScript": "最終更新ラベル"
     },
-    "33,93": {
+    "33,95": {
       "NameUsedInJavaScript": "保証履歴件数"
-    },
-    "33,94": {
-      "NameUsedInJavaScript": "住宅事業者ID",
-      "BindingInfo": {
-        "TableName": "t_object_warranty",
-        "ColumnName": "object_order_id",
-        "GUID": "64479867-be1f-4150-b349-f97334547953",
-        "RelationBinding": {
-          "RelatedTable": "t_object_order",
-          "RelatedColumn": "object_order_id",
-          "DisplayColumn": "builder_id"
-        }
-      }
     },
     "43,62": {
       "BindingInfo": {
@@ -1803,13 +1918,55 @@
         "VerticalAlignment": 15
       },
       {
+        "FontFamily": 2,
+        "Formatter": 6,
+        "BorderBottom": null,
+        "BorderTop": null,
+        "BorderLeft": null,
+        "BorderRight": null
+      },
+      {
         "Background": 0,
         "FontFamily": 2
+      },
+      {
+        "Background": 1,
+        "FontFamily": 2,
+        "BorderBottom": null,
+        "BorderTop": null,
+        "BorderLeft": null,
+        "BorderRight": null
       },
       {
         "FontFamily": 2,
         "FontSize": 14.666666666666666,
         "Formatter": 6
+      },
+      {
+        "FontFamily": 2,
+        "Formatter": 6,
+        "VerticalAlignment": 8,
+        "BorderBottom": null,
+        "BorderTop": null,
+        "BorderLeft": null,
+        "BorderRight": null
+      },
+      {
+        "FontFamily": 2,
+        "VerticalAlignment": 8,
+        "BorderBottom": null,
+        "BorderTop": null,
+        "BorderLeft": null,
+        "BorderRight": null
+      },
+      {
+        "Background": 1,
+        "FontFamily": 2,
+        "VerticalAlignment": 8,
+        "BorderBottom": null,
+        "BorderTop": null,
+        "BorderLeft": null,
+        "BorderRight": null
       },
       {
         "FontFamily": 2,
@@ -2334,6 +2491,9 @@
       "25,69": 4,
       "25,70": 4,
       "25,71": 4,
+      "25,79": 34,
+      "25,80": 8,
+      "25,81": 8,
       "26,51": 33,
       "26,54": 16,
       "26,55": 4,
@@ -2350,9 +2510,12 @@
       "26,66": 4,
       "26,67": 4,
       "26,68": 4,
-      "26,69": 34,
+      "26,69": 35,
       "26,70": 4,
       "26,71": 4,
+      "26,79": 36,
+      "26,80": 8,
+      "26,81": 8,
       "27,51": 33,
       "27,54": 4,
       "27,55": 4,
@@ -2372,6 +2535,9 @@
       "27,69": 4,
       "27,70": 4,
       "27,71": 4,
+      "27,79": 8,
+      "27,80": 8,
+      "27,81": 8,
       "27,82": 4,
       "27,83": 4,
       "27,84": 4,
@@ -2382,7 +2548,7 @@
       "27,89": 4,
       "27,90": 4,
       "28,51": 33,
-      "28,54": 35,
+      "28,54": 37,
       "28,55": 29,
       "28,56": 29,
       "28,57": 4,
@@ -2401,6 +2567,9 @@
       "28,70": 4,
       "28,71": 4,
       "28,72": 4,
+      "28,79": 38,
+      "28,80": 39,
+      "28,81": 39,
       "29,51": 33,
       "29,54": 16,
       "29,55": 4,
@@ -2413,9 +2582,12 @@
       "29,62": 16,
       "29,63": 4,
       "29,64": 4,
-      "29,69": 34,
+      "29,69": 35,
       "29,70": 4,
       "29,71": 4,
+      "29,79": 40,
+      "29,80": 39,
+      "29,81": 39,
       "30,51": 33,
       "31,51": 33,
       "31,54": 10,
@@ -2447,35 +2619,36 @@
       "31,80": 4,
       "31,81": 4,
       "32,51": 33,
-      "32,55": 36,
-      "32,56": 37,
-      "32,57": 38,
-      "32,58": 37,
-      "32,59": 37,
-      "32,60": 37,
-      "32,61": 37,
-      "32,62": 37,
-      "32,63": 37,
-      "32,64": 37,
-      "32,65": 37,
-      "32,66": 37,
-      "32,67": 37,
-      "32,68": 37,
-      "32,69": 37,
-      "32,70": 37,
-      "32,73": 37,
+      "32,55": 41,
+      "32,57": 4,
+      "32,58": 42,
+      "32,59": 43,
+      "32,60": 42,
+      "32,61": 42,
+      "32,62": 42,
+      "32,63": 42,
+      "32,64": 42,
+      "32,65": 42,
+      "32,66": 42,
+      "32,67": 42,
+      "32,68": 42,
+      "32,69": 42,
+      "32,70": 42,
+      "32,71": 42,
+      "32,72": 42,
+      "32,73": 4,
       "32,74": 4,
-      "32,75": 4,
+      "32,75": 42,
       "32,76": 4,
       "32,77": 4,
       "32,78": 4,
       "32,79": 4,
       "32,80": 4,
-      "32,81": 37,
-      "32,82": 37,
-      "32,83": 37,
-      "32,84": 4,
-      "32,85": 4,
+      "32,81": 4,
+      "32,82": 4,
+      "32,83": 42,
+      "32,84": 42,
+      "32,85": 42,
       "32,86": 4,
       "32,87": 4,
       "32,88": 4,
@@ -2485,12 +2658,12 @@
       "32,92": 4,
       "32,93": 4,
       "32,94": 4,
+      "32,95": 4,
       "33,51": 33,
-      "33,55": 39,
-      "33,56": 4,
-      "33,57": 40,
+      "33,55": 44,
+      "33,57": 4,
       "33,58": 4,
-      "33,59": 4,
+      "33,59": 45,
       "33,60": 4,
       "33,61": 4,
       "33,62": 4,
@@ -2502,6 +2675,8 @@
       "33,68": 4,
       "33,69": 4,
       "33,70": 4,
+      "33,71": 4,
+      "33,72": 4,
       "33,73": 4,
       "33,74": 4,
       "33,75": 4,
@@ -2524,8 +2699,9 @@
       "33,92": 4,
       "33,93": 4,
       "33,94": 4,
+      "33,95": 4,
       "34,51": 33,
-      "34,54": 39,
+      "34,54": 44,
       "34,55": 4,
       "34,56": 4,
       "34,57": 4,
@@ -2552,47 +2728,47 @@
       "34,78": 4,
       "34,79": 4,
       "34,80": 4,
-      "34,81": 41,
+      "34,81": 46,
       "35,51": 33,
-      "35,54": 42,
-      "35,55": 43,
-      "35,56": 43,
-      "35,57": 43,
-      "35,58": 43,
-      "35,59": 43,
-      "35,60": 43,
-      "35,61": 43,
-      "35,62": 43,
-      "35,63": 43,
-      "35,64": 43,
-      "35,65": 43,
-      "35,66": 43,
-      "35,67": 43,
-      "35,68": 43,
-      "35,69": 43,
-      "35,70": 43,
-      "35,71": 43,
-      "35,72": 43,
-      "35,73": 43,
-      "35,74": 43,
-      "35,75": 43,
-      "35,76": 43,
-      "35,77": 43,
-      "35,78": 43,
-      "35,79": 43,
-      "35,80": 43,
-      "35,81": 44,
+      "35,54": 47,
+      "35,55": 48,
+      "35,56": 48,
+      "35,57": 48,
+      "35,58": 48,
+      "35,59": 48,
+      "35,60": 48,
+      "35,61": 48,
+      "35,62": 48,
+      "35,63": 48,
+      "35,64": 48,
+      "35,65": 48,
+      "35,66": 48,
+      "35,67": 48,
+      "35,68": 48,
+      "35,69": 48,
+      "35,70": 48,
+      "35,71": 48,
+      "35,72": 48,
+      "35,73": 48,
+      "35,74": 48,
+      "35,75": 48,
+      "35,76": 48,
+      "35,77": 48,
+      "35,78": 48,
+      "35,79": 48,
+      "35,80": 48,
+      "35,81": 49,
       "36,51": 33,
       "37,51": 33,
-      "37,54": 45,
-      "37,55": 46,
-      "37,56": 46,
+      "37,54": 50,
+      "37,55": 51,
+      "37,56": 51,
       "38,51": 33,
-      "38,54": 47,
-      "38,55": 46,
-      "38,56": 46,
+      "38,54": 52,
+      "38,55": 51,
+      "38,56": 51,
       "39,51": 33,
-      "41,54": 48,
+      "41,54": 53,
       "41,55": 4,
       "41,56": 4,
       "41,57": 4,
@@ -2626,7 +2802,7 @@
       "43,59": 4,
       "43,60": 4,
       "43,61": 4,
-      "43,62": 49,
+      "43,62": 54,
       "43,63": 4,
       "43,64": 4,
       "43,65": 4,
@@ -2639,7 +2815,7 @@
       "44,59": 4,
       "44,60": 4,
       "44,61": 4,
-      "44,62": 49,
+      "44,62": 54,
       "44,63": 4,
       "44,64": 4,
       "44,65": 4,
@@ -2652,7 +2828,7 @@
       "45,59": 4,
       "45,60": 4,
       "45,61": 4,
-      "45,62": 49,
+      "45,62": 54,
       "45,63": 4,
       "45,64": 4,
       "45,65": 4,
@@ -2665,7 +2841,7 @@
       "46,59": 4,
       "46,60": 4,
       "46,61": 4,
-      "46,62": 49,
+      "46,62": 54,
       "46,63": 4,
       "46,64": 4,
       "46,65": 4,
@@ -2678,7 +2854,7 @@
       "47,59": 4,
       "47,60": 4,
       "47,61": 4,
-      "47,62": 49,
+      "47,62": 54,
       "47,63": 4,
       "47,64": 4,
       "47,65": 4,
@@ -2691,7 +2867,7 @@
       "48,59": 4,
       "48,60": 4,
       "48,61": 4,
-      "48,62": 49,
+      "48,62": 54,
       "48,63": 4,
       "48,64": 4,
       "48,65": 4,
@@ -2704,7 +2880,7 @@
       "49,59": 4,
       "49,60": 4,
       "49,61": 4,
-      "49,62": 49,
+      "49,62": 54,
       "49,63": 4,
       "49,64": 4,
       "49,65": 4,
@@ -2717,7 +2893,7 @@
       "50,59": 4,
       "50,60": 4,
       "50,61": 4,
-      "50,62": 49,
+      "50,62": 54,
       "50,63": 4,
       "50,64": 4,
       "50,65": 4,
@@ -2730,7 +2906,7 @@
       "51,59": 4,
       "51,60": 4,
       "51,61": 4,
-      "51,62": 49,
+      "51,62": 54,
       "51,63": 4,
       "51,64": 4,
       "51,65": 4,
@@ -2743,7 +2919,7 @@
       "52,59": 4,
       "52,60": 4,
       "52,61": 4,
-      "52,62": 49,
+      "52,62": 54,
       "52,63": 4,
       "52,64": 4,
       "52,65": 4,
@@ -2756,7 +2932,7 @@
       "53,59": 4,
       "53,60": 4,
       "53,61": 4,
-      "53,62": 49,
+      "53,62": 54,
       "53,63": 4,
       "53,64": 4,
       "53,65": 4,
@@ -2769,7 +2945,7 @@
       "54,59": 4,
       "54,60": 4,
       "54,61": 4,
-      "54,62": 49,
+      "54,62": 54,
       "54,63": 4,
       "54,64": 4,
       "54,65": 4,
@@ -2782,7 +2958,7 @@
       "55,59": 4,
       "55,60": 4,
       "55,61": 4,
-      "55,62": 49,
+      "55,62": 54,
       "55,63": 4,
       "55,64": 4,
       "55,65": 4,
@@ -2795,7 +2971,7 @@
       "56,59": 4,
       "56,60": 4,
       "56,61": 4,
-      "56,62": 49,
+      "56,62": 54,
       "56,63": 4,
       "56,64": 4,
       "56,65": 4,
@@ -2808,7 +2984,7 @@
       "57,59": 4,
       "57,60": 4,
       "57,61": 4,
-      "57,62": 49,
+      "57,62": 54,
       "57,63": 4,
       "57,64": 4,
       "57,65": 4,
@@ -2892,14 +3068,16 @@
     "57,62,1,5",
     "1,0,2,53",
     "15,60,1,20",
-    "34,54,2,42",
     "17,6,1,2",
     "17,8,1,32",
     "17,48,1,4",
     "17,40,1,8",
     "20,60,2,10",
     "18,72,1,3",
-    "18,6,2,46"
+    "18,6,2,46",
+    "34,54,2,44",
+    "26,79,1,3",
+    "29,79,1,3"
   ],
   "PageInfo": {
     "$type": "Forguncy.Model.Pages.NormalPage, ServerDesignerCommon",
@@ -2939,7 +3117,6 @@
     },
     "RowBreakLines": [],
     "RepeatRangeSettings": [],
-    "RelatedDataTableName": "t_warranty_request",
     "PageResponsiveMode": 2,
     "ConditionFormatRulesCollection": {
       "Rules": [
@@ -3039,4 +3216,4 @@
       "Formula": "物件詳細_保証!$BR$27"
     }
   ]
-}//zKuN16VAB+7oGA95WCxbcD5KWd73Mhgu+30AM5kZ+KduGVvJBPwSr3d/6E5o1D1ON86CnHIQ2IkLQWxP4hJ2G4UtEXCPIxwE1uh3NC0ADkmFVZqOoCyyx6oyziDScapPZm8VA/j5vc1fwLDxblKsBrWPf5QMVdsiL1sajymtu5QWSQquD5aMxZgf5ZwQKAYAGqBjZ+z5Kyjkd7UdFzMUPJGJyVMg2XNKffvfLTrlNNfzJz3HZa83exHS9YdYo/BCK/HYuBpGG0Dkdp47dEUH09S7Ht3rWBsJyVW9PRvGHG+dALHTvlW97QsTRYt7lgSNYYF4UsyGosJdhiXON215ei4u5a6uq7HwS90sBQBNVvw5lnI/wKKBOLViW8ZFSJ6C7clE8Hjm8aGesGSBOjlC/dedQKii8D2/Bpl5heDAKcoOJ9jozB+9cHR+iUzzeCtLgzhSwrGPW8prTB2yaHyomvkGiUuEM1lmruT69MOF54PXorylJJq1yB7NdTxkqBzdEBmF5EP25JP4kLaK/6A/mfht056ArS142LJLiaPei9VDPXU8TVHoljBK8/1hqNDfU9x7KzaA+Ryj+D2O9PG5VMYNpy2gTGfBp8dGedJOovkYuHkPAQMQQo+DfE+8+jfCmdgcdF/wy38KY30GqbY8Y4eiahqGgXcNcTR/gNToJM4qrqk1u/3D6ufgYe88KB+dREA8guoUe0M0B8m3SYAjH3E+W+LJACgSdyWCCf2Fugziu2NQMGy2CX4C8yAo10P0FBLhncfZw4bTrNreW76RGhoXHz+u6XYVWW0JaHJJ7g6YtR4+rzFc/IMBmOWO3DOieBLfPQ01TWskeNn92CeAveBiWyWP5f3YzqgCtLAT5OBtBHe0n6L8LjGqqqBGQJ4pNiGVzycNFeY/8G1+tgzs7A==|920
+}//DWa7CWb1EtwoulEEGc//6bU0/p0LIyH1KYfaD9Vbmz5fbNLmyyJBXzOC1s17qMXQxz4LTAlP5rnScSvaOdj1qMfAbdIY18YwshX9CDdP8g9wHTUP8nQf/x4do6NtarRYrtpM5jNHFnJ2/biKuHWIwgEAZdCe3jOoJeFGMUtN7RUGq4g8g7VjEenktsZPuRO1LrlZXoCqgajEBZEUEwqCrMT7PBM/QINl4Qg0mW+bjWffdeC/zTVb/SHsFJ2T58L6NaimruN4A2TZBsnngaUMmGI3B7IGIcsLpBFbLNGRlFFgXVuNhZU6IWCL5i2MUsisiIgt57CcjIHVzT6WCEgehHr+EGmCmFo0BaHO33tAK9PP1o43jomz5RvL7xXr7oHgnMphJT38aE+ZUN/scJFyC4lsm2bbtgQScr1wRxZe/JjJKgYZ6mcXqoByw7GL5nVE2yyk5O7vsNGIQetIGuEbuvFriuqqlN18nj8uVqwb8Uc44LTfFRD0r3f1pyMbdNlt5/cD32lsUM2wCp5Fbh04oRM0Y/t19wuoItS+0KITuIowHodQSVlu+zNULEU04tAzE+wucFlpbd6HA7gHF0qGEo/VXK2q37cyCExlNyCSrA/e1aYE+kCzQOnrPL96dV8Iqw8O4MMBQ7N9la/1s+AGg0WBAp20lCLXL3Fro5WOwZSOjDZ/s4HSRBThV+5vDHWlzC/atfc7Br7VaR1NasboAT7ebZcbM8wUStmOFrFrleM9lOHUfjlqO56jfq/uUBzacVXtLM3XfnCnol9lU6/3uqPFNRZxBJkTfrBgOijQPyDn4rSu29Y/w70tHY19316Wu2oHVmuSJrcpY6dMRZcSjX6jh6rZUI6zReyIzE8uYGQWU6Fd47DNNE1QDUwEnj7rDn7GSLbREC41nlX19Se/tg==|920

@@ -22,10 +22,10 @@
     "28,85": "IF(CF29<>\"\",CG29,\"\")",
     "15,19": "AY18",
     "28,100": "ODATA(\"t_object_attachment/$count?$filter=analysis_id eq \"&IF(ISBLANK(AY29),\"null\",AY29)&\" and file_attribute_id eq \"&IF(ISBLANK(地盤判定書ファイル属性ID),\"null\",地盤判定書ファイル属性ID)&\" and active_flg eq 1\")",
-    "28,99": "ODATA(\"m_customer_default?$select=sutudy_paper_request_flg&$filter=customer_id eq \"&IF(ISBLANK($BD$7),\"null\",$BD$7))"
+    "28,99": "ODATA(\"m_customer_default?$select=study_paper_request_flg&$filter=customer_id eq \"&IF(ISBLANK($BD$7),\"null\",$BD$7))"
   },
   "ArrayFormulas": {
-    "17,49,1,4": "IFERROR(ODATA(\"m_customer_default?$select=construction_estimate_set_flg,sutudy_paper_request_flg,auto_construction_estimate_flg,no_compaction_judge_flg&$filter=customer_id eq \"&IF(ISBLANK(BD7),\"null\",BD7)),\"\")"
+    "17,49,1,4": "IFERROR(ODATA(\"v_group_customer_default?$select=工事見積セット添付フラグ,検討書必要フラグ,工事判定自動見積フラグ,転圧判定不可フラグ&$filter=グループID eq \"&IF(ISBLANK(BJ22),\"null\",BJ22)&\" and 顧客ID eq \"&IF(ISBLANK(BQ22),\"null\",BQ22)),\"\")"
   },
   "CustomNames": [
     {

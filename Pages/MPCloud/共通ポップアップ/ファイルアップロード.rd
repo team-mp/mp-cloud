@@ -1,67 +1,72 @@
 {
   "PageType": 0,
-  "ColumnCount": 118,
-  "RowCount": 26,
+  "ColumnCount": 120,
+  "RowCount": 30,
   "Formulas": {
-    "3,104": "IFERROR(ODATA(\"m_file_attirbute?$select=no_multiple_attached_flg&$filter=file_attribute_id eq \"&IF(ISBLANK(ファイル属性ID),\"null\",ファイル属性ID)),0)",
-    "7,96": "CP8/1000",
-    "24,98": "LEN(C14)-LEN(SUBSTITUTE(C14,\"|\",\"\"))",
-    "12,86": "COUNTIF(CJ8,\"<>\")",
-    "11,14": "ODATA(\"m_file_attirbute?$select=file_attibute_name&$filter=file_attribute_id eq \"&IF(ISBLANK(ファイル属性ID),\"null\",ファイル属性ID))",
-    "9,104": "TEXTJOINIF(\",\",TRUE,CI8,1,CJ8)"
+    "3,106": "IFERROR(ODATA(\"m_file_attirbute?$select=no_multiple_attached_flg&$filter=file_attribute_id eq \"&IF(ISBLANK(ファイル属性ID),\"null\",ファイル属性ID)),0)",
+    "17,14": "ODATA(\"m_file_attirbute?$select=file_attibute_name&$filter=file_attribute_id eq \"&IF(ISBLANK(ファイル属性ID),\"null\",ファイル属性ID))",
+    "9,106": "TEXTJOINIF(\",\",TRUE,CK8,1,CL8)",
+    "7,98": "CR8/1000",
+    "28,100": "LEN(C20)-LEN(SUBSTITUTE(C20,\"|\",\"\"))",
+    "12,88": "COUNTIF(CL8,\"<>\")",
+    "12,94": "ODATA(\"t_object_attachment/$count?$filter=object_order_id eq \"&IF(ISBLANK(申込ID),\"null\",申込ID)&\" and file_attribute_id eq \"&IF(ISBLANK(ファイル属性ID),\"null\",ファイル属性ID)&\" and active_flg eq 0\")"
   },
   "CustomNames": [
     {
       "Name": "アップロード完了フラグ",
-      "Formula": "ファイルアップロード!$CI$25"
+      "Formula": "ファイルアップロード!$CK$29"
     },
     {
       "Name": "ファイル属性ID",
-      "Formula": "ファイルアップロード!$CU$4"
+      "Formula": "ファイルアップロード!$CW$4"
     },
     {
       "Name": "ファイル分類",
-      "Formula": "ファイルアップロード!$CI$16"
+      "Formula": "ファイルアップロード!$CK$18"
     },
     {
       "Name": "解析ID",
-      "Formula": "ファイルアップロード!$CO$16"
+      "Formula": "ファイルアップロード!$CQ$18"
     },
     {
       "Name": "工事ID",
-      "Formula": "ファイルアップロード!$CU$16"
+      "Formula": "ファイルアップロード!$CW$18"
     },
     {
       "Name": "工事見積ID",
-      "Formula": "ファイルアップロード!$CO$22"
+      "Formula": "ファイルアップロード!$CQ$24"
     },
     {
       "Name": "申込ID",
-      "Formula": "ファイルアップロード!$CI$4"
+      "Formula": "ファイルアップロード!$CK$4"
     },
     {
       "Name": "測量ID",
-      "Formula": "ファイルアップロード!$CI$22"
+      "Formula": "ファイルアップロード!$CK$24"
     },
     {
       "Name": "調査ID",
-      "Formula": "ファイルアップロード!$CI$19"
+      "Formula": "ファイルアップロード!$CK$21"
     },
     {
       "Name": "転圧ID",
-      "Formula": "ファイルアップロード!$CO$19"
+      "Formula": "ファイルアップロード!$CQ$21"
     },
     {
       "Name": "付保ID",
-      "Formula": "ファイルアップロード!$CU$22"
+      "Formula": "ファイルアップロード!$CW$24"
     },
     {
       "Name": "物件商品ID",
-      "Formula": "ファイルアップロード!$DA$16"
+      "Formula": "ファイルアップロード!$DC$18"
     },
     {
       "Name": "保証ID",
-      "Formula": "ファイルアップロード!$CU$19"
+      "Formula": "ファイルアップロード!$CW$21"
+    },
+    {
+      "Name": "外販ID",
+      "Formula": "ファイルアップロード!$DC$21"
     }
   ]
 }

@@ -10,11 +10,12 @@
     "13,50": "TOユーザーIDリスト",
     "13,7": "IF(メール件名=0,\"\",メール件名)",
     "13,58": "CCユーザーIDリスト",
-    "4,42": "申込ID",
-    "29,42": "ODATA(\"m_mail_template?$select=attachment_need_flg&$filter=template_id eq \"&IF(ISBLANK(テンプレートID),\"null\",テンプレートID))",
+    "2,42": "申込ID",
+    "32,42": "ODATA(\"m_mail_template?$select=attachment_need_flg&$filter=template_id eq \"&IF(ISBLANK(テンプレートID),\"null\",テンプレートID))",
     "22,58": "TEXTJOIN(\",\",TRUE,BJ9,H12)",
     "22,50": "TEXTJOIN(\",\",TRUE,BB9,H7)",
-    "16,50": "TEXTJOIN(\",\",TRUE,AY9)"
+    "16,50": "TEXTJOIN(\",\",TRUE,AY9)",
+    "29,42": "TEXTJOIN(\",\",TRUE,IF(AQ12=1,AQ21,\"\"),IF(AQ15=1,AQ24,\"\"),IF(AQ18=1,AQ27,\"\"))"
   },
   "CustomNames": [
     {
@@ -27,7 +28,7 @@
     },
     {
       "Name": "メール送信ボタン",
-      "Formula": "メール送信画面_詳細!$AQ$33"
+      "Formula": "メール送信画面_詳細!$AQ$36"
     },
     {
       "Name": "添付ファイル",

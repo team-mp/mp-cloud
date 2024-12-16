@@ -91,7 +91,7 @@
     "128,141": "IF(EC129=\"\",\"\",IF(EA129=0,DZ129,IF(AND(EA129=1,EB129=1),DZ129,IF(OR(AND(EF129=1,EE129>EC129),AND(EF129=2,EE129>=EC129)),IF(EI129=1,EH129+EM129,0),EH129+EM129+((ROUNDUP((EC129-EE129)/EG129,0)+IF(AND(EF129=1,MOD((EC129-EE129),EG129)=0),1,0))*DZ129)))))",
     "77,124": "COUNTIF(DU67,\"<>\")",
     "109,99": "EF111",
-    "155,18": "IFERROR(ODATA(\"v_customer_order_type?$select=特記事項&$filter=顧客ID eq \"&IF(ISBLANK(AD17),\"null\",AD17)&\" and グループID eq \"&IF(ISBLANK(AD4),\"null\",AD4)&\" and 申込タイプID eq \"&IF(ISBLANK(申込タイプID),\"null\",申込タイプID)),\"\")",
+    "149,133": "IFERROR(ODATA(\"v_customer_order_type?$select=特記事項&$filter=顧客ID eq \"&IF(ISBLANK(AD17),\"null\",AD17)&\" and グループID eq \"&IF(ISBLANK(AD4),\"null\",AD4)&\" and 申込タイプID eq \"&IF(ISBLANK(申込タイプID),\"null\",申込タイプID)),\"\")",
     "20,130": "申込ID",
     "54,128": "IF(DU35>0,DU35,\"\")",
     "23,137": "IFERROR(IF(AD27>0,ODATA(\"m_user?$select=mail_address&$filter=user_id eq \"&IF(ISBLANK(AD27),\"null\",AD27)),\"\"),\"\")",
@@ -99,7 +99,8 @@
     "22,29": "IF(DW31=0,\"\",DW31)",
     "28,137": "IFERROR(IF(BJ33>0,ODATA(\"m_user?$select=mail_address&$filter=user_id eq \"&IF(ISBLANK(BJ33),\"null\",BJ33)),\"\"),\"\")",
     "25,137": "IFERROR(IF(BJ31>0,ODATA(\"m_user?$select=mail_address&$filter=user_id eq \"&IF(ISBLANK(BJ31),\"null\",BJ31)),\"\"),\"\")",
-    "132,124": "SUMIF(DU129,1,EL129)"
+    "132,124": "SUMIF(DU129,1,EL129)",
+    "155,18": "IF(ED150=0,\"\",ED150)"
   },
   "ArrayFormulas": {
     "110,138,1,3": "IF(DX111>0,ODATA(\"v_customer_product?$select=商品名,商品注釈,販売単価&$filter=顧客ID eq \"&IF(ISBLANK(AD17),\"null\",AD17)&\" and グループID eq \"&IF(ISBLANK(AD4),\"null\",AD4)&\" and 申込タイプID eq \"&IF(ISBLANK(DZ45),\"null\",DZ45)&\" and 商品ID eq \"&IF(ISBLANK(DX111),\"null\",DX111)),\"\")",

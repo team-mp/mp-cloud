@@ -459,14 +459,18 @@
     "17,1": "解析履歴",
     "17,33": "過去の判定履歴",
     "17,41": "新規登録",
-    "17,49": "{=IFERROR(ODATA(\"m_customer_default?$select=construction_estimate_set_flg,sutudy_paper_request_flg,auto_construction_estimate_flg,no_compaction_judge_flg&$filter=customer_id eq \"&IF(ISBLANK(AZ6),\"null\",AZ6)),\"\")}",
+    "17,49": "{=IFERROR(ODATA(\"v_group_customer_default?$select=工事見積セット添付フラグ,検討書必要フラグ,工事判定自動見積フラグ,転圧判定不可フラグ\"),\"\")}",
+    "17,51": "{=IFERROR(ODATA(\"m_customer_default?$select=construction_estimate_set_flg,study_paper_request_flg,auto_construction_estimate_flg,no_compaction_judge_flg&$filter=customer_id eq \"&IF(ISBLANK(BD7),\"null\",BD7)),\"\")}",
     "20,49": "▼申込ID",
     "20,55": "▼申込タイプID",
     "20,61": "▼グループID",
-    "20,69": "▼住宅事業者名",
+    "20,68": "▼住宅事業者ID",
+    "20,75": "▼住宅事業者名",
+    "20,82": "▼グループ既定優先フラグ",
     "23,49": "▼申込キャンセル日時",
     "23,61": "▼基礎形状ID",
-    "23,69": "▼建物構造ID",
+    "23,68": "▼建物構造ID",
+    "23,82": "▼グループ顧客ID",
     "26,49": "▼解析ビュー",
     "27,51": "解析履歴番号",
     "27,94": "売",
@@ -529,10 +533,10 @@
     "28,85": "IF(CF29<>\"\",CG29,\"\")",
     "15,19": "AY18",
     "28,100": "ODATA(\"t_object_attachment/$count?$filter=analysis_id eq \"&IF(ISBLANK(AY29),\"null\",AY29)&\" and file_attribute_id eq \"&IF(ISBLANK(地盤判定書ファイル属性ID),\"null\",地盤判定書ファイル属性ID)&\" and active_flg eq 1\")",
-    "28,99": "ODATA(\"m_customer_default?$select=sutudy_paper_request_flg&$filter=customer_id eq \"&IF(ISBLANK($BD$7),\"null\",$BD$7))"
+    "28,99": "ODATA(\"m_customer_default?$select=study_paper_request_flg&$filter=customer_id eq \"&IF(ISBLANK($BD$7),\"null\",$BD$7))"
   },
   "ArrayFormulas": {
-    "17,49,1,4": "IFERROR(ODATA(\"m_customer_default?$select=construction_estimate_set_flg,sutudy_paper_request_flg,auto_construction_estimate_flg,no_compaction_judge_flg&$filter=customer_id eq \"&IF(ISBLANK(BD7),\"null\",BD7)),\"\")"
+    "17,49,1,4": "IFERROR(ODATA(\"v_group_customer_default?$select=工事見積セット添付フラグ,検討書必要フラグ,工事判定自動見積フラグ,転圧判定不可フラグ&$filter=グループID eq \"&IF(ISBLANK(BJ22),\"null\",BJ22)&\" and 顧客ID eq \"&IF(ISBLANK(BQ22),\"null\",BQ22)),\"\")"
   },
   "AttachInfos": {
     "1,0": {
@@ -697,7 +701,7 @@
                     ]
                   }
                 ],
-                "ID": "461344f1-0412-4be1-9250-759fa4d90f57"
+                "ID": "dca10954-0344-4bfe-acca-4a12e08af949"
               },
               {
                 "CommandList": [
@@ -709,7 +713,7 @@
                     }
                   }
                 ],
-                "ID": "5a15464a-a971-4d5a-8e9d-06e7bb517b9c"
+                "ID": "7f253f57-19b9-483a-95d7-3029b9d86167"
               }
             ]
           }
@@ -958,7 +962,7 @@
                     }
                   }
                 ],
-                "ID": "b5daf925-c844-43a5-a305-8c38ff0b3be9"
+                "ID": "04eafbcf-52ff-4016-b752-ba07332eb0f8"
               },
               {
                 "CommandList": [
@@ -975,7 +979,7 @@
                     ]
                   }
                 ],
-                "ID": "07f1b31d-2d6d-46b9-b8b3-f8a9c1a9d3c0"
+                "ID": "25242dd3-e07d-4e43-89bf-646d429bcae1"
               }
             ]
           }
@@ -1051,7 +1055,7 @@
                     "Comments": "設計接地圧セット"
                   }
                 ],
-                "ID": "e44fb5cb-b567-4dd6-acd4-ea5ff97c489e"
+                "ID": "acf01584-9ac0-4b77-b0bf-1db6a1680214"
               }
             ]
           }
@@ -1127,7 +1131,7 @@
                     "Comments": "設計接地圧セット"
                   }
                 ],
-                "ID": "d9d75763-3001-43c9-b6a9-3b77b964b9fe"
+                "ID": "5920015d-195b-49ec-8463-f9a678272679"
               }
             ]
           }
@@ -1242,11 +1246,6 @@
       ]
     },
     "15,26": {
-      "BindingInfo": {
-        "TableName": "m_customer_default",
-        "ColumnName": "no_compaction_estimate_flg",
-        "GUID": "399ab82f-ba24-42da-8010-048f962ee6e8"
-      },
       "CellType": {
         "$type": "Forguncy.CheckBoxCellType, ServerDesignerCommon",
         "Caption": "工事判定自動見積あり",
@@ -1275,52 +1274,128 @@
         "$type": "Forguncy.ImageCellType, ServerDesignerCommon",
         "CommandList": [
           {
-            "$type": "Forguncy.Model.ShareCommand, ServerDesignerCommon",
-            "ShareCommandContainerRefer": {
-              "ShareCommandContainerID": "bd2b65b1-655e-487a-a5c4-a5e8eccac022"
-            },
-            "Params": [
+            "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+            "ConditionAndCommandPairList": [
               {
-                "ParamReferObject": {
-                  "ParamID": "f6049859-7213-4e57-91e1-feb1955b999c",
-                  "ShareCommandContainerReferObject": {
-                    "ShareCommandContainerID": "bd2b65b1-655e-487a-a5c4-a5e8eccac022"
-                  }
+                "Condition": {
+                  "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                  "param": {
+                    "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+                    "cellLocations": [
+                      {
+                        "SerializeProperty": "=物件詳細_解析!CE22"
+                      }
+                    ]
+                  },
+                  "value": "1"
                 },
-                "Value": {
-                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=物件詳細_解析!BD7"
-                }
+                "CommandList": [
+                  {
+                    "$type": "Forguncy.Model.ShareCommand, ServerDesignerCommon",
+                    "ShareCommandContainerRefer": {
+                      "ShareCommandContainerID": "bd2b65b1-655e-487a-a5c4-a5e8eccac022"
+                    },
+                    "Params": [
+                      {
+                        "ParamReferObject": {
+                          "ParamID": "f6049859-7213-4e57-91e1-feb1955b999c",
+                          "ShareCommandContainerReferObject": {
+                            "ShareCommandContainerID": "bd2b65b1-655e-487a-a5c4-a5e8eccac022"
+                          }
+                        },
+                        "Value": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=物件詳細_解析!CE25"
+                        }
+                      },
+                      {
+                        "ParamReferObject": {
+                          "ParamID": "6ba80694-0208-45aa-b052-beb9ca3569ca",
+                          "ShareCommandContainerReferObject": {
+                            "ShareCommandContainerID": "bd2b65b1-655e-487a-a5c4-a5e8eccac022"
+                          }
+                        },
+                        "Value": "1"
+                      },
+                      {
+                        "ParamReferObject": {
+                          "ParamID": "49fea88f-fcbe-42c8-b070-8439f90243b5",
+                          "ShareCommandContainerReferObject": {
+                            "ShareCommandContainerID": "bd2b65b1-655e-487a-a5c4-a5e8eccac022"
+                          }
+                        },
+                        "Value": "2"
+                      },
+                      {
+                        "ParamReferObject": {
+                          "ParamID": "6726d2b8-d94f-4aaf-99c3-01a1555a2778",
+                          "ShareCommandContainerReferObject": {
+                            "ShareCommandContainerID": "bd2b65b1-655e-487a-a5c4-a5e8eccac022"
+                          }
+                        },
+                        "Value": "4"
+                      }
+                    ],
+                    "Comments": "既定値タブへ"
+                  }
+                ],
+                "Comments": "グループ既定優先の場合",
+                "ID": "962c5fc6-89df-45f9-a74b-663c2a8ad88f"
               },
               {
-                "ParamReferObject": {
-                  "ParamID": "6ba80694-0208-45aa-b052-beb9ca3569ca",
-                  "ShareCommandContainerReferObject": {
-                    "ShareCommandContainerID": "bd2b65b1-655e-487a-a5c4-a5e8eccac022"
+                "CommandList": [
+                  {
+                    "$type": "Forguncy.Model.ShareCommand, ServerDesignerCommon",
+                    "ShareCommandContainerRefer": {
+                      "ShareCommandContainerID": "bd2b65b1-655e-487a-a5c4-a5e8eccac022"
+                    },
+                    "Params": [
+                      {
+                        "ParamReferObject": {
+                          "ParamID": "f6049859-7213-4e57-91e1-feb1955b999c",
+                          "ShareCommandContainerReferObject": {
+                            "ShareCommandContainerID": "bd2b65b1-655e-487a-a5c4-a5e8eccac022"
+                          }
+                        },
+                        "Value": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=物件詳細_解析!BD7"
+                        }
+                      },
+                      {
+                        "ParamReferObject": {
+                          "ParamID": "6ba80694-0208-45aa-b052-beb9ca3569ca",
+                          "ShareCommandContainerReferObject": {
+                            "ShareCommandContainerID": "bd2b65b1-655e-487a-a5c4-a5e8eccac022"
+                          }
+                        },
+                        "Value": "1"
+                      },
+                      {
+                        "ParamReferObject": {
+                          "ParamID": "49fea88f-fcbe-42c8-b070-8439f90243b5",
+                          "ShareCommandContainerReferObject": {
+                            "ShareCommandContainerID": "bd2b65b1-655e-487a-a5c4-a5e8eccac022"
+                          }
+                        },
+                        "Value": "2"
+                      },
+                      {
+                        "ParamReferObject": {
+                          "ParamID": "6726d2b8-d94f-4aaf-99c3-01a1555a2778",
+                          "ShareCommandContainerReferObject": {
+                            "ShareCommandContainerID": "bd2b65b1-655e-487a-a5c4-a5e8eccac022"
+                          }
+                        },
+                        "Value": "4"
+                      }
+                    ],
+                    "Comments": "既定値タブへ"
                   }
-                },
-                "Value": "1"
-              },
-              {
-                "ParamReferObject": {
-                  "ParamID": "49fea88f-fcbe-42c8-b070-8439f90243b5",
-                  "ShareCommandContainerReferObject": {
-                    "ShareCommandContainerID": "bd2b65b1-655e-487a-a5c4-a5e8eccac022"
-                  }
-                },
-                "Value": "2"
-              },
-              {
-                "ParamReferObject": {
-                  "ParamID": "6726d2b8-d94f-4aaf-99c3-01a1555a2778",
-                  "ShareCommandContainerReferObject": {
-                    "ShareCommandContainerID": "bd2b65b1-655e-487a-a5c4-a5e8eccac022"
-                  }
-                },
-                "Value": "4"
+                ],
+                "ID": "f5671979-c4e8-4d49-8335-97ac4025df46"
               }
-            ],
-            "Comments": "既定値タブへ"
+            ]
           }
         ],
         "ToolTip": "解析条件を編集できます",
@@ -1352,7 +1427,7 @@
               {
                 "Source": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=物件詳細_解析!BR22"
+                  "SerializeProperty": "=物件詳細_解析!BX22"
                 },
                 "TargetCell": {
                   "SerializeProperty": "=過去判定検索!住宅事業者名"
@@ -1423,7 +1498,7 @@
                 ]
               }
             },
-            "ID": "526d07cba138458199f940f67873b12f"
+            "ID": "5d3dec75253c47fca150975a76848a47"
           },
           {
             "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
@@ -1451,7 +1526,7 @@
                     "$type": "Forguncy.Model.StopCommand, ServerDesignerCommon"
                   }
                 ],
-                "ID": "da704d32-0d95-4652-ba5d-1523498af4c7"
+                "ID": "02a9e9fb-42e7-41cb-b4a7-d619612095d6"
               }
             ]
           },
@@ -1475,6 +1550,15 @@
               {
                 "Source": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=物件詳細_解析!BJ22"
+                },
+                "TargetCell": {
+                  "SerializeProperty": "=解析登録フレーム!グループID"
+                }
+              },
+              {
+                "Source": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
                   "SerializeProperty": "=物件詳細_解析!BD7"
                 },
                 "TargetCell": {
@@ -1484,7 +1568,7 @@
               {
                 "Source": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=物件詳細_解析!BR22"
+                  "SerializeProperty": "=物件詳細_解析!BX22"
                 },
                 "TargetCell": {
                   "SerializeProperty": "=解析登録フレーム!住宅事業者名"
@@ -1612,7 +1696,14 @@
         "GUID": "50f7b4e1-433f-477d-87e2-68d4270d8e72"
       }
     },
-    "21,69": {
+    "21,68": {
+      "BindingInfo": {
+        "TableName": "t_object_order",
+        "ColumnName": "builder_id",
+        "GUID": "17db9e3d-85ff-43fc-8167-1d9feb94b864"
+      }
+    },
+    "21,75": {
       "BindingInfo": {
         "TableName": "t_object_order",
         "ColumnName": "builder_id",
@@ -1621,6 +1712,18 @@
           "RelatedTable": "m_customer",
           "RelatedColumn": "customer_id",
           "DisplayColumn": "内部顧客名"
+        }
+      }
+    },
+    "21,82": {
+      "BindingInfo": {
+        "TableName": "t_object_order",
+        "ColumnName": "group_id",
+        "GUID": "387bf0b6-0c02-44a4-a2a6-38da4a42fc35",
+        "RelationBinding": {
+          "RelatedTable": "m_group",
+          "RelatedColumn": "group_id",
+          "DisplayColumn": "group_default_priority_flg"
         }
       }
     },
@@ -1643,7 +1746,7 @@
         }
       }
     },
-    "24,69": {
+    "24,68": {
       "BindingInfo": {
         "TableName": "t_object_order",
         "ColumnName": "object_id",
@@ -1652,6 +1755,18 @@
           "RelatedTable": "t_object",
           "RelatedColumn": "object_id",
           "DisplayColumn": "structure_id"
+        }
+      }
+    },
+    "24,82": {
+      "BindingInfo": {
+        "TableName": "t_object_order",
+        "ColumnName": "group_id",
+        "GUID": "bc5c9ff8-df87-45a7-b504-bac13574ec46",
+        "RelationBinding": {
+          "RelatedTable": "m_group",
+          "RelatedColumn": "group_id",
+          "DisplayColumn": "customer_id"
         }
       }
     },
@@ -1668,7 +1783,7 @@
           "ColumnBindingInfo": {
             "TableName": "t_object_analysis",
             "ColumnName": "object_order_id",
-            "GUID": "10eb1dc6-8daf-45a1-a9f8-47f25cbcf9a8"
+            "GUID": "af9d4ecd-d520-4964-aeb4-cf99edbc78db"
           },
           "Value": {
             "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
@@ -1681,7 +1796,7 @@
               "ColumnBindingInfo": {
                 "TableName": "t_object_analysis",
                 "ColumnName": "analysis_id",
-                "GUID": "f78a09e9-c2b1-49bf-a27f-94edfc82149c"
+                "GUID": "182875bd-62b6-4ed5-b568-97a3ad74f04d"
               },
               "Order": 1
             }
@@ -2865,15 +2980,7 @@
       "15,1": 19,
       "15,8": 1,
       "15,19": 1,
-      "15,26": 5,
-      "15,27": 5,
-      "15,28": 5,
-      "15,29": 5,
-      "15,30": 5,
-      "15,32": 5,
-      "15,33": 5,
-      "15,34": 5,
-      "15,35": 5,
+      "15,26": 1,
       "15,36": 20,
       "15,45": 5,
       "15,46": 5,
@@ -2993,9 +3100,18 @@
       "20,61": 8,
       "20,62": 5,
       "20,63": 5,
+      "20,68": 8,
+      "20,69": 5,
+      "20,70": 5,
+      "20,75": 5,
+      "20,76": 5,
+      "20,77": 5,
       "20,78": 2,
       "20,79": 2,
       "20,80": 2,
+      "20,82": 8,
+      "20,83": 5,
+      "20,84": 5,
       "21,49": 29,
       "21,50": 5,
       "21,51": 5,
@@ -3009,10 +3125,14 @@
       "21,61": 29,
       "21,62": 5,
       "21,63": 5,
-      "21,69": 4,
+      "21,68": 4,
+      "21,75": 29,
+      "21,76": 5,
+      "21,77": 5,
       "21,78": 2,
       "21,79": 2,
       "21,80": 2,
+      "21,82": 4,
       "22,61": 5,
       "22,62": 5,
       "22,63": 5,
@@ -3030,7 +3150,7 @@
       "23,68": 5,
       "23,69": 5,
       "23,70": 5,
-      "23,71": 5,
+      "23,82": 8,
       "23,83": 5,
       "23,84": 5,
       "23,85": 5,
@@ -3059,10 +3179,10 @@
       "24,63": 5,
       "24,66": 5,
       "24,67": 5,
-      "24,68": 5,
-      "24,69": 29,
+      "24,68": 29,
+      "24,69": 5,
       "24,70": 5,
-      "24,71": 5,
+      "24,82": 4,
       "26,49": 8,
       "26,50": 5,
       "26,51": 5,
@@ -3664,14 +3784,12 @@
     "19,1,19,47",
     "21,49,1,3",
     "24,49,1,3",
-    "24,69,1,3",
     "33,49,1,3",
     "17,41,1,7",
     "18,44,1,2",
     "15,45,1,2",
     "18,39,1,2",
     "17,33,1,7",
-    "21,69,1,3",
     "3,0,8,49",
     "6,55,1,3",
     "33,63,1,3",
@@ -3700,7 +3818,6 @@
     "61,61,1,5",
     "62,61,1,5",
     "53,61,1,5",
-    "15,26,1,10",
     "13,12,1,6",
     "13,24,1,5",
     "13,36,1,4",
@@ -3724,7 +3841,13 @@
     "29,49,2,64",
     "15,19,1,7",
     "15,8,1,11",
-    "15,36,1,8"
+    "15,36,1,8",
+    "15,26,1,10",
+    "24,68,1,3",
+    "21,75,1,3",
+    "21,68,1,3",
+    "21,82,1,3",
+    "24,82,1,3"
   ],
   "PageInfo": {
     "$type": "Forguncy.Model.Pages.NormalPage, ServerDesignerCommon",
@@ -3760,7 +3883,7 @@
     },
     "RowBreakLines": [],
     "RepeatRangeSettings": [],
-    "RelatedDataTableName": "m_customer_default",
+    "RelatedDataTableName": "t_object_order",
     "PageResponsiveMode": 2,
     "ConditionFormatRulesCollection": {
       "Rules": [
@@ -4036,4 +4159,4 @@
       "Formula": "物件詳細_解析!$AY$18"
     }
   ]
-}//SxvzagHA5YSu4+B0Pow3MNffJU8QnAKcaBE9HwZ/sPZmXGA0q5StPV8k3O3sDQUTuby2xEP+xFd0r80CTzAPsTpOYgjBL3NW5EGGOimwn6PvhK6vBxiCecHVxbVXAD1j059MRkWPuI+8TB291OsHcKbWz1O2J0wo63e5vQvJfyQM2GiDPOqHpoYtvLwzdTBTICfnOn557UgwoPTrQrfx5avUwfJAgUZchnzLvSoE39jajys4xwlysWnV/w2IR2oV6k0CZnHVbLwy3CMj75vlgScfMSrx6oXqf4n0D5RWxgRml8C4oXgRK3vG8+pNVuoWgWtUhf2ZmZ8pa2O7wedaZwG1DE4RjkNqSZ4MNALAXtMeO1sX63atfNMckYa6QcHHI4aN4X1C2s1ct1m/WepIgz9ID7n6NTuW9/vLEkFSAGEKod9EbEpx71v5rdGqo2kV9308Jy82Csq8ScdW6wstfbdEgp7YQh05zSTtowRfxmR1rIY1SuLT49q716IPTARNZZfjtJ6tye/6TF4WScDpqsn5S06hXIE1QbS4CA4UmJ0AJ7qEcDgiCJAmDGMplsMGa6YDHcm3/L3pYKRaTpYTbX/sm4JFRZRi3EBS8hLhzMrDTlj6ZbXBPzOI11SkUAU0cjr1Ny/iAu4vcjnTHClaoKHW2p9baiKHLh+0KsPxY4eENREbFe2K/6uu3WPvtPzgl8erMr1SLxMNnPKsolA1nkPQMI892Qw39cYiAPmfRhseb35Ka58HqicZDF/pQcPAGMA9BPYLTBMBx2tMGt63pwG8i+vHhsE0CAMo6RCmZpDztUv/mKXK1TlP4/tt5U6kzswUsPuBg+rrOrswU1oGqhks84phco7sLe3Zw5HX6icq7f9rxRQMz8iCx8UqJBd3b45IY0klLDd3J90TD5TcVA==|920
+}//BKVy5h6ylS0/rNClenituTM+ev82krvnxzzukww10bEzuf1DfuHgNyNFxsaU7sHVwZEmj/6N52Crx3psOdEubhhrhKBm6tcSkunSpmdhQusUM7qn1ZMGAZnFjh+BUvMhn9KUEAd8Pqz4D37XPKfZWdC2qpK8fklM1NihtTl5bkrZEZc11SkeFdvHVLpJQB9LLA/Segrlf6cho5mNMHz257X9/cGAaM0Mdqh6DHSDnOfnGzK9267sxS0tEtwvaWxMuiWRRHs/7CtsFUpFRZSAVueXlufVCpDnVaFYNDBjqRYzTekTVhKpJD7YMIwrD0S4pKcOsG/4FhsrD0RWPsXiXjiPeO/UjANekHke/8ft0CSK5HP+OGVGANuCITTmJu7ROc4ejoiII1+jxgxFyEloCZqWESHguy10wzf3xFQyX/U0LrkFoZDmC+6q5bz73W0SiAyYT7EN4AEii1E9wGSJH7oiYPfLm4PFiLr1GQ0ole9Hs4YforA4aLRTKZDYmDvttZ+p+xb/7PJdrO7X0rHwhUngAnH+ZElD9DFoMtRyd/+9bSuqU0sYn8x/fi4lpUPSnfB5YuVXU4yc2BKelfBoZA6dZrbazuV9cTSrkl3LMxUBRYtMOsoQgYrY/GyDE9B+Wg5QICWMOzfI6m6BSY8Rg99M9fx0Yh/SMeDPIge+YJBXtj+Bc9sDTYNqZEnx8je9tXY/dFZzH/ff3XJY+Ee/5qk9ALs4SgIln3A4+o/HNpkQbYKStZMhTHw3KWricKLmQUtt1qiup0epSe+bM/eex06aiVUR+md7Tnu3/avV2uRZuO5+lZ/EvigNtDJ7bEeaEzemWquLyskN8u3BpriEQhNUKW+TV+W6Dvz6FKvayaGN3lOolDu1ntpygys3c09Rrut0xI9Enw2fhgJNFvL6+w==|920

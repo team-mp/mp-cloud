@@ -3,10 +3,11 @@
   "ColumnCount": 93,
   "RowCount": 45,
   "Formulas": {
-    "8,52": "IF(OR(AS6=1,AS9=1),1,0)",
+    "11,52": "IF(OR(AS6=1,AS9=1),1,0)",
     "17,44": "ODATA(\"m_user_group?$select=user_group_id&$filter=analysis_user_flg eq 1\")",
     "2,52": "申込ID",
-    "5,52": "住宅事業者ID"
+    "8,52": "住宅事業者ID",
+    "5,52": "グループID"
   },
   "CustomNames": [
     {

@@ -13,7 +13,7 @@
     "12,100": "ODATA(\"t_object_attachment/$count?$filter=analysis_id eq \"&IF(ISBLANK(AY13),\"null\",AY13)&\" and file_attribute_id eq \"&IF(ISBLANK(地盤判定書ファイル属性ID),\"null\",地盤判定書ファイル属性ID)&\" and publish_flg eq 1 and active_flg eq 1\")",
     "12,104": "\"地盤判定書(\"&CW13&\")\"",
     "12,110": "ODATA(\"t_object_analysis/$count?$filter=object_order_id eq \"&IF(ISBLANK(AX13),\"null\",AX13)&\" and analysis_id gt \"&IF(ISBLANK(AY13),\"null\",AY13))",
-    "12,99": "ODATA(\"m_customer_default?$select=sutudy_paper_request_flg&$filter=customer_id eq \"&IF(ISBLANK($CE$6),\"null\",$CE$6))",
+    "12,99": "ODATA(\"m_customer_default?$select=study_paper_request_flg&$filter=customer_id eq \"&IF(ISBLANK($CE$6),\"null\",$CE$6))",
     "12,85": "IF(CF13<>\"\",CG13,\"\")",
     "12,108": "IF(DD13<>\"\",\"最終更新日時：\"&DD13,\"\")",
     "12,111": "IF(AND(CN13=0,CQ13=1),CE18,\"\")",

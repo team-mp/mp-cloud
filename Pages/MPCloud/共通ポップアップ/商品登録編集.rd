@@ -7,13 +7,13 @@
     "23,17": "R20-R22",
     "14,74": "IF(調査ID<>\"\",2,IF(転圧ID<>\"\",3,IF(工事ID<>\"\",4,IF(測量ID<>\"\",5,2))))",
     "26,49": "IFERROR(ODATA(\"m_customer?$select=purchase_required_flg&$filter=customer_id eq \"&IF(ISBLANK(AX12),\"null\",AX12)),0)",
-    "23,49": "IF(OR(AX34=1,BE34=1),1,0)",
+    "23,49": "IF(OR(AX34=1,BE36=1),1,0)",
     "34,3": "IF(BL34<>\"\",\"最終更新日時：\"&BL34,\"\")"
   },
   "CustomNames": [
     {
       "Name": "グループID",
-      "Formula": "商品登録編集!$BE$27"
+      "Formula": "商品登録編集!$BE$30"
     },
     {
       "Name": "解析ID",
@@ -49,7 +49,7 @@
     },
     {
       "Name": "住宅事業者ID",
-      "Formula": "商品登録編集!$BE$24"
+      "Formula": "商品登録編集!$BE$27"
     },
     {
       "Name": "申込ID",
@@ -57,7 +57,7 @@
     },
     {
       "Name": "申込タイプID",
-      "Formula": "商品登録編集!$BE$30"
+      "Formula": "商品登録編集!$BE$34"
     },
     {
       "Name": "請求先ID",
@@ -94,6 +94,10 @@
     {
       "Name": "タブID",
       "Formula": "商品登録編集!$BL$3"
+    },
+    {
+      "Name": "外販ID",
+      "Formula": "商品登録編集!$BE$24"
     }
   ]
 }
