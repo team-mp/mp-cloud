@@ -1,27 +1,27 @@
 {
   "PageType": 0,
-  "ColumnCount": 130,
+  "ColumnCount": 135,
   "RowCount": 68,
   "Formulas": {
-    "20,119": "COUNT(CE21)",
+    "20,124": "COUNT(CE21)",
     "33,119": "ODATA(\"t_object_construction/$count?$filter=object_order_id eq \"&IF(ISBLANK(CD34),\"null\",CD34)&\" and construction_id gt \"&IF(ISBLANK(CE34),\"null\",CE34))",
     "38,81": "COUNT(CE34)",
     "33,118": "IF(DN34<>\"\",\"最終更新日時：\"&DN34,\"\")",
     "33,115": "\"施工報告書(\"&DK34&\")\"",
-    "20,117": "DJ21+DK21+DL21+DM21",
-    "20,109": "ODATA(\"t_object_attachment/$count?$filter=construction_estimate_id eq \"&IF(ISBLANK(CF21),\"null\",CF21)&\" and file_attribute_id eq \"&IF(ISBLANK(工事見積書ファイル属性ID),\"null\",工事見積書ファイル属性ID)&\" and active_flg eq 1\")",
+    "20,119": "DL21+DM21+DN21+DO21",
+    "20,113": "IF(ISNUMBER(SEARCH(\",\"&CF21&\",\",\",\"&表示中IDs&\",\")),1,0)",
     "11,26": "CE14",
     "11,11": "CD14",
     "33,114": "ODATA(\"t_object_attachment/$count?$filter=construction_id eq \"&IF(ISBLANK(CE34),\"null\",CE34)&\" and file_attribute_id eq \"&IF(ISBLANK(施工報告書ファイル属性ID),\"null\",施工報告書ファイル属性ID)&\" and active_flg eq 1\")",
     "29,88": "ODATA(\"m_customer_specify_construction/$count?$filter=customer_id eq \"&IF(ISBLANK(CJ7),\"null\",CJ7))",
     "33,113": "IF(OR(DG34=1,DH34=1,DI34=1),1,0)",
-    "20,110": "\"見積書(\"&DF21&\")\"",
-    "20,108": "ROW(CI21)",
+    "20,112": "\"見積書(\"&DH21&\")\"",
+    "20,111": "ODATA(\"t_object_attachment/$count?$filter=construction_estimate_id eq \"&IF(ISBLANK(CF21),\"null\",CF21)&\" and file_attribute_id eq \"&IF(ISBLANK(工事見積書ファイル属性ID),\"null\",工事見積書ファイル属性ID)&\" and active_flg eq 1\")",
     "33,105": "IFERROR(ODATA(\"v_construction_product_summary?$select=仕入合計&$filter=工事ID eq \"&IF(ISBLANK(CE34),\"null\",CE34)),0)",
-    "14,17": "IF(DP21>0,\"※現在、\"&DP21&\"社の工事会社が設定されています\",\"\")",
+    "14,17": "IF(DU21>0,\"※現在、\"&DU21&\"社の工事会社が設定されています\",\"\")",
     "33,83": "$CD$39-ROW(CD34)+1",
     "33,104": "IFERROR(ODATA(\"v_construction_product_summary?$select=売上合計&$filter=工事ID eq \"&IF(ISBLANK(CE34),\"null\",CE34)),0)",
-    "20,111": "IF(ISNUMBER(SEARCH(\",\"&CF21&\",\",\",\"&表示中IDs&\",\")),1,0)",
+    "20,110": "ROW(CI21)",
     "29,112": "TEXTJOIN(\",\",TRUE,CF21)"
   },
   "ArrayFormulas": {
@@ -46,11 +46,11 @@
     },
     {
       "Name": "元_見積送付コメント",
-      "Formula": "物件詳細_工事!$DQ$58"
+      "Formula": "物件詳細_工事!$DQ$59"
     },
     {
       "Name": "元_見積送付日",
-      "Formula": "物件詳細_工事!$DQ$57"
+      "Formula": "物件詳細_工事!$DQ$58"
     },
     {
       "Name": "元_工事ステータスID",
@@ -66,7 +66,7 @@
     },
     {
       "Name": "元_工事見積ステータスID",
-      "Formula": "物件詳細_工事!$DQ$60"
+      "Formula": "物件詳細_工事!$DQ$61"
     },
     {
       "Name": "元_工事見積会社ID",
@@ -138,7 +138,7 @@
     },
     {
       "Name": "元_社内備考",
-      "Formula": "物件詳細_工事!$DQ$59"
+      "Formula": "物件詳細_工事!$DQ$60"
     },
     {
       "Name": "元_受注確定日",
@@ -146,11 +146,11 @@
     },
     {
       "Name": "元_設計承認フラグ",
-      "Formula": "物件詳細_工事!$DQ$56"
+      "Formula": "物件詳細_工事!$DQ$57"
     },
     {
       "Name": "元_設計審査コメント",
-      "Formula": "物件詳細_工事!$DQ$55"
+      "Formula": "物件詳細_工事!$DQ$56"
     },
     {
       "Name": "元_設計審査結果",
@@ -171,6 +171,10 @@
     {
       "Name": "表示中IDs",
       "Formula": "物件詳細_工事!$DL$14"
+    },
+    {
+      "Name": "元_仮承認フラグ",
+      "Formula": "物件詳細_工事!$DQ$55"
     }
   ]
 }

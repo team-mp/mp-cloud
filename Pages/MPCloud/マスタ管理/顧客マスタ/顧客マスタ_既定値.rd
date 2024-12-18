@@ -1,7 +1,7 @@
 {
   "PageType": 0,
   "ColumnCount": 60,
-  "RowCount": 71,
+  "RowCount": 72,
   "Formulas": {
     "4,36": "IF(顧客ID=\"\",0,顧客ID)"
   },
