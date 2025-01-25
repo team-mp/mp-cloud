@@ -1,0 +1,323 @@
+{
+  "Name": "請求明細ダウンロード",
+  "Enabled": true,
+  "Triggers": [
+    {
+      "$type": "Forguncy.SaveLoad.PostRequestTriggerSaveData, ServerDesignerCommon",
+      "Permission": {
+        "PermissionData": {
+          "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionData, Forguncy.RbacPermission.Core",
+          "permissionResource": {
+            "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionResource, Forguncy.RbacPermission.Core"
+          },
+          "permissionBindings": [
+            {
+              "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionBinding, Forguncy.RbacPermission.Core",
+              "roleNames": [
+                "FGC_LoginUser"
+              ]
+            }
+          ]
+        }
+      },
+      "Parameters": [
+        {
+          "Name": "P_請求番号s",
+          "DataValidationInfo": {}
+        }
+      ]
+    }
+  ],
+  "Commands": [
+    {
+      "$type": "Forguncy.Model.RequestServerCommand, ServerDesignerCommon",
+      "ServerCommandName": "個人フォルダパス取得",
+      "ReturnPropertiesTo": [
+        {
+          "ResultPropertyName": "R_個人フォルダパス名",
+          "ResultTo": {
+            "SerializeProperty": "個人フォルダパス名"
+          }
+        }
+      ],
+      "RefreshAfterFinish": true,
+      "CheckDataValidation": true
+    },
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "EXCELのファイルパス",
+      "ParameterValue": {
+        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+        "SerializeProperty": "=個人フォルダパス名&\"請求明細データ.xlsx\""
+      },
+      "ID": "f005214448c44c0589c882b91230a917"
+    },
+    {
+      "$type": "Forguncy.Model.Commands.ServerImportExportExcelCommand, ServerDesignerCommon",
+      "ExcelOperation": 1,
+      "FilePath": {
+        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+        "SerializeProperty": "=EXCELのファイルパス"
+      },
+      "TableName": "t_sales",
+      "Columns": [
+        {
+          "BindingColumn": {
+            "TableName": "t_sales",
+            "ColumnName": "billing_no",
+            "GUID": "7eb60486-05ae-4535-bc73-a8e0bcf92a4a"
+          },
+          "ExcelColumnNameOrIndex": "請求番号"
+        },
+        {
+          "BindingColumn": {
+            "TableName": "t_sales",
+            "ColumnName": "billing_comp_id",
+            "GUID": "f1db7516-ded9-4b6b-ad3d-cab936456efb"
+          },
+          "ExcelColumnNameOrIndex": "請求先コード"
+        },
+        {
+          "BindingColumn": {
+            "TableName": "t_sales",
+            "ColumnName": "billing_name",
+            "GUID": "24c109ac-cc81-4f20-9acc-4bfde5ca2188"
+          },
+          "ExcelColumnNameOrIndex": "請求先名"
+        },
+        {
+          "BindingColumn": {
+            "TableName": "t_sales",
+            "ColumnName": "billing_comp_id",
+            "GUID": "3bc29a0e-c635-405f-afaf-49a4f51a2604",
+            "RelationBinding": {
+              "RelatedTable": "m_customer",
+              "RelatedColumn": "customer_id",
+              "DisplayColumn": "post_no"
+            }
+          },
+          "ExcelColumnNameOrIndex": "郵便番号"
+        },
+        {
+          "BindingColumn": {
+            "TableName": "t_sales",
+            "ColumnName": "billing_comp_id",
+            "GUID": "b743dc09-3af8-43ae-9ccc-d070dd1cbdc9",
+            "RelationBinding": {
+              "RelatedTable": "m_customer",
+              "RelatedColumn": "customer_id",
+              "DisplayColumn": "住所"
+            }
+          },
+          "ExcelColumnNameOrIndex": "住所"
+        },
+        {
+          "BindingColumn": {
+            "TableName": "t_sales",
+            "ColumnName": "object_order_id",
+            "GUID": "fcfac91c-0e05-49fb-b9fb-a4f68dd92d45",
+            "RelationBinding": {
+              "RelatedTable": "t_object_order",
+              "RelatedColumn": "object_order_id",
+              "DisplayColumn": "object_id",
+              "NextRelationBinding": {
+                "RelatedTable": "t_object",
+                "RelatedColumn": "object_id",
+                "DisplayColumn": "物件番号"
+              }
+            }
+          },
+          "ExcelColumnNameOrIndex": "物件番号"
+        },
+        {
+          "BindingColumn": {
+            "TableName": "t_sales",
+            "ColumnName": "builder_name",
+            "GUID": "6d3573d5-5f70-4775-aa5e-a41795948ae1"
+          },
+          "ExcelColumnNameOrIndex": "住宅事業者名"
+        },
+        {
+          "BindingColumn": {
+            "TableName": "t_sales",
+            "ColumnName": "object_name",
+            "GUID": "e7a84124-4a65-4323-ae86-4451239cce7f"
+          },
+          "ExcelColumnNameOrIndex": "物件名"
+        },
+        {
+          "BindingColumn": {
+            "TableName": "t_sales",
+            "ColumnName": "object_address",
+            "GUID": "0c3179a4-a0e0-43d8-b521-9115a3d96ae4"
+          },
+          "ExcelColumnNameOrIndex": "物件住所"
+        },
+        {
+          "BindingColumn": {
+            "TableName": "t_sales",
+            "ColumnName": "sales_date",
+            "GUID": "9a59c27a-245d-4a49-9a61-3f49f787bb6c"
+          },
+          "ExcelColumnNameOrIndex": "売上日",
+          "Formatter": "yyyy/m/d"
+        },
+        {
+          "BindingColumn": {
+            "TableName": "t_sales",
+            "ColumnName": "billing_date",
+            "GUID": "09788cdc-434b-407b-b73e-92a923136f76"
+          },
+          "ExcelColumnNameOrIndex": "請求締日",
+          "Formatter": "yyyy/m/d"
+        },
+        {
+          "BindingColumn": {
+            "TableName": "t_sales",
+            "ColumnName": "billing_product_name",
+            "GUID": "e7993e95-5807-4c02-acda-a3506c68c4ea"
+          },
+          "ExcelColumnNameOrIndex": "商品名"
+        },
+        {
+          "BindingColumn": {
+            "TableName": "t_sales",
+            "ColumnName": "billing_remarks",
+            "GUID": "ee51d3ca-64a8-4010-a72c-c1920956685e"
+          },
+          "ExcelColumnNameOrIndex": "明細摘要"
+        },
+        {
+          "BindingColumn": {
+            "TableName": "t_sales",
+            "ColumnName": "billing_remarks2",
+            "GUID": "4ddfbdce-6de9-46bc-a311-755a8958db6f"
+          },
+          "ExcelColumnNameOrIndex": "明細摘要2"
+        },
+        {
+          "BindingColumn": {
+            "TableName": "t_sales",
+            "ColumnName": "dedicated_billing_no",
+            "GUID": "fbe32816-0f4a-457c-8c5d-f61501462f0b"
+          },
+          "ExcelColumnNameOrIndex": "専用請求番号"
+        },
+        {
+          "BindingColumn": {
+            "TableName": "t_sales",
+            "ColumnName": "excluding_tax_amount",
+            "GUID": "d2e6005a-4d07-4a61-9fae-b6f246832075"
+          },
+          "ExcelColumnNameOrIndex": "売上金額"
+        },
+        {
+          "BindingColumn": {
+            "TableName": "t_sales",
+            "ColumnName": "tax_amount",
+            "GUID": "5dbf6f3f-09f0-49a3-8ab8-fe0b3d9883ce"
+          },
+          "ExcelColumnNameOrIndex": "売上消費税"
+        },
+        {
+          "BindingColumn": {
+            "TableName": "t_sales",
+            "ColumnName": "billing_amount",
+            "GUID": "1b0cb75e-b116-408d-b317-c0fb4907ec4e"
+          },
+          "ExcelColumnNameOrIndex": "売上合計"
+        },
+        {
+          "BindingColumn": {
+            "TableName": "t_sales",
+            "ColumnName": "billing_comp_id",
+            "GUID": "761f79cf-69b2-4e3f-a834-732adf8d8874",
+            "RelationBinding": {
+              "RelatedTable": "m_customer",
+              "RelatedColumn": "customer_id",
+              "DisplayColumn": "sales_staff_id",
+              "NextRelationBinding": {
+                "RelatedTable": "m_user",
+                "RelatedColumn": "user_id",
+                "DisplayColumn": "user_name"
+              }
+            }
+          },
+          "ExcelColumnNameOrIndex": "営業担当者名"
+        }
+      ],
+      "QueryCondition": {
+        "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+        "SubConditions": [
+          {
+            "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+            "CompareType": 8,
+            "ColumnBindingInfo": {
+              "TableName": "t_sales",
+              "ColumnName": "billing_no",
+              "GUID": "5356c742-4ad4-4655-b032-6dafb7823787"
+            },
+            "Value": {
+              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+              "SerializeProperty": "=P_請求番号s"
+            }
+          },
+          {
+            "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+            "ColumnBindingInfo": {
+              "TableName": "t_sales",
+              "ColumnName": "delete_flg",
+              "GUID": "357f126c-de6d-48a4-b23b-9e57bf988dde"
+            },
+            "Value": "0"
+          }
+        ]
+      },
+      "OrderBySqlCondition": {
+        "OrderByColumns": [
+          {
+            "ColumnBindingInfo": {
+              "TableName": "t_sales",
+              "ColumnName": "billing_no",
+              "GUID": "64f9aa02-e9d3-4021-84b0-7f907e3a9b1c"
+            },
+            "Order": 0
+          },
+          {
+            "ColumnBindingInfo": {
+              "TableName": "t_sales",
+              "ColumnName": "object_order_id",
+              "GUID": "0b1b2c3d-b062-4594-afeb-ebcbe55b6622",
+              "RelationBinding": {
+                "RelatedTable": "t_object_order",
+                "RelatedColumn": "object_order_id",
+                "DisplayColumn": "object_id",
+                "NextRelationBinding": {
+                  "RelatedTable": "t_object",
+                  "RelatedColumn": "object_id",
+                  "DisplayColumn": "物件番号"
+                }
+              }
+            },
+            "Order": 0
+          },
+          {
+            "ColumnBindingInfo": {
+              "TableName": "t_sales",
+              "ColumnName": "auto_billing_detail_no",
+              "GUID": "a073711b-cb10-494c-9ca8-01e341dad650"
+            },
+            "Order": 0
+          }
+        ]
+      }
+    },
+    {
+      "$type": "OperateFilesCommand.DownloadFileCommand, OperateFilesCommand",
+      "FilePath": {
+        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+        "SerializeProperty": "=EXCELのファイルパス"
+      }
+    }
+  ]
+}

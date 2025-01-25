@@ -1,0 +1,224 @@
+{
+  "Name": "検討書EXCELデータ連携",
+  "Enabled": true,
+  "Triggers": [
+    {
+      "$type": "Forguncy.SaveLoad.PostRequestTriggerSaveData, ServerDesignerCommon",
+      "Permission": {
+        "PermissionData": {
+          "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionData, Forguncy.RbacPermission.Core",
+          "permissionResource": {
+            "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionResource, Forguncy.RbacPermission.Core"
+          },
+          "permissionBindings": [
+            {
+              "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionBinding, Forguncy.RbacPermission.Core",
+              "roleNames": [
+                "FGC_LoginUser"
+              ]
+            }
+          ]
+        }
+      },
+      "Parameters": [
+        {
+          "Name": "P_添付ファイル",
+          "DataValidationInfo": {}
+        }
+      ]
+    }
+  ],
+  "Commands": [
+    {
+      "$type": "Forguncy.Model.ServerTransactionCommand, ServerDesignerCommon",
+      "CommandList": [
+        {
+          "$type": "Forguncy.Model.RequestServerCommand, ServerDesignerCommon",
+          "ServerCommandName": "登録更新ラベル取得",
+          "ResultErrorCodeTo": {
+            "SerializeProperty": "リターンコード"
+          },
+          "ResultMessageTo": {
+            "SerializeProperty": "リターンメッセージ"
+          },
+          "ReturnPropertiesTo": [
+            {
+              "ResultPropertyName": "R_ラベル名",
+              "ResultTo": {
+                "SerializeProperty": "最終更新ラベル"
+              }
+            }
+          ],
+          "RefreshAfterFinish": true,
+          "CheckDataValidation": true
+        },
+        {
+          "$type": "Forguncy.Model.RequestServerCommand, ServerDesignerCommon",
+          "ServerCommandName": "個人フォルダパス取得",
+          "ReturnPropertiesTo": [
+            {
+              "ResultPropertyName": "R_個人フォルダパス名",
+              "ResultTo": {
+                "SerializeProperty": "個人フォルダパス名"
+              }
+            }
+          ],
+          "RefreshAfterFinish": true,
+          "CheckDataValidation": true
+        },
+        {
+          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+          "ParameterName": "ユーザーID",
+          "ParameterValue": "%CurrentUser.user_id%",
+          "ID": "76c0f9889c9c47f7b176495018ec77dc"
+        },
+        {
+          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+          "ParameterName": "環境変数",
+          "TableValue": {
+            "TableName": "m_environment",
+            "TableValueType": 1,
+            "BindingInfos": [
+              {
+                "GUID": "4fc5eddc-3a20-4015-8e8e-15924482a03a",
+                "BindingInfo": {
+                  "TableName": "m_environment",
+                  "ColumnName": "app_name",
+                  "GUID": "c94bbbc8-bb7d-401f-9b92-4e3c898aa532"
+                },
+                "ColumnName": "アプリ名"
+              },
+              {
+                "GUID": "4f72ca6c-466c-4e43-9698-3f4c303c6900",
+                "BindingInfo": {
+                  "TableName": "m_environment",
+                  "ColumnName": "dropbox_folder_path",
+                  "GUID": "9cdcb319-7626-4b45-a06e-99d44aa1dd0e"
+                },
+                "ColumnName": "DropBoxフォルダパス"
+              }
+            ],
+            "SqlCondition": {
+              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+              "ColumnBindingInfo": {
+                "TableName": "m_environment",
+                "ColumnName": "ID",
+                "GUID": "2ea66b4e-0629-4c95-871e-1fc184613159"
+              },
+              "Value": "1"
+            }
+          },
+          "ID": "631cbf7fcd8d4f2c95c7bde40b0af6e1"
+        },
+        {
+          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+          "ParameterName": "保存元サーバーパス名",
+          "ParameterValue": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=\"C:\\ForguncyTemp\\\"&環境変数.アプリ名&\"\\Temp\\\""
+          },
+          "ID": "dc18bd1b78e446dab1eb413d7dc21f65"
+        },
+        {
+          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+          "ParameterName": "保存元サーバーパス名",
+          "ParameterValue": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=\"C:\\ForguncyTemp\\mp-test\\Temp\\\""
+          },
+          "ID": "5c07d7fd086e4a52b9f8b5adbe88501f"
+        },
+        {
+          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+          "ParameterName": "取得ファイル名",
+          "ParameterValue": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=SUBSTITUTE(P_添付ファイル,\"|\",\"\")"
+          },
+          "ID": "e043f93c73554dc8924882014f76f80a"
+        },
+        {
+          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+          "ParameterName": "取得ファイルフルパス名",
+          "ParameterValue": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=保存元サーバーパス名&取得ファイル名"
+          },
+          "ID": "7044bfd7f64e4674a627bcc59b264193"
+        },
+        {
+          "$type": "OperateFilesCommand.GetFileInformation, OperateFilesCommand",
+          "FilePath": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=取得ファイルフルパス名"
+          },
+          "FileInfomationType": 1,
+          "ToParameterName": "拡張子"
+        },
+        {
+          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+          "ParameterName": "入力ファイル名",
+          "ParameterValue": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=\"Input\"&拡張子"
+          },
+          "ID": "9836e570d08b4f2bad5d46d4358c7f66"
+        },
+        {
+          "$type": "OperateFilesCommand.CopyFileCommand, OperateFilesCommand",
+          "FilePath": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=取得ファイルフルパス名"
+          },
+          "TargetFolderPath": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=個人フォルダパス名"
+          },
+          "CopyFileName": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=入力ファイル名"
+          }
+        },
+        {
+          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+          "ParameterName": "入力ファイルフルパス名",
+          "ParameterValue": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=個人フォルダパス名&入力ファイル名"
+          },
+          "ID": "e8e53bd1a14946e991c081a89a6f3ef2"
+        },
+        {
+          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+          "ParameterName": "出力ファイルフルパス名",
+          "ParameterValue": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=個人フォルダパス名&\"連携シートワーク.xlsx\""
+          },
+          "ID": "61e103710bd545c5a6f708bc4f653d00"
+        },
+        {
+          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+          "ParameterName": "実行プログラムパス名",
+          "ParameterValue": "支持力検討書連携シート生成.exe",
+          "ID": "85fb833195a447d48c1cf8894410eed0"
+        },
+        {
+          "$type": "Forguncy.Model.BatchProgramCommand, ServerDesignerCommon",
+          "Path": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=実行プログラムパス名"
+          },
+          "Arguments": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=入力ファイルフルパス名&\" \"&出力ファイルフルパス名"
+          },
+          "WorkingDirectory": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=環境変数.DropBoxフォルダパス&\"実行プログラム\""
+          }
+        }
+      ]
+    }
+  ]
+}

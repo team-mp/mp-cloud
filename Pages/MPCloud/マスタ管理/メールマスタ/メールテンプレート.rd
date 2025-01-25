@@ -444,7 +444,7 @@
     "69,11": "SUBSTITUTE(L69,C70,G70)",
     "118,13": "SUBSTITUTE(N118,C119,G119)",
     "76,9": "SUBSTITUTE(J76,C77,G77)",
-    "150,42": "IF(G87<>\"\",G87,0)",
+    "151,42": "IF(G87<>\"\",G87,0)",
     "124,9": "SUBSTITUTE(J124,C125,G125)",
     "120,9": "SUBSTITUTE(J120,C121,G121)",
     "103,9": "SUBSTITUTE(J103,C104,G104)",
@@ -486,7 +486,8 @@
     "59,13": "SUBSTITUTE(N59,C60,G60)",
     "58,13": "SUBSTITUTE(N58,C59,G59)",
     "151,45": "IF(AT140=1,AT146,\"\")",
-    "148,45": "IF(AT140=1,AT143,\"\")"
+    "148,45": "IF(AT140=1,AT143,\"\")",
+    "153,42": "ODATA(\"m_mail_type?$select=mail_type_no&$filter=construction_flg eq 1\")"
   },
   "ArrayFormulas": {
     "11,42,1,2": "ODATA(\"m_customer?$select=customer_name,phone&$filter=customer_id eq \"&IF(ISBLANK(AR8),\"null\",AR8))",
@@ -553,6 +554,18 @@
     {
       "Name": "差出人アドレス",
       "Formula": "メールテンプレート!$R$24"
+    },
+    {
+      "Name": "営業担当CCフラグ",
+      "Formula": "メールテンプレート!$AT$140"
+    },
+    {
+      "Name": "営業担当ID",
+      "Formula": "メールテンプレート!$AT$143"
+    },
+    {
+      "Name": "営業担当メールアドレス",
+      "Formula": "メールテンプレート!$AT$146"
     }
   ]
 }

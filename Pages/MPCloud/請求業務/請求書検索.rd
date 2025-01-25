@@ -1,11 +1,10 @@
 {
   "PageType": 0,
-  "ColumnCount": 86,
-  "RowCount": 40,
+  "ColumnCount": 88,
+  "RowCount": 42,
   "Formulas": {
-    "1,2": "EOMONTH(TODAY(),-1)+1",
-    "17,7": "SUMIF(BP14,$BP$8,BY14)",
-    "17,26": "SUMIF(BP14,$BP$8,CA14)",
-    "17,17": "SUMIF(BP14,$BP$8,BZ14)"
+    "19,7": "SUMIF(BR14,$BR$8,CA14)",
+    "19,27": "SUMIF(BR14,$BR$8,CC14)",
+    "19,17": "SUMIF(BR14,$BR$8,CB14)"
   }
 }

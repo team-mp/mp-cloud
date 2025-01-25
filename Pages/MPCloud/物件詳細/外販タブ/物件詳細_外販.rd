@@ -13,32 +13,24 @@
   },
   "CustomNames": [
     {
-      "Name": "グループID",
-      "Formula": "#REF!"
-    },
-    {
       "Name": "タブID",
       "Formula": "物件詳細_外販!$BE$5"
-    },
-    {
-      "Name": "住宅事業者ID",
-      "Formula": "#REF!"
     },
     {
       "Name": "外販納品書ファイル属性ID",
       "Formula": "物件詳細_外販!$BE$8"
     },
     {
-      "Name": "元_納品日",
-      "Formula": "物件詳細_外販!$BG$23"
+      "Name": "元_外販ステータスID",
+      "Formula": "物件詳細_外販!$BG$25"
     },
     {
       "Name": "元_外販特記事項",
       "Formula": "物件詳細_外販!$BG$24"
     },
     {
-      "Name": "元_外販ステータスID",
-      "Formula": "物件詳細_外販!$BG$25"
+      "Name": "元_納品日",
+      "Formula": "物件詳細_外販!$BG$23"
     }
   ]
 }

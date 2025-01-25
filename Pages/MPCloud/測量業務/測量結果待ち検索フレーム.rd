@@ -63,7 +63,7 @@
     "7,48": "IF($BI$4=1,IF($L$2=1,COUNTIF($BM9,\"=\"&AW5),COUNTIF($BI9,\"=\"&AW5)),IF($L$2=1,COUNTIF($BR9,\"=\"&AW5),COUNTIF($BQ9,\"=\"&AW5)))",
     "23,60": "検索_測量結果待ちステータスID",
     "5,9": "TEXT(J5,\"aaa\")",
-    "34,71": "IF(BS35>0,VLOOKUP(X5,BQ$15:BR$28,2,FALSE),\"\")",
+    "34,71": "IF(BS35>0,VLOOKUP(X5,BQ30:BR42,2,FALSE),\"\")",
     "17,60": "IF(BI15>0,LEFT(B10,BI15-1),IF(B10<>\"\",B10,\"\"))",
     "7,9": "IF($BI$4=1,IF($L$2=1,COUNTIF($BM9,\"=\"&J5),COUNTIF($BI9,\"=\"&J5)),IF($L$2=1,COUNTIF($BR9,\"=\"&J5),COUNTIF($BQ9,\"=\"&J5)))",
     "30,70": "IFERROR(MATCH(G5,BQ30:BQ42,0),0)",

@@ -1,0 +1,439 @@
+{
+  "Name": "付保申請データダウンロード",
+  "Enabled": true,
+  "Triggers": [
+    {
+      "$type": "Forguncy.SaveLoad.PostRequestTriggerSaveData, ServerDesignerCommon",
+      "Permission": {
+        "PermissionData": {
+          "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionData, Forguncy.RbacPermission.Core",
+          "permissionResource": {
+            "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionResource, Forguncy.RbacPermission.Core"
+          },
+          "permissionBindings": [
+            {
+              "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionBinding, Forguncy.RbacPermission.Core",
+              "roleNames": [
+                "FGC_LoginUser"
+              ]
+            }
+          ]
+        }
+      },
+      "Parameters": [
+        {
+          "Name": "P_開始日",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_終了日",
+          "DataValidationInfo": {}
+        }
+      ]
+    }
+  ],
+  "Commands": [
+    {
+      "$type": "Forguncy.Model.RequestServerCommand, ServerDesignerCommon",
+      "ServerCommandName": "個人フォルダパス取得",
+      "ReturnPropertiesTo": [
+        {
+          "ResultPropertyName": "R_個人フォルダパス名",
+          "ResultTo": {
+            "SerializeProperty": "個人フォルダパス名"
+          }
+        }
+      ],
+      "RefreshAfterFinish": true,
+      "CheckDataValidation": true
+    },
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "EXCELのファイルパス",
+      "ParameterValue": {
+        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+        "SerializeProperty": "=個人フォルダパス名&\"付保申請データ.xlsx\""
+      },
+      "ID": "b5c29e11f7c64c36bdc383bd401989d5"
+    },
+    {
+      "$type": "Forguncy.Model.Commands.ServerImportExportExcelCommand, ServerDesignerCommon",
+      "ExcelOperation": 1,
+      "FilePath": {
+        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+        "SerializeProperty": "=EXCELのファイルパス"
+      },
+      "TableName": "t_object_insurance",
+      "Columns": [
+        {
+          "BindingColumn": {
+            "TableName": "t_object_insurance",
+            "ColumnName": "object_order_id",
+            "GUID": "d037d6ac-c14d-4551-add2-b9d58cd3caf7",
+            "RelationBinding": {
+              "RelatedTable": "t_object_order",
+              "RelatedColumn": "object_order_id",
+              "DisplayColumn": "object_id",
+              "NextRelationBinding": {
+                "RelatedTable": "t_object",
+                "RelatedColumn": "object_id",
+                "DisplayColumn": "物件番号"
+              }
+            }
+          },
+          "ExcelColumnNameOrIndex": "物件番号"
+        },
+        {
+          "BindingColumn": {
+            "TableName": "t_object_insurance",
+            "ColumnName": "object_order_id",
+            "GUID": "6c9450ff-a0d6-40d5-8930-57e7577459df",
+            "RelationBinding": {
+              "RelatedTable": "t_object_order",
+              "RelatedColumn": "object_order_id",
+              "DisplayColumn": "order_date"
+            }
+          },
+          "ExcelColumnNameOrIndex": "申込日",
+          "Formatter": "yyyy/MM/dd"
+        },
+        {
+          "BindingColumn": {
+            "TableName": "t_object_insurance",
+            "ColumnName": "warranty_id",
+            "GUID": "708f57a4-05b5-447e-a2cb-1546fee3b9a2",
+            "RelationBinding": {
+              "RelatedTable": "t_object_warranty",
+              "RelatedColumn": "warranty_id",
+              "DisplayColumn": "warranty_type_id",
+              "NextRelationBinding": {
+                "RelatedTable": "m_warranty_type",
+                "RelatedColumn": "warranty_type_id",
+                "DisplayColumn": "warranty_type_name"
+              }
+            }
+          },
+          "ExcelColumnNameOrIndex": "保証書区分"
+        },
+        {
+          "BindingColumn": {
+            "TableName": "t_object_insurance",
+            "ColumnName": "object_order_id",
+            "GUID": "6e1b22bf-69c6-443c-ba8d-5287dce8b060",
+            "RelationBinding": {
+              "RelatedTable": "t_object_order",
+              "RelatedColumn": "object_order_id",
+              "DisplayColumn": "builder_id",
+              "NextRelationBinding": {
+                "RelatedTable": "m_customer",
+                "RelatedColumn": "customer_id",
+                "DisplayColumn": "customer_name"
+              }
+            }
+          },
+          "ExcelColumnNameOrIndex": "住宅事業者名"
+        },
+        {
+          "BindingColumn": {
+            "TableName": "t_object_insurance",
+            "ColumnName": "object_order_id",
+            "GUID": "a052904d-22e7-4cd8-a94b-02ef903f8e3a",
+            "RelationBinding": {
+              "RelatedTable": "t_object_order",
+              "RelatedColumn": "object_order_id",
+              "DisplayColumn": "object_id",
+              "NextRelationBinding": {
+                "RelatedTable": "t_object",
+                "RelatedColumn": "object_id",
+                "DisplayColumn": "物件名"
+              }
+            }
+          },
+          "ExcelColumnNameOrIndex": "物件名"
+        },
+        {
+          "BindingColumn": {
+            "TableName": "t_object_insurance",
+            "ColumnName": "object_order_id",
+            "GUID": "63eb9b53-4ca1-4193-994d-5e423b09dfd2",
+            "RelationBinding": {
+              "RelatedTable": "t_object_order",
+              "RelatedColumn": "object_order_id",
+              "DisplayColumn": "object_id",
+              "NextRelationBinding": {
+                "RelatedTable": "t_object",
+                "RelatedColumn": "object_id",
+                "DisplayColumn": "物件住所"
+              }
+            }
+          },
+          "ExcelColumnNameOrIndex": "物件住所"
+        },
+        {
+          "BindingColumn": {
+            "TableName": "t_object_insurance",
+            "ColumnName": "object_order_id",
+            "GUID": "87384e49-6a59-4180-a4e9-178b1e8e9f91",
+            "RelationBinding": {
+              "RelatedTable": "t_object_order",
+              "RelatedColumn": "object_order_id",
+              "DisplayColumn": "group_id",
+              "NextRelationBinding": {
+                "RelatedTable": "m_group",
+                "RelatedColumn": "group_id",
+                "DisplayColumn": "group_type_id",
+                "NextRelationBinding": {
+                  "RelatedTable": "m_group_type",
+                  "RelatedColumn": "group_type_id",
+                  "DisplayColumn": "group_type_name"
+                }
+              }
+            }
+          },
+          "ExcelColumnNameOrIndex": "グループ区分名"
+        },
+        {
+          "BindingColumn": {
+            "TableName": "t_object_insurance",
+            "ColumnName": "object_order_id",
+            "GUID": "9b2a4e6a-957a-4833-a33b-533c8d152b63",
+            "RelationBinding": {
+              "RelatedTable": "t_object_order",
+              "RelatedColumn": "object_order_id",
+              "DisplayColumn": "order_customer_id",
+              "NextRelationBinding": {
+                "RelatedTable": "m_customer",
+                "RelatedColumn": "customer_id",
+                "DisplayColumn": "customer_name"
+              }
+            }
+          },
+          "ExcelColumnNameOrIndex": "申込事業者名"
+        },
+        {
+          "BindingColumn": {
+            "TableName": "t_object_insurance",
+            "ColumnName": "object_order_id",
+            "GUID": "0db99c32-90c6-4980-90d2-5672ab9bc6eb",
+            "RelationBinding": {
+              "RelatedTable": "t_object_order",
+              "RelatedColumn": "object_order_id",
+              "DisplayColumn": "latest_survey_id",
+              "NextRelationBinding": {
+                "RelatedTable": "t_object_survey",
+                "RelatedColumn": "survey_id",
+                "DisplayColumn": "survey_customer_id",
+                "NextRelationBinding": {
+                  "RelatedTable": "m_customer",
+                  "RelatedColumn": "customer_id",
+                  "DisplayColumn": "customer_name"
+                }
+              }
+            }
+          },
+          "ExcelColumnNameOrIndex": "調査会社名"
+        },
+        {
+          "BindingColumn": {
+            "TableName": "t_object_insurance",
+            "ColumnName": "object_order_id",
+            "GUID": "d62d50a3-0888-4dff-93a3-ff867a997d76",
+            "RelationBinding": {
+              "RelatedTable": "t_object_order",
+              "RelatedColumn": "object_order_id",
+              "DisplayColumn": "latest_analysis_id",
+              "NextRelationBinding": {
+                "RelatedTable": "t_object_analysis",
+                "RelatedColumn": "analysis_id",
+                "DisplayColumn": "analysis_complete_date"
+              }
+            }
+          },
+          "ExcelColumnNameOrIndex": "解析確定日",
+          "Formatter": "yyyy/MM/dd"
+        },
+        {
+          "BindingColumn": {
+            "TableName": "t_object_insurance",
+            "ColumnName": "object_order_id",
+            "GUID": "e94f132b-b1b4-4f1b-a439-d822f0577198",
+            "RelationBinding": {
+              "RelatedTable": "t_object_order",
+              "RelatedColumn": "object_order_id",
+              "DisplayColumn": "latest_analysis_id",
+              "NextRelationBinding": {
+                "RelatedTable": "t_object_analysis",
+                "RelatedColumn": "analysis_id",
+                "DisplayColumn": "analysis_result_content"
+              }
+            }
+          },
+          "ExcelColumnNameOrIndex": "解析結果内容"
+        },
+        {
+          "BindingColumn": {
+            "TableName": "t_object_insurance",
+            "ColumnName": "warranty_id",
+            "GUID": "1e466e25-85d2-4f29-b226-c14abb69d14b",
+            "RelationBinding": {
+              "RelatedTable": "t_object_warranty",
+              "RelatedColumn": "warranty_id",
+              "DisplayColumn": "warranty_issue_date"
+            }
+          },
+          "ExcelColumnNameOrIndex": "保証書発行日",
+          "Formatter": "yyyy/MM/dd"
+        },
+        {
+          "BindingColumn": {
+            "TableName": "t_object_insurance",
+            "ColumnName": "warranty_id",
+            "GUID": "ee411290-62d6-4668-a805-7567276edce7",
+            "RelationBinding": {
+              "RelatedTable": "t_object_warranty",
+              "RelatedColumn": "warranty_id",
+              "DisplayColumn": "warranty_start_date"
+            }
+          },
+          "ExcelColumnNameOrIndex": "保証開始日",
+          "Formatter": "yyyy/MM/dd"
+        },
+        {
+          "BindingColumn": {
+            "TableName": "t_object_insurance",
+            "ColumnName": "warranty_id",
+            "GUID": "fded7589-ec91-4d23-a9c7-2631f218f70e",
+            "RelationBinding": {
+              "RelatedTable": "t_object_warranty",
+              "RelatedColumn": "warranty_id",
+              "DisplayColumn": "warranty_object_name"
+            }
+          },
+          "ExcelColumnNameOrIndex": "保証物件名"
+        },
+        {
+          "BindingColumn": {
+            "TableName": "t_object_insurance",
+            "ColumnName": "warranty_id",
+            "GUID": "13c1a61f-b482-409d-9943-738159fe7278",
+            "RelationBinding": {
+              "RelatedTable": "t_object_warranty",
+              "RelatedColumn": "warranty_id",
+              "DisplayColumn": "warranty_object_address"
+            }
+          },
+          "ExcelColumnNameOrIndex": "保証物件住所"
+        },
+        {
+          "BindingColumn": {
+            "TableName": "t_object_insurance",
+            "ColumnName": "insurance_apply_date",
+            "GUID": "d399f325-6429-4569-bf3f-3d247df6574c"
+          },
+          "ExcelColumnNameOrIndex": "付保申請日",
+          "Formatter": "yyyy/MM/dd"
+        },
+        {
+          "BindingColumn": {
+            "TableName": "t_object_insurance",
+            "ColumnName": "warranty_id",
+            "GUID": "cd817b8f-813c-4960-9a2a-6ae452387d84",
+            "RelationBinding": {
+              "RelatedTable": "t_object_warranty",
+              "RelatedColumn": "warranty_id",
+              "DisplayColumn": "withdrawn_date"
+            }
+          },
+          "ExcelColumnNameOrIndex": "保証取消日",
+          "Formatter": "yyyy/MM/dd"
+        },
+        {
+          "BindingColumn": {
+            "TableName": "t_object_insurance",
+            "ColumnName": "insurance_cancel_date",
+            "GUID": "9c85c62c-cc3a-46b4-bfbf-1f8f27d6fd78"
+          },
+          "ExcelColumnNameOrIndex": "キャンセル申請日",
+          "Formatter": "yyyy/MM/dd"
+        }
+      ],
+      "QueryCondition": {
+        "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+        "SubConditions": [
+          {
+            "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+            "SubConditions": [
+              {
+                "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                "CompareType": 3,
+                "ColumnBindingInfo": {
+                  "TableName": "t_object_insurance",
+                  "ColumnName": "insurance_apply_date",
+                  "GUID": "4100411d-5130-4ba4-abc6-9a4646aa7aa5"
+                },
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=P_開始日"
+                }
+              },
+              {
+                "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                "CompareType": 5,
+                "ColumnBindingInfo": {
+                  "TableName": "t_object_insurance",
+                  "ColumnName": "insurance_apply_date",
+                  "GUID": "a6efec4a-4a06-4fd1-b311-b71286f9c53a"
+                },
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=P_終了日"
+                }
+              }
+            ]
+          },
+          {
+            "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+            "SubConditions": [
+              {
+                "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                "CompareType": 3,
+                "ColumnBindingInfo": {
+                  "TableName": "t_object_insurance",
+                  "ColumnName": "insurance_cancel_date",
+                  "GUID": "e771496f-64b5-430b-8b9f-8ceff3198d73"
+                },
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=P_開始日"
+                },
+                "LeftBracket": 1
+              },
+              {
+                "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                "CompareType": 5,
+                "ColumnBindingInfo": {
+                  "TableName": "t_object_insurance",
+                  "ColumnName": "insurance_cancel_date",
+                  "GUID": "5bcbf497-8e0a-4995-8bd6-4c064f6c149a"
+                },
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=P_終了日"
+                },
+                "RightBracket": 1
+              }
+            ]
+          }
+        ],
+        "RelationType": 1
+      }
+    },
+    {
+      "$type": "OperateFilesCommand.DownloadFileCommand, OperateFilesCommand",
+      "FilePath": {
+        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+        "SerializeProperty": "=EXCELのファイルパス"
+      }
+    }
+  ]
+}
