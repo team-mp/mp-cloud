@@ -18,15 +18,15 @@
   "CustomNames": [
     {
       "Name": "最新化フラグ",
-      "Formula": "転圧検索リストOLD!$HC$8"
+      "Formula": "転圧検索リストBK!$HC$8"
     },
     {
       "Name": "転圧件数取得ボタン",
-      "Formula": "転圧検索リストOLD!$HJ$5"
+      "Formula": "転圧検索リストBK!$HJ$5"
     },
     {
       "Name": "該当カウント",
-      "Formula": "転圧検索リストOLD!$HJ$8"
+      "Formula": "転圧検索リストBK!$HJ$8"
     }
   ]
 }
