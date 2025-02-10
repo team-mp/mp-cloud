@@ -11,7 +11,7 @@
     "20,120": "DM21+DN21+DO21+DP21",
     "20,114": "IF(ISNUMBER(SEARCH(\",\"&CF21&\",\",\",\"&表示中IDs&\",\")),1,0)",
     "11,26": "CE14",
-    "11,11": "CD14",
+    "11,13": "CD14",
     "33,114": "ODATA(\"t_object_attachment/$count?$filter=construction_id eq \"&IF(ISBLANK(CE34),\"null\",CE34)&\" and file_attribute_id eq \"&IF(ISBLANK(施工報告書ファイル属性ID),\"null\",施工報告書ファイル属性ID)&\" and active_flg eq 1\")",
     "29,88": "ODATA(\"m_customer_specify_construction/$count?$filter=customer_id eq \"&IF(ISBLANK(CJ7),\"null\",CJ7))",
     "33,113": "IF(OR(DG34=1,DH34=1,DI34=1),1,0)",

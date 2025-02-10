@@ -61,19 +61,15 @@
     "32,71": "IF(BS33>0,VLOOKUP(N5,BQ30:BR42,2,FALSE),\"\")",
     "29,70": "IFERROR(MATCH(B5,BQ30:BQ42,0),0)",
     "7,48": "IF($BI$4=1,IF($L$2=1,COUNTIF($BM9,\"=\"&AW5),COUNTIF($BI9,\"=\"&AW5)),IF($L$2=1,COUNTIF($BR9,\"=\"&AW5),COUNTIF($BQ9,\"=\"&AW5)))",
-    "23,60": "検索_測量結果待ちステータスID",
     "5,9": "TEXT(J5,\"aaa\")",
     "34,71": "IF(BS35>0,VLOOKUP(X5,BQ30:BR42,2,FALSE),\"\")",
-    "17,60": "IF(BI15>0,LEFT(B10,BI15-1),IF(B10<>\"\",B10,\"\"))",
     "7,9": "IF($BI$4=1,IF($L$2=1,COUNTIF($BM9,\"=\"&J5),COUNTIF($BI9,\"=\"&J5)),IF($L$2=1,COUNTIF($BR9,\"=\"&J5),COUNTIF($BQ9,\"=\"&J5)))",
     "30,70": "IFERROR(MATCH(G5,BQ30:BQ42,0),0)",
     "7,35": "IF($BI$4=1,IF($L$2=1,COUNTIF($BM9,\"=\"&AJ5),COUNTIF($BI9,\"=\"&AJ5)),IF($L$2=1,COUNTIF($BR9,\"=\"&AJ5),COUNTIF($BQ9,\"=\"&AJ5)))",
     "7,39": "IF($BI$4=1,IF($L$2=1,COUNTIF($BM9,\"=\"&AN5),COUNTIF($BI9,\"=\"&AN5)),IF($L$2=1,COUNTIF($BR9,\"=\"&AN5),COUNTIF($BQ9,\"=\"&AN5)))",
     "5,48": "TEXT(AW5,\"aaa\")",
-    "20,60": "IF(BI15>0,MID(B10,BI15+1,1000),\"\")",
     "33,70": "IFERROR(MATCH(S5,BQ30:BQ42,0),0)",
     "36,71": "IF(BS37>0,VLOOKUP(AF5,BQ30:BR42,2,FALSE),\"\")",
-    "14,60": "IF(IFERROR(FIND(\"　\",B10),0)>0,FIND(\"　\",B10),IF(IFERROR(FIND(\" \",B10),0)>0,FIND(\" \",B10),0))",
     "5,44": "TEXT(AS5,\"aaa\")",
     "38,71": "IF(BS39>0,VLOOKUP(AN5,BQ30:BR42,2,FALSE),\"\")",
     "37,71": "IF(BS38>0,VLOOKUP(AJ5,BQ30:BR42,2,FALSE),\"\")",
@@ -101,18 +97,6 @@
   },
   "CustomNames": [
     {
-      "Name": "検索ワード",
-      "Formula": "測量結果待ち検索フレーム!$B$10"
-    },
-    {
-      "Name": "検索ワード1",
-      "Formula": "測量結果待ち検索フレーム!$BI$18"
-    },
-    {
-      "Name": "検索ワード2",
-      "Formula": "測量結果待ち検索フレーム!$BI$21"
-    },
-    {
       "Name": "検索区分",
       "Formula": "測量結果待ち検索フレーム!$L$2"
     },
@@ -123,6 +107,10 @@
     {
       "Name": "検索対象期間終了日",
       "Formula": "測量結果待ち検索フレーム!$AS$2"
+    },
+    {
+      "Name": "測量結果待ち検索ワード",
+      "Formula": "測量結果待ち検索フレーム!$B$10"
     }
   ]
 }

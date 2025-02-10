@@ -10,7 +10,6 @@
     "21,70": "IFERROR(MATCH(AN5,BQ$13:BQ$25,0),0)",
     "12,70": "IFERROR(MATCH(B5,BQ$13:BQ$25,0),0)",
     "7,5": "IF($L$2=1,COUNTIF($BM6,\"=\"&G5),COUNTIF($BI6,\"=\"&G5))",
-    "18,60": "IF(BI13>0,MID(B10,BI13+1,1000),\"\")",
     "7,1": "IF($L$2=1,COUNTIF($BM6,\"<=\"&B5),COUNTIF($BI6,\"<=\"&B5))",
     "4,35": "AF5+1",
     "7,44": "IF($L$2=1,COUNTIF($BM6,\"=\"&AS5),COUNTIF($BI6,\"=\"&AS5))",
@@ -58,8 +57,6 @@
     "3,5": "IF(MONTH(G5)<>MONTH(B5),TEXT(G5,\"yyyy年m月\"),\"\")",
     "7,23": "IF($L$2=1,COUNTIF($BM6,\"=\"&X5),COUNTIF($BI6,\"=\"&X5))",
     "7,13": "IF($L$2=1,COUNTIF($BM6,\"=\"&N5),COUNTIF($BI6,\"=\"&N5))",
-    "21,60": "検索_調査結果待ちステータスID",
-    "15,60": "IF(BI13>0,LEFT(B10,BI13-1),IF(B10<>\"\",B10,\"\"))",
     "20,70": "IFERROR(MATCH(AJ5,BQ$13:BQ$25,0),0)",
     "5,48": "TEXT(AW5,\"aaa\")",
     "5,44": "TEXT(AS5,\"aaa\")",
@@ -67,7 +64,6 @@
     "7,53": "IF($L$2=1,COUNTIF($BM6,\">=\"&BB5),COUNTIF($BI6,\">=\"&BB5))",
     "19,70": "IFERROR(MATCH(AF5,BQ$13:BQ$25,0),0)",
     "7,9": "IF($L$2=1,COUNTIF($BM6,\"=\"&J5),COUNTIF($BI6,\"=\"&J5))",
-    "12,60": "IF(IFERROR(FIND(\"　\",B10),0)>0,FIND(\"　\",B10),IF(IFERROR(FIND(\" \",B10),0)>0,FIND(\" \",B10),0))",
     "7,35": "IF($L$2=1,COUNTIF($BM6,\"=\"&AJ5),COUNTIF($BI6,\"=\"&AJ5))",
     "18,71": "IF(BS19>0,VLOOKUP(AB5,BQ$13:BR$25,2,FALSE),\"\")",
     "17,71": "IF(BS18>0,VLOOKUP(X5,BQ$13:BR$25,2,FALSE),\"\")",
@@ -99,16 +95,8 @@
   },
   "CustomNames": [
     {
-      "Name": "検索ワード",
+      "Name": "調査結果待ち検索ワード",
       "Formula": "調査結果待ち検索フレーム!$B$10"
-    },
-    {
-      "Name": "検索ワード1",
-      "Formula": "調査結果待ち検索フレーム!$BI$16"
-    },
-    {
-      "Name": "検索ワード2",
-      "Formula": "調査結果待ち検索フレーム!$BI$19"
     },
     {
       "Name": "検索区分",

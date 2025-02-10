@@ -45,7 +45,7 @@
     "10,137": "IFERROR(IF(CP14>0,ODATA(\"m_user?$select=mail_address&$filter=user_id eq \"&IF(ISBLANK(CP14),\"null\",CP14)),\"\"),\"\")",
     "140,70": "IF(AB141=1,\"以降\",\"～\")",
     "22,61": "IF(DX31=0,\"\",DX31)",
-    "71,124": "COUNTIF(EF67,\"<>\")",
+    "71,124": "COUNTIF(EE67,\"<>\")",
     "27,137": "IFERROR(IF(AD33>0,ODATA(\"m_user?$select=mail_address&$filter=user_id eq \"&IF(ISBLANK(AD33),\"null\",AD33)),\"\"),\"\")",
     "29,137": "IFERROR(IF(CP33>0,ODATA(\"m_user?$select=mail_address&$filter=user_id eq \"&IF(ISBLANK(CP33),\"null\",CP33)),\"\"),\"\")",
     "130,61": "IF(S49=1,1,物件カウント)",
@@ -65,16 +65,16 @@
     "109,51": "ES111",
     "130,31": "DU104",
     "26,130": "追加申込タイプID",
-    "11,141": "参照顧客ID",
-    "9,141": "参照顧客グループIDs",
-    "8,141": "参照顧客既定グループID",
-    "7,141": "参照顧客取次店フラグ",
-    "6,141": "参照顧客代理店フラグ",
-    "5,141": "参照顧客本社フラグ",
-    "4,141": "ログイン者本社フラグ",
+    "11,141": "IFERROR(参照顧客ID,\"\")",
+    "9,141": "IFERROR(参照顧客グループIDs,\"\")",
+    "8,141": "IFERROR(参照顧客既定グループID,\"\")",
+    "7,141": "IFERROR(参照顧客取次店フラグ,\"\")",
+    "6,141": "IFERROR(参照顧客代理店フラグ,\"\")",
+    "5,141": "IFERROR(参照顧客本社フラグ,\"\")",
+    "4,141": "IFERROR(ログイン者本社フラグ,\"\")",
     "7,130": "IF(EL6=1,1000000,0)",
     "29,138": "IF(EH30=0,\"\",EH30)",
-    "10,141": "参照管理顧客IDs",
+    "10,141": "IFERROR(参照管理顧客IDs,\"\")",
     "14,141": "TEXTJOIN(\",\",TRUE,EL12,EL11)",
     "14,130": "IF(OR(EL6=1,EL7=1,EL8=1),1000000,0)",
     "26,138": "IF(EH27=0,\"\",EH27)",
@@ -109,7 +109,9 @@
     "116,149": "IF(EP117<>\"\",EP117,EJ117)",
     "116,148": "IF(EO117<>\"\",EO117,EI117)",
     "116,147": "IF(EL117<>0,EL117,DZ117)",
-    "115,105": "IF(CO117=\"\",\"\",IF(EA117=0,ET117,IF(AND(EA117=1,EH117=1),ET117,IF(OR(AND(ED117=1,EC117>CO117),AND(ED117=2,EC117>=CO117)),IF(EK117=1,EF117,0),EF117+((ROUNDUP((CO117-EC117)/EE117,0)+IF(AND(ED117=1,MOD((CO117-EC117),EE117)=0),1,0))*ET117)))))"
+    "115,105": "IF(CO117=\"\",\"\",IF(EA117=0,ET117,IF(AND(EA117=1,EH117=1),ET117,IF(OR(AND(ED117=1,EC117>CO117),AND(ED117=2,EC117>=CO117)),IF(EK117=1,EF117,0),EF117+((ROUNDUP((CO117-EC117)/EE117,0)+IF(AND(ED117=1,MOD((CO117-EC117),EE117)=0),1,0))*ET117)))))",
+    "51,132": "IF(AND(OR(IFERROR(FIND(\"様邸\",AD51),0)>0,RIGHT(TRIM(AD51),1)=\"様\"),CC51=1),1,0)",
+    "51,134": "IF(RIGHT(AD51,2)=\"様邸\",1,0)"
   },
   "ArrayFormulas": {
     "110,143,1,3": "IF(DX111>0,IFERROR(ODATA(\"v_customer_product?$select=商品名,商品注釈,販売単価&$filter=顧客ID eq \"&IF(ISBLANK(AD17),\"null\",AD17)&\" and グループID eq \"&IF(ISBLANK(AD4),\"null\",AD4)&\" and 申込タイプID eq \"&IF(ISBLANK(DZ45),\"null\",DZ45)&\" and 商品ID eq \"&IF(ISBLANK(DX111),\"null\",DX111)),\"\"),\"\")",
@@ -156,6 +158,10 @@
     {
       "Name": "物件表示制御フラグ",
       "Formula": "新規申込!$DY$78"
+    },
+    {
+      "Name": "様邸存在フラグ",
+      "Formula": "新規申込!$EC$52"
     }
   ]
 }

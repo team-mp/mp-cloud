@@ -1,7 +1,7 @@
 {
   "PageType": 0,
   "ColumnCount": 27,
-  "RowCount": 4,
+  "RowCount": 9,
   "CustomNames": [
     {
       "Name": "選択アクション",

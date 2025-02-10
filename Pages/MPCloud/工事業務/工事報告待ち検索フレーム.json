@@ -150,15 +150,12 @@
     "9,36": "アクション選択",
     "9,43": "ダウンロードする",
     "9,51": "最新情報に更新する",
-    "11,0": "ブランク",
-    "11,60": "▼区切り位置",
+    "11,0": "工事報告待ち検索リスト",
     "11,68": "▼会社休業日",
     "11,69": "注釈",
     "11,70": "日付マッチ",
     "11,71": "取得注釈",
     "12,68": "{=IFERROR(ODATA(\"m_company_holiday?$select=holiday,notes&$filter=holiday ge \"&IF(ISBLANK($B$5),\"null\",TEXT($B$5,\"yyyy-MM-ddThh:mm:ssZ\"))&\" and holiday le \"&IF(ISBLANK($BB$5),\"null\",TEXT($BB$5,\"yyyy-MM-ddThh:mm:ssZ\"))),\"\")}",
-    "14,60": "▼検索ワード1",
-    "17,60": "▼検索ワード2",
     "20,60": "▼検索ステータスID"
   },
   "Formulas": {
@@ -169,7 +166,6 @@
     "21,70": "IFERROR(MATCH(AN5,BQ$13:BQ$25,0),0)",
     "12,70": "IFERROR(MATCH(B5,BQ$13:BQ$25,0),0)",
     "7,5": "IF($L$2=1,COUNTIF($BM6,\"=\"&G5),COUNTIF($BI6,\"=\"&G5))",
-    "18,60": "IF(BI13>0,MID(B10,BI13+1,1000),\"\")",
     "7,1": "IF($L$2=1,COUNTIF($BM6,\"<=\"&B5),COUNTIF($BI6,\"<=\"&B5))",
     "4,35": "AF5+1",
     "7,44": "IF($L$2=1,COUNTIF($BM6,\"=\"&AS5),COUNTIF($BI6,\"=\"&AS5))",
@@ -217,8 +213,6 @@
     "3,5": "IF(MONTH(G5)<>MONTH(B5),TEXT(G5,\"yyyy年m月\"),\"\")",
     "7,23": "IF($L$2=1,COUNTIF($BM6,\"=\"&X5),COUNTIF($BI6,\"=\"&X5))",
     "7,13": "IF($L$2=1,COUNTIF($BM6,\"=\"&N5),COUNTIF($BI6,\"=\"&N5))",
-    "21,60": "検索_工事報告待ちステータスID",
-    "15,60": "IF(BI13>0,LEFT(B10,BI13-1),IF(B10<>\"\",B10,\"\"))",
     "20,70": "IFERROR(MATCH(AJ5,BQ$13:BQ$25,0),0)",
     "5,48": "TEXT(AW5,\"aaa\")",
     "5,44": "TEXT(AS5,\"aaa\")",
@@ -226,7 +220,6 @@
     "7,53": "IF($L$2=1,COUNTIF($BM6,\">=\"&BB5),COUNTIF($BI6,\">=\"&BB5))",
     "19,70": "IFERROR(MATCH(AF5,BQ$13:BQ$25,0),0)",
     "7,9": "IF($L$2=1,COUNTIF($BM6,\"=\"&J5),COUNTIF($BI6,\"=\"&J5))",
-    "12,60": "IF(IFERROR(FIND(\"　\",B10),0)>0,FIND(\"　\",B10),IF(IFERROR(FIND(\" \",B10),0)>0,FIND(\" \",B10),0))",
     "7,35": "IF($L$2=1,COUNTIF($BM6,\"=\"&AJ5),COUNTIF($BI6,\"=\"&AJ5))",
     "18,71": "IF(BS19>0,VLOOKUP(AB5,BQ$13:BR$25,2,FALSE),\"\")",
     "17,71": "IF(BS18>0,VLOOKUP(X5,BQ$13:BR$25,2,FALSE),\"\")",
@@ -549,16 +542,40 @@
         "RowCount": 5,
         "ColumnCount": 8,
         "SqlCondition": {
-          "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
-          "ColumnBindingInfo": {
-            "TableName": "v_construction_scheduled_count",
-            "ColumnName": "工事ステータスID",
-            "GUID": "57766031-9949-4031-9699-ae71ae056b83"
-          },
-          "Value": {
-            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-            "SerializeProperty": "=工事報告待ち検索フレーム!BI22"
-          }
+          "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+          "SubConditions": [
+            {
+              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+              "ColumnBindingInfo": {
+                "TableName": "v_construction_scheduled_count",
+                "ColumnName": "工事ステータスID",
+                "GUID": "57766031-9949-4031-9699-ae71ae056b83"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=工事報告待ち検索フレーム!BI22"
+              }
+            },
+            {
+              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+              "ColumnBindingInfo": {
+                "TableName": "v_construction_scheduled_count",
+                "ColumnName": "工事ID",
+                "GUID": "d0e0607b-d0e7-4604-ac52-8d0788a361d8",
+                "RelationBinding": {
+                  "RelatedTable": "t_object_construction",
+                  "RelatedColumn": "construction_id",
+                  "DisplayColumn": "object_order_id",
+                  "NextRelationBinding": {
+                    "RelatedTable": "t_object_order",
+                    "RelatedColumn": "object_order_id",
+                    "DisplayColumn": "active_flg"
+                  }
+                }
+              },
+              "Value": "1"
+            }
+          ]
         },
         "TopCondition": null,
         "ListViewStyleName": "_RS_Medium1",
@@ -566,7 +583,8 @@
         "ShowEditStatusIcon": true,
         "UseSimpleBar": true,
         "ColumnOperation": 2,
-        "CommitType": 1
+        "CommitType": 1,
+        "DoNotLoadDataWhenLoadPage": true
       }
     },
     "5,5": {
@@ -1125,21 +1143,7 @@
           "Color": "Text 1 70"
         },
         "TemplateKey": "_RS_LightLine_Translucent_SmallRoundCorner_Normal1",
-        "WaterMark": "検索ワードを入力してください",
-        "CommandList": [
-          {
-            "$type": "Forguncy.Model.SetCellPropertyCommand, ServerDesignerCommon",
-            "PropertyItemsList": [
-              {
-                "TargetCells": {
-                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=工事報告待ち検索フレーム!調査結果待ち最新化フラグ"
-                },
-                "Value": "1"
-              }
-            ]
-          }
-        ]
+        "WaterMark": "検索ワードを入力してください"
       }
     },
     "9,14": {
@@ -1201,6 +1205,11 @@
         "$type": "Forguncy.ButtonCellType, ServerDesignerCommon",
         "CommandList": [
           {
+            "$type": "LoadingCommand.StartLoadingCommand, LoadingCommand",
+            "LoadingText": "お待ちください",
+            "LoadingTextColor": "Background 1 0"
+          },
+          {
             "$type": "Forguncy.Model.UpdateListviewCommand, ServerDesignerCommon",
             "ListviewName": "工事予定ビュー",
             "UpdateType": 6,
@@ -1208,9 +1217,46 @@
               "MethodName": "Reload",
               "ParameterValues": {
                 "clearFilter": false,
-                "clearSort": false
+                "clearSort": false,
+                "clearRuntimeQueryConditions": false
               }
             }
+          },
+          {
+            "$type": "Forguncy.Model.SetCellPropertyCommand, ServerDesignerCommon",
+            "PropertyItemsList": [
+              {
+                "TargetCells": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=工事報告待ち検索フレーム!B5"
+                },
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=TODAY()-1"
+                }
+              },
+              {
+                "TargetCells": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=工事報告待ち検索フレーム!検索対象期間開始日"
+                },
+                "Value": "%Null%"
+              },
+              {
+                "TargetCells": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=工事報告待ち検索フレーム!検索対象期間終了日"
+                },
+                "Value": "%Null%"
+              },
+              {
+                "TargetCells": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=工事報告待ち検索フレーム!工事報告待ち検索ワード"
+                },
+                "Value": "%Null%"
+              }
+            ]
           },
           {
             "$type": "Forguncy.Model.SetCellPropertyCommand, ServerDesignerCommon",
@@ -1238,8 +1284,13 @@
     "11,0": {
       "CellType": {
         "$type": "Forguncy.ContentContainerCellType, ServerDesignerCommon",
-        "PageName": "ブランク",
+        "PageName": "工事報告待ち検索リスト",
         "OverflowMode": 1
+      }
+    },
+    "21,60": {
+      "CellComment": {
+        "Comments": "ページロード時に取得する"
       }
     }
   },
@@ -1433,21 +1484,14 @@
         "Background": 10
       },
       {
+        "Background": 11,
+        "FontFamily": 2
+      },
+      {
         "Background": 11
       },
       {
         "Background": 12,
-        "FontFamily": 2
-      },
-      {
-        "Background": 12
-      },
-      {
-        "FontFamily": 2,
-        "Formatter": 13
-      },
-      {
-        "Background": 10,
         "FontFamily": 2
       }
     ],
@@ -1463,10 +1507,9 @@
         "Text 1 50",
         "d",
         "@",
-        "#FFFFFF00",
         "Accent 5 80",
         "Accent 3 60",
-        "[AUTO]General"
+        "#FFFFFF00"
       ],
       "Borders": [
         {
@@ -1748,86 +1791,70 @@
       "9,75": 17,
       "11,70": 2,
       "11,71": 37,
-      "12,60": 38,
-      "12,68": 39,
-      "12,69": 39,
-      "12,70": 40,
-      "12,71": 41,
-      "13,68": 39,
-      "13,69": 39,
-      "13,70": 40,
-      "13,71": 40,
-      "14,60": 42,
-      "14,61": 1,
-      "14,62": 1,
-      "14,68": 39,
-      "14,69": 39,
-      "14,70": 40,
-      "14,71": 40,
-      "15,60": 43,
-      "15,61": 1,
-      "15,62": 1,
-      "15,68": 39,
-      "15,69": 39,
-      "15,70": 40,
-      "15,71": 40,
-      "16,68": 39,
-      "16,69": 39,
-      "16,70": 40,
-      "16,71": 40,
-      "17,60": 42,
-      "17,61": 1,
-      "17,62": 1,
-      "17,68": 39,
-      "17,69": 39,
-      "17,70": 40,
-      "17,71": 40,
-      "18,60": 43,
-      "18,61": 1,
-      "18,62": 1,
-      "18,68": 39,
-      "18,69": 39,
-      "18,70": 40,
-      "18,71": 40,
-      "19,68": 39,
-      "19,69": 39,
-      "19,70": 40,
-      "19,71": 40,
+      "12,68": 38,
+      "12,69": 38,
+      "12,70": 39,
+      "12,71": 40,
+      "13,68": 38,
+      "13,69": 38,
+      "13,70": 39,
+      "13,71": 39,
+      "14,68": 38,
+      "14,69": 38,
+      "14,70": 39,
+      "14,71": 39,
+      "15,68": 38,
+      "15,69": 38,
+      "15,70": 39,
+      "15,71": 39,
+      "16,68": 38,
+      "16,69": 38,
+      "16,70": 39,
+      "16,71": 39,
+      "17,68": 38,
+      "17,69": 38,
+      "17,70": 39,
+      "17,71": 39,
+      "18,68": 38,
+      "18,69": 38,
+      "18,70": 39,
+      "18,71": 39,
+      "19,68": 38,
+      "19,69": 38,
+      "19,70": 39,
+      "19,71": 39,
       "20,60": 1,
       "20,61": 1,
       "20,62": 1,
-      "20,68": 39,
-      "20,69": 39,
-      "20,70": 40,
-      "20,71": 40,
-      "21,60": 43,
+      "20,68": 38,
+      "20,69": 38,
+      "20,70": 39,
+      "20,71": 39,
+      "21,60": 41,
       "21,61": 1,
       "21,62": 1,
-      "21,68": 39,
-      "21,69": 39,
-      "21,70": 40,
-      "21,71": 40,
-      "22,68": 39,
-      "22,69": 39,
-      "22,70": 40,
-      "22,71": 40,
-      "23,68": 39,
-      "23,69": 39,
-      "23,70": 40,
-      "23,71": 40,
-      "24,68": 39,
-      "24,69": 39,
-      "24,70": 40,
-      "24,71": 40
+      "21,68": 38,
+      "21,69": 38,
+      "21,70": 39,
+      "21,71": 39,
+      "22,68": 38,
+      "22,69": 38,
+      "22,70": 39,
+      "22,71": 39,
+      "23,68": 38,
+      "23,69": 38,
+      "23,70": 39,
+      "23,71": 39,
+      "24,68": 38,
+      "24,69": 38,
+      "24,70": 39,
+      "24,71": 39
     },
     "SheetStyle": {
       "FontFamily": 2
     }
   },
   "Spans": [
-    "12,60,1,3",
-    "15,60,1,3",
-    "18,60,1,3",
     "21,60,1,3",
     "7,1,1,4",
     "11,0,24,58",
@@ -1916,6 +1943,16 @@
           {
             "TargetCells": {
               "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+              "SerializeProperty": "=工事報告待ち検索フレーム!BI22"
+            },
+            "Value": {
+              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+              "SerializeProperty": "=工事報告待ち検索フレーム!検索_工事報告待ちステータスID"
+            }
+          },
+          {
+            "TargetCells": {
+              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
               "SerializeProperty": "=工事報告待ち検索フレーム!A12"
             },
             "Value": "工事報告待ち検索リスト"
@@ -1935,7 +1972,8 @@
               "SerializeProperty": "=TODAY()-1"
             }
           }
-        ]
+        ],
+        "Comments": "前日日付をセット"
       }
     ],
     "PermissionData": {
@@ -1962,7 +2000,7 @@
           "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
           "Formula": {
             "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-            "SerializeProperty": "=VALUE(工事報告待ち検索フレーム!工事データ抽出カウント)=0"
+            "SerializeProperty": "=VALUE(工事報告待ち検索フレーム!工事報告待ち抽出カウント)=0"
           },
           "Priority": 64,
           "GUID": "dda51724-ae38-4781-ba55-21ac603f8e19",
@@ -1978,7 +2016,7 @@
           "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
           "Formula": {
             "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-            "SerializeProperty": "=VALUE(工事報告待ち検索フレーム!工事データ抽出カウント)=0"
+            "SerializeProperty": "=VALUE(工事報告待ち検索フレーム!工事報告待ち抽出カウント)=0"
           },
           "Priority": 63,
           "GUID": "47323512-bd09-4fb3-84ac-12066cc9e439",
@@ -2906,16 +2944,8 @@
   },
   "CustomNames": [
     {
-      "Name": "検索ワード",
+      "Name": "工事報告待ち検索ワード",
       "Formula": "工事報告待ち検索フレーム!$B$10"
-    },
-    {
-      "Name": "検索ワード1",
-      "Formula": "工事報告待ち検索フレーム!$BI$16"
-    },
-    {
-      "Name": "検索ワード2",
-      "Formula": "工事報告待ち検索フレーム!$BI$19"
     },
     {
       "Name": "検索区分",
@@ -2930,4 +2960,4 @@
       "Formula": "工事報告待ち検索フレーム!$AT$2"
     }
   ]
-}//3WnfGogYkSky31L75ATMeHL9p6T8aY3Ga6rIx8yO6nd8Tg0s0eVgEil4RgUOcIiW4z5eUOeogiIUWluK1ztEN/3OV7ElXXNVm5K4uk8fxJGxpID56BUsWEHwOgvom5rh3az5k+DRAw0L5gzo9gZDkNgzty6ZgBky1d96nUdqJDkZEOpz/kPz4hMXB2mWexmMKFErak0aV01pAU81zsL656cwzpoho5g0DELEr6dEMor9wPO3OgJSM9TRo7cSpFOK5LOgTD2K/VdaOR8FWo2njyQrgafhmgpaLZuATfZeAC8ospqoyeV6opoY9Gc76xxN3fh7RdpLkjzTyAEYcQpetjIqgr6WixcVMm+6thN/S6UAFghIVBN8Sd26d2MqX1ximQLH0ozl+enlgfSSJRRojXdOaH2xiBOMBoK8TrgkqNNTdDioKV7Fo8+RYGUNirx3EZ7rinJWSGCJd7ykvGUHry5rEgiFpmXIgMfABZOJPMhlP8uNu+1bNXJoR9YMv2otGMpIOTitdhDZ2ShSAygJOEgD7uMx/GuDh8f+iqVA90urj9Je+La+aGUqnu/WpvaeDJdUlHi12sO+Mm04/uzApWxO82qR4G/jzoJC7AUJsoic8/E3lHwo1mTPZqHfQTir3fa7rdZ/OP5orFFfEqe9wiruLslH5heL5VZpOxB4/UeXWIZnVoEyYrU1scGgYSbin/zR2DAuYo2K4tfu2ZRquVjMfTh/Sh3wqWd0F1f4ZpatZoclFiobWIG1DzWTzLjrWsa+WOmkHtSjYpfT1fdwVUf/s5oUr761xJaVbQo42TqAZrySfJfPysSALpY5X6S+1yVwKrNnW/JmA8u6e0/Bpul1qze9XwYwogRn6jOraPFrH6qQTstBDUe2C8yOC9acnI79/IFnxcDtQsgOFKObPw==|920
+}//QBynzbfXbPB67zq+G2UDNDIOS7yP5022f2NeArRMotS8srNHZmh3AFa+qXfjUBgfE6jiSj7fJb+Df62oWS6N0yJfUi9rJVT+2Ga2tCR8MLv7+T76y6bTRet8zahwX5UWbbhMOdQHa8CCReaJLSyCvtBZXJqMF4vKFrMrAcvbnuUsgpGY/g6xroJ3ZiGMtT13+rE1ZZc/Rfa+EqKG7PbLajMVS+n3QgnOBMvSZTbhBX2u7jC7ciwMghjem2gJjdeVMNrFroLZt2T6kkAuYGBoG8CoYV3Qn0Oc+oyCYao5cgDGrI31+Thv2ksr5wyA0rgY3Iy0YBA/CpyuNzbpzvwNkepMp+iBzE9zgx+349/KCpg+tJSsDbJzX4VhNFifRZOzILfuzWqHrQnYKNRNt2MzCkNFEW7W67Ftaye49DSVTxWEEF5fyHZL0T1kdEXcr+IAK6cFCnj8JLup+bkLHTVadp0yXS1G+Ka8t0tXHgZMj4f0Fj8ziSF7SfgrBG/wxn7o8axcmjpPHhTdIPHo+wUgIp29XiNXdFsTthsqAJ1PK30CUpA9QQCFYnVwWx/BwD6A+aVnZP/29k6aOYxfjQ/D3yzthIAkd+o8/rt2Rvx9yWL23x8ri/qhZ9nBFpaIwc0AawFEuZtjS3uTR0gtYeIC8ISNRd5nvUgSJ1JKGNvLIjAY3lyU4hgz3rKY85jWIOqVubeQIqnQ6oXbMC+RVMhF9flTT7G9GiThyzfO/iRHWXj99EE62ts0oF8/kJ+821Nw5fViOctQKUWrtB5ctzpK7ivA6jryaMxcUEfQkUw0/Z9/GaZu54t/qMmNZ3SQAjJTDRWUJKGEeV8syJG4ZG5jC/Tkuw+heuz0fbcRLTQVDLDXvtS9+nFHtw4evnGx3hSsIVxMb1zU+ZDYQiAqbA85XQ==|920
