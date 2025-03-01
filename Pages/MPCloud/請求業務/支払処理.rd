@@ -4,7 +4,7 @@
   "RowCount": 34,
   "Formulas": {
     "19,87": "IF(BZ20>0,MID(BU20,BZ20+1,1000),\"\")",
-    "19,72": "IF(J2=0,\"\",J2)",
+    "19,72": "IF(J2=0,\"\",TRIM(J2))",
     "19,77": "IF(IFERROR(FIND(\"　\",BU20),0)>0,FIND(\"　\",BU20),IF(IFERROR(FIND(\" \",BU20),0)>0,FIND(\" \",BU20),0))",
     "16,77": "COUNTIF(BU13,1)",
     "16,82": "BU17-BZ17",

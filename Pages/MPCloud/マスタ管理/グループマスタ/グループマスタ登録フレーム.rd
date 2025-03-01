@@ -1,9 +1,9 @@
 {
   "PageType": 0,
   "ColumnCount": 48,
-  "RowCount": 31,
+  "RowCount": 30,
   "Formulas": {
-    "29,2": "IF(AQ28<>\"\",\"最終更新日時：\"&AQ28,\"\")"
+    "28,2": "IF(AQ27<>\"\",\"最終更新日時：\"&AQ27,\"\")"
   },
   "CustomNames": [
     {

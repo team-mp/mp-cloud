@@ -1,7 +1,7 @@
 {
   "PageType": 0,
-  "ColumnCount": 60,
-  "RowCount": 49,
+  "ColumnCount": 62,
+  "RowCount": 33,
   "Formulas": {
     "13,17": "ODATA(\"t_object_insurance/$count?$filter=insurance_apply_date ge \"&IF(ISBLANK(L12),\"null\",TEXT(L12,\"yyyy-MM-ddThh:mm:ssZ\"))&\" and insurance_apply_date le \"&IF(ISBLANK(U12),\"null\",TEXT(U12,\"yyyy-MM-ddThh:mm:ssZ\")))",
     "11,11": "DATEVALUE(TEXT(H9,\"yyyy/MM/01\"))",

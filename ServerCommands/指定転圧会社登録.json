@@ -1,0 +1,167 @@
+{
+  "Name": "指定転圧会社登録",
+  "Enabled": true,
+  "Triggers": [
+    {
+      "$type": "Forguncy.SaveLoad.PostRequestTriggerSaveData, ServerDesignerCommon",
+      "Permission": {
+        "PermissionData": {
+          "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionData, Forguncy.RbacPermission.Core",
+          "permissionResource": {
+            "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionResource, Forguncy.RbacPermission.Core"
+          },
+          "permissionBindings": [
+            {
+              "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionBinding, Forguncy.RbacPermission.Core",
+              "roleNames": [
+                "FGC_LoginUser"
+              ]
+            }
+          ]
+        }
+      },
+      "Parameters": [
+        {
+          "Name": "P_顧客ID",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_転圧会社IDs",
+          "DataValidationInfo": {}
+        }
+      ]
+    }
+  ],
+  "Commands": [
+    {
+      "$type": "Forguncy.Model.ServerTransactionCommand, ServerDesignerCommon",
+      "CommandList": [
+        {
+          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+          "ParameterName": "転圧会社",
+          "TableValue": {
+            "TableName": "m_customer",
+            "BindingInfos": [
+              {
+                "GUID": "5e5581de-b27d-4941-9767-f19afe0b43cf",
+                "BindingInfo": {
+                  "TableName": "m_customer",
+                  "ColumnName": "customer_id",
+                  "GUID": "1133db41-8c8a-4d8d-b18f-34df79fbd95a"
+                },
+                "ColumnName": "転圧会社ID"
+              }
+            ],
+            "SqlCondition": {
+              "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+              "CompareType": 8,
+              "ColumnBindingInfo": {
+                "TableName": "m_customer",
+                "ColumnName": "customer_id",
+                "GUID": "0c76abcd-76d9-4246-bc47-8c343aab138e"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_転圧会社IDs"
+              }
+            }
+          },
+          "ID": "5d395972db42409391a7a709473e964f"
+        },
+        {
+          "$type": "Forguncy.Model.LoopCommand, ServerDesignerCommon",
+          "LoopInfo": {
+            "$type": "Forguncy.Model.CountLoopInfo, ServerDesignerCommon",
+            "LoopCount": {
+              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+              "SerializeProperty": "=転圧会社"
+            },
+            "LoopItemParamName": "Item"
+          },
+          "CommandList": [
+            {
+              "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+              "ParameterName": "登録済みカウント",
+              "TableValue": {
+                "TableName": "m_customer_specify_compaction",
+                "TableValueType": 3,
+                "SqlCondition": {
+                  "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                  "ColumnBindingInfo": {
+                    "TableName": "m_customer_specify_compaction",
+                    "ColumnName": "compaction_customer_id",
+                    "GUID": "0f365f9b-ed0e-478e-aa26-2a86b2a6eeee"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=Item.転圧会社ID"
+                  }
+                }
+              },
+              "ID": "f270849609e44b139cfa122881eb2146"
+            },
+            {
+              "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+              "ConditionAndCommandPairList": [
+                {
+                  "Condition": {
+                    "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                    "param": {
+                      "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                      "ParamObject": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=登録済みカウント"
+                      }
+                    },
+                    "value": "0"
+                  },
+                  "CommandList": [
+                    {
+                      "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+                      "TableName": "m_customer_specify_compaction",
+                      "UpdateType": "add",
+                      "ShowConfirm": false,
+                      "UpdateBindingValues": [
+                        {
+                          "BindingInfo": {
+                            "TableName": "m_customer_specify_compaction",
+                            "ColumnName": "customer_id",
+                            "GUID": "45e30e7d-92d4-4c17-95d3-3454fec3e999"
+                          },
+                          "Value": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=P_顧客ID"
+                          }
+                        },
+                        {
+                          "BindingInfo": {
+                            "TableName": "m_customer_specify_compaction",
+                            "ColumnName": "compaction_customer_id",
+                            "GUID": "88ae7953-07cb-4346-a762-0c470577b245"
+                          },
+                          "Value": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=Item.転圧会社ID"
+                          }
+                        },
+                        {
+                          "BindingInfo": {
+                            "TableName": "m_customer_specify_compaction",
+                            "ColumnName": "sort_no",
+                            "GUID": "6d56523b-2bc5-4eeb-9816-0b6037184a31"
+                          },
+                          "Value": "1"
+                        }
+                      ]
+                    }
+                  ],
+                  "ID": "85a574c7-e7af-453e-b993-317a7d390657"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

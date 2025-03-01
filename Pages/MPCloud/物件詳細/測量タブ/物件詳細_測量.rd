@@ -1,7 +1,7 @@
 {
   "PageType": 0,
   "ColumnCount": 133,
-  "RowCount": 82,
+  "RowCount": 84,
   "Formulas": {
     "33,106": "ODATA(\"t_object_surveying/$count?$filter=object_order_id eq \"&IF(ISBLANK(BA34),\"null\",BA34)&\" and surveying_id gt \"&IF(ISBLANK(BB34),\"null\",BB34))",
     "33,105": "IF(DA34<>\"\",\"最終更新日時：\"&DA34,\"\")",
@@ -36,7 +36,7 @@
     },
     {
       "Name": "元_測量ステータスID",
-      "Formula": "物件詳細_測量!$BO$80"
+      "Formula": "物件詳細_測量!$BO$83"
     },
     {
       "Name": "元_測量希望開始日",
@@ -56,7 +56,7 @@
     },
     {
       "Name": "元_測量共有コメント",
-      "Formula": "物件詳細_測量!$BO$79"
+      "Formula": "物件詳細_測量!$BO$82"
     },
     {
       "Name": "元_測量申込日",
@@ -173,6 +173,18 @@
     {
       "Name": "元_役調予定時間",
       "Formula": "物件詳細_測量!$BO$72"
+    },
+    {
+      "Name": "元_真北測量フラグ",
+      "Formula": "物件詳細_測量!$BO$79"
+    },
+    {
+      "Name": "元_納品データ3Dフラグ",
+      "Formula": "物件詳細_測量!$BO$80"
+    },
+    {
+      "Name": "元_納品ファイル形式",
+      "Formula": "物件詳細_測量!$BO$81"
     }
   ]
 }

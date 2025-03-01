@@ -154,7 +154,7 @@
       },
       "10": {
         "GridRowColumnDefinition": {
-          "DesignLengthInPixel": 280.0
+          "DesignLengthInPixel": 300.0
         }
       },
       "11": {
@@ -261,7 +261,7 @@
     "0,10": "住宅事業者名",
     "0,19": "選択フラグ",
     "0,22": "▼ダウンロードボタン",
-    "3,22": "▼最新化フラグ",
+    "3,22": "▼検索フラグ",
     "3,38": "▼検索ワード",
     "4,22": "0",
     "6,22": "▼タブ番号",
@@ -276,6 +276,7 @@
     "12,38": "▼検索ワード2",
     "15,22": "▼詳細表示フラグ",
     "15,29": "▼役調予定開始日",
+    "15,38": "▼クエリ条件（有効フラグ）",
     "16,22": 0,
     "18,22": "▼選択フラグ",
     "18,29": "▼役調予定終了日",
@@ -285,14 +286,15 @@
     "19,1": "\"表示データ件数：\"&TEXT(測量結果待ち抽出カウント,\"#,##0\")&\"件\"",
     "13,29": "IF(AND(AD8=1,検索対象期間終了日<>\"\"),検索対象期間終了日,\"\")",
     "13,22": "COUNT(P2)",
-    "4,38": "IF(測量結果待ち検索ワード=0,\"\",測量結果待ち検索ワード)",
+    "4,38": "IF(測量結果待ち検索ワード=0,\"\",TRIM(測量結果待ち検索ワード))",
     "7,29": "検索区分",
     "16,29": "IF(AND(AD8=2,検索対象期間開始日<>\"\"),検索対象期間開始日,\"\")",
     "19,29": "IF(AND(AD8=2,検索対象期間終了日<>\"\"),検索対象期間終了日,\"\")",
     "10,29": "IF(AND(AD8=1,検索対象期間開始日<>\"\"),検索対象期間開始日,\"\")",
     "7,38": "IF(IFERROR(FIND(\"　\",AM5),0)>0,FIND(\"　\",AM5),IF(IFERROR(FIND(\" \",AM5),0)>0,FIND(\" \",AM5),0))",
     "10,38": "IF(AM8>0,LEFT(AM5,AM8-1),IF(AM5<>\"\",AM5,\"\"))",
-    "13,38": "IF(AM8>0,MID(AM5,AM8+1,1000),\"\")"
+    "13,38": "IF(AM8>0,MID(AM5,AM8+1,1000),\"\")",
+    "10,22": "検索_測量ステータスID"
   },
   "AttachInfos": {
     "0,1": {
@@ -310,21 +312,24 @@
               "ColumnBindingInfo": {
                 "TableName": "t_object_surveying",
                 "ColumnName": "object_order_id",
-                "GUID": "e4268f4c-d147-475e-b2c2-922ef9f71773",
+                "GUID": "fa2135e4-5e02-4439-8bfb-45681cc2d2c1",
                 "RelationBinding": {
                   "RelatedTable": "t_object_order",
                   "RelatedColumn": "object_order_id",
                   "DisplayColumn": "active_flg"
                 }
               },
-              "Value": "1"
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=役調結果待ち検索リスト!AM17"
+              }
             },
             {
               "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
               "ColumnBindingInfo": {
                 "TableName": "t_object_surveying",
                 "ColumnName": "gove_survey_flg",
-                "GUID": "f49fd6ca-f84d-4b18-a98c-c3fd0f6633b1"
+                "GUID": "ca8b9436-5cd1-473c-900d-be31ac92eca2"
               },
               "Value": "1"
             },
@@ -333,63 +338,11 @@
               "ColumnBindingInfo": {
                 "TableName": "t_object_surveying",
                 "ColumnName": "surveying_status_id",
-                "GUID": "c3994be7-5020-47d9-913e-979f1e0b98ef"
+                "GUID": "71e582a4-20ff-4eea-b0d2-a145612ebb72"
               },
               "Value": {
                 "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
                 "SerializeProperty": "=役調結果待ち検索リスト!W11"
-              }
-            },
-            {
-              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
-              "CompareType": 3,
-              "ColumnBindingInfo": {
-                "TableName": "t_object_surveying",
-                "ColumnName": "govesurvey_report_scheduled_date",
-                "GUID": "ba2d1b33-d321-4474-8fb4-1fcf1b106ac7"
-              },
-              "Value": {
-                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                "SerializeProperty": "=役調結果待ち検索リスト!AD11"
-              }
-            },
-            {
-              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
-              "CompareType": 5,
-              "ColumnBindingInfo": {
-                "TableName": "t_object_surveying",
-                "ColumnName": "govesurvey_report_scheduled_date",
-                "GUID": "ef55211d-ed13-452d-9881-f78578d16c04"
-              },
-              "Value": {
-                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                "SerializeProperty": "=役調結果待ち検索リスト!AD14"
-              }
-            },
-            {
-              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
-              "CompareType": 3,
-              "ColumnBindingInfo": {
-                "TableName": "t_object_surveying",
-                "ColumnName": "scheduled_gove_survey_enddate",
-                "GUID": "8b54fbea-db71-461e-a099-b97e82c763c5"
-              },
-              "Value": {
-                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                "SerializeProperty": "=役調結果待ち検索リスト!AD17"
-              }
-            },
-            {
-              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
-              "CompareType": 5,
-              "ColumnBindingInfo": {
-                "TableName": "t_object_surveying",
-                "ColumnName": "scheduled_gove_survey_enddate",
-                "GUID": "ba892583-f30b-487f-b026-66a433333424"
-              },
-              "Value": {
-                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                "SerializeProperty": "=役調結果待ち検索リスト!AD20"
               }
             }
           ]
@@ -400,7 +353,7 @@
               "ColumnBindingInfo": {
                 "TableName": "t_object_surveying",
                 "ColumnName": "gove_survey_customer_id",
-                "GUID": "b637ab28-1dda-408f-a5d6-c9a74222e268",
+                "GUID": "0890e128-e257-4f17-868d-62d96bbb88ac",
                 "RelationBinding": {
                   "RelatedTable": "m_customer",
                   "RelatedColumn": "customer_id",
@@ -413,7 +366,7 @@
               "ColumnBindingInfo": {
                 "TableName": "t_object_surveying",
                 "ColumnName": "scheduled_gove_survey_enddate",
-                "GUID": "19dd4496-b7de-4933-b4de-28760d305518"
+                "GUID": "5f4dc7dc-ced9-4fea-9880-d5ff61b7f1a0"
               },
               "Order": 0
             }
@@ -533,24 +486,24 @@
         "$type": "Forguncy.ImageCellType, ServerDesignerCommon",
         "CommandList": [
           {
-            "$type": "SetCurrentRowCommand.SetCurrentRowCommand, SetCurrentRowCommand",
-            "CurrentRowInfo": {
-              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
-              "ColumnBindingInfo": {
-                "TableName": "t_object_order",
-                "ColumnName": "object_order_id",
-                "GUID": "e3685504-a5ac-4efd-b7a2-952ea17f36f8"
-              },
-              "Value": {
-                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                "SerializeProperty": "=役調結果待ち検索リスト!P2"
+            "$type": "Forguncy.Model.ShareCommand, ServerDesignerCommon",
+            "ShareCommandContainerRefer": {
+              "ShareCommandContainerID": "c804158d-5042-4968-a314-fa299dc427bf"
+            },
+            "Params": [
+              {
+                "ParamReferObject": {
+                  "ParamID": "59720925-14f1-402b-80c2-29304bb5e12e",
+                  "ShareCommandContainerReferObject": {
+                    "ShareCommandContainerID": "c804158d-5042-4968-a314-fa299dc427bf"
+                  }
+                },
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=役調結果待ち検索リスト!P2"
+                }
               }
-            }
-          },
-          {
-            "$type": "Forguncy.Model.ShowPopupCommand, ServerDesignerCommon",
-            "PageName": "添付ファイルリスト",
-            "LoadBindingDataOption": 1
+            ]
           }
         ],
         "TemplateKey": "スタイル2",
@@ -615,7 +568,7 @@
                     "LoadBindingDataOption": 1
                   }
                 ],
-                "ID": "f0e3ab3e-b09a-42eb-9f04-78f801cff08a"
+                "ID": "897704ed-00bf-4fac-86a2-beab4ad0a882"
               }
             ]
           }
@@ -1101,31 +1054,36 @@
         ],
         "CommandList": [
           {
-            "$type": "Forguncy.Model.OperateCellTypeCommand, ServerDesignerCommon",
-            "TargetPageElement": {
-              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-              "SerializeProperty": "=役調結果待ち検索リスト!役調件数取得ボタン"
-            },
-            "TargetType": "Forguncy.ButtonCellType, ServerDesignerCommon, Version=10.0.10.0, Culture=neutral, PublicKeyToken=967100671921c115",
-            "MethodName": "ExecuteCommand"
-          },
-          {
-            "$type": "Forguncy.Model.UpdateListviewCommand, ServerDesignerCommon",
-            "ListviewName": "役調結果待ちビュー",
-            "UpdateType": 6,
-            "UpdateListviewCommandRunTimeMethodSetting": {
-              "MethodName": "Reload",
-              "ParameterValues": {
-                "clearFilter": true,
-                "clearSort": true
-              }
-            }
-          },
-          {
             "$type": "Forguncy.Model.ShareCommand, ServerDesignerCommon",
             "ShareCommandContainerRefer": {
-              "ShareCommandContainerID": "6c87007d-5cfb-4edb-bda9-1c0e079d3b95"
-            }
+              "ShareCommandContainerID": "d2c31d19-1c69-4af3-93d9-cf7cce0232e4"
+            },
+            "Params": [
+              {
+                "ParamReferObject": {
+                  "ParamID": "01f0db5f-fab2-466a-b3b0-bc613f7798ea",
+                  "ShareCommandContainerReferObject": {
+                    "ShareCommandContainerID": "d2c31d19-1c69-4af3-93d9-cf7cce0232e4"
+                  }
+                },
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=役調結果待ち検索リスト!AM11"
+                }
+              },
+              {
+                "ParamReferObject": {
+                  "ParamID": "560dde83-b35b-45f6-8a9f-684729a6fbc7",
+                  "ShareCommandContainerReferObject": {
+                    "ShareCommandContainerID": "d2c31d19-1c69-4af3-93d9-cf7cce0232e4"
+                  }
+                },
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=役調結果待ち検索リスト!AM14"
+                }
+              }
+            ]
           },
           {
             "$type": "Forguncy.Model.SetCellPropertyCommand, ServerDesignerCommon",
@@ -1133,7 +1091,7 @@
               {
                 "TargetCells": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=役調結果待ち検索リスト!役調最新化フラグ"
+                  "SerializeProperty": "=役調結果待ち検索リスト!役調検索フラグ"
                 },
                 "Value": "0"
               }
@@ -1153,11 +1111,6 @@
     "7,29": {
       "CellComment": {
         "Comments": "親ページから取得"
-      }
-    },
-    "10,22": {
-      "CellComment": {
-        "Comments": "ページロード時にセットする"
       }
     },
     "16,22": {
@@ -1231,6 +1184,11 @@
             ]
           }
         ]
+      }
+    },
+    "16,38": {
+      "CellComment": {
+        "Comments": "ページロード時にセット"
       }
     },
     "19,10": {
@@ -1332,7 +1290,7 @@
                     "UpdateRowType": 3
                   }
                 ],
-                "ID": "188d3ed8-6c89-4210-88c0-c7bf13a6847e"
+                "ID": "b6073e55-bfd7-413a-bbff-6c6363483f54"
               },
               {
                 "CommandList": [
@@ -1348,7 +1306,7 @@
                     "UpdateRowType": 3
                   }
                 ],
-                "ID": "c741c9fe-e307-4584-8481-ae00d762f901"
+                "ID": "976be8fa-bd6d-477f-988d-da8c4a89a382"
               }
             ]
           },
@@ -1511,10 +1469,8 @@
         "FontFamily": 0
       },
       {
-        "Background": 15,
-        "FontFamily": 0,
-        "Formatter": 11,
-        "HorizontalAlignment": 12
+        "Background": 2,
+        "FontFamily": 0
       },
       {
         "FontFamily": 0,
@@ -1549,12 +1505,11 @@
         "#FF00B050",
         "#FF0070C0",
         "General",
-        "Accent 1 80",
+        "Accent 1 60",
         "@",
         "Right",
         "#FFFFFF00",
-        "Accent 6 80",
-        "Accent 1 60"
+        "Accent 6 80"
       ],
       "Borders": [
         {
@@ -1698,12 +1653,18 @@
       "15,29": 3,
       "15,30": 1,
       "15,31": 1,
-      "16,22": 22,
+      "15,38": 1,
+      "15,39": 1,
+      "15,40": 1,
+      "16,22": 19,
       "16,23": 1,
       "16,24": 1,
       "16,29": 20,
       "16,30": 1,
       "16,31": 1,
+      "16,38": 22,
+      "16,39": 1,
+      "16,40": 1,
       "17,29": 1,
       "17,30": 1,
       "17,31": 1,
@@ -1734,7 +1695,7 @@
       "19,19": 24,
       "19,20": 24,
       "19,21": 26,
-      "19,22": 22,
+      "19,22": 19,
       "19,23": 1,
       "19,24": 1,
       "19,25": 26,
@@ -1796,7 +1757,8 @@
     "4,38,1,3",
     "7,38,1,3",
     "10,38,1,3",
-    "13,38,1,3"
+    "13,38,1,3",
+    "16,38,1,3"
   ],
   "PageInfo": {
     "$type": "Forguncy.Model.Pages.NormalPage, ServerDesignerCommon",
@@ -1807,12 +1769,16 @@
           {
             "TargetCells": {
               "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-              "SerializeProperty": "=役調結果待ち検索リスト!W11"
+              "SerializeProperty": "=役調結果待ち検索リスト!AM17"
             },
-            "Value": {
+            "Value": "1"
+          },
+          {
+            "TargetCells": {
               "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-              "SerializeProperty": "=役調結果待ち検索リスト!検索_測量結果待ちステータスID"
-            }
+              "SerializeProperty": "=役調結果待ち検索リスト!AD5"
+            },
+            "Value": "1"
           }
         ]
       },
@@ -2073,7 +2039,7 @@
   },
   "CustomNames": [
     {
-      "Name": "役調最新化フラグ",
+      "Name": "役調検索フラグ",
       "Formula": "役調結果待ち検索リスト!$W$5"
     },
     {
@@ -2085,4 +2051,4 @@
       "Formula": "役調結果待ち検索リスト!$W$2"
     }
   ]
-}//ji+N/e3lTZWixsUQjvTnSbqfE4JrFyn2HOEKxfe6YS9aQxmTvA3U8GQ73zehar+KshPZjyg3CpubR4HUK7WDmpIouquELCXFSDUCkChZYKnANd+7zeiiv8H4z9HKwGSZO+Kl/xNeq/l7BjjVH7shJK7LpC1h9GxXxUpWQ1wTPS9mVU6P8hXV/e8O3gzqhqOiYiPMb4P7A8tOF3FL+8ha4vqViMQ/qO4WG5FuEZoirjnBZ0+D+ozYWhkHFyfwrzTUQMe0lQllzzoQQBUJDuqRAaZ4IGBNatALOzphg9kuenuISZ/FWss4akLV2v9qFTh0krJgFCKi0kfvs6pO5gM3od3ZyKWohQJ3aUh49ghabP+V8D1PM8XKTQTyZo4yM2z09uiTMDOfFnzr5LF8ra9KqwIeLna4EfY7kCb5HuiTXbPAx1lMWxPJpqHqq9ZhKwpjGjcM8y0JvadGjPU2caX+aBAqMfHSx2cebPx51sticDRvSDq4DAREVgmTVUtbkU6S7Y+o3D9FRx39z7YmXOr2/SjwmJ8gFPhVNqZqoxr4r0k32XSjOKCfyLq9xXSg5q3vvq3c5TDx9NHONs0Pr0xeiRG8cxIWvgA7UWFqjhQ1hRPaEvsgwNkLrFovVBreQay0IiNXYKQBURcOSdk6xNe52icShfvEU74PR+DIMW9nx3+PBXMHNsaUVMXEDpW0fTb4JPTFbOofmJEDXOwFZIWaI4PPx3HziDljwEq5p/1H8alIp+mb94CB0cmkBRV6Dq2ftWR3J9kH+YFi/tLti9na0jSeLcpKNHkUhySt3h4RC05r7dM7PMTUeGFo/ADZ2XTcZl2n4kycS9Jf8Vwm1pVVRXzGgWJL0v6orKQuwx4GHLbHMRHueBVizyebBpgvh4FIR0nD4sJ6O7/b4MIumY91Qw==|920
+}//lZ+gTosTjf+B3k5ecwrB5D6k4pCXlrjReRXTNGCOTz0dRZzOCS74/F8SX71Xu+e3yuLXMlI+w/GNdmG/zt8PEFJTGlgNwb924psPo9DnZTO++3NkAdP9Pz88AhN3u/JwS1il7GG37DjtWKBb4FHZxgIRDTxU2ET8ByGj4UZHSv9a7C8BZOV2LTVNAsvwn/7/kmuIYrvWOsSl7Dveyewt03VLpvsRNFABAHuWcgCgilkSMoKwR0IQqiPgbU3JD72Db6slw1mcsVcUjRaxI9q6dP0f2bkzfI3gfyG6k03OnPcWrh06BHnybFi5xkKukx5fb5i6A41P7knitEeV8wELEZfWkRHYkhqILNohzeHavH8SqyuL8ZTvmMImjWK+MqmweHnEW39LKUcacXfICV18oDEmmGTY0nuhXyDROg8Hg4T8bOJCdXlERUl+HlCk7eHNaoEz5vcfGvJiTUMZ5D0mU7/y4Q+bXDUnwwAT+/j6l6+j/cthvJDdv6O/N2++tXMowGlV6Wb/dWDa22/9/fktdeSBBKpHmvgfNzxCuKuBnq5VFEzm+B53DhoLkIE3Th72qvT9dBpf278L7GTdSdJuG0cPvbnmpjLyISpHq7ZeJ493xTXom9VRZ/ZUN7XQ16hOonnQW3Kq+6W+GU9CZL3Vy0HYWTnoO2Wx9wu2gmSpsDjhBDk58le09e06AOwu8xLy6FR1MSdU7K1Gs5jxClCCqJlrZ9fkQ+T87pI4kIDC3CBUBbRDn14OW6zHQa99yIYcNDDSwV17bJ+3ztsiLkHvjBJjQQ6f52SH2vErf7ywBhH0hhziZOe1ksH4ermF1Rqoptvk4d1+FN27GiHW1kaKKU9hRaGoyKj+GPWzjSR+csQ4q5YDs5RWzdElGMdVaoOJdmq0Oreh9j7lFOOt0+02Yw==|920

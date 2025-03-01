@@ -1,0 +1,195 @@
+{
+  "Name": "工事報告書受領予定日一括設定処理",
+  "Enabled": true,
+  "Triggers": [
+    {
+      "$type": "Forguncy.SaveLoad.PostRequestTriggerSaveData, ServerDesignerCommon",
+      "Permission": {
+        "PermissionData": {
+          "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionData, Forguncy.RbacPermission.Core",
+          "permissionResource": {
+            "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionResource, Forguncy.RbacPermission.Core"
+          },
+          "permissionBindings": [
+            {
+              "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionBinding, Forguncy.RbacPermission.Core",
+              "roleNames": [
+                "FGC_LoginUser"
+              ]
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "Commands": [
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "工事情報",
+      "TableValue": {
+        "TableName": "t_object_construction",
+        "BindingInfos": [
+          {
+            "GUID": "b21212f8-a023-47ac-8032-3dbf1600125d",
+            "BindingInfo": {
+              "TableName": "t_object_construction",
+              "ColumnName": "construction_id",
+              "GUID": "bf4b275d-1a69-420a-badb-7c0a8ba13e57"
+            },
+            "ColumnName": "工事ID"
+          },
+          {
+            "GUID": "d46e754e-7fc8-48c6-b293-b946f2a013df",
+            "BindingInfo": {
+              "TableName": "t_object_construction",
+              "ColumnName": "construction_customer_id",
+              "GUID": "8eab9f2c-e0de-4b92-aa2a-d78e2b48a8dc"
+            },
+            "ColumnName": "工事会社ID"
+          },
+          {
+            "GUID": "64a90201-f70b-4db0-bc7c-0070cd7febe9",
+            "BindingInfo": {
+              "TableName": "t_object_construction",
+              "ColumnName": "scheduled_construction_enddate",
+              "GUID": "d864dfa5-7421-436f-b73a-2fde4682d768"
+            },
+            "ColumnName": "工事予定終了日"
+          }
+        ],
+        "SqlCondition": {
+          "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+          "SubConditions": [
+            {
+              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+              "ColumnBindingInfo": {
+                "TableName": "t_object_construction",
+                "ColumnName": "construction_report_scheduled_date",
+                "GUID": "0abcbfc8-d604-4979-9a6b-b319a289a1e9"
+              },
+              "Value": "%Null%"
+            },
+            {
+              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+              "CompareType": 1,
+              "ColumnBindingInfo": {
+                "TableName": "t_object_construction",
+                "ColumnName": "scheduled_construction_enddate",
+                "GUID": "0c6e8ac1-16fc-468b-8ffb-e826ec52d559"
+              },
+              "Value": "%Null%"
+            },
+            {
+              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+              "ColumnBindingInfo": {
+                "TableName": "t_object_construction",
+                "ColumnName": "construction_status_id",
+                "GUID": "1ad02a70-eb3f-49d9-8e3e-91e3657071a0",
+                "RelationBinding": {
+                  "RelatedTable": "m_construction_status",
+                  "RelatedColumn": "construction_status_id",
+                  "DisplayColumn": "construction_report_wait_flg"
+                }
+              },
+              "Value": "1"
+            }
+          ]
+        }
+      },
+      "ID": "2957c5822e3442b98158bdfcfe54605f"
+    },
+    {
+      "$type": "Forguncy.Model.LoopCommand, ServerDesignerCommon",
+      "LoopInfo": {
+        "$type": "Forguncy.Model.CountLoopInfo, ServerDesignerCommon",
+        "LoopCount": {
+          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+          "SerializeProperty": "=工事情報"
+        },
+        "LoopItemParamName": "Item"
+      },
+      "CommandList": [
+        {
+          "$type": "Forguncy.Model.RequestServerCommand, ServerDesignerCommon",
+          "ServerCommandName": "報告書受領予定日取得",
+          "Parameters": [
+            {
+              "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+              "ParamName": "P_顧客ID",
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=Item.工事会社ID"
+              }
+            },
+            {
+              "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+              "ParamName": "P_予定終了日",
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=Item.工事予定終了日"
+              }
+            },
+            {
+              "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+              "ParamName": "P_調査報告フラグ"
+            },
+            {
+              "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+              "ParamName": "P_測量報告フラグ",
+              "Value": "1"
+            },
+            {
+              "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+              "ParamName": "P_転圧報告フラグ"
+            },
+            {
+              "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+              "ParamName": "P_工事報告フラグ"
+            }
+          ],
+          "ReturnPropertiesTo": [
+            {
+              "ResultPropertyName": "R_受領予定日",
+              "ResultTo": {
+                "SerializeProperty": "受領予定日"
+              }
+            }
+          ],
+          "RefreshAfterFinish": true,
+          "CheckDataValidation": true
+        },
+        {
+          "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+          "TableName": "t_object_construction",
+          "ShowConfirm": false,
+          "RowsToUpdate": 1,
+          "RowsToUpdateCondition": {
+            "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+            "ColumnBindingInfo": {
+              "TableName": "t_object_construction",
+              "ColumnName": "construction_id",
+              "GUID": "81c8178f-9a59-4a8c-8ef3-b81363bf8e14"
+            },
+            "Value": {
+              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+              "SerializeProperty": "=Item.工事ID"
+            }
+          },
+          "UpdateBindingValues": [
+            {
+              "BindingInfo": {
+                "TableName": "t_object_construction",
+                "ColumnName": "construction_report_scheduled_date",
+                "GUID": "a6e91ad1-68af-4b05-915d-568d4cfc7719"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=受領予定日"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

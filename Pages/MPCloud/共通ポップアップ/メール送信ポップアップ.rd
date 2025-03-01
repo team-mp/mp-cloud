@@ -1,6 +1,6 @@
 {
   "PageType": 0,
-  "ColumnCount": 40,
+  "ColumnCount": 39,
   "RowCount": 31,
   "Formulas": {
     "5,13": "IF(指定ユーザーID=\"\",0,指定ユーザーID)",

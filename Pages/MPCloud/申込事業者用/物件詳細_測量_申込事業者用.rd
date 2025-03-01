@@ -1,18 +1,18 @@
 {
   "PageType": 0,
   "ColumnCount": 143,
-  "RowCount": 73,
+  "RowCount": 75,
   "Formulas": {
     "24,115": "ODATA(\"t_object_surveying/$count?$filter=object_order_id eq \"&IF(ISBLANK(BK25),\"null\",BK25)&\" and surveying_id gt \"&IF(ISBLANK(BL25),\"null\",BL25))",
-    "24,114": "IF(DJ25<>\"\",\"最終更新日時：\"&DJ25,\"\")",
     "24,111": "\"仮杭報告書(\"&DG25&\")\"",
     "24,110": "ODATA(\"t_object_attachment/$count?$filter=file_attribute_id eq \"&IF(ISBLANK(仮杭報告書ファイル属性ID),\"null\",仮杭報告書ファイル属性ID)&\" and surveying_id eq \"&IF(ISBLANK(BL25),\"null\",BL25)&\" and publish_flg eq 1 and active_flg eq 1\")",
     "24,68": "IF(BN25=1,\"以降\",\"～\")",
     "24,109": "\"測量報告書(\"&DE25&\")\"",
+    "24,108": "ODATA(\"t_object_attachment/$count?$filter=file_attribute_id eq \"&IF(ISBLANK(測量報告書ファイル属性ID),\"null\",測量報告書ファイル属性ID)&\" and surveying_id eq \"&IF(ISBLANK(BL25),\"null\",BL25)&\" and publish_flg eq 1 and active_flg eq 1\")",
     "24,64": "$BK$30-ROW(BK25)+1",
     "29,62": "COUNT(BL25)",
-    "24,108": "ODATA(\"t_object_attachment/$count?$filter=file_attribute_id eq \"&IF(ISBLANK(測量報告書ファイル属性ID),\"null\",測量報告書ファイル属性ID)&\" and surveying_id eq \"&IF(ISBLANK(BL25),\"null\",BL25)&\" and publish_flg eq 1 and active_flg eq 1\")",
     "24,107": "IFERROR(ODATA(\"v_surveying_product_summary?$select=仕入合計&$filter=測量ID eq \"&IF(ISBLANK(BL25),\"null\",BL25)),0)",
+    "24,114": "IF(DJ25<>\"\",\"最終更新日時：\"&DJ25,\"\")",
     "24,106": "IFERROR(ODATA(\"v_surveying_product_summary?$select=売上合計&$filter=測量ID eq \"&IF(ISBLANK(BL25),\"null\",BL25)),0)"
   },
   "CustomNames": [
@@ -34,7 +34,7 @@
     },
     {
       "Name": "元_測量ステータスID",
-      "Formula": "物件詳細_測量_申込事業者用!$BY$71"
+      "Formula": "物件詳細_測量_申込事業者用!$BY$73"
     },
     {
       "Name": "元_測量希望開始日",
@@ -54,7 +54,7 @@
     },
     {
       "Name": "元_測量共有コメント",
-      "Formula": "物件詳細_測量_申込事業者用!$BY$70"
+      "Formula": "物件詳細_測量_申込事業者用!$BY$72"
     },
     {
       "Name": "元_測量申込日",
@@ -167,6 +167,14 @@
     {
       "Name": "元_役調予定時間",
       "Formula": "物件詳細_測量_申込事業者用!$BY$63"
+    },
+    {
+      "Name": "元_真北測量フラグ",
+      "Formula": "物件詳細_測量_申込事業者用!$BY$70"
+    },
+    {
+      "Name": "元_納品データ3Dフラグ",
+      "Formula": "物件詳細_測量_申込事業者用!$BY$71"
     }
   ]
 }

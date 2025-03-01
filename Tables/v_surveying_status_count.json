@@ -1,0 +1,63 @@
+{
+  "Name": "v_surveying_status_count",
+  "Columns": [
+    {
+      "$type": "Forguncy.SaveLoad.BindingColumnSaveData, ServerDesignerCommon",
+      "DefaultValue": 0,
+      "Required": true,
+      "DatabaseColumnType": "bigint",
+      "MaxLength": -1,
+      "Name": "測量_手配待ち件数",
+      "ColumnType": "System.Int64, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+    },
+    {
+      "$type": "Forguncy.SaveLoad.BindingColumnSaveData, ServerDesignerCommon",
+      "DefaultValue": 0,
+      "Required": true,
+      "DatabaseColumnType": "bigint",
+      "MaxLength": -1,
+      "Name": "測量_手配保留件数",
+      "ColumnType": "System.Int64, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+    },
+    {
+      "$type": "Forguncy.SaveLoad.BindingColumnSaveData, ServerDesignerCommon",
+      "DefaultValue": 0,
+      "Required": true,
+      "DatabaseColumnType": "bigint",
+      "MaxLength": -1,
+      "Name": "測量_承諾待ち件数",
+      "ColumnType": "System.Int64, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+    },
+    {
+      "$type": "Forguncy.SaveLoad.BindingColumnSaveData, ServerDesignerCommon",
+      "DefaultValue": 0,
+      "Required": true,
+      "DatabaseColumnType": "bigint",
+      "MaxLength": -1,
+      "Name": "測量_結果待ち件数",
+      "ColumnType": "System.Int64, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+    },
+    {
+      "$type": "Forguncy.SaveLoad.BindingColumnSaveData, ServerDesignerCommon",
+      "DefaultValue": 0,
+      "Required": true,
+      "DatabaseColumnType": "bigint",
+      "MaxLength": -1,
+      "Name": "測量_完了待ち件数",
+      "ColumnType": "System.Int64, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+    }
+  ],
+  "ExternalDatabaseInfo": {
+    "DataBaseType": "6db454c0-531c-4395-9122-921a18942902",
+    "AllowModifySchema": true,
+    "ConnectionId": "MySql2",
+    "SourceTableName": "v_surveying_status_count",
+    "SourceTableSchema": "",
+    "CreateViewSql": "select count((case when (`sub`.`surveying_arrange_wait_flg` = 1) then 1 end)) AS `測量_手配待ち件数`,count((case when (`sub`.`surveying_arrange_pending_flg` = 1) then 1 end)) AS `測量_手配保留件数`,count((case when (`sub`.`surveying_consent_wait_flg` = 1) then 1 end)) AS `測量_承諾待ち件数`,(count((case when ((`sub`.`surveying_result_wait_flg` = 1) and (`main`.`site_survey_flg` = 1)) then 1 end)) + count((case when ((`sub`.`surveying_result_wait_flg` = 1) and (`main`.`gove_survey_flg` = 1)) then 1 end))) AS `測量_結果待ち件数`,count((case when (`sub`.`surveying_complete_wait_flg` = 1) then 1 end)) AS `測量_完了待ち件数` from (`t_object_surveying` `main` join `m_surveying_status` `sub` on((`main`.`surveying_status_id` = `sub`.`surveying_status_id`))) where (exists(select `t_object_order`.`object_order_id` from `t_object_order` where ((`t_object_order`.`object_order_id` = `main`.`object_order_id`) and (`t_object_order`.`active_flg` = 1))) and ((`sub`.`surveying_arrange_wait_flg` = 1) or (`sub`.`surveying_arrange_pending_flg` = 1) or (`sub`.`surveying_consent_wait_flg` = 1) or (`sub`.`surveying_result_wait_flg` = 1) or (`sub`.`surveying_result_wait_flg` = 1) or (`sub`.`surveying_complete_wait_flg` = 1)))",
+    "ViewInfo": {
+      "ViewName": "v_surveying_status_count",
+      "QueryColumns": []
+    }
+  },
+  "Indexes": []
+}
