@@ -1,26 +1,26 @@
 {
   "PageType": 0,
   "ColumnCount": 234,
-  "RowCount": 28,
+  "RowCount": 30,
   "Formulas": {
-    "27,1": "\"表示データ件数：\"&TEXT(HJ14,\"#,##0\")&\"件\"",
-    "19,211": "TEXTJOINIF(\",\",TRUE,GW5,1,GH5)",
-    "13,217": "COUNT(GH5)",
-    "10,211": "IF(HD8>0,LEFT(HD5,HD8-1),IF(HD5<>\"\",HD5,\"\"))",
-    "7,211": "IF(IFERROR(FIND(\"　\",HD5),0)>0,FIND(\"　\",HD5),IF(IFERROR(FIND(\" \",HD5),0)>0,FIND(\" \",HD5),0))",
-    "19,217": "HJ14-HJ17",
-    "13,211": "IF(HD8>0,MID(HD5,HD8+1,1000),\"\")",
-    "16,217": "COUNTIF(GW5,1)",
-    "4,211": "TRIM(V2)"
+    "29,1": "\"表示データ件数：\"&TEXT(HJ16,\"#,##0\")&\"件\"",
+    "21,211": "TEXTJOINIF(\",\",TRUE,GW7,1,GH7)",
+    "15,217": "COUNT(GH7)",
+    "12,211": "IF(HD10>0,LEFT(HD7,HD10-1),IF(HD7<>\"\",HD7,\"\"))",
+    "9,211": "IF(IFERROR(FIND(\"　\",HD7),0)>0,FIND(\"　\",HD7),IF(IFERROR(FIND(\" \",HD7),0)>0,FIND(\" \",HD7),0))",
+    "21,217": "HJ16-HJ19",
+    "15,211": "IF(HD10>0,MID(HD7,HD10+1,1000),\"\")",
+    "18,217": "COUNTIF(GW7,1)",
+    "6,211": "TRIM(V2)"
   },
   "CustomNames": [
     {
       "Name": "検索フラグ",
-      "Formula": "測量検索リスト!$HJ$8"
+      "Formula": "測量検索リスト!$HJ$10"
     },
     {
       "Name": "検索_測量ステータスID",
-      "Formula": "測量検索リスト!$HJ$11"
+      "Formula": "測量検索リスト!$HJ$13"
     },
     {
       "Name": "検索リストページタイトル",
@@ -28,7 +28,7 @@
     },
     {
       "Name": "ロケーションURL",
-      "Formula": "測量検索リスト!$HQ$11"
+      "Formula": "測量検索リスト!$HQ$13"
     }
   ]
 }

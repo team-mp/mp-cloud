@@ -9,7 +9,9 @@
     "3,36": "IF(AH4=1,AI4,\"\")",
     "14,26": "IF(AA18>0,ODATA(\"t_object_order?$select=order_customer_id&$filter=object_order_id eq \"&IF(ISBLANK(AA18),\"null\",AA18)),0)",
     "3,32": "IF(AF4=\"\",\"共有\",AF4)",
-    "17,26": "申込ID"
+    "17,26": "申込ID",
+    "17,35": "IF(連絡事項タブ検索<>\"\",連絡事項タブ検索,1)",
+    "20,35": "IF(連絡事項タブ検索<>\"\",連絡事項タブ検索,1000)"
   },
   "CustomNames": [
     {
