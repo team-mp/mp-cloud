@@ -16,6 +16,11 @@
           "DesignLengthInPixel": 25.0
         }
       },
+      "4": {
+        "GridRowColumnDefinition": {
+          "DesignLengthInPixel": 10.0
+        }
+      },
       "5": {
         "GridRowColumnDefinition": {
           "DesignLengthInPixel": 30.0
@@ -114,11 +119,6 @@
       "29": {
         "GridRowColumnDefinition": {
           "DesignLengthInPixel": 35.0
-        }
-      },
-      "4": {
-        "GridRowColumnDefinition": {
-          "DesignLengthInPixel": 10.0
         }
       }
     },
@@ -1140,6 +1140,7 @@
     "5,211": "選択フラグ",
     "5,218": "▼検索ワード",
     "5,224": "▼検索フラグ",
+    "5,231": "▼選択アクション",
     "6,224": "0",
     "8,218": "▼区切り位置",
     "11,218": "▼検索ワード1",
@@ -1156,7 +1157,6 @@
     "18,231": "0",
     "20,218": "▼申込IDs",
     "20,224": "▼未選択カウント",
-    "20,231": "▼選択アクション",
     "23,218": "▼クエリ条件（有効フラグ）"
   },
   "Formulas": {
@@ -1291,6 +1291,12 @@
         "$type": "Forguncy.ButtonCellType, ServerDesignerCommon",
         "CommandList": [
           {
+            "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+            "ParameterName": "選択可能アクション",
+            "ParameterValue": "2,3",
+            "ID": "33753a0f46ff4dd4bda570d9c6db70f8"
+          },
+          {
             "$type": "Forguncy.Model.ShowPopupCommand, ServerDesignerCommon",
             "PopupDisplayMode": 1,
             "Placement": {
@@ -1301,10 +1307,19 @@
               {
                 "Source": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=調査検索リスト2!HX22"
+                  "SerializeProperty": "=調査検索リスト2!HX7"
                 },
                 "TargetCell": {
                   "SerializeProperty": "=調査検索アクション選択!選択アクション"
+                }
+              },
+              {
+                "Source": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=調査検索リスト2!選択可能アクション"
+                },
+                "TargetCell": {
+                  "SerializeProperty": "=調査検索アクション選択!選択可能アクション"
                 }
               }
             ]
@@ -1396,20 +1411,73 @@
         "$type": "Forguncy.ButtonCellType, ServerDesignerCommon",
         "CommandList": [
           {
-            "$type": "Forguncy.Model.ShareCommand, ServerDesignerCommon",
-            "ShareCommandContainerRefer": {
-              "ShareCommandContainerID": "97bb1c95-84a3-45e9-ba82-82036e6da3a8"
-            }
-          },
-          {
             "$type": "Forguncy.Model.SetCellPropertyCommand, ServerDesignerCommon",
             "PropertyItemsList": [
               {
                 "TargetCells": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=調査検索リスト2!検索フラグ"
+                  "SerializeProperty": "=調査検索リスト2!検索_物件番号"
                 },
-                "Value": "1"
+                "Value": "%Null%"
+              },
+              {
+                "TargetCells": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=調査検索リスト2!検索_物件名"
+                },
+                "Value": "%Null%"
+              }
+            ]
+          },
+          {
+            "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+            "ConditionAndCommandPairList": [
+              {
+                "Condition": {
+                  "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                  "param": {
+                    "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+                    "cellLocations": [
+                      {
+                        "SerializeProperty": "=調査検索リスト2!L2"
+                      }
+                    ]
+                  },
+                  "value": "%Null%",
+                  "compareType": 2
+                },
+                "CommandList": [
+                  {
+                    "$type": "Forguncy.Model.SetCellPropertyCommand, ServerDesignerCommon",
+                    "PropertyItemsList": [
+                      {
+                        "TargetCells": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=調査検索リスト2!L2"
+                        },
+                        "Value": "%Null%"
+                      }
+                    ]
+                  }
+                ],
+                "ID": "0a7d77d3-7fa7-4899-882e-7aa56e0f62cd"
+              },
+              {
+                "CommandList": [
+                  {
+                    "$type": "Forguncy.Model.SetCellPropertyCommand, ServerDesignerCommon",
+                    "PropertyItemsList": [
+                      {
+                        "TargetCells": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=調査検索リスト2!検索フラグ"
+                        },
+                        "Value": "1"
+                      }
+                    ]
+                  }
+                ],
+                "ID": "ddff06ef-3408-4955-8a22-b930576eebee"
               }
             ]
           }
@@ -1468,6 +1536,52 @@
               "Value": {
                 "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
                 "SerializeProperty": "=調査検索リスト2!HQ13"
+              }
+            },
+            {
+              "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+              "CompareType": 6,
+              "ColumnBindingInfo": {
+                "TableName": "t_object_survey",
+                "ColumnName": "object_order_id",
+                "GUID": "1fc785d4-9aaa-4d6a-8ed3-9a62d0a4795c",
+                "RelationBinding": {
+                  "RelatedTable": "t_object_order",
+                  "RelatedColumn": "object_order_id",
+                  "DisplayColumn": "object_id",
+                  "NextRelationBinding": {
+                    "RelatedTable": "t_object",
+                    "RelatedColumn": "object_id",
+                    "DisplayColumn": "物件番号"
+                  }
+                }
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=調査検索リスト2!検索_物件番号"
+              }
+            },
+            {
+              "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+              "CompareType": 6,
+              "ColumnBindingInfo": {
+                "TableName": "t_object_survey",
+                "ColumnName": "object_order_id",
+                "GUID": "2b2e4256-6492-42a1-8316-de3d6ae963a0",
+                "RelationBinding": {
+                  "RelatedTable": "t_object_order",
+                  "RelatedColumn": "object_order_id",
+                  "DisplayColumn": "object_id",
+                  "NextRelationBinding": {
+                    "RelatedTable": "t_object",
+                    "RelatedColumn": "object_id",
+                    "DisplayColumn": "物件名"
+                  }
+                }
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=調査検索リスト2!検索_物件名"
               }
             }
           ]
@@ -1795,7 +1909,7 @@
                     "LoadBindingDataOption": 1
                   }
                 ],
-                "ID": "f1073ad7-a35a-41f1-a72b-87be775c5613"
+                "ID": "d9acedb0-9672-416b-a905-9bd51358041a"
               }
             ]
           }
@@ -2154,6 +2268,270 @@
         ]
       }
     },
+    "6,231": {
+      "CellType": {
+        "$type": "Forguncy.TextCellType, ServerDesignerCommon",
+        "SavedValidators": [
+          {
+            "$type": "Forguncy.CellTypes.Models.UniqueValidadator, ServerDesignerCommon"
+          }
+        ],
+        "CommandList": [
+          {
+            "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+            "ParameterName": "選択アクション",
+            "ParameterValue": {
+              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+              "SerializeProperty": "=調査検索リスト2!HX7"
+            },
+            "ID": "c8705077800c4d92b3ebdb615deb0271"
+          },
+          {
+            "$type": "Forguncy.Model.SetCellPropertyCommand, ServerDesignerCommon",
+            "PropertyItemsList": [
+              {
+                "TargetCells": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=調査検索リスト2!HX7"
+                },
+                "Value": "%Null%"
+              }
+            ],
+            "Comments": "フラグリセット"
+          },
+          {
+            "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+            "ConditionAndCommandPairList": [
+              {
+                "Condition": {
+                  "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                  "param": {
+                    "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+                    "cellLocations": [
+                      {
+                        "SerializeProperty": "=調査検索リスト2!選択アクション"
+                      }
+                    ]
+                  },
+                  "value": "1"
+                },
+                "CommandList": [
+                  {
+                    "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+                    "ConditionAndCommandPairList": [
+                      {
+                        "Condition": {
+                          "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                          "param": {
+                            "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+                            "cellLocations": [
+                              {
+                                "SerializeProperty": "=調査検索リスト2!HQ19"
+                              }
+                            ]
+                          },
+                          "value": "20",
+                          "compareType": 2
+                        },
+                        "CommandList": [
+                          {
+                            "$type": "Forguncy.Model.ShowMessageCommand, ServerDesignerCommon",
+                            "MessageFormula": "一括表示は最大20件までです"
+                          },
+                          {
+                            "$type": "Forguncy.Model.StopCommand, ServerDesignerCommon"
+                          }
+                        ],
+                        "ID": "e1b219d3-3913-4025-a6c2-3c45f33f4fec"
+                      }
+                    ]
+                  },
+                  {
+                    "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                    "ParameterName": "文字列変数",
+                    "ParameterValue": {
+                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                      "SerializeProperty": "=調査検索リスト2!HK22"
+                    },
+                    "ID": "5eccc91305d74ec6ad8876ef2e91b49f"
+                  },
+                  {
+                    "$type": "Forguncy.Model.LoopCommand, ServerDesignerCommon",
+                    "LoopInfo": {
+                      "$type": "Forguncy.Model.CountLoopInfo, ServerDesignerCommon",
+                      "LoopCount": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=調査検索リスト2!HQ19"
+                      },
+                      "LoopItemParamName": "Item"
+                    },
+                    "CommandList": [
+                      {
+                        "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                        "ParameterName": "カンマ文字位置",
+                        "ParameterValue": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=IFERROR(FIND(\",\",調査検索リスト2!文字列変数,1),0)"
+                        },
+                        "ID": "33a57996564244009536d6598e0f7b97"
+                      },
+                      {
+                        "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                        "ParameterName": "取得申込ID",
+                        "ParameterValue": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=IF(調査検索リスト2!カンマ文字位置>0,LEFT(調査検索リスト2!文字列変数,調査検索リスト2!カンマ文字位置-1),調査検索リスト2!文字列変数)"
+                        },
+                        "ID": "f6eae730a56e4d92a01567303d4dc7b2"
+                      },
+                      {
+                        "$type": "Forguncy.Model.ShareCommand, ServerDesignerCommon",
+                        "ShareCommandContainerRefer": {
+                          "ShareCommandContainerID": "2ddd4852-a0ed-4534-b1b2-3ee6fe2631b3"
+                        },
+                        "Params": [
+                          {
+                            "ParamReferObject": {
+                              "ParamID": "b99e9146-4488-4286-aea6-ef1c495ba038",
+                              "ShareCommandContainerReferObject": {
+                                "ShareCommandContainerID": "2ddd4852-a0ed-4534-b1b2-3ee6fe2631b3"
+                              }
+                            },
+                            "Value": {
+                              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                              "SerializeProperty": "=調査検索リスト2!取得申込ID"
+                            }
+                          },
+                          {
+                            "ParamReferObject": {
+                              "ParamID": "c1c93417-2786-4584-884a-23e1756e2c9a",
+                              "ShareCommandContainerReferObject": {
+                                "ShareCommandContainerID": "2ddd4852-a0ed-4534-b1b2-3ee6fe2631b3"
+                              }
+                            },
+                            "Value": {
+                              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                              "SerializeProperty": "=調査検索リスト2!HK19"
+                            }
+                          },
+                          {
+                            "ParamReferObject": {
+                              "ParamID": "cd7718e2-fa58-413e-a0d7-6d9c3b6a1e56",
+                              "ShareCommandContainerReferObject": {
+                                "ShareCommandContainerID": "2ddd4852-a0ed-4534-b1b2-3ee6fe2631b3"
+                              }
+                            }
+                          },
+                          {
+                            "ParamReferObject": {
+                              "ParamID": "0611339a-68ac-4277-a1f0-b79262f30f08",
+                              "ShareCommandContainerReferObject": {
+                                "ShareCommandContainerID": "2ddd4852-a0ed-4534-b1b2-3ee6fe2631b3"
+                              }
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "$type": "Forguncy.Model.RequestServerCommand, ServerDesignerCommon",
+                        "ServerCommandName": "時間待機（1秒）",
+                        "CheckDataValidation": false
+                      },
+                      {
+                        "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                        "ParameterName": "文字列変数",
+                        "ParameterValue": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=MID(調査検索リスト2!文字列変数,調査検索リスト2!カンマ文字位置+1,1000000)"
+                        },
+                        "ID": "4baba171d4704fe8abe770e0b409bc57"
+                      }
+                    ]
+                  }
+                ],
+                "ID": "69129489-f46d-4c3d-8777-6cdc0d3b3eb1"
+              },
+              {
+                "Condition": {
+                  "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                  "param": {
+                    "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+                    "cellLocations": [
+                      {
+                        "SerializeProperty": "=選択アクション"
+                      }
+                    ]
+                  },
+                  "value": "2"
+                },
+                "CommandList": [
+                  {
+                    "$type": "Forguncy.Model.ShareCommand, ServerDesignerCommon",
+                    "ShareCommandContainerRefer": {
+                      "ShareCommandContainerID": "3fef8933-d505-4c27-ba52-e529962a6231"
+                    },
+                    "Params": [
+                      {
+                        "ParamReferObject": {
+                          "ParamID": "5ff5a867-00d6-4102-9a22-9206da131787",
+                          "ShareCommandContainerReferObject": {
+                            "ShareCommandContainerID": "3fef8933-d505-4c27-ba52-e529962a6231"
+                          }
+                        },
+                        "Value": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=調査検索リスト2!HK22"
+                        }
+                      }
+                    ]
+                  }
+                ],
+                "Comments": "申込キャンセルの場合",
+                "ID": "2745bb25-586a-461e-935a-632814509af5"
+              },
+              {
+                "Condition": {
+                  "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                  "param": {
+                    "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+                    "cellLocations": [
+                      {
+                        "SerializeProperty": "=調査検索リスト2!選択アクション"
+                      }
+                    ]
+                  },
+                  "value": "3"
+                },
+                "CommandList": [
+                  {
+                    "$type": "Forguncy.Model.ShareCommand, ServerDesignerCommon",
+                    "ShareCommandContainerRefer": {
+                      "ShareCommandContainerID": "d9f36dab-450d-4fa4-ac2f-ce5a558467cf"
+                    },
+                    "Params": [
+                      {
+                        "ParamReferObject": {
+                          "ParamID": "7d9f7f86-26c6-438c-86d5-3e6a913693d3",
+                          "ShareCommandContainerReferObject": {
+                            "ShareCommandContainerID": "d9f36dab-450d-4fa4-ac2f-ce5a558467cf"
+                          }
+                        },
+                        "Value": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=調査検索リスト2!HK22"
+                        }
+                      }
+                    ]
+                  }
+                ],
+                "Comments": "処理終了の場合",
+                "ID": "5925383a-fb62-4dd2-a95b-dddaf30026f5"
+              }
+            ]
+          }
+        ]
+      }
+    },
     "15,231": {
       "CellType": {
         "$type": "Forguncy.TextCellType, ServerDesignerCommon",
@@ -2299,7 +2677,7 @@
                     "UpdateRowType": 3
                   }
                 ],
-                "ID": "7134dfe7-9f97-49ac-a9b3-305821b7d381"
+                "ID": "560b875b-a204-4655-903d-6d7185d71a91"
               },
               {
                 "CommandList": [
@@ -2315,7 +2693,7 @@
                     "UpdateRowType": 3
                   }
                 ],
-                "ID": "7850d8c2-7845-42ea-9039-47cbe4dc1ac6"
+                "ID": "fce1efb6-d2b0-41ce-af27-a0f9a5a695b6"
               }
             ]
           },
@@ -2331,194 +2709,6 @@
               }
             ],
             "Comments": "選択フラグリセット"
-          }
-        ]
-      }
-    },
-    "21,231": {
-      "CellType": {
-        "$type": "Forguncy.TextCellType, ServerDesignerCommon",
-        "SavedValidators": [
-          {
-            "$type": "Forguncy.CellTypes.Models.UniqueValidadator, ServerDesignerCommon"
-          }
-        ],
-        "CommandList": [
-          {
-            "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
-            "ParameterName": "選択アクション",
-            "ParameterValue": {
-              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-              "SerializeProperty": "=調査検索リスト2!HX22"
-            },
-            "ID": "b4f6b763a2d8454ea51396c996b35fab"
-          },
-          {
-            "$type": "Forguncy.Model.SetCellPropertyCommand, ServerDesignerCommon",
-            "PropertyItemsList": [
-              {
-                "TargetCells": {
-                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=調査検索リスト2!HX22"
-                },
-                "Value": "%Null%"
-              }
-            ],
-            "Comments": "フラグリセット"
-          },
-          {
-            "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
-            "ConditionAndCommandPairList": [
-              {
-                "Condition": {
-                  "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
-                  "param": {
-                    "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
-                    "cellLocations": [
-                      {
-                        "SerializeProperty": "=調査検索リスト2!選択アクション"
-                      }
-                    ]
-                  },
-                  "value": "1"
-                },
-                "CommandList": [
-                  {
-                    "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
-                    "ConditionAndCommandPairList": [
-                      {
-                        "Condition": {
-                          "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
-                          "param": {
-                            "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
-                            "cellLocations": [
-                              {
-                                "SerializeProperty": "=調査検索リスト2!HQ19"
-                              }
-                            ]
-                          },
-                          "value": "20",
-                          "compareType": 2
-                        },
-                        "CommandList": [
-                          {
-                            "$type": "Forguncy.Model.ShowMessageCommand, ServerDesignerCommon",
-                            "MessageFormula": "一括表示は最大20件までです"
-                          },
-                          {
-                            "$type": "Forguncy.Model.StopCommand, ServerDesignerCommon"
-                          }
-                        ],
-                        "ID": "b60b1dc7-48f9-4387-abd1-3ab4564d4560"
-                      }
-                    ]
-                  },
-                  {
-                    "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
-                    "ParameterName": "文字列変数",
-                    "ParameterValue": {
-                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                      "SerializeProperty": "=調査検索リスト2!HK22"
-                    },
-                    "ID": "5eccc91305d74ec6ad8876ef2e91b49f"
-                  },
-                  {
-                    "$type": "Forguncy.Model.LoopCommand, ServerDesignerCommon",
-                    "LoopInfo": {
-                      "$type": "Forguncy.Model.CountLoopInfo, ServerDesignerCommon",
-                      "LoopCount": {
-                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                        "SerializeProperty": "=調査検索リスト2!HQ19"
-                      },
-                      "LoopItemParamName": "Item"
-                    },
-                    "CommandList": [
-                      {
-                        "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
-                        "ParameterName": "カンマ文字位置",
-                        "ParameterValue": {
-                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                          "SerializeProperty": "=IFERROR(FIND(\",\",調査検索リスト2!文字列変数,1),0)"
-                        },
-                        "ID": "65f68d4e816446b5aa5e76f26409f218"
-                      },
-                      {
-                        "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
-                        "ParameterName": "取得申込ID",
-                        "ParameterValue": {
-                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                          "SerializeProperty": "=IF(調査検索リスト2!カンマ文字位置>0,LEFT(調査検索リスト2!文字列変数,調査検索リスト2!カンマ文字位置-1),調査検索リスト2!文字列変数)"
-                        },
-                        "ID": "85ceae7f7a4c46e5ba2541a6d1b47ae4"
-                      },
-                      {
-                        "$type": "Forguncy.Model.ShareCommand, ServerDesignerCommon",
-                        "ShareCommandContainerRefer": {
-                          "ShareCommandContainerID": "2ddd4852-a0ed-4534-b1b2-3ee6fe2631b3"
-                        },
-                        "Params": [
-                          {
-                            "ParamReferObject": {
-                              "ParamID": "b99e9146-4488-4286-aea6-ef1c495ba038",
-                              "ShareCommandContainerReferObject": {
-                                "ShareCommandContainerID": "2ddd4852-a0ed-4534-b1b2-3ee6fe2631b3"
-                              }
-                            },
-                            "Value": {
-                              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                              "SerializeProperty": "=調査検索リスト2!取得申込ID"
-                            }
-                          },
-                          {
-                            "ParamReferObject": {
-                              "ParamID": "c1c93417-2786-4584-884a-23e1756e2c9a",
-                              "ShareCommandContainerReferObject": {
-                                "ShareCommandContainerID": "2ddd4852-a0ed-4534-b1b2-3ee6fe2631b3"
-                              }
-                            },
-                            "Value": {
-                              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                              "SerializeProperty": "=調査検索リスト2!HK19"
-                            }
-                          },
-                          {
-                            "ParamReferObject": {
-                              "ParamID": "cd7718e2-fa58-413e-a0d7-6d9c3b6a1e56",
-                              "ShareCommandContainerReferObject": {
-                                "ShareCommandContainerID": "2ddd4852-a0ed-4534-b1b2-3ee6fe2631b3"
-                              }
-                            }
-                          },
-                          {
-                            "ParamReferObject": {
-                              "ParamID": "0611339a-68ac-4277-a1f0-b79262f30f08",
-                              "ShareCommandContainerReferObject": {
-                                "ShareCommandContainerID": "2ddd4852-a0ed-4534-b1b2-3ee6fe2631b3"
-                              }
-                            }
-                          }
-                        ]
-                      },
-                      {
-                        "$type": "Forguncy.Model.RequestServerCommand, ServerDesignerCommon",
-                        "ServerCommandName": "時間待機（1秒）",
-                        "CheckDataValidation": false
-                      },
-                      {
-                        "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
-                        "ParameterName": "文字列変数",
-                        "ParameterValue": {
-                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                          "SerializeProperty": "=MID(調査検索リスト2!文字列変数,調査検索リスト2!カンマ文字位置+1,1000000)"
-                        },
-                        "ID": "962e350e94544078aa1c782b8a88894f"
-                      }
-                    ]
-                  }
-                ],
-                "ID": "ed998da4-9263-492a-9f96-efe917870db4"
-              }
-            ]
           }
         ]
       }
@@ -2591,6 +2781,10 @@
       {
         "FontFamily": 0,
         "FontSize": 14.666666666666666
+      },
+      {
+        "FontFamily": 0,
+        "Formatter": 4
       },
       {
         "Foreground": 5
@@ -2676,12 +2870,13 @@
         "HorizontalAlignment": 14
       },
       {
-        "Background": 15,
-        "FontFamily": 0
+        "Background": 16,
+        "FontFamily": 0,
+        "Formatter": 3
       },
       {
-        "FontFamily": 0,
-        "Formatter": 4
+        "Background": 15,
+        "FontFamily": 0
       },
       {
         "Background": 17,
@@ -2690,11 +2885,6 @@
       {
         "Background": 18,
         "FontFamily": 0
-      },
-      {
-        "Background": 16,
-        "FontFamily": 0,
-        "Formatter": 3
       },
       {
         "Background": 19,
@@ -2973,127 +3163,130 @@
       "5,224": 5,
       "5,225": 5,
       "5,226": 5,
-      "6,1": 8,
-      "6,3": 9,
-      "6,13": 10,
-      "6,14": 10,
-      "6,15": 10,
-      "6,16": 10,
-      "6,17": 10,
-      "6,18": 10,
-      "6,19": 10,
-      "6,20": 10,
-      "6,21": 10,
-      "6,22": 10,
-      "6,23": 11,
-      "6,33": 12,
-      "6,34": 12,
-      "6,35": 12,
-      "6,36": 12,
-      "6,37": 12,
-      "6,38": 12,
-      "6,39": 12,
-      "6,40": 12,
+      "5,231": 8,
+      "5,232": 5,
+      "5,233": 5,
+      "6,1": 9,
+      "6,3": 10,
+      "6,13": 11,
+      "6,14": 11,
+      "6,15": 11,
+      "6,16": 11,
+      "6,17": 11,
+      "6,18": 11,
+      "6,19": 11,
+      "6,20": 11,
+      "6,21": 11,
+      "6,22": 11,
+      "6,23": 12,
+      "6,33": 13,
+      "6,34": 13,
+      "6,35": 13,
+      "6,36": 13,
+      "6,37": 13,
+      "6,38": 13,
+      "6,39": 13,
+      "6,40": 13,
       "6,41": 1,
-      "6,45": 13,
-      "6,46": 13,
-      "6,47": 14,
-      "6,48": 14,
-      "6,49": 15,
-      "6,50": 15,
-      "6,51": 15,
-      "6,52": 15,
-      "6,53": 15,
-      "6,54": 15,
-      "6,55": 15,
-      "6,56": 15,
-      "6,57": 15,
-      "6,58": 15,
-      "6,59": 15,
-      "6,60": 15,
-      "6,61": 15,
-      "6,62": 15,
-      "6,63": 15,
-      "6,64": 15,
-      "6,65": 15,
-      "6,66": 15,
-      "6,67": 15,
-      "6,68": 15,
-      "6,69": 15,
-      "6,70": 15,
-      "6,71": 15,
-      "6,72": 15,
-      "6,73": 15,
-      "6,74": 15,
-      "6,75": 15,
-      "6,76": 15,
-      "6,77": 15,
-      "6,78": 15,
-      "6,79": 15,
-      "6,80": 15,
-      "6,81": 15,
-      "6,82": 15,
-      "6,83": 15,
-      "6,84": 15,
-      "6,85": 15,
-      "6,86": 15,
-      "6,87": 15,
-      "6,88": 15,
-      "6,89": 15,
-      "6,90": 15,
-      "6,91": 15,
-      "6,92": 15,
-      "6,93": 15,
-      "6,94": 15,
-      "6,95": 15,
-      "6,96": 15,
-      "6,97": 15,
-      "6,98": 15,
-      "6,99": 15,
-      "6,100": 15,
-      "6,101": 15,
-      "6,102": 15,
-      "6,103": 15,
-      "6,104": 15,
-      "6,105": 15,
-      "6,106": 15,
-      "6,107": 15,
-      "6,108": 15,
-      "6,109": 15,
-      "6,110": 15,
-      "6,111": 15,
-      "6,112": 15,
-      "6,113": 15,
-      "6,114": 15,
-      "6,115": 15,
-      "6,116": 15,
-      "6,117": 15,
-      "6,118": 15,
-      "6,119": 15,
-      "6,120": 15,
-      "6,121": 15,
-      "6,122": 15,
-      "6,123": 15,
-      "6,124": 15,
-      "6,125": 15,
-      "6,126": 15,
-      "6,127": 15,
-      "6,128": 15,
-      "6,129": 15,
-      "6,130": 15,
-      "6,131": 15,
-      "6,132": 15,
-      "6,133": 15,
-      "6,134": 15,
-      "6,135": 15,
-      "6,136": 15,
-      "6,137": 15,
-      "6,138": 15,
-      "6,139": 15,
-      "6,140": 15,
-      "6,141": 15,
-      "6,142": 15,
-      "6,143": 15,
+      "6,45": 14,
+      "6,46": 14,
+      "6,47": 15,
+      "6,48": 15,
+      "6,49": 16,
+      "6,50": 16,
+      "6,51": 16,
+      "6,52": 16,
+      "6,53": 16,
+      "6,54": 16,
+      "6,55": 16,
+      "6,56": 16,
+      "6,57": 16,
+      "6,58": 16,
+      "6,59": 16,
+      "6,60": 16,
+      "6,61": 16,
+      "6,62": 16,
+      "6,63": 16,
+      "6,64": 16,
+      "6,65": 16,
+      "6,66": 16,
+      "6,67": 16,
+      "6,68": 16,
+      "6,69": 16,
+      "6,70": 16,
+      "6,71": 16,
+      "6,72": 16,
+      "6,73": 16,
+      "6,74": 16,
+      "6,75": 16,
+      "6,76": 16,
+      "6,77": 16,
+      "6,78": 16,
+      "6,79": 16,
+      "6,80": 16,
+      "6,81": 16,
+      "6,82": 16,
+      "6,83": 16,
+      "6,84": 16,
+      "6,85": 16,
+      "6,86": 16,
+      "6,87": 16,
+      "6,88": 16,
+      "6,89": 16,
+      "6,90": 16,
+      "6,91": 16,
+      "6,92": 16,
+      "6,93": 16,
+      "6,94": 16,
+      "6,95": 16,
+      "6,96": 16,
+      "6,97": 16,
+      "6,98": 16,
+      "6,99": 16,
+      "6,100": 16,
+      "6,101": 16,
+      "6,102": 16,
+      "6,103": 16,
+      "6,104": 16,
+      "6,105": 16,
+      "6,106": 16,
+      "6,107": 16,
+      "6,108": 16,
+      "6,109": 16,
+      "6,110": 16,
+      "6,111": 16,
+      "6,112": 16,
+      "6,113": 16,
+      "6,114": 16,
+      "6,115": 16,
+      "6,116": 16,
+      "6,117": 16,
+      "6,118": 16,
+      "6,119": 16,
+      "6,120": 16,
+      "6,121": 16,
+      "6,122": 16,
+      "6,123": 16,
+      "6,124": 16,
+      "6,125": 16,
+      "6,126": 16,
+      "6,127": 16,
+      "6,128": 16,
+      "6,129": 16,
+      "6,130": 16,
+      "6,131": 16,
+      "6,132": 16,
+      "6,133": 16,
+      "6,134": 16,
+      "6,135": 16,
+      "6,136": 16,
+      "6,137": 16,
+      "6,138": 16,
+      "6,139": 16,
+      "6,140": 16,
+      "6,141": 16,
+      "6,142": 16,
+      "6,143": 16,
       "6,144": 1,
       "6,145": 1,
       "6,146": 1,
@@ -3113,7 +3306,7 @@
       "6,160": 1,
       "6,161": 1,
       "6,162": 1,
-      "6,163": 15,
+      "6,163": 16,
       "6,164": 1,
       "6,165": 1,
       "6,166": 1,
@@ -3129,45 +3322,48 @@
       "6,176": 1,
       "6,177": 1,
       "6,178": 1,
-      "6,179": 15,
-      "6,191": 16,
-      "6,192": 17,
-      "6,193": 17,
-      "6,194": 17,
-      "6,195": 17,
-      "6,196": 16,
-      "6,197": 18,
-      "6,198": 18,
-      "6,199": 18,
-      "6,200": 18,
-      "6,201": 19,
-      "6,202": 18,
-      "6,203": 18,
-      "6,204": 18,
-      "6,205": 18,
-      "6,206": 17,
-      "6,207": 18,
-      "6,208": 18,
-      "6,209": 18,
-      "6,210": 18,
-      "6,211": 16,
-      "6,212": 18,
-      "6,213": 18,
-      "6,214": 18,
+      "6,179": 16,
+      "6,191": 17,
+      "6,192": 18,
+      "6,193": 18,
+      "6,194": 18,
+      "6,195": 18,
+      "6,196": 17,
+      "6,197": 19,
+      "6,198": 19,
+      "6,199": 19,
+      "6,200": 19,
+      "6,201": 20,
+      "6,202": 19,
+      "6,203": 19,
+      "6,204": 19,
+      "6,205": 19,
+      "6,206": 18,
+      "6,207": 19,
+      "6,208": 19,
+      "6,209": 19,
+      "6,210": 19,
+      "6,211": 17,
+      "6,212": 19,
+      "6,213": 19,
+      "6,214": 19,
       "6,215": 6,
-      "6,218": 20,
+      "6,218": 21,
       "6,219": 1,
       "6,220": 1,
-      "6,224": 21,
+      "6,224": 22,
       "6,225": 5,
       "6,226": 5,
+      "6,231": 23,
+      "6,232": 5,
+      "6,233": 5,
       "7,231": 5,
       "7,232": 5,
       "7,233": 5,
       "8,218": 5,
       "8,219": 5,
       "8,220": 5,
-      "9,218": 22,
+      "9,218": 24,
       "9,219": 5,
       "9,220": 5,
       "10,218": 5,
@@ -3176,22 +3372,22 @@
       "10,224": 5,
       "10,225": 5,
       "10,226": 5,
-      "11,218": 23,
+      "11,218": 8,
       "11,219": 5,
       "11,220": 5,
       "11,224": 5,
       "11,225": 5,
       "11,226": 5,
-      "11,231": 23,
+      "11,231": 8,
       "11,232": 5,
       "11,233": 5,
-      "12,218": 22,
+      "12,218": 24,
       "12,219": 5,
       "12,220": 5,
-      "12,224": 24,
+      "12,224": 25,
       "12,225": 5,
       "12,226": 5,
-      "12,231": 24,
+      "12,231": 25,
       "12,232": 5,
       "12,233": 5,
       "13,218": 5,
@@ -3200,22 +3396,22 @@
       "13,224": 5,
       "13,225": 5,
       "13,226": 5,
-      "14,218": 23,
+      "14,218": 8,
       "14,219": 5,
       "14,220": 5,
-      "14,224": 23,
+      "14,224": 8,
       "14,225": 5,
       "14,226": 5,
-      "14,231": 23,
+      "14,231": 8,
       "14,232": 5,
       "14,233": 5,
-      "15,218": 22,
+      "15,218": 24,
       "15,219": 5,
       "15,220": 5,
-      "15,224": 22,
+      "15,224": 24,
       "15,225": 5,
       "15,226": 5,
-      "15,231": 21,
+      "15,231": 22,
       "15,232": 5,
       "15,233": 5,
       "16,218": 5,
@@ -3230,16 +3426,16 @@
       "17,224": 5,
       "17,225": 5,
       "17,226": 5,
-      "17,231": 23,
+      "17,231": 8,
       "17,232": 5,
       "17,233": 5,
-      "18,218": 25,
+      "18,218": 26,
       "18,219": 5,
       "18,220": 5,
-      "18,224": 22,
+      "18,224": 24,
       "18,225": 5,
       "18,226": 5,
-      "18,231": 21,
+      "18,231": 22,
       "18,232": 5,
       "18,233": 5,
       "19,218": 5,
@@ -3254,21 +3450,15 @@
       "20,218": 5,
       "20,219": 5,
       "20,220": 5,
-      "20,224": 23,
+      "20,224": 8,
       "20,225": 5,
       "20,226": 5,
-      "20,231": 23,
-      "20,232": 5,
-      "20,233": 5,
-      "21,218": 22,
+      "21,218": 24,
       "21,219": 5,
       "21,220": 5,
-      "21,224": 22,
+      "21,224": 24,
       "21,225": 5,
       "21,226": 5,
-      "21,231": 26,
-      "21,232": 5,
-      "21,233": 5,
       "22,218": 5,
       "22,219": 5,
       "22,220": 5,
@@ -3750,7 +3940,6 @@
     "21,224,1,3",
     "15,231,1,3",
     "18,231,1,3",
-    "21,231,1,3",
     "29,1,1,36",
     "29,61,1,2",
     "29,63,1,2",
@@ -3807,6 +3996,9 @@
     "24,218,1,3",
     "6,218,1,3",
     "12,231,1,3",
+    "7,1,22,215",
+    "3,11,1,102",
+    "6,231,1,3",
     "5,1,1,2",
     "5,3,1,10",
     "5,13,1,10",
@@ -3824,9 +4016,7 @@
     "5,196,1,5",
     "5,201,1,5",
     "5,206,1,5",
-    "5,211,1,4",
-    "7,1,22,215",
-    "3,11,1,102"
+    "5,211,1,4"
   ],
   "PageInfo": {
     "$type": "Forguncy.Model.Pages.NormalPage, ServerDesignerCommon",
@@ -4166,4 +4356,4 @@
       "Formula": "調査検索リスト2!$HX$13"
     }
   ]
-}//kQPfNEH2JoC2Gc4yxmIMNpCZD789srv8ASlcJC1MK6mF6Or55aWeC1Sl2oZBoQ/x4woEe5tiwiK4JcPeA5aWfOm/nqekS5M1+MmjvOCG+nse4u/pqtQqcAXTfhO/+rwbfLRposAa1K4tpOabNjiL6wdFcLeft3Zc22ODf8gk+e2ZhFadkdXBUEvt+DcA6ZTYXJWfgKvxw/l0i9AXvhh9TGEEqxbeiOTvEKrzOYoegBBf1tVbhYdt3g//o6MRVsopYtmp7yYy21GPjnANV2uNFy06JkaI5y6H9a/KU1UlGhR1Ukhmgn0iCLeRkA7XBE/mXKtGXSa8bBwM+3e2OLcPnCkk6E7AT0XWNkkwtToYffsQ7u7JNvIrfyz9gDfPBwIlgrKrdj6T3J4iuZW434ydiEy4JkoMqS6MDcisSP/6OmQmbuq5P5Zp+6HKuKGrvIFOjRSv7eO/SDLHpPCaGY2IL7xU/syOXSfTsl0H8oUih+3Qv/x0p3qun89PJ+9bn6KuKz90NfmL1lsHkBlZq+yZcsLC/28iwQZRiunmpJNkwPTOhPkTFyKwkwvGNFvKo+vXZdnIOLu0OC82iHvHDH/bGIMjsofles9LrUlE/rtmwfotufCXM7mRkIYCBU0zXTuP55OGZ45XGFrHKyPpRexag6P4CRmu8oX9hkLKj3viiuP3yqkLIUsOVqKmRhzdVrK6SvRnL52iTB4MRxlyj5avBu1P6bgKEeyxrTbfzztBnzmI65hBzih+wJWKDmiP4PtvLxs60qSUgbFBKD4UiLpizAQdhoBmU6/TWe3qvYyr23m+nVm/Gc/+swHYZ1P8mMCOpAE5trxoKjJkR5NO4nOvDtXetX/On4zwAkvEtH3V3LknSQKpDjqfeimFMpDEnTTN/9o4JqFjY47z7+HWiFxogg==|920
+}//nVA47hs0C0OVt4omcnVBY/OI4fRIKt7xqxzY3yQkeV2BY3WAZTyIbOjWhrfdckp7LOHd4EcMrv/do1fp4fMULmQdYCSbfMEujcRrmq+otBHcRX+ssACUH9zNNbhHP2EWxIt1V8wDU9fhPAq4GFvXTyDlSbLmPz3N04geCGYH9E63/C2/1HpeMY2E93fhvIZNjEiCO348GeVgWvckSvED13H+cHAIxgqGpeJFlXzqFGeCizgxVSr5EfkoOWpomGoqcnUineodQku/9TVpUlQ1f5XIifw/EPiXS7u+7jHDEVir58m6UvCJFFL5eYUu0Fe4A+oTHkkj6xjb6Pzp37P5FGcVBDk322VH713tvhvO2/+p7Wn/IUAVIhXTnzzQALFc3HJ+hW/jvWjUCvPGD4A33gIPkRF66AAGn7wB9CcvlWFDGRVv1JooFt5K0Yy5iHl67mbtbP02OlyaEaAMLfiArHey0jrBygoxaTwN08gKljhYKdpQ5pj3keevDtM8+yYoqTeAOdieczlw6NOlJ/bIZC1UeTlbs6fNJO2Z4K+TRex4BWguwEmZdP+1j4Xyu2IFZWbECV0xENQ5pR3bf6Cuo+JdWrpZlshwfQT9pLpeM4TFoxm4TdrzUa4YsDZdT3777Qgc4MZKg/lXxUD2rTtQKRgASCbBHLt532GNYEknEBDMwYRVLn3w5EelVoSLb0xlzKy7UpJPbxgsIhfJq78f1fn9Gdz2TzLMVATt/UVLt3jW+0H2GDtPcfdJXODX+0A2YRkPgBXnRMJ3dcYeeh7Nqk9BnYkC7j5rFdhd2sv97eqqbSNUO5LToWor75HY54Ick2XYxc4MPJQgazjB6qfIIYpd8mFQlSMadR0ncd8KAvaIn4NVUAYu6ubY5f05YpzPTKzCNQRIib7MlNs40VCfJg==|920

@@ -4,18 +4,18 @@
   "RowCount": 34,
   "Formulas": {
     "1,39": "IF(EK8=1,\"解析至急解除\",\"解析至急依頼\")",
-    "26,151": "フォーカス連絡ID",
-    "26,144": "EN27&\"　\"&EL27",
+    "28,138": "IF(EF29=1,EG29,\"\")",
+    "28,151": "フォーカス連絡ID",
     "20,147": "IF(ER19<=1,0,ER19)",
-    "7,128": "IFERROR(GETURLQUERYVALUE(\"tab\"),1)",
-    "26,139": "IF(EF27=2,EH27,\"\")",
-    "26,138": "IF(EF27=1,EG27,\"\")",
+    "13,128": "IFERROR(GETURLQUERYVALUE(\"notice_id\"),0)",
+    "28,144": "EN29&\"　\"&EL29",
+    "28,139": "IF(EF29=2,EH29,\"\")",
     "7,133": "IF(タブ番号<>\"\",ODATA(\"m_tab_class?$select=tab_name&$filter=tab_id eq \"&IF(ISBLANK(タブ番号),\"null\",タブ番号)),\"申込\")",
-    "19,128": "IF(申込ID>0,ODATA(\"m_group_notice/$count?$filter=group_id eq \"&IF(ISBLANK(DY23),\"null\",DY23))+ODATA(\"m_customer_notice/$count?$filter=customer_id eq \"&IF(ISBLANK(顧客ID),\"null\",顧客ID)),0)",
+    "22,128": "IF(申込ID>0,ODATA(\"m_group_notice/$count?$filter=group_id eq \"&IF(ISBLANK(DY26),\"null\",DY26))+ODATA(\"m_customer_notice/$count?$filter=customer_id eq \"&IF(ISBLANK(顧客ID),\"null\",顧客ID)),0)",
     "18,147": "IF(申込ID>0,ODATA(\"t_object/$count?$filter=parent_object_id eq \"&IF(ISBLANK(ER17),\"null\",ER17)),0)",
-    "13,128": "IFERROR(GETURLQUERYVALUE(\"follow_id\"),0)",
-    "10,128": "IFERROR(GETURLQUERYVALUE(\"notice_id\"),0)",
-    "26,134": "IF(ED27=\"\",\"共通\",ED27)",
+    "16,128": "IFERROR(GETURLQUERYVALUE(\"follow_id\"),0)",
+    "10,128": "IFERROR(GETURLQUERYVALUE(\"tab\"),1)",
+    "28,134": "IF(ED29=\"\",\"共通\",ED29)",
     "1,78": "\"添付ファイル(\"&IF(ED14<EZ27,EZ27,ED14)&\")\"",
     "3,128": "IFERROR(GETURLQUERYVALUE(\"id\"),\"\")",
     "22,147": "IF(申込ID>0,ODATA(\"t_object_follow/$count?$filter=object_order_id eq \"&IF(ISBLANK(申込ID),\"null\",申込ID)),0)",
@@ -28,20 +28,21 @@
     "14,163": "IF(連絡事項タブ検索<>\"\",連絡事項タブ検索,1)",
     "17,163": "IF(連絡事項タブ検索<>\"\",連絡事項タブ検索,1000)",
     "20,163": "IF(ER13=1,\"処理終了解除\",IF(ER15=1,\"保証辞退解除\",IF(AND(EZ15>EZ11,EZ15<=EZ13),\"処理終了\",\"保証辞退\")))",
-    "22,163": "IF(ER13=1,1,IF(ER15=1,2,IF(AND(EZ15>EZ11,EZ15<=EZ13),3,4)))"
+    "22,163": "IF(ER13=1,1,IF(ER15=1,2,IF(AND(EZ15>EZ11,EZ15<=EZ13),3,4)))",
+    "7,128": "IFERROR(GETURLQUERYVALUE(\"index\"),\"\")"
   },
   "CustomNames": [
     {
       "Name": "タブ番号",
-      "Formula": "申込詳細_内容!$DY$8"
+      "Formula": "申込詳細_内容!$DY$11"
     },
     {
       "Name": "フォーカスフォローID",
-      "Formula": "申込詳細_内容!$DY$14"
+      "Formula": "申込詳細_内容!$DY$17"
     },
     {
       "Name": "フォーカス連絡ID",
-      "Formula": "申込詳細_内容!$DY$11"
+      "Formula": "申込詳細_内容!$DY$14"
     },
     {
       "Name": "ページリロードフラグ",
@@ -49,11 +50,11 @@
     },
     {
       "Name": "ポップアップメッセージ",
-      "Formula": "申込詳細_内容!$DY$32"
+      "Formula": "申込詳細_内容!$DY$33"
     },
     {
       "Name": "ポップアップ表示フラグ",
-      "Formula": "申込詳細_内容!$EG$32"
+      "Formula": "申込詳細_内容!$EG$33"
     },
     {
       "Name": "顧客ID",
@@ -93,7 +94,7 @@
     },
     {
       "Name": "物件番号",
-      "Formula": "申込詳細_内容!$DY$17"
+      "Formula": "申込詳細_内容!$DY$20"
     },
     {
       "Name": "連絡事項タブ検索",

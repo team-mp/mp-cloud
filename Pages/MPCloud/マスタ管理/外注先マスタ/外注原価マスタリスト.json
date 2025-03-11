@@ -554,15 +554,17 @@
     "3,47": "住宅事業者名",
     "3,71": "選択フラグ",
     "4,77": "▼区切り位置",
-    "4,84": "▼選択フラグ",
+    "4,84": "▼検索フラグ",
     "5,84": "0",
     "7,77": "▼検索ワード1",
-    "7,84": "▼アクション選択",
+    "7,84": "▼選択フラグ",
+    "8,84": "0",
     "10,77": "▼検索ワード2",
-    "10,84": "▼取得外注原価IDs",
+    "10,84": "▼アクション選択",
     "13,77": "▼抽出カウント",
-    "13,84": "▼クエリ条件（有効フラグ）",
+    "13,84": "▼取得外注原価IDs",
     "16,77": "▼選択カウント",
+    "16,84": "▼クエリ条件（有効フラグ）",
     "19,77": "▼未選択カウント"
   },
   "Formulas": {
@@ -573,7 +575,7 @@
     "8,77": "IF(BZ6>0,LEFT(N2,BZ6-1),IF(N2<>\"\",N2,\"\"))",
     "20,77": "BZ15-BZ18",
     "14,77": "COUNTIF(D5,\"<>\")",
-    "11,84": "TEXTJOINIF(\",\",TRUE,BT5,1,BP5)"
+    "14,84": "TEXTJOINIF(\",\",TRUE,BT5,1,BP5)"
   },
   "AttachInfos": {
     "1,13": {
@@ -590,7 +592,22 @@
           "Color": "Text 1 70"
         },
         "TemplateKey": "_RS_LightLine_Translucent_SmallRoundCorner_Normal1",
-        "WaterMark": "キーワード検索ができます"
+        "WaterMark": "キーワード検索ができます",
+        "CommandList": [
+          {
+            "$type": "Forguncy.Model.SetCellPropertyCommand, ServerDesignerCommon",
+            "PropertyItemsList": [
+              {
+                "TargetCells": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=外注原価マスタリスト!検索フラグ"
+                },
+                "Value": "1"
+              }
+            ],
+            "Comments": "検索フラグOn"
+          }
+        ]
       }
     },
     "1,28": {
@@ -679,7 +696,7 @@
               {
                 "Source": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=外注原価マスタリスト!CG9"
+                  "SerializeProperty": "=外注原価マスタリスト!CG12"
                 },
                 "TargetCell": {
                   "SerializeProperty": "=外注原価マスタアクション選択!選択アクション"
@@ -748,24 +765,56 @@
         "$type": "Forguncy.ButtonCellType, ServerDesignerCommon",
         "CommandList": [
           {
-            "$type": "LoadingCommand.StartLoadingCommand, LoadingCommand",
-            "LoadingText": "お待ちください",
-            "LoadingTextColor": "Background 1 0"
-          },
-          {
-            "$type": "Forguncy.Model.UpdateListviewCommand, ServerDesignerCommon",
-            "ListviewName": "外注原価ビュー",
-            "UpdateType": 6,
-            "UpdateListviewCommandRunTimeMethodSetting": {
-              "MethodName": "Reload",
-              "ParameterValues": {
-                "clearFilter": true,
-                "clearSort": true
+            "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+            "ConditionAndCommandPairList": [
+              {
+                "Condition": {
+                  "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                  "param": {
+                    "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+                    "cellLocations": [
+                      {
+                        "SerializeProperty": "=外注原価マスタリスト!N2"
+                      }
+                    ]
+                  },
+                  "value": "%Null%",
+                  "compareType": 1
+                },
+                "CommandList": [
+                  {
+                    "$type": "Forguncy.Model.SetCellPropertyCommand, ServerDesignerCommon",
+                    "PropertyItemsList": [
+                      {
+                        "TargetCells": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=外注原価マスタリスト!N2"
+                        },
+                        "Value": "%Null%"
+                      }
+                    ]
+                  }
+                ],
+                "ID": "875e6d01-8c14-4f7e-9dad-162e95dc37a6"
+              },
+              {
+                "CommandList": [
+                  {
+                    "$type": "Forguncy.Model.SetCellPropertyCommand, ServerDesignerCommon",
+                    "PropertyItemsList": [
+                      {
+                        "TargetCells": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=外注原価マスタリスト!検索フラグ"
+                        },
+                        "Value": "1"
+                      }
+                    ]
+                  }
+                ],
+                "ID": "c571b370-70bc-47a0-8fad-bbed78c1f12a"
               }
-            }
-          },
-          {
-            "$type": "LoadingCommand.EndLoadingCommand, LoadingCommand"
+            ]
           }
         ],
         "Text": "最新情報に更新する",
@@ -794,7 +843,7 @@
               "ColumnBindingInfo": {
                 "TableName": "m_outsourcing_cost",
                 "ColumnName": "customer_id",
-                "GUID": "d9fb201a-4fa8-42f3-96e5-87381d62340b",
+                "GUID": "331dd5e5-d9e0-4c0f-baf3-148b4dfa55f3",
                 "RelationBinding": {
                   "RelatedTable": "m_customer",
                   "RelatedColumn": "customer_id",
@@ -803,7 +852,7 @@
               },
               "Value": {
                 "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                "SerializeProperty": "=外注原価マスタリスト!CG15"
+                "SerializeProperty": "=外注原価マスタリスト!CG18"
               }
             },
             {
@@ -811,7 +860,7 @@
               "ColumnBindingInfo": {
                 "TableName": "m_outsourcing_cost",
                 "ColumnName": "product_id",
-                "GUID": "e2d75141-eed6-46a9-8a66-aaa0093e3f33",
+                "GUID": "78235a63-c175-4f8e-a8b7-db117572e129",
                 "RelationBinding": {
                   "RelatedTable": "m_product",
                   "RelatedColumn": "product_id",
@@ -820,168 +869,8 @@
               },
               "Value": {
                 "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                "SerializeProperty": "=外注原価マスタリスト!CG15"
+                "SerializeProperty": "=外注原価マスタリスト!CG18"
               }
-            },
-            {
-              "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
-              "SubConditions": [
-                {
-                  "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
-                  "CompareType": 6,
-                  "ColumnBindingInfo": {
-                    "TableName": "m_outsourcing_cost",
-                    "ColumnName": "customer_id",
-                    "GUID": "ebcc6f5d-e8be-4d25-8217-1c6ceeff9d11",
-                    "RelationBinding": {
-                      "RelatedTable": "m_customer",
-                      "RelatedColumn": "customer_id",
-                      "DisplayColumn": "内部顧客名"
-                    }
-                  },
-                  "Value": {
-                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                    "SerializeProperty": "=外注原価マスタリスト!BZ9"
-                  },
-                  "LeftBracket": 1
-                },
-                {
-                  "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
-                  "CompareType": 6,
-                  "ColumnBindingInfo": {
-                    "TableName": "m_outsourcing_cost",
-                    "ColumnName": "product_id",
-                    "GUID": "53f8b653-f9e9-4677-a087-9ad618ced54b",
-                    "RelationBinding": {
-                      "RelatedTable": "m_product",
-                      "RelatedColumn": "product_id",
-                      "DisplayColumn": "product_name"
-                    }
-                  },
-                  "Value": {
-                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                    "SerializeProperty": "=外注原価マスタリスト!BZ9"
-                  }
-                },
-                {
-                  "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
-                  "CompareType": 6,
-                  "ColumnBindingInfo": {
-                    "TableName": "m_outsourcing_cost",
-                    "ColumnName": "group_id",
-                    "GUID": "260ee1fa-07de-4bd3-9e8b-d221cfa51891",
-                    "RelationBinding": {
-                      "RelatedTable": "m_group",
-                      "RelatedColumn": "group_id",
-                      "DisplayColumn": "group_name"
-                    }
-                  },
-                  "Value": {
-                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                    "SerializeProperty": "=外注原価マスタリスト!BZ9"
-                  }
-                },
-                {
-                  "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
-                  "CompareType": 6,
-                  "ColumnBindingInfo": {
-                    "TableName": "m_outsourcing_cost",
-                    "ColumnName": "builder_id",
-                    "GUID": "4d2d89e8-9c77-492b-ad5e-02024eed9d78",
-                    "RelationBinding": {
-                      "RelatedTable": "m_customer",
-                      "RelatedColumn": "customer_id",
-                      "DisplayColumn": "内部顧客名"
-                    }
-                  },
-                  "Value": {
-                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                    "SerializeProperty": "=外注原価マスタリスト!BZ9"
-                  },
-                  "RightBracket": 1
-                }
-              ],
-              "RelationType": 1
-            },
-            {
-              "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
-              "SubConditions": [
-                {
-                  "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
-                  "CompareType": 6,
-                  "ColumnBindingInfo": {
-                    "TableName": "m_outsourcing_cost",
-                    "ColumnName": "customer_id",
-                    "GUID": "6d0749a7-296e-419a-8a4a-199ff79e501e",
-                    "RelationBinding": {
-                      "RelatedTable": "m_customer",
-                      "RelatedColumn": "customer_id",
-                      "DisplayColumn": "内部顧客名"
-                    }
-                  },
-                  "Value": {
-                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                    "SerializeProperty": "=外注原価マスタリスト!BZ12"
-                  },
-                  "LeftBracket": 1
-                },
-                {
-                  "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
-                  "CompareType": 6,
-                  "ColumnBindingInfo": {
-                    "TableName": "m_outsourcing_cost",
-                    "ColumnName": "product_id",
-                    "GUID": "65c0e717-e065-415e-991f-ae31f48c1ddc",
-                    "RelationBinding": {
-                      "RelatedTable": "m_product",
-                      "RelatedColumn": "product_id",
-                      "DisplayColumn": "product_name"
-                    }
-                  },
-                  "Value": {
-                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                    "SerializeProperty": "=外注原価マスタリスト!BZ12"
-                  }
-                },
-                {
-                  "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
-                  "CompareType": 6,
-                  "ColumnBindingInfo": {
-                    "TableName": "m_outsourcing_cost",
-                    "ColumnName": "group_id",
-                    "GUID": "ee2aa1b2-94d5-4d74-a5af-81b178a6ec09",
-                    "RelationBinding": {
-                      "RelatedTable": "m_group",
-                      "RelatedColumn": "group_id",
-                      "DisplayColumn": "group_name"
-                    }
-                  },
-                  "Value": {
-                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                    "SerializeProperty": "=外注原価マスタリスト!BZ12"
-                  }
-                },
-                {
-                  "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
-                  "CompareType": 6,
-                  "ColumnBindingInfo": {
-                    "TableName": "m_outsourcing_cost",
-                    "ColumnName": "builder_id",
-                    "GUID": "f6936303-3365-43c7-8143-38bef7c3879a",
-                    "RelationBinding": {
-                      "RelatedTable": "m_customer",
-                      "RelatedColumn": "customer_id",
-                      "DisplayColumn": "内部顧客名"
-                    }
-                  },
-                  "Value": {
-                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                    "SerializeProperty": "=外注原価マスタリスト!BZ12"
-                  },
-                  "RightBracket": 1
-                }
-              ],
-              "RelationType": 1
             }
           ]
         },
@@ -991,7 +880,7 @@
               "ColumnBindingInfo": {
                 "TableName": "m_outsourcing_cost",
                 "ColumnName": "customer_id",
-                "GUID": "1f2a97cd-5005-4cbc-a551-8603c70e1d43",
+                "GUID": "4991d7b4-821f-4e18-90fd-a72f7b3ed1eb",
                 "RelationBinding": {
                   "RelatedTable": "m_customer",
                   "RelatedColumn": "customer_id",
@@ -1004,7 +893,7 @@
               "ColumnBindingInfo": {
                 "TableName": "m_outsourcing_cost",
                 "ColumnName": "product_id",
-                "GUID": "2a3fd2fc-0ed9-4d3d-bea5-9fea3c3f185b",
+                "GUID": "70af60fc-cdc3-4f97-90bb-690c44a692ea",
                 "RelationBinding": {
                   "RelatedTable": "m_product",
                   "RelatedColumn": "product_id",
@@ -1017,7 +906,7 @@
               "ColumnBindingInfo": {
                 "TableName": "m_outsourcing_cost",
                 "ColumnName": "group_id",
-                "GUID": "62ec65cf-f371-41ec-b3ba-856d35534fc2",
+                "GUID": "d458cd58-0b3b-409e-8073-ac4ced23aef3",
                 "RelationBinding": {
                   "RelatedTable": "m_group",
                   "RelatedColumn": "group_id",
@@ -1030,7 +919,7 @@
               "ColumnBindingInfo": {
                 "TableName": "m_outsourcing_cost",
                 "ColumnName": "builder_id",
-                "GUID": "effc82ca-e7fe-427f-8d73-56adfdb5915d",
+                "GUID": "4f1f59fd-1eb8-44e0-807e-95f208ca4a2a",
                 "RelationBinding": {
                   "RelatedTable": "m_customer",
                   "RelatedColumn": "customer_id",
@@ -1065,7 +954,7 @@
               {
                 "TargetCells": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=外注原価マスタリスト!$CG$6"
+                  "SerializeProperty": "=外注原価マスタリスト!$CG$9"
                 },
                 "Value": "1"
               }
@@ -1192,6 +1081,200 @@
         ],
         "CommandList": [
           {
+            "$type": "Forguncy.Model.QueryCommand, ServerDesignerCommon",
+            "TargetTableName": "m_outsourcing_cost",
+            "SqlCondition": {
+              "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+              "SubConditions": [
+                {
+                  "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                  "SubConditions": [
+                    {
+                      "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                      "CompareType": 6,
+                      "ColumnBindingInfo": {
+                        "TableName": "m_outsourcing_cost",
+                        "ColumnName": "customer_id",
+                        "GUID": "c43da82c-2d3b-4cbc-8295-5ce5756a02bf",
+                        "RelationBinding": {
+                          "RelatedTable": "m_customer",
+                          "RelatedColumn": "customer_id",
+                          "DisplayColumn": "内部顧客名"
+                        }
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=外注原価マスタリスト!BZ9"
+                      }
+                    },
+                    {
+                      "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                      "CompareType": 6,
+                      "ColumnBindingInfo": {
+                        "TableName": "m_outsourcing_cost",
+                        "ColumnName": "product_id",
+                        "GUID": "4d154428-7c08-47ac-a683-7e6a2ddcb265",
+                        "RelationBinding": {
+                          "RelatedTable": "m_product",
+                          "RelatedColumn": "product_id",
+                          "DisplayColumn": "product_name"
+                        }
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=外注原価マスタリスト!BZ9"
+                      }
+                    },
+                    {
+                      "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                      "CompareType": 6,
+                      "ColumnBindingInfo": {
+                        "TableName": "m_outsourcing_cost",
+                        "ColumnName": "group_id",
+                        "GUID": "7b97029f-408a-4b5d-a1c7-6577bff53825",
+                        "RelationBinding": {
+                          "RelatedTable": "m_group",
+                          "RelatedColumn": "group_id",
+                          "DisplayColumn": "group_name"
+                        }
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=外注原価マスタリスト!BZ9"
+                      }
+                    },
+                    {
+                      "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                      "CompareType": 6,
+                      "ColumnBindingInfo": {
+                        "TableName": "m_outsourcing_cost",
+                        "ColumnName": "builder_id",
+                        "GUID": "0f383ae2-6c01-4735-89e0-d130b49d08c8",
+                        "RelationBinding": {
+                          "RelatedTable": "m_customer",
+                          "RelatedColumn": "customer_id",
+                          "DisplayColumn": "内部顧客名"
+                        }
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=外注原価マスタリスト!BZ9"
+                      }
+                    }
+                  ],
+                  "RelationType": 1
+                },
+                {
+                  "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                  "SubConditions": [
+                    {
+                      "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                      "CompareType": 6,
+                      "ColumnBindingInfo": {
+                        "TableName": "m_outsourcing_cost",
+                        "ColumnName": "customer_id",
+                        "GUID": "c43da82c-2d3b-4cbc-8295-5ce5756a02bf",
+                        "RelationBinding": {
+                          "RelatedTable": "m_customer",
+                          "RelatedColumn": "customer_id",
+                          "DisplayColumn": "内部顧客名"
+                        }
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=外注原価マスタリスト!BZ12"
+                      },
+                      "LeftBracket": 1
+                    },
+                    {
+                      "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                      "CompareType": 6,
+                      "ColumnBindingInfo": {
+                        "TableName": "m_outsourcing_cost",
+                        "ColumnName": "product_id",
+                        "GUID": "72163ee0-4c7e-47f8-8a7c-fdb49e0d73cd",
+                        "RelationBinding": {
+                          "RelatedTable": "m_product",
+                          "RelatedColumn": "product_id",
+                          "DisplayColumn": "product_name"
+                        }
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=外注原価マスタリスト!BZ12"
+                      }
+                    },
+                    {
+                      "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                      "CompareType": 6,
+                      "ColumnBindingInfo": {
+                        "TableName": "m_outsourcing_cost",
+                        "ColumnName": "group_id",
+                        "GUID": "1347f1cf-62e2-4093-bb16-15f54bec5cbb",
+                        "RelationBinding": {
+                          "RelatedTable": "m_group",
+                          "RelatedColumn": "group_id",
+                          "DisplayColumn": "group_name"
+                        }
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=外注原価マスタリスト!BZ12"
+                      }
+                    },
+                    {
+                      "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                      "CompareType": 6,
+                      "ColumnBindingInfo": {
+                        "TableName": "m_outsourcing_cost",
+                        "ColumnName": "builder_id",
+                        "GUID": "15887b74-7956-4582-8c7c-8d1ccc9c24d9",
+                        "RelationBinding": {
+                          "RelatedTable": "m_customer",
+                          "RelatedColumn": "customer_id",
+                          "DisplayColumn": "内部顧客名"
+                        }
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=外注原価マスタリスト!BZ12"
+                      },
+                      "RightBracket": 1
+                    }
+                  ],
+                  "RelationType": 1
+                }
+              ]
+            },
+            "ID": "51b8bf3343be4551a2c404d2d8db66ba"
+          },
+          {
+            "$type": "Forguncy.Model.SetCellPropertyCommand, ServerDesignerCommon",
+            "PropertyItemsList": [
+              {
+                "TargetCells": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=外注原価マスタリスト!検索フラグ"
+                },
+                "Value": "0"
+              }
+            ],
+            "Comments": "フラグリセット"
+          }
+        ]
+      }
+    },
+    "8,84": {
+      "CellType": {
+        "$type": "Forguncy.TextCellType, ServerDesignerCommon",
+        "CellDefaultValue": "0",
+        "SavedValidators": [
+          {
+            "$type": "Forguncy.CellTypes.Models.UniqueValidadator, ServerDesignerCommon"
+          }
+        ],
+        "CommandList": [
+          {
             "$type": "Forguncy.Model.UpdateListviewCommand, ServerDesignerCommon",
             "ListviewName": "外注原価ビュー",
             "UpdateType": 6,
@@ -1253,7 +1336,7 @@
                     "UpdateRowType": 3
                   }
                 ],
-                "ID": "ec2c8a66-80b7-496c-9495-81a2d5569e9f"
+                "ID": "f9c6bae7-fea7-42f2-9791-e8d37418f2d7"
               },
               {
                 "CommandList": [
@@ -1269,7 +1352,7 @@
                     "UpdateRowType": 3
                   }
                 ],
-                "ID": "378ee4a8-e0ab-4b0d-844e-687b3b7fe2be"
+                "ID": "1ee82028-fd96-469c-a7b5-c022e30f4b8f"
               }
             ]
           },
@@ -1279,7 +1362,7 @@
               {
                 "TargetCells": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=外注原価マスタリスト!CG6"
+                  "SerializeProperty": "=外注原価マスタリスト!CG9"
                 },
                 "Value": "0"
               }
@@ -1289,7 +1372,7 @@
         ]
       }
     },
-    "8,84": {
+    "11,84": {
       "CellType": {
         "$type": "Forguncy.TextCellType, ServerDesignerCommon",
         "SavedValidators": [
@@ -1303,7 +1386,7 @@
             "ParameterName": "アクション",
             "ParameterValue": {
               "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-              "SerializeProperty": "=外注原価マスタリスト!CG9"
+              "SerializeProperty": "=外注原価マスタリスト!CG12"
             },
             "ID": "15b80b58cf6c45f8b6b047f05a695af0"
           },
@@ -1313,7 +1396,7 @@
               {
                 "TargetCells": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=外注原価マスタリスト!CG9"
+                  "SerializeProperty": "=外注原価マスタリスト!CG12"
                 },
                 "Value": "%Null%"
               }
@@ -1350,7 +1433,7 @@
                   }
                 ],
                 "Comments": "新規登録",
-                "ID": "78907cb3-7320-4c77-88e0-f28a46aa4afa"
+                "ID": "4b982114-96e4-4849-aa12-4495d4e32675"
               },
               {
                 "Condition": {
@@ -1391,7 +1474,7 @@
                             "$type": "Forguncy.Model.StopCommand, ServerDesignerCommon"
                           }
                         ],
-                        "ID": "1365ebc7-cdf7-4c69-a4ea-c84a0ce3c3f1"
+                        "ID": "f9111c2e-9b3e-4f0e-9f36-1bf328346dfa"
                       }
                     ]
                   },
@@ -1421,7 +1504,7 @@
                                 "ParamName": "P_外注原価IDs",
                                 "Value": {
                                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                                  "SerializeProperty": "=外注原価マスタリスト!CG12"
+                                  "SerializeProperty": "=外注原価マスタリスト!CG15"
                                 }
                               }
                             ],
@@ -1463,25 +1546,25 @@
                                     }
                                   }
                                 ],
-                                "ID": "863cfe35-af19-402d-bae3-e9fb5454805f"
+                                "ID": "e4461aa0-9c5d-43bf-a608-b53131d9e6f4"
                               }
                             ]
                           }
                         ],
-                        "ID": "c4112f60-d415-463b-964d-53bfdb1b3306"
+                        "ID": "84d0691d-be38-4d2f-831e-ba545074e60a"
                       }
                     ]
                   }
                 ],
                 "Comments": "一括削除",
-                "ID": "c54175ef-58de-4af0-b286-98fb4e35cc45"
+                "ID": "a965de7e-e09b-4561-859a-9e7bc2e2d079"
               }
             ]
           }
         ]
       }
     },
-    "14,84": {
+    "17,84": {
       "CellComment": {
         "Comments": "ページロード時にセット"
       }
@@ -1986,9 +2069,6 @@
       "6,77": 12,
       "6,78": 12,
       "6,79": 12,
-      "6,84": 1,
-      "6,85": 1,
-      "6,86": 1,
       "7,1": 4,
       "7,2": 4,
       "7,3": 4,
@@ -2226,6 +2306,9 @@
       "9,77": 12,
       "9,78": 12,
       "9,79": 12,
+      "9,84": 3,
+      "9,85": 3,
+      "9,86": 3,
       "10,1": 4,
       "10,2": 4,
       "10,3": 4,
@@ -2383,7 +2466,7 @@
       "11,77": 14,
       "11,78": 1,
       "11,79": 1,
-      "11,84": 14,
+      "11,84": 15,
       "11,85": 3,
       "11,86": 3,
       "12,1": 4,
@@ -2460,6 +2543,9 @@
       "12,72": 4,
       "12,73": 4,
       "12,74": 4,
+      "12,84": 3,
+      "12,85": 3,
+      "12,86": 3,
       "13,1": 4,
       "13,2": 4,
       "13,3": 4,
@@ -2538,8 +2624,8 @@
       "13,78": 12,
       "13,79": 12,
       "13,84": 13,
-      "13,85": 3,
-      "13,86": 3,
+      "13,85": 12,
+      "13,86": 12,
       "14,1": 4,
       "14,2": 4,
       "14,3": 4,
@@ -2617,7 +2703,7 @@
       "14,77": 14,
       "14,78": 3,
       "14,79": 3,
-      "14,84": 16,
+      "14,84": 14,
       "14,85": 3,
       "14,86": 3,
       "15,1": 4,
@@ -2697,6 +2783,9 @@
       "15,77": 3,
       "15,78": 3,
       "15,79": 3,
+      "15,84": 3,
+      "15,85": 3,
+      "15,86": 3,
       "16,1": 4,
       "16,2": 4,
       "16,3": 4,
@@ -2774,6 +2863,9 @@
       "16,77": 12,
       "16,78": 12,
       "16,79": 12,
+      "16,84": 13,
+      "16,85": 3,
+      "16,86": 3,
       "17,1": 4,
       "17,2": 4,
       "17,3": 4,
@@ -2851,6 +2943,9 @@
       "17,77": 14,
       "17,78": 3,
       "17,79": 3,
+      "17,84": 16,
+      "17,85": 3,
+      "17,86": 3,
       "18,1": 4,
       "18,2": 4,
       "18,3": 4,
@@ -3418,8 +3513,6 @@
     "8,77,1,3",
     "11,77,1,3",
     "29,1,1,13",
-    "5,84,1,3",
-    "8,84,1,3",
     "1,28,1,4",
     "29,32,1,2",
     "29,37,1,2",
@@ -3427,7 +3520,6 @@
     "1,60,1,7",
     "1,51,1,8",
     "1,43,1,7",
-    "11,84,1,3",
     "29,52,1,15",
     "4,1,1,2",
     "4,3,1,13",
@@ -3438,10 +3530,14 @@
     "4,67,1,4",
     "4,71,1,4",
     "5,1,24,74",
-    "14,84,1,3",
     "14,77,1,3",
     "17,77,1,3",
     "20,77,1,3",
+    "8,84,1,3",
+    "11,84,1,3",
+    "14,84,1,3",
+    "17,84,1,3",
+    "5,84,1,3",
     "3,1,1,2",
     "3,3,1,13",
     "3,16,1,13",
@@ -3460,7 +3556,7 @@
           {
             "TargetCells": {
               "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-              "SerializeProperty": "=外注原価マスタリスト!CG15"
+              "SerializeProperty": "=外注原価マスタリスト!CG18"
             },
             "Value": "1"
           }
@@ -3619,5 +3715,11 @@
   "PrintInfo": {
     "PaperSize": {},
     "Margin": {}
-  }
-}//z1lvDhM8Ilv+hO0eJntI8TTiNsFjN5cfM4J5KKZuZUroKqkkJVkR+nkkyFe5l0uwNDCIBQHSy2x1vX1ruDdE/hZaHCQOLcyDnozgU5jH2e2PHQBX3YDlyNMuY/eXjqV0lMERZnJ3i2CO5aiZKKUwBmkDMwQBZIPQZJt2WQ4TlNePP1KitKKFUwmXfHEHQ920xNx32FMBimhuoi8LDlnR6aLgsVcqyE/X+K0BYEgIRNHQo4VWqCDMekNjzZ7kEWXI7SJmkmfLSfleDT3m2Ni/QlTD+86o4DtPQ7gKyhX981Z+LOobxUJasqZ6jefwUyqYN9u7E9fKi27UppOa1I6YdAwW7Ywk3QbXvkMMRxLyee3Iv58HTCCkmSevQlyvYq2Ver8f8TwtOwVjEBrOqBXg7UGUQ38bjD0AH3YnuxMOf9KqaU4CCfqJwbN8+3FZ1KbyeMD0T1FlaPEHMCZPSAEptgByXt9URLBY429NXoFnJGKGhmPC4GoKaKY3mr+lyPCh/FHVlj2PrrKH5ajkwK0tC1LWwGCAiHWfvucXjVZVl+ov1Fmpt5sKh33Cm1FjlgUqqXwFnFkdfa5NOYpip+h4metMEyjN3G2VLj0a+Ym7VFo8TUR1Tjla5/Hb5P9WUNaLXEe0AyfCgjFN33nbsSu0jtBwodIjR802U3p/iqp5X+UXrUM4xVFkqVsgsoHjYJoglTnGmVmspGVUGX/SN+H4L2bn9uByouK2OekdtzkXGL/jh/CF1wmpc6Ugb6n2JtC0WhgaZ+Ozj+Sta6YoOI1b6xWJLu+rvKes5I4h/YzeyLT9D6EEunxmj5uMmYlEIWurRqLx70iwSLV7f5ARmbZaoAX6s86TLRGobkffC/f16z8n3E9Z2DuD13tjGR6bP6IlYSU+gE0THmQr3J9uZMRckg==|920
+  },
+  "CustomNames": [
+    {
+      "Name": "検索フラグ",
+      "Formula": "外注原価マスタリスト!$CG$6"
+    }
+  ]
+}//sJCaYqVEJuiO/iZhKD8/WJWgLnr9n+mMEpuE/bC2j+UFgxLqbjUeX2kenxFQLNac2qJ6MrPiPIa8hodjXhh5Mux59BQI7vFGXScsh4vCjjidO7YF5QD3C3+Axd8k2vdUww7qrOY5w7yuRB2n2wxQE1thDK1Yom3OvEAUUqrUFDBgzBdqSpLYdmwMpa66K+kNfoD6zf7j7g4cSp/A/O4b3XPj9fA07zuLkT82vRoqb06FwrHEixqyi9bAJcvZ995b1DjoI6lwpDCi9Vi7kMdKgJh2aMhxZ/GxpmMuSgvKH+rpqznmn9qn5byqA6a1DnVmSMDfPAMlkKFR2rJYGw8M4Ai+qH0yUdOQWM9KINPNVXRtIvX+GatqKPxKO7Wg+W82ZVKWazMDqPIASdY8kw67+g9z++kvOi0PajbiPDnTHCpL5KEICJO/ZDcOXRBiBZ5kJnMdOcBLDsonDY1k5EoRoBA4SxCOilZqLIZGxLVbfiomeh0StGS76FVnoXsjX2XwgW3QKX47azgH0OShE0Gn4SKVY9kQDwGAc/oXqv/Bus4fk2wYQKNwZZVGTCKu8PLVo1jbKhO7sPKPE5Pz/XBMIEGNK69pmFF+8jDjw8Tbotn5GrtVXLA1JpdL9DzES0NIBBR550qUmooq+VULu1Q5n63yXM2hSX9Rulq8zTiXMSle6M903Vd9+gLhLQPIHklaqjGeMf2gOW8IfLZbNy1vfOtK8R+wo3qGnvI/PSFRbppxNVCSgobEuKFc4BAw9i1HwWk1PcJelR7RubxBQ6DTzofd3kKs6qoUILtJSZV9rKVLtmmdrTeTHLW4jfr1d5NBXTVnHyGQ80oH2iacKhYpRnjaEhBs51SYYJMe0gl/XJhQYf98K4vfYFUc45948OGRShK3oynlPT+fIqhd3qQS9g==|920

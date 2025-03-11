@@ -29,7 +29,7 @@
     "118,148": "IF(EO119<>\"\",EO119,EI119)",
     "42,124": "IF(DV43=申込タイプID,1,0)",
     "5,29": "IF(DV12>0,IFERROR(ODATA(\"m_customer?$select=customer_name&$filter=customer_id eq \"&IF(ISBLANK(DV12),\"null\",DV12)),\"\"))",
-    "20,127": "IF(DX18>0,ODATA(\"m_order_type?$select=order_type_calss_id&$filter=order_type_id eq \"&IF(ISBLANK(DX18),\"null\",DX18)),\"\")",
+    "20,127": "IF(DX18<>\"\",ODATA(\"m_order_type?$select=order_type_calss_id&$filter=order_type_id eq \"&IF(ISBLANK(DX18),\"null\",DX18)),\"\")",
     "83,18": "IFERROR(ODATA(\"m_order_type?$select=required_documents_notice&$filter=order_type_id eq \"&IF(ISBLANK(申込タイプID),\"null\",申込タイプID)),\"\")",
     "71,127": "COUNTIF(DU67,\"<>\")",
     "10,128": "IF(DV12>0,ODATA(\"m_customer?$select=customer_abbr&$filter=customer_id eq \"&IF(ISBLANK(DV12),\"null\",DV12)),\"\")",

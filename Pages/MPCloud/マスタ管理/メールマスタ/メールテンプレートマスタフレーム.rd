@@ -1,7 +1,7 @@
 {
   "PageType": 0,
   "ColumnCount": 86,
-  "RowCount": 30,
+  "RowCount": 28,
   "CustomNames": [
     {
       "Name": "予約語参照フラグ",

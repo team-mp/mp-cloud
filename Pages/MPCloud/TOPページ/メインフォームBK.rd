@@ -19,51 +19,51 @@
   "CustomNames": [
     {
       "Name": "TOPコンテンツ表示切替ボタン",
-      "Formula": "メインフォーム!$BQ$34"
+      "Formula": "メインフォームBK!$BQ$34"
     },
     {
       "Name": "ユーザーグループID",
-      "Formula": "メインフォーム!$BQ$12"
+      "Formula": "メインフォームBK!$BQ$12"
     },
     {
       "Name": "ユーザー権限",
-      "Formula": "メインフォーム!$BS$6"
+      "Formula": "メインフォームBK!$BS$6"
     },
     {
       "Name": "ログイン者本社フラグ",
-      "Formula": "メインフォーム!$BQ$9"
+      "Formula": "メインフォームBK!$BQ$9"
     },
     {
       "Name": "ロケーションURL",
-      "Formula": "メインフォーム!$BQ$15"
+      "Formula": "メインフォームBK!$BQ$15"
     },
     {
       "Name": "参照管理顧客IDs",
-      "Formula": "メインフォーム!$BU$9"
+      "Formula": "メインフォームBK!$BU$9"
     },
     {
       "Name": "参照顧客ID",
-      "Formula": "メインフォーム!$BQ$6"
+      "Formula": "メインフォームBK!$BQ$6"
     },
     {
       "Name": "参照顧客グループIDs",
-      "Formula": "メインフォーム!$BU$6"
+      "Formula": "メインフォームBK!$BU$6"
     },
     {
       "Name": "参照顧客既定グループID",
-      "Formula": "メインフォーム!$BS$18"
+      "Formula": "メインフォームBK!$BS$18"
     },
     {
       "Name": "参照顧客取次店フラグ",
-      "Formula": "メインフォーム!$BS$12"
+      "Formula": "メインフォームBK!$BS$12"
     },
     {
       "Name": "参照顧客代理店フラグ",
-      "Formula": "メインフォーム!$BS$9"
+      "Formula": "メインフォームBK!$BS$9"
     },
     {
       "Name": "参照顧客本社フラグ",
-      "Formula": "メインフォーム!$BS$15"
+      "Formula": "メインフォームBK!$BS$15"
     }
   ]
 }

@@ -632,29 +632,32 @@
     "9,101": "在籍区分",
     "9,126": "選択フラグ",
     "9,132": "▼検索ワード",
-    "9,139": "▼件数取得ボタン",
+    "9,139": "▼レコード件数",
     "12,132": "▼区切り位置",
-    "12,139": "▼該当カウント",
     "15,132": "▼検索ワード1",
-    "15,139": "▼システム利用ユーザーカウント",
+    "15,139": "▼該当カウント",
     "18,132": "▼検索ワード2",
-    "18,139": "▼抽出カウント",
-    "21,139": "▼選択カウント",
-    "24,139": "▼選択フラグ",
-    "25,139": "0",
-    "27,132": "▼取得ユーザーIDs",
-    "27,139": "▼アクション選択"
+    "18,139": "▼システム利用ユーザーカウント",
+    "21,132": "▼取得ユーザーIDs",
+    "21,139": "▼抽出カウント",
+    "24,132": "▼選択フラグ",
+    "24,139": "▼選択カウント",
+    "25,132": "0",
+    "27,132": "▼アクション選択",
+    "27,139": "▼検索フラグ",
+    "28,139": "0"
   },
   "Formulas": {
     "32,1": "\"該当データ件数：\"&TEXT(該当カウント,\"#,##0\")&\"件　　表示データ件数：\"&TEXT(抽出カウント,\"#,##0\")&\"件\"",
-    "28,132": "TEXTJOINIF(\",\",TRUE,DW11,1,DS11)",
-    "22,139": "COUNTIF(DW11,1)",
-    "19,139": "COUNTIF(D11,\"<>\")",
+    "22,132": "TEXTJOINIF(\",\",TRUE,DW11,1,DS11)",
+    "25,139": "COUNTIF(DW11,1)",
+    "22,139": "COUNTIF(D11,\"<>\")",
     "10,132": "IF(N2=0,\"\",TRIM(N2))",
-    "16,139": "COUNTIFS(DW11,1,DH11,1)",
+    "19,139": "COUNTIFS(DW11,1,DH11,1)",
     "13,132": "IF(IFERROR(FIND(\"　\",EC11),0)>0,FIND(\"　\",EC11),IF(IFERROR(FIND(\" \",EC11),0)>0,FIND(\" \",EC11),0))",
     "16,132": "IF(EC14>0,LEFT(EC11,EC14-1),IF(EC11<>\"\",EC11,\"\"))",
-    "19,132": "IF(EC14>0,MID(EC11,EC14+1,1000),\"\")"
+    "19,132": "IF(EC14>0,MID(EC11,EC14+1,1000),\"\")",
+    "16,139": "SUM(EJ12)"
   },
   "AttachInfos": {
     "1,13": {
@@ -674,13 +677,17 @@
         "WaterMark": "検索ワードで検索可能です",
         "CommandList": [
           {
-            "$type": "Forguncy.Model.OperateCellTypeCommand, ServerDesignerCommon",
-            "TargetPageElement": {
-              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-              "SerializeProperty": "=ユーザーマスタメンテナンス!ユーザー件数取得ボタン"
-            },
-            "TargetType": "Forguncy.ButtonCellType, ServerDesignerCommon, Version=10.0.10.0, Culture=neutral, PublicKeyToken=967100671921c115",
-            "MethodName": "ExecuteCommand"
+            "$type": "Forguncy.Model.SetCellPropertyCommand, ServerDesignerCommon",
+            "PropertyItemsList": [
+              {
+                "TargetCells": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=ユーザーマスタメンテナンス!検索フラグ"
+                },
+                "Value": "1"
+              }
+            ],
+            "Comments": "検索フラグOn"
           }
         ]
       }
@@ -772,7 +779,7 @@
               {
                 "Source": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=ユーザーマスタメンテナンス!EJ29"
+                  "SerializeProperty": "=ユーザーマスタメンテナンス!EC29"
                 },
                 "TargetCell": {
                   "SerializeProperty": "=ユーザーマスタアクション選択!選択アクション"
@@ -873,26 +880,17 @@
         "$type": "Forguncy.ButtonCellType, ServerDesignerCommon",
         "CommandList": [
           {
-            "$type": "Forguncy.Model.UpdateListviewCommand, ServerDesignerCommon",
-            "ListviewName": "ユーザービュー",
-            "UpdateType": 6,
-            "UpdateListviewCommandRunTimeMethodSetting": {
-              "MethodName": "Reload",
-              "ParameterValues": {
-                "clearFilter": false,
-                "clearSort": false,
-                "clearRuntimeQueryConditions": false
+            "$type": "Forguncy.Model.SetCellPropertyCommand, ServerDesignerCommon",
+            "PropertyItemsList": [
+              {
+                "TargetCells": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=ユーザーマスタメンテナンス!検索フラグ"
+                },
+                "Value": "1"
               }
-            }
-          },
-          {
-            "$type": "Forguncy.Model.OperateCellTypeCommand, ServerDesignerCommon",
-            "TargetPageElement": {
-              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-              "SerializeProperty": "=ユーザーマスタメンテナンス!ユーザー件数取得ボタン"
-            },
-            "TargetType": "Forguncy.ButtonCellType, ServerDesignerCommon, Version=10.0.10.0, Culture=neutral, PublicKeyToken=967100671921c115",
-            "MethodName": "ExecuteCommand"
+            ],
+            "Comments": "検索フラグOn"
           }
         ],
         "Text": "最新情報に更新する",
@@ -1000,17 +998,6 @@
             "Value": "1",
             "DisplayValue": "有効"
           }
-        ],
-        "CommandList": [
-          {
-            "$type": "Forguncy.Model.OperateCellTypeCommand, ServerDesignerCommon",
-            "TargetPageElement": {
-              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-              "SerializeProperty": "=ユーザーマスタメンテナンス!ユーザー件数取得ボタン"
-            },
-            "TargetType": "Forguncy.ButtonCellType, ServerDesignerCommon, Version=10.0.10.0, Culture=neutral, PublicKeyToken=967100671921c115",
-            "MethodName": "ExecuteCommand"
-          }
         ]
       }
     },
@@ -1018,36 +1005,14 @@
       "CellType": {
         "$type": "Forguncy.CheckBoxCellType, ServerDesignerCommon",
         "Caption": "本社ユーザーのみ抽出する",
-        "Style": 1,
-        "CommandList": [
-          {
-            "$type": "Forguncy.Model.OperateCellTypeCommand, ServerDesignerCommon",
-            "TargetPageElement": {
-              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-              "SerializeProperty": "=ユーザーマスタメンテナンス!ユーザー件数取得ボタン"
-            },
-            "TargetType": "Forguncy.ButtonCellType, ServerDesignerCommon, Version=10.0.10.0, Culture=neutral, PublicKeyToken=967100671921c115",
-            "MethodName": "ExecuteCommand"
-          }
-        ]
+        "Style": 1
       }
     },
     "7,37": {
       "CellType": {
         "$type": "Forguncy.CheckBoxCellType, ServerDesignerCommon",
         "Caption": "共有アドレスのみ抽出する",
-        "Style": 1,
-        "CommandList": [
-          {
-            "$type": "Forguncy.Model.OperateCellTypeCommand, ServerDesignerCommon",
-            "TargetPageElement": {
-              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-              "SerializeProperty": "=ユーザーマスタメンテナンス!ユーザー件数取得ボタン"
-            },
-            "TargetType": "Forguncy.ButtonCellType, ServerDesignerCommon, Version=10.0.10.0, Culture=neutral, PublicKeyToken=967100671921c115",
-            "MethodName": "ExecuteCommand"
-          }
-        ]
+        "Style": 1
       }
     },
     "9,1": {
@@ -1075,7 +1040,6 @@
             },
             {
               "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
-              "CompareType": 3,
               "ColumnBindingInfo": {
                 "TableName": "m_user",
                 "ColumnName": "customer_id",
@@ -1086,10 +1050,7 @@
                   "DisplayColumn": "active_flg"
                 }
               },
-              "Value": {
-                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                "SerializeProperty": "=ユーザーマスタメンテナンス!R8"
-              }
+              "Value": "1"
             },
             {
               "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
@@ -1121,214 +1082,6 @@
                 "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
                 "SerializeProperty": "=IF(ユーザーマスタメンテナンス!AL8,2,1)"
               }
-            },
-            {
-              "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
-              "SubConditions": [
-                {
-                  "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
-                  "CompareType": 6,
-                  "ColumnBindingInfo": {
-                    "TableName": "m_user",
-                    "ColumnName": "customer_id",
-                    "GUID": "a64a3e81-368f-47c9-9c9b-8b8bba9d6c7c",
-                    "RelationBinding": {
-                      "RelatedTable": "m_customer",
-                      "RelatedColumn": "customer_id",
-                      "DisplayColumn": "内部顧客名"
-                    }
-                  },
-                  "Value": {
-                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                    "SerializeProperty": "=ユーザーマスタメンテナンス!EC17"
-                  },
-                  "LeftBracket": 1
-                },
-                {
-                  "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
-                  "CompareType": 6,
-                  "ColumnBindingInfo": {
-                    "TableName": "m_user",
-                    "ColumnName": "user_name",
-                    "GUID": "d9232ced-9355-42e6-bf9d-7d37b3c76610"
-                  },
-                  "Value": {
-                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                    "SerializeProperty": "=ユーザーマスタメンテナンス!EC17"
-                  }
-                },
-                {
-                  "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
-                  "CompareType": 6,
-                  "ColumnBindingInfo": {
-                    "TableName": "m_user",
-                    "ColumnName": "mobile_phone",
-                    "GUID": "951d1402-43bd-4b5d-b516-73f0a9afd9ac"
-                  },
-                  "Value": {
-                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                    "SerializeProperty": "=ユーザーマスタメンテナンス!EC17"
-                  }
-                },
-                {
-                  "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
-                  "CompareType": 6,
-                  "ColumnBindingInfo": {
-                    "TableName": "m_user",
-                    "ColumnName": "company_phone",
-                    "GUID": "1b9aa8e4-daec-4ecc-afd9-e454743146dc"
-                  },
-                  "Value": {
-                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                    "SerializeProperty": "=ユーザーマスタメンテナンス!EC17"
-                  }
-                },
-                {
-                  "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
-                  "CompareType": 6,
-                  "ColumnBindingInfo": {
-                    "TableName": "m_user",
-                    "ColumnName": "mail_address",
-                    "GUID": "86819481-0eae-4ba3-ba78-795bea70bba4"
-                  },
-                  "Value": {
-                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                    "SerializeProperty": "=ユーザーマスタメンテナンス!EC17"
-                  }
-                },
-                {
-                  "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
-                  "CompareType": 6,
-                  "ColumnBindingInfo": {
-                    "TableName": "m_user",
-                    "ColumnName": "department_name",
-                    "GUID": "772b4783-e8c1-4808-bd3d-19730651ecaf"
-                  },
-                  "Value": {
-                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                    "SerializeProperty": "=ユーザーマスタメンテナンス!EC17"
-                  }
-                },
-                {
-                  "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
-                  "CompareType": 6,
-                  "ColumnBindingInfo": {
-                    "TableName": "m_user",
-                    "ColumnName": "position_name",
-                    "GUID": "ede8ede9-6bba-4f5e-a109-881819254d76"
-                  },
-                  "Value": {
-                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                    "SerializeProperty": "=ユーザーマスタメンテナンス!EC17"
-                  },
-                  "RightBracket": 1
-                }
-              ],
-              "RelationType": 1
-            },
-            {
-              "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
-              "SubConditions": [
-                {
-                  "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
-                  "CompareType": 6,
-                  "ColumnBindingInfo": {
-                    "TableName": "m_user",
-                    "ColumnName": "customer_id",
-                    "GUID": "55838ebd-5eda-4cca-8936-573da095f764",
-                    "RelationBinding": {
-                      "RelatedTable": "m_customer",
-                      "RelatedColumn": "customer_id",
-                      "DisplayColumn": "内部顧客名"
-                    }
-                  },
-                  "Value": {
-                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                    "SerializeProperty": "=ユーザーマスタメンテナンス!EC20"
-                  },
-                  "LeftBracket": 1
-                },
-                {
-                  "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
-                  "CompareType": 6,
-                  "ColumnBindingInfo": {
-                    "TableName": "m_user",
-                    "ColumnName": "user_name",
-                    "GUID": "bd0482d4-c6a0-4ec1-94c7-5b323239d07e"
-                  },
-                  "Value": {
-                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                    "SerializeProperty": "=ユーザーマスタメンテナンス!EC20"
-                  }
-                },
-                {
-                  "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
-                  "CompareType": 6,
-                  "ColumnBindingInfo": {
-                    "TableName": "m_user",
-                    "ColumnName": "mobile_phone",
-                    "GUID": "f714e1b8-8f64-4c60-a4d2-aff3417c02e8"
-                  },
-                  "Value": {
-                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                    "SerializeProperty": "=ユーザーマスタメンテナンス!EC20"
-                  }
-                },
-                {
-                  "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
-                  "CompareType": 6,
-                  "ColumnBindingInfo": {
-                    "TableName": "m_user",
-                    "ColumnName": "company_phone",
-                    "GUID": "ce6ca46c-23d5-49ed-9a86-ee7635288a4e"
-                  },
-                  "Value": {
-                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                    "SerializeProperty": "=ユーザーマスタメンテナンス!EC20"
-                  }
-                },
-                {
-                  "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
-                  "CompareType": 6,
-                  "ColumnBindingInfo": {
-                    "TableName": "m_user",
-                    "ColumnName": "mail_address",
-                    "GUID": "1b50a765-ec03-441b-9479-cca91aeca870"
-                  },
-                  "Value": {
-                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                    "SerializeProperty": "=ユーザーマスタメンテナンス!EC20"
-                  }
-                },
-                {
-                  "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
-                  "CompareType": 6,
-                  "ColumnBindingInfo": {
-                    "TableName": "m_user",
-                    "ColumnName": "department_name",
-                    "GUID": "4cb29d93-53d0-4616-97f7-52929ee4cfa2"
-                  },
-                  "Value": {
-                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                    "SerializeProperty": "=ユーザーマスタメンテナンス!EC20"
-                  }
-                },
-                {
-                  "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
-                  "CompareType": 6,
-                  "ColumnBindingInfo": {
-                    "TableName": "m_user",
-                    "ColumnName": "position_name",
-                    "GUID": "1f6f8f3d-474e-4535-a783-7ea783665bae"
-                  },
-                  "Value": {
-                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                    "SerializeProperty": "=ユーザーマスタメンテナンス!EC20"
-                  },
-                  "RightBracket": 1
-                }
-              ],
-              "RelationType": 1
             }
           ]
         },
@@ -1394,7 +1147,7 @@
               {
                 "TargetCells": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=ユーザーマスタメンテナンス!EJ26"
+                  "SerializeProperty": "=ユーザーマスタメンテナンス!EC26"
                 },
                 "Value": "1"
               }
@@ -1508,7 +1261,10 @@
         "TableName": "m_user",
         "ColumnName": "user_remarks",
         "GUID": "4c11d537-66fe-4b1a-bdb4-6a33a0da610e"
-      }
+      },
+      "RulesGuidList": [
+        "1fa1d8b9-2cf5-426d-a657-a8e7f836b62f"
+      ]
     },
     "10,101": {
       "IsCellIgnoreHideInListview": true,
@@ -1604,312 +1360,94 @@
       }
     },
     "10,139": {
-      "CellType": {
-        "$type": "Forguncy.ButtonCellType, ServerDesignerCommon",
-        "CommandList": [
-          {
-            "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
-            "ParameterName": "取得カウント",
-            "TableValue": {
-              "TableName": "m_user",
-              "TableValueType": 3,
-              "SqlCondition": {
-                "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
-                "SubConditions": [
-                  {
-                    "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
-                    "ColumnBindingInfo": {
-                      "TableName": "m_user",
-                      "ColumnName": "active_flg",
-                      "GUID": "0da99618-71fc-4a25-b1ab-a15207fd62d8"
-                    },
-                    "Value": {
-                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                      "SerializeProperty": "=ユーザーマスタメンテナンス!R8"
-                    }
-                  },
-                  {
-                    "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
-                    "CompareType": 3,
-                    "ColumnBindingInfo": {
-                      "TableName": "m_user",
-                      "ColumnName": "customer_id",
-                      "GUID": "fc80baad-4793-408c-b3e7-1cea4167b895",
-                      "RelationBinding": {
-                        "RelatedTable": "m_customer",
-                        "RelatedColumn": "customer_id",
-                        "DisplayColumn": "active_flg"
-                      }
-                    },
-                    "Value": {
-                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                      "SerializeProperty": "=ユーザーマスタメンテナンス!R8"
-                    }
-                  },
-                  {
-                    "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
-                    "CompareType": 3,
-                    "ColumnBindingInfo": {
-                      "TableName": "m_user",
-                      "ColumnName": "customer_id",
-                      "GUID": "bbde0769-ca39-47db-b016-9cfbdafdb947",
-                      "RelationBinding": {
-                        "RelatedTable": "m_customer",
-                        "RelatedColumn": "customer_id",
-                        "DisplayColumn": "main_office_flg"
-                      }
-                    },
-                    "Value": {
-                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                      "SerializeProperty": "=IF(ユーザーマスタメンテナンス!Z8,1,0)"
-                    }
-                  },
-                  {
-                    "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
-                    "CompareType": 3,
-                    "ColumnBindingInfo": {
-                      "TableName": "m_user",
-                      "ColumnName": "address_type",
-                      "GUID": "76a007cb-e19b-429f-8c60-0280c3badcfc"
-                    },
-                    "Value": {
-                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                      "SerializeProperty": "=IF(ユーザーマスタメンテナンス!AL8,2,1)"
-                    }
-                  },
-                  {
-                    "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
-                    "SubConditions": [
-                      {
-                        "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
-                        "CompareType": 6,
-                        "ColumnBindingInfo": {
-                          "TableName": "m_user",
-                          "ColumnName": "customer_id",
-                          "GUID": "c2d0b70b-3980-4fd5-aa88-c6c36db3ba97",
-                          "RelationBinding": {
-                            "RelatedTable": "m_customer",
-                            "RelatedColumn": "customer_id",
-                            "DisplayColumn": "内部顧客名"
-                          }
-                        },
-                        "Value": {
-                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                          "SerializeProperty": "=ユーザーマスタメンテナンス!EC17"
-                        },
-                        "LeftBracket": 1
-                      },
-                      {
-                        "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
-                        "CompareType": 6,
-                        "ColumnBindingInfo": {
-                          "TableName": "m_user",
-                          "ColumnName": "user_name",
-                          "GUID": "9b1f81bd-97b8-4494-a85d-0cc521608814"
-                        },
-                        "Value": {
-                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                          "SerializeProperty": "=ユーザーマスタメンテナンス!EC17"
-                        }
-                      },
-                      {
-                        "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
-                        "CompareType": 6,
-                        "ColumnBindingInfo": {
-                          "TableName": "m_user",
-                          "ColumnName": "mobile_phone",
-                          "GUID": "a7ce5370-e423-4baf-8738-c69c14aeb8f7"
-                        },
-                        "Value": {
-                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                          "SerializeProperty": "=ユーザーマスタメンテナンス!EC17"
-                        }
-                      },
-                      {
-                        "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
-                        "CompareType": 6,
-                        "ColumnBindingInfo": {
-                          "TableName": "m_user",
-                          "ColumnName": "company_phone",
-                          "GUID": "0878f8ec-6ae9-41e8-8dad-e33645475aab"
-                        },
-                        "Value": {
-                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                          "SerializeProperty": "=ユーザーマスタメンテナンス!EC17"
-                        }
-                      },
-                      {
-                        "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
-                        "CompareType": 6,
-                        "ColumnBindingInfo": {
-                          "TableName": "m_user",
-                          "ColumnName": "mail_address",
-                          "GUID": "8210bddb-83dc-4c76-bfb4-e89ffac5e2e9"
-                        },
-                        "Value": {
-                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                          "SerializeProperty": "=ユーザーマスタメンテナンス!EC17"
-                        }
-                      },
-                      {
-                        "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
-                        "CompareType": 6,
-                        "ColumnBindingInfo": {
-                          "TableName": "m_user",
-                          "ColumnName": "department_name",
-                          "GUID": "85f92a20-bf3d-4788-9568-31f5e3e8ac15"
-                        },
-                        "Value": {
-                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                          "SerializeProperty": "=ユーザーマスタメンテナンス!EC17"
-                        }
-                      },
-                      {
-                        "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
-                        "CompareType": 6,
-                        "ColumnBindingInfo": {
-                          "TableName": "m_user",
-                          "ColumnName": "position_name",
-                          "GUID": "459cc6ed-4b49-4f2c-b96f-9d7b1729977a"
-                        },
-                        "Value": {
-                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                          "SerializeProperty": "=ユーザーマスタメンテナンス!EC17"
-                        },
-                        "RightBracket": 1
-                      }
-                    ],
-                    "RelationType": 1
-                  },
-                  {
-                    "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
-                    "SubConditions": [
-                      {
-                        "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
-                        "CompareType": 6,
-                        "ColumnBindingInfo": {
-                          "TableName": "m_user",
-                          "ColumnName": "customer_id",
-                          "GUID": "6122064a-410e-49de-a529-93d2a19d7288",
-                          "RelationBinding": {
-                            "RelatedTable": "m_customer",
-                            "RelatedColumn": "customer_id",
-                            "DisplayColumn": "内部顧客名"
-                          }
-                        },
-                        "Value": {
-                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                          "SerializeProperty": "=ユーザーマスタメンテナンス!EC20"
-                        },
-                        "LeftBracket": 1
-                      },
-                      {
-                        "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
-                        "CompareType": 6,
-                        "ColumnBindingInfo": {
-                          "TableName": "m_user",
-                          "ColumnName": "user_name",
-                          "GUID": "30d5d9a9-1b08-4152-b9bc-5999bf89ea5b"
-                        },
-                        "Value": {
-                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                          "SerializeProperty": "=ユーザーマスタメンテナンス!EC20"
-                        }
-                      },
-                      {
-                        "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
-                        "CompareType": 6,
-                        "ColumnBindingInfo": {
-                          "TableName": "m_user",
-                          "ColumnName": "mobile_phone",
-                          "GUID": "1d91d758-2add-40f8-826b-1734eba29e8a"
-                        },
-                        "Value": {
-                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                          "SerializeProperty": "=ユーザーマスタメンテナンス!EC20"
-                        }
-                      },
-                      {
-                        "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
-                        "CompareType": 6,
-                        "ColumnBindingInfo": {
-                          "TableName": "m_user",
-                          "ColumnName": "company_phone",
-                          "GUID": "700be4ab-3347-431e-a3a4-c59061f49d67"
-                        },
-                        "Value": {
-                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                          "SerializeProperty": "=ユーザーマスタメンテナンス!EC20"
-                        }
-                      },
-                      {
-                        "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
-                        "CompareType": 6,
-                        "ColumnBindingInfo": {
-                          "TableName": "m_user",
-                          "ColumnName": "mail_address",
-                          "GUID": "6788967a-ac1e-4def-86a9-222365cb4b0e"
-                        },
-                        "Value": {
-                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                          "SerializeProperty": "=ユーザーマスタメンテナンス!EC20"
-                        }
-                      },
-                      {
-                        "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
-                        "CompareType": 6,
-                        "ColumnBindingInfo": {
-                          "TableName": "m_user",
-                          "ColumnName": "department_name",
-                          "GUID": "e500d61e-6b48-47e3-8f7a-08498c658463"
-                        },
-                        "Value": {
-                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                          "SerializeProperty": "=ユーザーマスタメンテナンス!EC20"
-                        }
-                      },
-                      {
-                        "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
-                        "CompareType": 6,
-                        "ColumnBindingInfo": {
-                          "TableName": "m_user",
-                          "ColumnName": "position_name",
-                          "GUID": "80b8560d-a32f-4f80-a809-37e660aa63fe"
-                        },
-                        "Value": {
-                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                          "SerializeProperty": "=ユーザーマスタメンテナンス!EC20"
-                        },
-                        "RightBracket": 1
-                      }
-                    ],
-                    "RelationType": 1
-                  }
-                ]
+      "ListViewInfo": {
+        "Name": "リストビュー1",
+        "TableName": "m_user",
+        "RowIndex": 10,
+        "ColumnIndex": 139,
+        "RowCount": 4,
+        "ColumnCount": 4,
+        "SqlCondition": {
+          "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+          "SubConditions": [
+            {
+              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+              "ColumnBindingInfo": {
+                "TableName": "m_user",
+                "ColumnName": "active_flg",
+                "GUID": "a70e520f-0b0c-45b2-856e-11366ce8e7ef"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=ユーザーマスタメンテナンス!R8"
               }
             },
-            "ID": "300e3bc6d80a42b9b308fe965c2313fb"
-          },
-          {
-            "$type": "Forguncy.Model.SetCellPropertyCommand, ServerDesignerCommon",
-            "PropertyItemsList": [
-              {
-                "TargetCells": {
-                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=ユーザーマスタメンテナンス!該当カウント"
-                },
-                "Value": {
-                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=ユーザーマスタメンテナンス!取得カウント"
+            {
+              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+              "ColumnBindingInfo": {
+                "TableName": "m_user",
+                "ColumnName": "customer_id",
+                "GUID": "b422bfa5-89d3-4ad1-9f48-c389cee11391",
+                "RelationBinding": {
+                  "RelatedTable": "m_customer",
+                  "RelatedColumn": "customer_id",
+                  "DisplayColumn": "active_flg"
                 }
+              },
+              "Value": "1"
+            },
+            {
+              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+              "CompareType": 3,
+              "ColumnBindingInfo": {
+                "TableName": "m_user",
+                "ColumnName": "customer_id",
+                "GUID": "3d285c9b-d887-4c7d-a665-c1b6cccfec41",
+                "RelationBinding": {
+                  "RelatedTable": "m_customer",
+                  "RelatedColumn": "customer_id",
+                  "DisplayColumn": "main_office_flg"
+                }
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=IF(ユーザーマスタメンテナンス!Z8,1,0)"
               }
-            ]
-          }
-        ],
-        "TemplateKey": "_RS_Normal_Style2"
+            },
+            {
+              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+              "CompareType": 3,
+              "ColumnBindingInfo": {
+                "TableName": "m_user",
+                "ColumnName": "address_type",
+                "GUID": "45ff54ed-eac2-48d4-8e0f-be8ef763ca90"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=IF(ユーザーマスタメンテナンス!AL8,2,1)"
+              }
+            }
+          ]
+        },
+        "TopCondition": null,
+        "ListViewStyleName": "_RS_Medium1",
+        "ShowColumnHeaderInDesigner": true,
+        "ShowEditStatusIcon": true,
+        "UseSimpleBar": true,
+        "ColumnOperation": 2,
+        "CommitType": 1,
+        "DoNotLoadDataWhenLoadPage": true
       }
     },
-    "25,139": {
+    "11,139": {
+      "NameUsedInJavaScript": "レコード件数",
+      "BindingInfo": {
+        "TableName": "m_user",
+        "ColumnName": "レコード件数",
+        "GUID": "5f66fe9c-10c5-43d1-873e-42df2d33fe55"
+      }
+    },
+    "25,132": {
       "CellType": {
         "$type": "Forguncy.TextCellType, ServerDesignerCommon",
         "CellDefaultValue": "0",
@@ -1981,7 +1519,7 @@
                     "UpdateRowType": 3
                   }
                 ],
-                "ID": "49996bfb-c3d3-4b4f-ba6a-a2574bfd63e5"
+                "ID": "4b28644e-54b7-44d5-b79d-a638865eda52"
               },
               {
                 "CommandList": [
@@ -1997,7 +1535,7 @@
                     "UpdateRowType": 3
                   }
                 ],
-                "ID": "a6360a6c-0693-40e1-b88b-41084fef3eeb"
+                "ID": "c9f6f6ad-8dc0-4d7a-b9a3-9d545813c5ae"
               }
             ]
           },
@@ -2007,7 +1545,7 @@
               {
                 "TargetCells": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=ユーザーマスタメンテナンス!EJ26"
+                  "SerializeProperty": "=ユーザーマスタメンテナンス!EC26"
                 },
                 "Value": "0"
               }
@@ -2017,7 +1555,7 @@
         ]
       }
     },
-    "28,139": {
+    "28,132": {
       "CellType": {
         "$type": "Forguncy.TextCellType, ServerDesignerCommon",
         "SavedValidators": [
@@ -2031,7 +1569,7 @@
             "ParameterName": "アクション",
             "ParameterValue": {
               "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-              "SerializeProperty": "=ユーザーマスタメンテナンス!EJ29"
+              "SerializeProperty": "=ユーザーマスタメンテナンス!EC29"
             },
             "ID": "19e77d3b71e14ae3a75a9eebd29919fc"
           },
@@ -2041,7 +1579,7 @@
               {
                 "TargetCells": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=ユーザーマスタメンテナンス!EJ29"
+                  "SerializeProperty": "=ユーザーマスタメンテナンス!EC29"
                 },
                 "Value": "%Null%"
               }
@@ -2076,7 +1614,7 @@
                   }
                 ],
                 "Comments": "新規登録",
-                "ID": "3b2533bf-45eb-4ccf-a4a9-c644c51e06e4"
+                "ID": "dd58eb27-f6fe-49d4-91ed-45f43d449509"
               },
               {
                 "Condition": {
@@ -2102,7 +1640,7 @@
                             "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
                             "cellLocations": [
                               {
-                                "SerializeProperty": "=ユーザーマスタメンテナンス!EJ17"
+                                "SerializeProperty": "=ユーザーマスタメンテナンス!EJ20"
                               }
                             ]
                           },
@@ -2117,7 +1655,7 @@
                             "$type": "Forguncy.Model.StopCommand, ServerDesignerCommon"
                           }
                         ],
-                        "ID": "46f41cec-bcac-413f-ac9a-52d70f44277b"
+                        "ID": "61a65fab-3c23-427d-aa46-dcf0bc6046ea"
                       }
                     ]
                   },
@@ -2128,7 +1666,7 @@
                       {
                         "Source": {
                           "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                          "SerializeProperty": "=ユーザーマスタメンテナンス!EC29"
+                          "SerializeProperty": "=ユーザーマスタメンテナンス!EC23"
                         },
                         "TargetCell": {
                           "SerializeProperty": "=ユーザーアカウント一括送信!ユーザーIDs"
@@ -2137,9 +1675,266 @@
                     ]
                   }
                 ],
-                "ID": "bb578889-c6bc-4fc9-9e12-1fd112d73bb6"
+                "ID": "37e250cc-39c7-4eb0-aa80-7b8da440095c"
               }
             ]
+          }
+        ]
+      }
+    },
+    "28,139": {
+      "CellType": {
+        "$type": "Forguncy.TextCellType, ServerDesignerCommon",
+        "CellDefaultValue": "0",
+        "SavedValidators": [
+          {
+            "$type": "Forguncy.CellTypes.Models.UniqueValidadator, ServerDesignerCommon"
+          }
+        ],
+        "CommandList": [
+          {
+            "$type": "Forguncy.Model.QueryCommand, ServerDesignerCommon",
+            "TargetTableName": "m_user",
+            "SqlCondition": {
+              "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+              "SubConditions": [
+                {
+                  "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                  "SubConditions": [
+                    {
+                      "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                      "CompareType": 6,
+                      "ColumnBindingInfo": {
+                        "TableName": "m_user",
+                        "ColumnName": "user_name",
+                        "GUID": "f7c69bf7-d485-4852-bf2d-ce510fbad3c3"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=ユーザーマスタメンテナンス!EC17"
+                      },
+                      "LeftBracket": 1
+                    },
+                    {
+                      "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                      "CompareType": 6,
+                      "ColumnBindingInfo": {
+                        "TableName": "m_user",
+                        "ColumnName": "mail_address",
+                        "GUID": "017973b4-8c6d-448b-b8ee-23a5431f9c23"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=ユーザーマスタメンテナンス!EC17"
+                      }
+                    },
+                    {
+                      "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                      "CompareType": 6,
+                      "ColumnBindingInfo": {
+                        "TableName": "m_user",
+                        "ColumnName": "mobile_phone",
+                        "GUID": "a70bc6f5-6d62-49df-84e2-0d49fabd152c"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=ユーザーマスタメンテナンス!EC17"
+                      }
+                    },
+                    {
+                      "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                      "CompareType": 6,
+                      "ColumnBindingInfo": {
+                        "TableName": "m_user",
+                        "ColumnName": "company_phone",
+                        "GUID": "076ad9a0-0bc7-4739-9b29-fdbf3a2e6fd1"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=ユーザーマスタメンテナンス!EC17"
+                      }
+                    },
+                    {
+                      "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                      "CompareType": 6,
+                      "ColumnBindingInfo": {
+                        "TableName": "m_user",
+                        "ColumnName": "department_name",
+                        "GUID": "81a87026-8a3b-4bdd-84f8-ecd7a28ecca5"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=ユーザーマスタメンテナンス!EC17"
+                      }
+                    },
+                    {
+                      "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                      "CompareType": 6,
+                      "ColumnBindingInfo": {
+                        "TableName": "m_user",
+                        "ColumnName": "position_name",
+                        "GUID": "526f3f10-2b58-4eb7-b119-117d8e56a864"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=ユーザーマスタメンテナンス!EC17"
+                      }
+                    },
+                    {
+                      "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                      "CompareType": 6,
+                      "ColumnBindingInfo": {
+                        "TableName": "m_user",
+                        "ColumnName": "customer_id",
+                        "GUID": "38842e87-15e6-4ca7-997f-8f8cdd4ba1ba",
+                        "RelationBinding": {
+                          "RelatedTable": "m_customer",
+                          "RelatedColumn": "customer_id",
+                          "DisplayColumn": "内部顧客名"
+                        }
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=ユーザーマスタメンテナンス!EC17"
+                      },
+                      "RightBracket": 1
+                    }
+                  ],
+                  "RelationType": 1
+                },
+                {
+                  "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                  "SubConditions": [
+                    {
+                      "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                      "CompareType": 6,
+                      "ColumnBindingInfo": {
+                        "TableName": "m_user",
+                        "ColumnName": "user_name",
+                        "GUID": "ae1c3da3-6bb5-49b9-8781-9554d0d63bae"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=ユーザーマスタメンテナンス!EC20"
+                      },
+                      "LeftBracket": 1
+                    },
+                    {
+                      "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                      "CompareType": 6,
+                      "ColumnBindingInfo": {
+                        "TableName": "m_user",
+                        "ColumnName": "mail_address",
+                        "GUID": "651c5e09-133c-4434-9d4b-f74d4382a6f3"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=ユーザーマスタメンテナンス!EC20"
+                      }
+                    },
+                    {
+                      "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                      "CompareType": 6,
+                      "ColumnBindingInfo": {
+                        "TableName": "m_user",
+                        "ColumnName": "mobile_phone",
+                        "GUID": "80282471-3037-4a08-9de9-ea1735d4c049"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=ユーザーマスタメンテナンス!EC20"
+                      }
+                    },
+                    {
+                      "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                      "CompareType": 6,
+                      "ColumnBindingInfo": {
+                        "TableName": "m_user",
+                        "ColumnName": "company_phone",
+                        "GUID": "8fd5aeb7-3972-46a9-9282-beffd4dbac31"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=ユーザーマスタメンテナンス!EC20"
+                      }
+                    },
+                    {
+                      "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                      "CompareType": 6,
+                      "ColumnBindingInfo": {
+                        "TableName": "m_user",
+                        "ColumnName": "company_phone",
+                        "GUID": "8fd5aeb7-3972-46a9-9282-beffd4dbac31"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=ユーザーマスタメンテナンス!EC20"
+                      }
+                    },
+                    {
+                      "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                      "CompareType": 6,
+                      "ColumnBindingInfo": {
+                        "TableName": "m_user",
+                        "ColumnName": "department_name",
+                        "GUID": "a1b4c6e7-31ec-4985-b936-50cd096c9172"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=ユーザーマスタメンテナンス!EC20"
+                      }
+                    },
+                    {
+                      "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                      "CompareType": 6,
+                      "ColumnBindingInfo": {
+                        "TableName": "m_user",
+                        "ColumnName": "position_name",
+                        "GUID": "c6220886-5110-4682-9325-7aadb59a0459"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=ユーザーマスタメンテナンス!EC20"
+                      }
+                    },
+                    {
+                      "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                      "CompareType": 6,
+                      "ColumnBindingInfo": {
+                        "TableName": "m_user",
+                        "ColumnName": "customer_id",
+                        "GUID": "90ba308e-b873-4ce9-8324-06ee18789a98",
+                        "RelationBinding": {
+                          "RelatedTable": "m_customer",
+                          "RelatedColumn": "customer_id",
+                          "DisplayColumn": "内部顧客名"
+                        }
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=ユーザーマスタメンテナンス!EC20"
+                      },
+                      "RightBracket": 1
+                    }
+                  ],
+                  "RelationType": 1
+                }
+              ]
+            },
+            "ID": "1237e3b284364020a6471d3152e17a8f"
+          },
+          {
+            "$type": "Forguncy.Model.SetCellPropertyCommand, ServerDesignerCommon",
+            "PropertyItemsList": [
+              {
+                "TargetCells": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=ユーザーマスタメンテナンス!EJ29"
+                },
+                "Value": "0"
+              }
+            ],
+            "Comments": "フラグリセット"
           }
         ]
       }
@@ -2148,7 +1943,7 @@
       "CellType": {
         "$type": "Forguncy.PageNavigateCellType, ServerDesignerCommon",
         "PageingListviewName": "ユーザービュー",
-        "PageLimitRowCount": 1000,
+        "PageLimitRowCount": 500,
         "FirstImage": {
           "Name": "Arrow/347_move_first.svg",
           "BuiltIn": true,
@@ -2290,6 +2085,11 @@
       {
         "Background": 12,
         "FontFamily": 0,
+        "Formatter": 3,
+        "HorizontalAlignment": 13
+      },
+      {
+        "Background": 12,
         "Formatter": 3,
         "HorizontalAlignment": 13
       },
@@ -2638,9 +2438,6 @@
       "10,132": 20,
       "10,133": 1,
       "10,134": 1,
-      "10,139": 1,
-      "10,140": 1,
-      "10,141": 1,
       "11,118": 21,
       "11,119": 21,
       "11,120": 21,
@@ -2657,8 +2454,6 @@
       "11,133": 1,
       "11,134": 1,
       "11,139": 1,
-      "11,140": 1,
-      "11,141": 1,
       "12,118": 21,
       "12,119": 21,
       "12,120": 21,
@@ -2674,9 +2469,6 @@
       "12,132": 1,
       "12,133": 1,
       "12,134": 1,
-      "12,139": 22,
-      "12,140": 1,
-      "12,141": 1,
       "13,118": 21,
       "13,119": 21,
       "13,120": 21,
@@ -2692,9 +2484,6 @@
       "13,132": 20,
       "13,133": 1,
       "13,134": 1,
-      "13,139": 20,
-      "13,140": 1,
-      "13,141": 1,
       "14,118": 21,
       "14,119": 21,
       "14,120": 21,
@@ -2725,7 +2514,7 @@
       "15,132": 22,
       "15,133": 1,
       "15,134": 1,
-      "15,139": 1,
+      "15,139": 22,
       "15,140": 1,
       "15,141": 1,
       "16,118": 21,
@@ -2761,6 +2550,9 @@
       "17,132": 1,
       "17,133": 1,
       "17,134": 1,
+      "17,139": 1,
+      "17,140": 1,
+      "17,141": 1,
       "18,118": 21,
       "18,119": 21,
       "18,120": 21,
@@ -2824,6 +2616,9 @@
       "21,127": 21,
       "21,128": 21,
       "21,129": 21,
+      "21,132": 1,
+      "21,133": 1,
+      "21,134": 1,
       "21,135": 1,
       "21,136": 1,
       "21,137": 1,
@@ -2843,6 +2638,9 @@
       "22,127": 21,
       "22,128": 21,
       "22,129": 21,
+      "22,132": 20,
+      "22,133": 1,
+      "22,134": 1,
       "22,135": 1,
       "22,136": 1,
       "22,137": 1,
@@ -2881,11 +2679,14 @@
       "24,127": 21,
       "24,128": 21,
       "24,129": 21,
+      "24,132": 22,
+      "24,133": 1,
+      "24,134": 1,
       "24,135": 1,
       "24,136": 1,
       "24,137": 1,
       "24,138": 1,
-      "24,139": 22,
+      "24,139": 1,
       "24,140": 1,
       "24,141": 1,
       "25,118": 21,
@@ -2900,11 +2701,14 @@
       "25,127": 21,
       "25,128": 21,
       "25,129": 21,
+      "25,132": 23,
+      "25,133": 1,
+      "25,134": 1,
       "25,135": 1,
       "25,136": 1,
       "25,137": 1,
       "25,138": 1,
-      "25,139": 23,
+      "25,139": 20,
       "25,140": 1,
       "25,141": 1,
       "26,118": 21,
@@ -2926,9 +2730,6 @@
       "26,136": 1,
       "26,137": 1,
       "26,138": 1,
-      "26,139": 1,
-      "26,140": 1,
-      "26,141": 1,
       "27,120": 21,
       "27,121": 21,
       "27,122": 21,
@@ -2946,9 +2747,6 @@
       "27,136": 1,
       "27,137": 1,
       "27,138": 1,
-      "27,139": 1,
-      "27,140": 1,
-      "27,141": 1,
       "28,120": 21,
       "28,121": 21,
       "28,122": 21,
@@ -2959,16 +2757,14 @@
       "28,127": 21,
       "28,128": 21,
       "28,129": 21,
-      "28,132": 20,
+      "28,132": 23,
       "28,133": 1,
       "28,134": 1,
       "28,135": 1,
       "28,136": 1,
       "28,137": 1,
       "28,138": 1,
-      "28,139": 23,
-      "28,140": 1,
-      "28,141": 1,
+      "28,139": 24,
       "29,118": 21,
       "29,119": 21,
       "29,120": 21,
@@ -3017,256 +2813,256 @@
       "31,139": 1,
       "31,140": 1,
       "31,141": 1,
-      "32,1": 24,
-      "32,2": 24,
-      "32,3": 24,
-      "32,4": 24,
-      "32,5": 24,
-      "32,6": 24,
-      "32,7": 24,
-      "32,8": 24,
-      "32,9": 24,
-      "32,10": 24,
-      "32,11": 24,
-      "32,12": 24,
-      "32,13": 24,
-      "32,14": 24,
-      "32,15": 24,
-      "32,16": 24,
-      "32,17": 24,
-      "32,18": 24,
-      "32,19": 24,
-      "32,20": 24,
-      "32,21": 24,
-      "32,22": 24,
-      "32,23": 24,
-      "32,24": 24,
-      "32,25": 24,
-      "32,26": 24,
-      "32,27": 24,
-      "32,28": 24,
-      "32,29": 24,
-      "32,30": 24,
-      "32,31": 24,
-      "32,32": 24,
-      "32,33": 24,
-      "32,34": 24,
-      "32,35": 24,
-      "32,36": 24,
-      "32,37": 24,
-      "32,38": 24,
-      "32,39": 24,
-      "32,40": 24,
-      "32,41": 24,
-      "32,42": 24,
-      "32,43": 24,
-      "32,44": 24,
-      "32,45": 24,
-      "32,46": 24,
-      "32,47": 24,
-      "32,48": 24,
-      "32,49": 24,
-      "32,50": 24,
-      "32,51": 24,
-      "32,52": 25,
-      "32,53": 24,
-      "32,54": 24,
-      "32,55": 25,
-      "32,56": 26,
-      "32,57": 26,
-      "32,58": 26,
-      "32,59": 25,
-      "32,60": 26,
-      "32,61": 26,
-      "32,62": 26,
-      "32,63": 26,
-      "32,64": 26,
-      "32,65": 26,
-      "32,66": 26,
-      "32,67": 24,
-      "32,68": 24,
-      "32,69": 24,
-      "32,70": 24,
-      "32,71": 24,
-      "32,72": 24,
-      "32,73": 24,
-      "32,74": 24,
-      "32,75": 24,
-      "32,76": 24,
-      "32,77": 24,
-      "32,78": 24,
-      "32,79": 24,
-      "32,80": 24,
-      "32,81": 24,
-      "32,82": 24,
-      "32,83": 24,
-      "32,84": 24,
-      "32,85": 24,
-      "32,86": 24,
-      "32,87": 24,
-      "32,88": 24,
-      "32,89": 24,
-      "32,90": 24,
-      "32,91": 24,
-      "32,92": 24,
-      "32,93": 24,
-      "32,94": 24,
-      "32,95": 24,
-      "32,96": 24,
-      "32,97": 24,
-      "32,98": 24,
-      "32,99": 24,
-      "32,100": 24,
-      "32,101": 24,
-      "32,102": 24,
-      "32,103": 24,
-      "32,104": 24,
-      "32,105": 24,
-      "32,106": 24,
-      "32,107": 24,
-      "32,108": 24,
-      "32,109": 24,
-      "32,110": 24,
-      "32,111": 24,
-      "32,112": 24,
-      "32,113": 24,
-      "32,114": 24,
-      "32,115": 24,
-      "32,116": 24,
-      "32,117": 24,
-      "32,118": 24,
-      "32,119": 24
+      "32,1": 25,
+      "32,2": 25,
+      "32,3": 25,
+      "32,4": 25,
+      "32,5": 25,
+      "32,6": 25,
+      "32,7": 25,
+      "32,8": 25,
+      "32,9": 25,
+      "32,10": 25,
+      "32,11": 25,
+      "32,12": 25,
+      "32,13": 25,
+      "32,14": 25,
+      "32,15": 25,
+      "32,16": 25,
+      "32,17": 25,
+      "32,18": 25,
+      "32,19": 25,
+      "32,20": 25,
+      "32,21": 25,
+      "32,22": 25,
+      "32,23": 25,
+      "32,24": 25,
+      "32,25": 25,
+      "32,26": 25,
+      "32,27": 25,
+      "32,28": 25,
+      "32,29": 25,
+      "32,30": 25,
+      "32,31": 25,
+      "32,32": 25,
+      "32,33": 25,
+      "32,34": 25,
+      "32,35": 25,
+      "32,36": 25,
+      "32,37": 25,
+      "32,38": 25,
+      "32,39": 25,
+      "32,40": 25,
+      "32,41": 25,
+      "32,42": 25,
+      "32,43": 25,
+      "32,44": 25,
+      "32,45": 25,
+      "32,46": 25,
+      "32,47": 25,
+      "32,48": 25,
+      "32,49": 25,
+      "32,50": 25,
+      "32,51": 25,
+      "32,52": 26,
+      "32,53": 25,
+      "32,54": 25,
+      "32,55": 26,
+      "32,56": 27,
+      "32,57": 27,
+      "32,58": 27,
+      "32,59": 26,
+      "32,60": 27,
+      "32,61": 27,
+      "32,62": 27,
+      "32,63": 27,
+      "32,64": 27,
+      "32,65": 27,
+      "32,66": 27,
+      "32,67": 25,
+      "32,68": 25,
+      "32,69": 25,
+      "32,70": 25,
+      "32,71": 25,
+      "32,72": 25,
+      "32,73": 25,
+      "32,74": 25,
+      "32,75": 25,
+      "32,76": 25,
+      "32,77": 25,
+      "32,78": 25,
+      "32,79": 25,
+      "32,80": 25,
+      "32,81": 25,
+      "32,82": 25,
+      "32,83": 25,
+      "32,84": 25,
+      "32,85": 25,
+      "32,86": 25,
+      "32,87": 25,
+      "32,88": 25,
+      "32,89": 25,
+      "32,90": 25,
+      "32,91": 25,
+      "32,92": 25,
+      "32,93": 25,
+      "32,94": 25,
+      "32,95": 25,
+      "32,96": 25,
+      "32,97": 25,
+      "32,98": 25,
+      "32,99": 25,
+      "32,100": 25,
+      "32,101": 25,
+      "32,102": 25,
+      "32,103": 25,
+      "32,104": 25,
+      "32,105": 25,
+      "32,106": 25,
+      "32,107": 25,
+      "32,108": 25,
+      "32,109": 25,
+      "32,110": 25,
+      "32,111": 25,
+      "32,112": 25,
+      "32,113": 25,
+      "32,114": 25,
+      "32,115": 25,
+      "32,116": 25,
+      "32,117": 25,
+      "32,118": 25,
+      "32,119": 25
     },
     "ColStyles": {
-      "1": 27,
-      "2": 27,
-      "3": 27,
-      "4": 27,
-      "5": 27,
-      "6": 27,
-      "7": 27,
-      "8": 27,
-      "9": 27,
-      "10": 27,
-      "11": 27,
-      "12": 27,
-      "13": 27,
-      "14": 27,
-      "15": 27,
-      "16": 27,
-      "17": 27,
-      "18": 27,
-      "19": 27,
-      "20": 27,
-      "21": 27,
-      "22": 27,
-      "23": 27,
-      "24": 27,
-      "25": 27,
-      "26": 27,
-      "27": 27,
-      "28": 27,
-      "29": 27,
-      "30": 27,
-      "31": 27,
-      "32": 27,
-      "33": 27,
-      "34": 27,
-      "35": 27,
-      "36": 27,
-      "37": 27,
-      "38": 27,
-      "39": 28,
-      "40": 28,
-      "41": 28,
-      "42": 28,
-      "43": 28,
-      "44": 28,
-      "45": 28,
-      "46": 28,
-      "47": 28,
-      "48": 28,
-      "49": 28,
-      "50": 28,
-      "51": 28,
-      "52": 28,
-      "53": 27,
-      "54": 27,
-      "55": 27,
-      "56": 27,
-      "57": 27,
-      "58": 27,
-      "59": 27,
-      "60": 27,
-      "61": 27,
-      "62": 27,
-      "63": 27,
-      "64": 27,
-      "65": 27,
-      "66": 27,
-      "67": 27,
-      "68": 27,
-      "69": 27,
-      "70": 27,
-      "71": 27,
-      "72": 27,
-      "73": 27,
-      "74": 27,
-      "75": 27,
-      "76": 27,
-      "77": 27,
-      "78": 27,
-      "79": 27,
-      "80": 27,
-      "81": 27,
-      "82": 27,
-      "83": 27,
-      "84": 27,
-      "85": 27,
-      "86": 27,
-      "87": 27,
-      "88": 27,
-      "89": 27,
-      "90": 27,
-      "91": 27,
-      "92": 27,
-      "93": 27,
-      "94": 27,
-      "95": 27,
-      "96": 27,
-      "97": 27,
-      "98": 27,
-      "99": 27,
-      "100": 27,
-      "101": 27,
-      "102": 27,
-      "103": 27,
-      "104": 27,
-      "105": 27,
-      "106": 27,
-      "107": 27,
-      "108": 27,
-      "109": 27,
-      "110": 27,
-      "111": 27,
-      "112": 27,
-      "113": 27,
-      "114": 27,
-      "115": 27,
-      "116": 27,
-      "117": 27,
-      "118": 27,
-      "119": 27,
-      "120": 27,
-      "121": 27,
-      "122": 27,
-      "123": 27,
-      "124": 27,
-      "125": 27,
-      "126": 27,
-      "127": 27,
-      "128": 27,
-      "129": 27
+      "1": 28,
+      "2": 28,
+      "3": 28,
+      "4": 28,
+      "5": 28,
+      "6": 28,
+      "7": 28,
+      "8": 28,
+      "9": 28,
+      "10": 28,
+      "11": 28,
+      "12": 28,
+      "13": 28,
+      "14": 28,
+      "15": 28,
+      "16": 28,
+      "17": 28,
+      "18": 28,
+      "19": 28,
+      "20": 28,
+      "21": 28,
+      "22": 28,
+      "23": 28,
+      "24": 28,
+      "25": 28,
+      "26": 28,
+      "27": 28,
+      "28": 28,
+      "29": 28,
+      "30": 28,
+      "31": 28,
+      "32": 28,
+      "33": 28,
+      "34": 28,
+      "35": 28,
+      "36": 28,
+      "37": 28,
+      "38": 28,
+      "39": 29,
+      "40": 29,
+      "41": 29,
+      "42": 29,
+      "43": 29,
+      "44": 29,
+      "45": 29,
+      "46": 29,
+      "47": 29,
+      "48": 29,
+      "49": 29,
+      "50": 29,
+      "51": 29,
+      "52": 29,
+      "53": 28,
+      "54": 28,
+      "55": 28,
+      "56": 28,
+      "57": 28,
+      "58": 28,
+      "59": 28,
+      "60": 28,
+      "61": 28,
+      "62": 28,
+      "63": 28,
+      "64": 28,
+      "65": 28,
+      "66": 28,
+      "67": 28,
+      "68": 28,
+      "69": 28,
+      "70": 28,
+      "71": 28,
+      "72": 28,
+      "73": 28,
+      "74": 28,
+      "75": 28,
+      "76": 28,
+      "77": 28,
+      "78": 28,
+      "79": 28,
+      "80": 28,
+      "81": 28,
+      "82": 28,
+      "83": 28,
+      "84": 28,
+      "85": 28,
+      "86": 28,
+      "87": 28,
+      "88": 28,
+      "89": 28,
+      "90": 28,
+      "91": 28,
+      "92": 28,
+      "93": 28,
+      "94": 28,
+      "95": 28,
+      "96": 28,
+      "97": 28,
+      "98": 28,
+      "99": 28,
+      "100": 28,
+      "101": 28,
+      "102": 28,
+      "103": 28,
+      "104": 28,
+      "105": 28,
+      "106": 28,
+      "107": 28,
+      "108": 28,
+      "109": 28,
+      "110": 28,
+      "111": 28,
+      "112": 28,
+      "113": 28,
+      "114": 28,
+      "115": 28,
+      "116": 28,
+      "117": 28,
+      "118": 28,
+      "119": 28,
+      "120": 28,
+      "121": 28,
+      "122": 28,
+      "123": 28,
+      "124": 28,
+      "125": 28,
+      "126": 28,
+      "127": 28,
+      "128": 28,
+      "129": 28
     },
     "SheetStyle": {
       "FontFamily": 0
@@ -3298,7 +3094,6 @@
     "10,126,1,4",
     "1,26,1,4",
     "1,31,1,5",
-    "10,139,1,3",
     "1,60,1,7",
     "32,50,1,2",
     "1,51,1,8",
@@ -3311,16 +3106,19 @@
     "7,37,1,12",
     "10,101,1,4",
     "10,78,1,23",
-    "28,139,1,3",
-    "25,139,1,3",
-    "28,132,1,3",
     "13,132,1,3",
     "16,132,1,3",
     "19,132,1,3",
-    "13,139,1,3",
+    "22,132,1,3",
+    "28,132,1,3",
+    "25,132,1,3",
     "16,139,1,3",
     "19,139,1,3",
     "22,139,1,3",
+    "25,139,1,3",
+    "11,139,1,4",
+    "12,139,2,4",
+    "28,139,1,3",
     "9,1,1,2",
     "9,3,1,13",
     "9,16,1,9",
@@ -3335,7 +3133,8 @@
     "9,111,1,7",
     "9,118,1,4",
     "9,122,1,4",
-    "9,126,1,4"
+    "9,126,1,4",
+    "10,139,1,4"
   ],
   "PageInfo": {
     "$type": "Forguncy.Model.Pages.NormalPage, ServerDesignerCommon",
@@ -3352,16 +3151,6 @@
           }
         ],
         "Comments": "有効フラグOn"
-      },
-      {
-        "$type": "Forguncy.Model.OperateCellTypeCommand, ServerDesignerCommon",
-        "TargetPageElement": {
-          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-          "SerializeProperty": "=ユーザーマスタメンテナンス!EJ11"
-        },
-        "TargetType": "Forguncy.ButtonCellType, ServerDesignerCommon, Version=10.0.10.0, Culture=neutral, PublicKeyToken=967100671921c115",
-        "MethodName": "ExecuteCommand",
-        "Comments": "ユーザー件数取得"
       },
       {
         "$type": "LoadingCommand.EndLoadingCommand, LoadingCommand"
@@ -3391,57 +3180,10 @@
           "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
           "Formula": {
             "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-            "SerializeProperty": "=ユーザーマスタメンテナンス!抽出カウント-ユーザーマスタメンテナンス!選択カウント=0"
-          },
-          "GUID": "dd063131-d022-4ad2-85a4-4af6013376d1",
-          "StyleInfo": {
-            "Underline": null,
-            "Strikethrough": null
-          },
-          "IsDisabled": true,
-          "IsInvisible": false,
-          "IsReadOnly": false
-        },
-        {
-          "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
-          "Formula": {
-            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-            "SerializeProperty": "=ユーザーマスタメンテナンス!選択カウント=0"
-          },
-          "Priority": 1,
-          "GUID": "8011e429-174c-4376-91d8-d52510e220f1",
-          "StyleInfo": {
-            "Underline": null,
-            "Strikethrough": null
-          },
-          "IsDisabled": true,
-          "IsInvisible": false,
-          "IsReadOnly": false
-        },
-        {
-          "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
-          "Formula": {
-            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
             "SerializeProperty": "=ユーザーマスタメンテナンス!DW11=1"
           },
-          "Priority": 2,
-          "GUID": "d1c6d362-bcb7-4343-8836-d75342ec87c4",
-          "StyleInfo": {
-            "BorderBottom": "Background 1 -15|1",
-            "Background": "#FFE5FFF0",
-            "Foreground": "Accent 1 0",
-            "Underline": null,
-            "Strikethrough": null
-          }
-        },
-        {
-          "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
-          "Formula": {
-            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-            "SerializeProperty": "=ユーザーマスタメンテナンス!DW11=1"
-          },
-          "Priority": 3,
-          "GUID": "ef80d7a6-fe43-46a9-8328-3edd107e1162",
+          "Priority": 14,
+          "GUID": "1fa1d8b9-2cf5-426d-a657-a8e7f836b62f",
           "StyleInfo": {
             "BorderBottom": "Background 1 -15|1",
             "Background": "#FFE5FFF0",
@@ -3455,113 +3197,8 @@
             "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
             "SerializeProperty": "=ユーザーマスタメンテナンス!DW11=1"
           },
-          "Priority": 4,
-          "GUID": "cd5ad0b4-ad61-494b-bee2-f3ebefdca2ee",
-          "StyleInfo": {
-            "BorderBottom": "Background 1 -15|1",
-            "Background": "#FFE5FFF0",
-            "Underline": null,
-            "Strikethrough": null
-          }
-        },
-        {
-          "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
-          "Formula": {
-            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-            "SerializeProperty": "=ユーザーマスタメンテナンス!DW11=1"
-          },
-          "Priority": 5,
-          "GUID": "8b7816f2-58f2-4991-8645-144f7a7d70c8",
-          "StyleInfo": {
-            "BorderBottom": "Background 1 -15|1",
-            "Background": "#FFE5FFF0",
-            "Underline": null,
-            "Strikethrough": null
-          }
-        },
-        {
-          "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
-          "Formula": {
-            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-            "SerializeProperty": "=ユーザーマスタメンテナンス!DW11=1"
-          },
-          "Priority": 6,
-          "GUID": "fda88d4a-a1df-4045-9416-b7b165ef84cb",
-          "StyleInfo": {
-            "BorderBottom": "Background 1 -15|1",
-            "Background": "#FFE5FFF0",
-            "Underline": null,
-            "Strikethrough": null
-          }
-        },
-        {
-          "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
-          "Formula": {
-            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-            "SerializeProperty": "=ユーザーマスタメンテナンス!DW11=1"
-          },
-          "Priority": 7,
-          "GUID": "2e816f9c-c7e5-45c8-bbea-daf8da55cf80",
-          "StyleInfo": {
-            "BorderBottom": "Background 1 -15|1",
-            "Background": "#FFE5FFF0",
-            "Underline": null,
-            "Strikethrough": null
-          }
-        },
-        {
-          "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
-          "Formula": {
-            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-            "SerializeProperty": "=ユーザーマスタメンテナンス!DW11=1"
-          },
-          "Priority": 8,
-          "GUID": "9b58c428-7127-4fef-8445-1c2142ef7b44",
-          "StyleInfo": {
-            "BorderBottom": "Background 1 -15|1",
-            "Background": "#FFE5FFF0",
-            "Underline": null,
-            "Strikethrough": null
-          }
-        },
-        {
-          "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
-          "Formula": {
-            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-            "SerializeProperty": "=ユーザーマスタメンテナンス!DW11=1"
-          },
-          "Priority": 9,
-          "GUID": "519973b2-666c-48c1-9fb0-4c8bca46fdce",
-          "StyleInfo": {
-            "BorderBottom": "Background 1 -15|1",
-            "Background": "#FFE5FFF0",
-            "Underline": null,
-            "Strikethrough": null
-          }
-        },
-        {
-          "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
-          "Formula": {
-            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-            "SerializeProperty": "=ユーザーマスタメンテナンス!DW11=1"
-          },
-          "Priority": 10,
-          "GUID": "303d10c5-8330-4a4e-9a67-4b79e022fe3f",
-          "StyleInfo": {
-            "BorderBottom": "Background 1 -15|1",
-            "Background": "#FFE5FFF0",
-            "Underline": null,
-            "Strikethrough": null
-          }
-        },
-        {
-          "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
-          "Formula": {
-            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-            "SerializeProperty": "=ユーザーマスタメンテナンス!DW11=1"
-          },
-          "Priority": 11,
-          "GUID": "77b27e85-4f55-456a-ab52-2787156e0cf6",
+          "Priority": 13,
+          "GUID": "45e91686-0baf-48cb-be53-ad02d319d92f",
           "StyleInfo": {
             "BorderBottom": "Background 1 -15|1",
             "Background": "#FFE5FFF0",
@@ -3590,14 +3227,181 @@
             "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
             "SerializeProperty": "=ユーザーマスタメンテナンス!DW11=1"
           },
-          "Priority": 13,
-          "GUID": "45e91686-0baf-48cb-be53-ad02d319d92f",
+          "Priority": 11,
+          "GUID": "77b27e85-4f55-456a-ab52-2787156e0cf6",
           "StyleInfo": {
             "BorderBottom": "Background 1 -15|1",
             "Background": "#FFE5FFF0",
             "Underline": null,
             "Strikethrough": null
           }
+        },
+        {
+          "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
+          "Formula": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=ユーザーマスタメンテナンス!DW11=1"
+          },
+          "Priority": 10,
+          "GUID": "303d10c5-8330-4a4e-9a67-4b79e022fe3f",
+          "StyleInfo": {
+            "BorderBottom": "Background 1 -15|1",
+            "Background": "#FFE5FFF0",
+            "Underline": null,
+            "Strikethrough": null
+          }
+        },
+        {
+          "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
+          "Formula": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=ユーザーマスタメンテナンス!DW11=1"
+          },
+          "Priority": 9,
+          "GUID": "519973b2-666c-48c1-9fb0-4c8bca46fdce",
+          "StyleInfo": {
+            "BorderBottom": "Background 1 -15|1",
+            "Background": "#FFE5FFF0",
+            "Underline": null,
+            "Strikethrough": null
+          }
+        },
+        {
+          "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
+          "Formula": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=ユーザーマスタメンテナンス!DW11=1"
+          },
+          "Priority": 8,
+          "GUID": "9b58c428-7127-4fef-8445-1c2142ef7b44",
+          "StyleInfo": {
+            "BorderBottom": "Background 1 -15|1",
+            "Background": "#FFE5FFF0",
+            "Underline": null,
+            "Strikethrough": null
+          }
+        },
+        {
+          "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
+          "Formula": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=ユーザーマスタメンテナンス!DW11=1"
+          },
+          "Priority": 7,
+          "GUID": "2e816f9c-c7e5-45c8-bbea-daf8da55cf80",
+          "StyleInfo": {
+            "BorderBottom": "Background 1 -15|1",
+            "Background": "#FFE5FFF0",
+            "Underline": null,
+            "Strikethrough": null
+          }
+        },
+        {
+          "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
+          "Formula": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=ユーザーマスタメンテナンス!DW11=1"
+          },
+          "Priority": 6,
+          "GUID": "fda88d4a-a1df-4045-9416-b7b165ef84cb",
+          "StyleInfo": {
+            "BorderBottom": "Background 1 -15|1",
+            "Background": "#FFE5FFF0",
+            "Underline": null,
+            "Strikethrough": null
+          }
+        },
+        {
+          "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
+          "Formula": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=ユーザーマスタメンテナンス!DW11=1"
+          },
+          "Priority": 5,
+          "GUID": "8b7816f2-58f2-4991-8645-144f7a7d70c8",
+          "StyleInfo": {
+            "BorderBottom": "Background 1 -15|1",
+            "Background": "#FFE5FFF0",
+            "Underline": null,
+            "Strikethrough": null
+          }
+        },
+        {
+          "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
+          "Formula": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=ユーザーマスタメンテナンス!DW11=1"
+          },
+          "Priority": 4,
+          "GUID": "cd5ad0b4-ad61-494b-bee2-f3ebefdca2ee",
+          "StyleInfo": {
+            "BorderBottom": "Background 1 -15|1",
+            "Background": "#FFE5FFF0",
+            "Underline": null,
+            "Strikethrough": null
+          }
+        },
+        {
+          "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
+          "Formula": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=ユーザーマスタメンテナンス!DW11=1"
+          },
+          "Priority": 3,
+          "GUID": "ef80d7a6-fe43-46a9-8328-3edd107e1162",
+          "StyleInfo": {
+            "BorderBottom": "Background 1 -15|1",
+            "Background": "#FFE5FFF0",
+            "Underline": null,
+            "Strikethrough": null
+          }
+        },
+        {
+          "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
+          "Formula": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=ユーザーマスタメンテナンス!DW11=1"
+          },
+          "Priority": 2,
+          "GUID": "d1c6d362-bcb7-4343-8836-d75342ec87c4",
+          "StyleInfo": {
+            "BorderBottom": "Background 1 -15|1",
+            "Background": "#FFE5FFF0",
+            "Foreground": "Accent 1 0",
+            "Underline": null,
+            "Strikethrough": null
+          }
+        },
+        {
+          "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
+          "Formula": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=ユーザーマスタメンテナンス!選択カウント=0"
+          },
+          "Priority": 1,
+          "GUID": "8011e429-174c-4376-91d8-d52510e220f1",
+          "StyleInfo": {
+            "Underline": null,
+            "Strikethrough": null
+          },
+          "IsDisabled": true,
+          "IsInvisible": false,
+          "IsReadOnly": false
+        },
+        {
+          "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
+          "Formula": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=ユーザーマスタメンテナンス!抽出カウント-ユーザーマスタメンテナンス!選択カウント=0"
+          },
+          "GUID": "dd063131-d022-4ad2-85a4-4af6013376d1",
+          "StyleInfo": {
+            "Underline": null,
+            "Strikethrough": null
+          },
+          "IsDisabled": true,
+          "IsInvisible": false,
+          "IsReadOnly": false
         }
       ]
     }
@@ -3609,15 +3413,19 @@
   "CustomNames": [
     {
       "Name": "該当カウント",
-      "Formula": "ユーザーマスタメンテナンス!$EJ$14"
+      "Formula": "ユーザーマスタメンテナンス!$EJ$17"
     },
     {
       "Name": "選択カウント",
-      "Formula": "ユーザーマスタメンテナンス!$EJ$23"
+      "Formula": "ユーザーマスタメンテナンス!$EJ$26"
     },
     {
       "Name": "抽出カウント",
-      "Formula": "ユーザーマスタメンテナンス!$EJ$20"
+      "Formula": "ユーザーマスタメンテナンス!$EJ$23"
+    },
+    {
+      "Name": "検索フラグ",
+      "Formula": "ユーザーマスタメンテナンス!$EJ$29"
     }
   ]
-}//RGgfad8QaNTghwvihVXzRU2Ww6Tkc1vrGmVmeX2OmTJovaGjaJi5sIg0cnMogDpasJkGVkzqEJZKTF6YJZC1HqAOwEqzvipQ2VV3qzON1BVzKdPm/9q655/AqDJAeEO1ev+ysek9sgUigXCe+z7PPFejQ95dra/MMro1/tAp8G/2sGgPj3HDXgzytWX3DjhadTb6DuGF8DeUiqAgTNDt35cVnj2M3DXWeMXT4rU65RZXycpwT3fofUn5FK8Syr55MMx9ZpcPTx1DiWjlHyL0QSm4OT5GmNcthtNeydhsYHBHxwTRZB7y8q6/wBQWoG9TgFqeBr2fryEVZQ0lnVLcCNLAf5uTA0tFW/tXy03k8bzTxIcLgBMJk/9dqlwqlH4rXGAl4a++5zK7poyJjSB6OO3Xkgv330yATLFIUPfi6Q0lgwYGJny0inRZe+HG0n18pKGIV4G1cw81uWATL4XrE1Kp9zE4WW7znZ5o2Zm4RrNtUIVj03fabdnlYfVsFezVPES58Jfhy8I5YvueKj+H8kakDc2ZBowvvmOKT+D1J019dAp5wEFz19IZ6tka61OCmwgRGKF6W8exThVUXrRtXaJFDO9qirTBCH3s3ZBWjKYyhBtwV8m5rLThEOZ3dBjZ9S5nH6qXWDCihPU6BQ/k0PtIv3YcDNQ5ZwGhoou823+ik+daEi9F4zVWC5zeoev98v/qjJOqu7oNqTKvtrYjnkDEY8ABE1r3e9MMEUxb+dlrSAS7ibJXo/OU023jssHTv7g2xz5G0QNfOqt+PtY1KqDqdxF8FNK4tMHwb+dbINu168NADMHF10idLx9f419yVUKbdfRBTbiDJf4xZpvnzVRYbHPKNAHIZt9IUqKLol+LfMPvFfwwBI+lzc4eGPO5kh6X8H3t2zxcu9tl9lTNaQ==|920
+}//k9RjzE2aQecG5IUcOnP24b/h+lDV6A58qdAnRJG89NH45RjsSWjpHzjipqgzwsy5ZEot5Mjug2Sw/zyFqdk21xHg5IljlUwQPH2mwWzbaQfAZh70GCJ79qIBMoSIAD8/am1SPemGArwYziLTZuj31WH01iNU0OQb5sgxykudeVqnGnq4gMtKY7ptAMK4MrIpmgRxQeEmG0No627HoI30SzSNIRTwuNTW0nBnnIzlQOySKX9m35160tGHxnoi+ElrVH1N2kJxSMv4uMvR1sXiPnfiRxiaqi1YlDll+QKq7YD2ltzLDSHZWtZK3GTmSOfnbW80JLO95X/vZF+rnJGw4GdwOxKw6LR9HkopWo6JIS956W562cf9QbRq/Q45CHgryEZhAvHmwuL5us8PwXliUVL+JRAE4pvMmutdQSd/3UjPY+xYqFL7PUrPcnQ8Xdy87Yft49X+ijvHgMnQ3rXoKxrxH54Oxn6Vbeb40e9yxP8XNUS2n2/Zwr96Dqtj/47eBwh/0Bq+cMWsNduGlHDVuAwGbl+rQINs368CBRVfhQ7V2Ns95TMMJdbg7ix+Z0zlokrmv2L1iSlFD81cx3yFCHkW9w67xYrcmrUfhtJVcVB3LDoLrlkoAl9xoJ2OKEMrS3GqJJ8qno71bADVUzhODCcVNNQtnpR7qnePFagcQqnclPpMJHMmSgW9FkpsMXfRphf6RQkyRPHL1Jfq2t3K4N1oniJkyG7ukpE5CtHfmO5FhCpDE+cZ1yWxUkT9ux5gR7XS+ZOyvARx/x0Goc4n7+cOUA07/HatT3EeHbH0C9jV+Q/rTaTGJqQqQRBMcc+YnaFBb6X86wa/9PAECvMDK8dbjMQ05H3EbvPA7CgFwtse6sGMyhnI8lonjtRYo9OsqS26nsSedLnb9E5FxsH6uA==|920

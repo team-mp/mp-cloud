@@ -3,42 +3,43 @@
   "ColumnCount": 172,
   "RowCount": 34,
   "Formulas": {
-    "26,151": "フォーカス連絡ID",
-    "26,144": "EN27&\"　\"&EL27",
-    "7,128": "IFERROR(GETURLQUERYVALUE(\"tab\"),1)",
-    "26,139": "IF(EF27=2,EH27,\"\")",
-    "26,138": "IF(EF27=1,EG27,\"\")",
+    "29,151": "フォーカス連絡ID",
+    "29,144": "EN30&\"　\"&EL30",
+    "16,128": "IFERROR(GETURLQUERYVALUE(\"follow_id\"),0)",
+    "29,139": "IF(EF30=2,EH30,\"\")",
+    "29,138": "IF(EF30=1,EG30,\"\")",
     "7,133": "IF(タブ番号<>\"\",ODATA(\"m_tab_class?$select=tab_name&$filter=tab_id eq \"&IF(ISBLANK(タブ番号),\"null\",タブ番号)),\"申込\")",
-    "19,128": "IF(申込ID>0,ODATA(\"m_customer_notice/$count?$filter=customer_id eq \"&IF(ISBLANK(ED20),\"null\",ED20))+ODATA(\"m_customer_notice/$count?$filter=customer_id eq \"&IF(ISBLANK(顧客ID),\"null\",顧客ID)),0)",
-    "13,128": "IFERROR(GETURLQUERYVALUE(\"follow_id\"),0)",
-    "10,128": "IFERROR(GETURLQUERYVALUE(\"notice_id\"),0)",
-    "26,134": "IF(ED27=\"\",\"共通\",ED27)",
+    "13,128": "IFERROR(GETURLQUERYVALUE(\"notice_id\"),0)",
+    "10,128": "IFERROR(GETURLQUERYVALUE(\"tab\"),1)",
+    "22,128": "IF(申込ID>0,ODATA(\"m_customer_notice/$count?$filter=customer_id eq \"&IF(ISBLANK(ED20),\"null\",ED20))+ODATA(\"m_customer_notice/$count?$filter=customer_id eq \"&IF(ISBLANK(顧客ID),\"null\",顧客ID)),0)",
+    "29,134": "IF(ED30=\"\",\"共通\",ED30)",
     "3,78": "\"添付ファイル(\"&IF(ED14<ER14,ER14,ED14)&\")\"",
     "3,128": "IFERROR(GETURLQUERYVALUE(\"id\"),\"\")",
     "13,147": "IF(申込ID>0,IFERROR(ODATA(\"t_object_attachment/$count?$filter=object_order_id eq \"&IF(ISBLANK(申込ID),\"null\",申込ID)&\" and active_flg eq 1\"),0),0)",
     "10,147": "IF(申込ID>0,IFERROR(ODATA(\"t_object_product/$count?$filter=object_order_id eq \"&IF(ISBLANK(申込ID),\"null\",申込ID)&\" and purchase_required_flg eq 1 and purchase_receipt_date eq null\"),0),0)",
-    "16,133": "IF(申込ID>0,ODATA(\"t_object_wait_documents/$count?$filter=object_order_id eq \"&IF(ISBLANK(申込ID),\"null\",申込ID)&\" and target_customer_id eq \"&IF(ISBLANK(IF(ED20>0,ED20,顧客ID)),\"null\",IF(ED20>0,ED20,顧客ID))&\" and receipt_flg eq 0\"),0)"
+    "16,133": "IF(申込ID>0,ODATA(\"t_object_wait_documents/$count?$filter=object_order_id eq \"&IF(ISBLANK(申込ID),\"null\",申込ID)&\" and target_customer_id eq \"&IF(ISBLANK(IF(ED20>0,ED20,顧客ID)),\"null\",IF(ED20>0,ED20,顧客ID))&\" and receipt_flg eq 0\"),0)",
+    "7,128": "IFERROR(GETURLQUERYVALUE(\"index\"),\"\")"
   },
   "CustomNames": [
     {
       "Name": "タブ番号",
-      "Formula": "申込詳細_内容_申込事業者用!$DY$8"
-    },
-    {
-      "Name": "フォーカスフォローID",
-      "Formula": "申込詳細_内容_申込事業者用!$DY$14"
-    },
-    {
-      "Name": "フォーカス連絡ID",
       "Formula": "申込詳細_内容_申込事業者用!$DY$11"
     },
     {
+      "Name": "フォーカスフォローID",
+      "Formula": "申込詳細_内容_申込事業者用!$DY$17"
+    },
+    {
+      "Name": "フォーカス連絡ID",
+      "Formula": "申込詳細_内容_申込事業者用!$DY$14"
+    },
+    {
       "Name": "ポップアップメッセージ",
-      "Formula": "申込詳細_内容_申込事業者用!$DY$32"
+      "Formula": "申込詳細_内容_申込事業者用!$DY$33"
     },
     {
       "Name": "ポップアップ表示フラグ",
-      "Formula": "申込詳細_内容_申込事業者用!$EG$32"
+      "Formula": "申込詳細_内容_申込事業者用!$EG$33"
     },
     {
       "Name": "顧客ID",
@@ -78,11 +79,15 @@
     },
     {
       "Name": "物件番号",
-      "Formula": "申込詳細_内容_申込事業者用!$DY$17"
+      "Formula": "申込詳細_内容_申込事業者用!$DY$20"
     },
     {
       "Name": "連絡事項タブ検索",
       "Formula": "申込詳細_内容_申込事業者用!$CW$2"
+    },
+    {
+      "Name": "タブ移動フラグ",
+      "Formula": "申込詳細_内容_申込事業者用!$ER$4"
     }
   ]
 }

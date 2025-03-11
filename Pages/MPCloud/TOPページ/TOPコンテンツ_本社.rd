@@ -80,28 +80,28 @@
   },
   "CustomNames": [
     {
-      "Name": "選択フラグ",
-      "Formula": "TOPコンテンツ_本社!$BM$16"
-    },
-    {
-      "Name": "参照顧客代理店フラグ",
-      "Formula": "TOPコンテンツ_本社!$BI$4"
-    },
-    {
-      "Name": "参照顧客取次店フラグ",
-      "Formula": "TOPコンテンツ_本社!$BK$4"
-    },
-    {
-      "Name": "参照顧客本社フラグ",
-      "Formula": "TOPコンテンツ_本社!$BM$4"
-    },
-    {
       "Name": "ユーザーグループID",
       "Formula": "TOPコンテンツ_本社!$BG$4"
     },
     {
       "Name": "ロケーションURL",
       "Formula": "TOPコンテンツ_本社!$BO$4"
+    },
+    {
+      "Name": "参照顧客取次店フラグ",
+      "Formula": "TOPコンテンツ_本社!$BK$4"
+    },
+    {
+      "Name": "参照顧客代理店フラグ",
+      "Formula": "TOPコンテンツ_本社!$BI$4"
+    },
+    {
+      "Name": "参照顧客本社フラグ",
+      "Formula": "TOPコンテンツ_本社!$BM$4"
+    },
+    {
+      "Name": "選択フラグ",
+      "Formula": "TOPコンテンツ_本社!$BM$16"
     }
   ]
 }

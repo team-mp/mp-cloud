@@ -1,0 +1,220 @@
+{
+  "ID": "18e965f8-ed5b-4eda-87a5-0e915a795d4c",
+  "Name": "保証辞退一括更新",
+  "Params": [
+    {
+      "ID": "994a64de-1787-474e-9752-315fdc9eb14f",
+      "Name": "P_申込IDs"
+    }
+  ],
+  "Commands": [
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "申込情報",
+      "TableValue": {
+        "TableName": "t_object_order",
+        "BindingInfos": [
+          {
+            "GUID": "1e56f132-68c7-42e8-a510-cdf97d11a0b8",
+            "BindingInfo": {
+              "TableName": "t_object_order",
+              "ColumnName": "object_id",
+              "GUID": "3eac13c8-53fb-47a4-8deb-f8c8c76f6610",
+              "RelationBinding": {
+                "RelatedTable": "t_object",
+                "RelatedColumn": "object_id",
+                "DisplayColumn": "物件番号"
+              }
+            },
+            "ColumnName": "物件番号"
+          },
+          {
+            "GUID": "03d5c809-8323-485b-b869-ebe76b85264f",
+            "BindingInfo": {
+              "TableName": "t_object_order",
+              "ColumnName": "object_id",
+              "GUID": "bd0066c8-4d07-4cc5-a146-d48a29117ef7",
+              "RelationBinding": {
+                "RelatedTable": "t_object",
+                "RelatedColumn": "object_id",
+                "DisplayColumn": "物件名"
+              }
+            },
+            "ColumnName": "物件名"
+          },
+          {
+            "GUID": "af6370fa-59d2-4f28-984a-4dbdb2cc2dbf",
+            "BindingInfo": {
+              "TableName": "t_object_order",
+              "ColumnName": "order_type_id",
+              "GUID": "27a59836-6279-47f1-9fd9-09ac236a0a9d",
+              "RelationBinding": {
+                "RelatedTable": "m_order_type",
+                "RelatedColumn": "order_type_id",
+                "DisplayColumn": "cancel_possible_status_id",
+                "NextRelationBinding": {
+                  "RelatedTable": "m_order_status",
+                  "RelatedColumn": "order_status_id",
+                  "DisplayColumn": "sort_no"
+                }
+              }
+            },
+            "ColumnName": "キャンセル可能ステータス並び順"
+          },
+          {
+            "GUID": "dc629fb1-dca2-417a-bcbb-d56cb4234de6",
+            "BindingInfo": {
+              "TableName": "t_object_order",
+              "ColumnName": "order_type_id",
+              "GUID": "ebc6d46d-3cee-4a32-a6f4-2942fbece2cd",
+              "RelationBinding": {
+                "RelatedTable": "m_order_type",
+                "RelatedColumn": "order_type_id",
+                "DisplayColumn": "end_possible_statue_id",
+                "NextRelationBinding": {
+                  "RelatedTable": "m_order_status",
+                  "RelatedColumn": "order_status_id",
+                  "DisplayColumn": "sort_no"
+                }
+              }
+            },
+            "ColumnName": "処理終了ステータス並び順"
+          },
+          {
+            "GUID": "60da906e-def6-43da-9442-c2c6cea8f0ce",
+            "BindingInfo": {
+              "TableName": "t_object_order",
+              "ColumnName": "order_status_id",
+              "GUID": "56626dd0-ac10-4d13-9d0b-7b9a03f27500",
+              "RelationBinding": {
+                "RelatedTable": "m_order_status",
+                "RelatedColumn": "order_status_id",
+                "DisplayColumn": "sort_no"
+              }
+            },
+            "ColumnName": "申込ステータス並び順"
+          }
+        ],
+        "SqlCondition": {
+          "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+          "CompareType": 8,
+          "ColumnBindingInfo": {
+            "TableName": "t_object_order",
+            "ColumnName": "object_order_id",
+            "GUID": "9ae52cc0-d51b-45cd-a7bb-e9da17a0a20d"
+          },
+          "Value": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=P_申込IDs"
+          }
+        },
+        "NullFormulaValueQueryPolicy": 0
+      },
+      "ID": "a6feb134ef354f93b18b2ef35e68cca8"
+    },
+    {
+      "$type": "Forguncy.Model.LoopCommand, ServerDesignerCommon",
+      "LoopInfo": {
+        "$type": "Forguncy.Model.CountLoopInfo, ServerDesignerCommon",
+        "LoopCount": {
+          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+          "SerializeProperty": "=申込情報"
+        },
+        "LoopItemParamName": "Item"
+      },
+      "CommandList": [
+        {
+          "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+          "ConditionAndCommandPairList": [
+            {
+              "Condition": {
+                "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                "param": {
+                  "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+                  "cellLocations": [
+                    {
+                      "SerializeProperty": "=Item.申込ステータス並び順"
+                    }
+                  ]
+                },
+                "value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=Item.キャンセル可能ステータス並び順"
+                },
+                "compareType": 5
+              },
+              "CommandList": [
+                {
+                  "$type": "Forguncy.Model.ShowMessageCommand, ServerDesignerCommon",
+                  "MessageFormula": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=Item.物件番号&\" \"&Item.物件名&CHAR(10)&\"この物件番号は、申込キャンセルの範囲となります\"&CHAR(10)&\"対象から除外するか、申込キャンセルにしてご確認下さい\""
+                  }
+                },
+                {
+                  "$type": "Forguncy.Model.RunJavaScriptCommand, ServerDesignerCommon",
+                  "JavaScript": "return false;",
+                  "ID": "e31b0d881be9425fa8af746b5d70635b"
+                }
+              ],
+              "ID": "5491c749-ee09-4439-8c8d-5c8a68c48661"
+            }
+          ]
+        },
+        {
+          "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+          "ConditionAndCommandPairList": [
+            {
+              "Condition": {
+                "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                "param": {
+                  "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+                  "cellLocations": [
+                    {
+                      "SerializeProperty": "=Item.申込ステータス並び順"
+                    }
+                  ]
+                },
+                "value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=Item.処理終了ステータス並び順"
+                },
+                "compareType": 5
+              },
+              "CommandList": [
+                {
+                  "$type": "Forguncy.Model.ShowMessageCommand, ServerDesignerCommon",
+                  "MessageFormula": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=Item.物件番号&\" \"&Item.物件名&CHAR(10)&\"この物件番号は、処理終了の範囲となります\"&CHAR(10)&\"対象から除外するか、処理終了にしてご確認下さい\""
+                  }
+                },
+                {
+                  "$type": "Forguncy.Model.RunJavaScriptCommand, ServerDesignerCommon",
+                  "JavaScript": "return false;",
+                  "ID": "e31b0d881be9425fa8af746b5d70635b"
+                }
+              ],
+              "ID": "ac3b5ab3-d870-46be-bcd8-159a657d939b"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "$type": "Forguncy.Model.ShowPopupCommand, ServerDesignerCommon",
+      "PageName": "保証辞退一括登録",
+      "PassValues": [
+        {
+          "Source": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=P_申込IDs"
+          },
+          "TargetCell": {
+            "SerializeProperty": "=保証辞退一括登録!申込IDs"
+          }
+        }
+      ]
+    }
+  ]
+}

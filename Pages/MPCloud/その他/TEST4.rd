@@ -6,6 +6,10 @@
     {
       "Name": "検索_全件申込ID",
       "Formula": "TEST4!$AV$2"
+    },
+    {
+      "Name": "iframe",
+      "Formula": "TEST4!$B$2"
     }
   ]
 }

@@ -10,6 +10,12 @@
     "8,77": "IF(BZ6>0,LEFT(N2,BZ6-1),IF(N2<>\"\",N2,\"\"))",
     "20,77": "BZ15-BZ18",
     "14,77": "COUNTIF(D5,\"<>\")",
-    "11,84": "TEXTJOINIF(\",\",TRUE,BT5,1,BP5)"
-  }
+    "14,84": "TEXTJOINIF(\",\",TRUE,BT5,1,BP5)"
+  },
+  "CustomNames": [
+    {
+      "Name": "検索フラグ",
+      "Formula": "外注原価マスタリスト!$CG$6"
+    }
+  ]
 }
