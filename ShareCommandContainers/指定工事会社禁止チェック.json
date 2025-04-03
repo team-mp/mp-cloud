@@ -1,0 +1,266 @@
+{
+  "ID": "8af789ec-9832-4574-938e-bf642a1d1326",
+  "Name": "指定工事会社禁止チェック",
+  "Params": [
+    {
+      "ID": "80b28b81-24fa-4d1c-82dd-a806eb2dd1fc",
+      "Name": "P_申込ID"
+    },
+    {
+      "ID": "e7e4abb6-7788-4a8c-a9f9-f26287e3698a",
+      "Name": "P_工事会社ID"
+    }
+  ],
+  "Commands": [
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "申込情報",
+      "TableValue": {
+        "TableName": "t_object_order",
+        "TableValueType": 1,
+        "BindingInfos": [
+          {
+            "GUID": "024ce035-0b3c-4496-af6c-955258341d25",
+            "BindingInfo": {
+              "TableName": "t_object_order",
+              "ColumnName": "group_id",
+              "GUID": "5b44a825-3183-4ead-8fca-ba9f58621628",
+              "RelationBinding": {
+                "RelatedTable": "m_group",
+                "RelatedColumn": "group_id",
+                "DisplayColumn": "group_default_priority_flg"
+              }
+            },
+            "ColumnName": "グループ既定優先フラグ"
+          },
+          {
+            "GUID": "9503cc34-0330-4fa8-8ea0-50fbcfec4d99",
+            "BindingInfo": {
+              "TableName": "t_object_order",
+              "ColumnName": "order_customer_id",
+              "GUID": "1329c918-9445-4493-8049-6c3bcc1e5c8b"
+            },
+            "ColumnName": "申込事業者ID"
+          },
+          {
+            "GUID": "c0192684-8aae-46ec-a707-5b26f8e7ac4f",
+            "BindingInfo": {
+              "TableName": "t_object_order",
+              "ColumnName": "builder_id",
+              "GUID": "a01b2775-4495-4099-947c-1360e0eee509"
+            },
+            "ColumnName": "住宅事業者ID"
+          },
+          {
+            "GUID": "a3b2c0c7-a77e-4cd3-a35c-50c396e66850",
+            "BindingInfo": {
+              "TableName": "t_object_order",
+              "ColumnName": "object_id",
+              "GUID": "bc93f115-54f9-46c3-a9ac-6c5611e0757b",
+              "RelationBinding": {
+                "RelatedTable": "t_object",
+                "RelatedColumn": "object_id",
+                "DisplayColumn": "prefectures"
+              }
+            },
+            "ColumnName": "都道府県名"
+          }
+        ],
+        "SqlCondition": {
+          "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+          "ColumnBindingInfo": {
+            "TableName": "t_object_order",
+            "ColumnName": "object_order_id",
+            "GUID": "f8ce5f7b-c31c-4d79-bc1f-0c1d9c013ce3"
+          },
+          "Value": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=P_申込ID"
+          }
+        },
+        "NullFormulaValueQueryPolicy": 0
+      },
+      "ID": "0ed4107d59474a66a236b95061b09aef"
+    },
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "指定会社顧客ID",
+      "ParameterValue": {
+        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+        "SerializeProperty": "=IF(申込情報.グループ既定優先フラグ=1,申込情報.申込事業者ID,申込情報.住宅事業者ID)"
+      },
+      "ID": "a51751de62d44d5d8807df469aabd776"
+    },
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "指定会社住宅事業者ID",
+      "ParameterValue": {
+        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+        "SerializeProperty": "=IF(申込情報.グループ既定優先フラグ=1,申込情報.住宅事業者ID,\"\")"
+      },
+      "ID": "74cd1ed6b9d942efb9f10e6ac1a0fc22"
+    },
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "禁止登録済み数",
+      "TableValue": {
+        "TableName": "m_customer_specify_construction",
+        "TableValueType": 3,
+        "SqlCondition": {
+          "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+          "SubConditions": [
+            {
+              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+              "ColumnBindingInfo": {
+                "TableName": "m_customer_specify_construction",
+                "ColumnName": "customer_id",
+                "GUID": "da30160e-066b-4eed-a844-9d445f4f4d7e"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=指定会社顧客ID"
+              }
+            },
+            {
+              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+              "ColumnBindingInfo": {
+                "TableName": "m_customer_specify_construction",
+                "ColumnName": "construction_customer_id",
+                "GUID": "b0f070c9-9303-4c57-98e7-1bac9a296c17"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_工事会社ID"
+              }
+            },
+            {
+              "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+              "SubConditions": [
+                {
+                  "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                  "ColumnBindingInfo": {
+                    "TableName": "m_customer_specify_construction",
+                    "ColumnName": "builder_id",
+                    "GUID": "b8714afd-022f-471c-b2a8-34388351791d"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=指定会社住宅事業者ID"
+                  },
+                  "LeftBracket": 1
+                },
+                {
+                  "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                  "ColumnBindingInfo": {
+                    "TableName": "m_customer_specify_construction",
+                    "ColumnName": "builder_id",
+                    "GUID": "8689638a-ddbb-4e90-ab78-78fbbfaf5ecb"
+                  },
+                  "Value": "%Null%",
+                  "RightBracket": 1
+                }
+              ],
+              "RelationType": 1
+            },
+            {
+              "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+              "SubConditions": [
+                {
+                  "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
+                  "CompareType": 6,
+                  "ColumnBindingInfo": {
+                    "TableName": "m_customer_specify_construction",
+                    "ColumnName": "prefectures",
+                    "GUID": "2d759519-0f28-419d-8a2b-891d58f2e9e6"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=申込情報.都道府県名"
+                  },
+                  "LeftBracket": 1
+                },
+                {
+                  "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                  "ColumnBindingInfo": {
+                    "TableName": "m_customer_specify_construction",
+                    "ColumnName": "prefectures",
+                    "GUID": "72a5b69a-074d-4660-824b-0119060c5e2b"
+                  },
+                  "Value": "%Null%",
+                  "RightBracket": 1
+                }
+              ],
+              "RelationType": 1
+            },
+            {
+              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+              "ColumnBindingInfo": {
+                "TableName": "m_customer_specify_construction",
+                "ColumnName": "prohibit_flg",
+                "GUID": "b70ae932-dbf9-438b-9624-bd0f995651b4"
+              },
+              "Value": "1"
+            }
+          ]
+        },
+        "NullFormulaValueQueryPolicy": 0
+      },
+      "ID": "18ade11e2d944b57b56675c083b886af"
+    },
+    {
+      "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+      "ConditionAndCommandPairList": [
+        {
+          "Condition": {
+            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+            "param": {
+              "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+              "cellLocations": [
+                {
+                  "SerializeProperty": "=禁止登録済み数"
+                }
+              ]
+            },
+            "value": "0",
+            "compareType": 2
+          },
+          "CommandList": [
+            {
+              "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+              "ConditionAndCommandPairList": [
+                {
+                  "ConfirmDialogSettings": {
+                    "Title": "確認",
+                    "FormulaText": "設定した工事会社は、現在、使用禁止されています。\r\n処理を継続します。よろしいですか？",
+                    "YesButtonText": "はい",
+                    "NoButtonText": "いいえ",
+                    "ConfirmIcon": 4
+                  },
+                  "CommandList": [
+                    {
+                      "$type": "Forguncy.Model.RunJavaScriptCommand, ServerDesignerCommon",
+                      "JavaScript": "return true;",
+                      "ID": "8bf36140c6d549d3b086c515cb87b519"
+                    }
+                  ],
+                  "ID": "5c99045d-23a5-400a-a79a-47645ba4d729"
+                },
+                {
+                  "CommandList": [
+                    {
+                      "$type": "Forguncy.Model.RunJavaScriptCommand, ServerDesignerCommon",
+                      "JavaScript": "return false;",
+                      "ID": "b4a75ce0e7f04ccdb02a1df6fd3689ab"
+                    }
+                  ],
+                  "ID": "d60b120d-3ad8-4755-a91d-d652c91b8f4b"
+                }
+              ]
+            }
+          ],
+          "ID": "1cd96631-7e2c-4c1f-b411-19158845e288"
+        }
+      ]
+    }
+  ]
+}

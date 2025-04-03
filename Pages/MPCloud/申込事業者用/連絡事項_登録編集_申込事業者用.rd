@@ -1,11 +1,11 @@
 {
   "PageType": 0,
   "ColumnCount": 58,
-  "RowCount": 55,
+  "RowCount": 54,
   "Formulas": {
     "2,41": "ODATA(\"t_object_notice/$count?$filter=source_notice_id eq \"&IF(ISBLANK(AJ9),\"null\",AJ9))",
     "11,41": "ODATA(\"t_object_notice/$count?$filter=object_order_id eq \"&IF(ISBLANK(AJ3),\"null\",AJ3)&\" and notice_group_id eq \"&IF(ISBLANK(AJ12),\"null\",AJ12))",
-    "41,3": "IF(AP6<>\"\",\"最終更新日時：\"&AP6,\"\")",
+    "40,3": "IF(AP6<>\"\",\"最終更新日時：\"&AP6,\"\")",
     "1,3": "\"No.\"&TEXT(AJ15,\"000\")"
   },
   "CustomNames": [

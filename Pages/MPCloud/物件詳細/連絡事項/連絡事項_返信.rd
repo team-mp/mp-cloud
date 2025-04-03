@@ -1,7 +1,7 @@
 {
   "PageType": 0,
   "ColumnCount": 42,
-  "RowCount": 37,
+  "RowCount": 38,
   "CustomNames": [
     {
       "Name": "リッチテキスト",
@@ -17,7 +17,7 @@
     },
     {
       "Name": "指定ユーザーID",
-      "Formula": "連絡事項_返信!$AI$23"
+      "Formula": "連絡事項_返信!$AI$22"
     },
     {
       "Name": "申込ID",
@@ -29,7 +29,7 @@
     },
     {
       "Name": "送信完了フラグ",
-      "Formula": "連絡事項_返信!$AI$26"
+      "Formula": "連絡事項_返信!$AI$25"
     },
     {
       "Name": "内容",

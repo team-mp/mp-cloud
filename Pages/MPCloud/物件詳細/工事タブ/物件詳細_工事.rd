@@ -1,36 +1,38 @@
 {
   "PageType": 0,
-  "ColumnCount": 135,
+  "ColumnCount": 138,
   "RowCount": 68,
   "Formulas": {
     "20,124": "COUNT(CE21)",
-    "33,119": "ODATA(\"t_object_construction/$count?$filter=object_order_id eq \"&IF(ISBLANK(CD34),\"null\",CD34)&\" and construction_id gt \"&IF(ISBLANK(CE34),\"null\",CE34))",
-    "38,81": "COUNT(CE34)",
-    "33,118": "IF(DN34<>\"\",\"最終更新日時：\"&DN34,\"\")",
-    "33,115": "\"施工報告書(\"&DK34&\")\"",
+    "33,120": "ODATA(\"t_object_construction/$count?$filter=object_order_id eq \"&IF(ISBLANK(CE34),\"null\",CE34)&\" and construction_id gt \"&IF(ISBLANK(CF34),\"null\",CF34))",
+    "38,82": "COUNT(CF34)",
+    "33,119": "IF(DO34<>\"\",\"最終更新日時：\"&DO34,\"\")",
+    "33,116": "\"施工報告書(\"&DL34&\")\"",
     "20,120": "DM21+DN21+DO21+DP21",
     "20,114": "IF(ISNUMBER(SEARCH(\",\"&CF21&\",\",\",\"&表示中IDs&\",\")),1,0)",
-    "11,26": "CE14",
-    "11,13": "CD14",
-    "33,114": "ODATA(\"t_object_attachment/$count?$filter=construction_id eq \"&IF(ISBLANK(CE34),\"null\",CE34)&\" and file_attribute_id eq \"&IF(ISBLANK(施工報告書ファイル属性ID),\"null\",施工報告書ファイル属性ID)&\" and active_flg eq 1\")",
-    "29,88": "ODATA(\"m_customer_specify_construction/$count?$filter=customer_id eq \"&IF(ISBLANK(CJ7),\"null\",CJ7))",
-    "33,113": "IF(OR(DG34=1,DH34=1,DI34=1),1,0)",
+    "11,26": "CF14",
+    "11,13": "CE14",
+    "33,115": "ODATA(\"t_object_attachment/$count?$filter=construction_id eq \"&IF(ISBLANK(CF34),\"null\",CF34)&\" and file_attribute_id eq \"&IF(ISBLANK(施工報告書ファイル属性ID),\"null\",施工報告書ファイル属性ID)&\" and active_flg eq 1\")",
+    "29,130": "IF(DR26=1,CK7,\"\")",
+    "33,114": "IF(OR(DH34=1,DI34=1,DJ34=1),1,0)",
     "20,113": "\"見積書(\"&DI21&\")\"",
     "20,112": "ODATA(\"t_object_attachment/$count?$filter=construction_estimate_id eq \"&IF(ISBLANK(CF21),\"null\",CF21)&\" and file_attribute_id eq \"&IF(ISBLANK(工事見積書ファイル属性ID),\"null\",工事見積書ファイル属性ID)&\" and active_flg eq 1\")",
-    "33,105": "IFERROR(ODATA(\"v_construction_product_summary?$select=仕入合計&$filter=工事ID eq \"&IF(ISBLANK(CE34),\"null\",CE34)),0)",
+    "33,106": "IFERROR(ODATA(\"v_construction_product_summary?$select=仕入合計&$filter=工事ID eq \"&IF(ISBLANK(CF34),\"null\",CF34)),0)",
     "14,17": "IF(DU21>0,\"※現在、\"&DU21&\"社の工事会社が設定されています\",\"\")",
-    "33,83": "$CD$39-ROW(CD34)+1",
-    "33,104": "IFERROR(ODATA(\"v_construction_product_summary?$select=売上合計&$filter=工事ID eq \"&IF(ISBLANK(CE34),\"null\",CE34)),0)",
+    "33,105": "IFERROR(ODATA(\"v_construction_product_summary?$select=売上合計&$filter=工事ID eq \"&IF(ISBLANK(CF34),\"null\",CF34)),0)",
+    "33,84": "$CE$39-ROW(CE34)+1",
     "20,111": "ROW(CI21)",
-    "29,112": "TEXTJOIN(\",\",TRUE,CF21)"
+    "29,113": "TEXTJOIN(\",\",TRUE,CF21)",
+    "29,89": "SUM(DZ34)",
+    "25,130": "IF(DR26=1,CZ26,CK7)"
   },
   "ArrayFormulas": {
-    "13,81,1,2": "ODATA(\"v_group_customer_default?$select=工事見積不要フラグ,工事請負フラグ&$filter=グループID eq \"&IF(ISBLANK(CR26),\"null\",CR26)&\" and 顧客ID eq \"&IF(ISBLANK(CY26),\"null\",CY26))"
+    "13,82,1,2": "ODATA(\"v_group_customer_default?$select=工事見積不要フラグ,工事請負フラグ&$filter=グループID eq \"&IF(ISBLANK(CS26),\"null\",CS26)&\" and 顧客ID eq \"&IF(ISBLANK(CK7),\"null\",CK7))"
   },
   "CustomNames": [
     {
       "Name": "タブID",
-      "Formula": "物件詳細_工事!$CD$7"
+      "Formula": "物件詳細_工事!$CE$7"
     },
     {
       "Name": "元_見積依頼コメント",
@@ -158,7 +160,7 @@
     },
     {
       "Name": "工事見積書ファイル属性ID",
-      "Formula": "物件詳細_工事!$CY$30"
+      "Formula": "物件詳細_工事!$CZ$30"
     },
     {
       "Name": "施工報告書ファイル属性ID",
@@ -166,7 +168,7 @@
     },
     {
       "Name": "工事登録件数",
-      "Formula": "物件詳細_工事!$CD$39"
+      "Formula": "物件詳細_工事!$CE$39"
     },
     {
       "Name": "表示中IDs",

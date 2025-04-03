@@ -5,15 +5,15 @@
   "Formulas": {
     "28,97": "ODATA(\"t_object_survey/$count?$filter=object_order_id eq \"&IF(ISBLANK(AX29),\"null\",AX29)&\" and survey_id gt \"&IF(ISBLANK(BA29),\"null\",BA29))",
     "28,96": "IF(CR29<>\"\",\"最終更新日時：\"&CR29,\"\")",
-    "28,93": "\"調査報告書(\"&CO29&\")\"",
-    "33,62": "IF(VALUE(BT34)=1,18,6)",
     "28,94": "CO29",
+    "33,62": "IF(VALUE(BT34)=1,18,6)",
+    "28,93": "\"調査報告書(\"&CO29&\")\"",
     "28,92": "ODATA(\"t_object_attachment/$count?$filter=file_attribute_id eq \"&IF(ISBLANK(調査報告書ファイル属性ID),\"null\",調査報告書ファイル属性ID)&\" and survey_id eq \"&IF(ISBLANK(BA29),\"null\",BA29)&\" and active_flg eq 1\")",
     "28,90": "IFERROR(ODATA(\"v_survey_product_summary?$select=仕入合計&$filter=調査ID eq \"&IF(ISBLANK(BA29),\"null\",BA29)),0)",
-    "28,60": "IF(BF29=1,\"以降\",\"～\")",
+    "28,89": "IFERROR(ODATA(\"v_survey_product_summary?$select=売上合計&$filter=調査ID eq \"&IF(ISBLANK(BA29),\"null\",BA29)),0)",
     "33,49": "COUNT(BA29)",
     "28,53": "$AX$34-ROW(AX29)+1",
-    "28,89": "IFERROR(ODATA(\"v_survey_product_summary?$select=売上合計&$filter=調査ID eq \"&IF(ISBLANK(BA29),\"null\",BA29)),0)"
+    "28,60": "IF(BF29=1,\"以降\",\"～\")"
   },
   "CustomNames": [
     {

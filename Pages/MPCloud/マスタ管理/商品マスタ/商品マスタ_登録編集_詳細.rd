@@ -1,11 +1,11 @@
 {
   "PageType": 0,
-  "ColumnCount": 53,
-  "RowCount": 76,
+  "ColumnCount": 54,
+  "RowCount": 84,
   "CustomNames": [
     {
       "Name": "更新ボタン",
-      "Formula": "商品マスタ_登録編集_詳細!$AP$60"
+      "Formula": "商品マスタ_登録編集_詳細!$AP$66"
     },
     {
       "Name": "商品ID",
@@ -13,7 +13,7 @@
     },
     {
       "Name": "削除ボタン",
-      "Formula": "商品マスタ_登録編集_詳細!$AP$63"
+      "Formula": "商品マスタ_登録編集_詳細!$AR$66"
     }
   ]
 }

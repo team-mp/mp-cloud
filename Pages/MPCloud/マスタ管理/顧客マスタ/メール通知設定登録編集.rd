@@ -1,24 +1,25 @@
 {
   "PageType": 0,
   "ColumnCount": 80,
-  "RowCount": 31,
+  "RowCount": 32,
   "Formulas": {
-    "29,3": "IF(BN28<>\"\",\"最終更新日時：\"&BN28,\"\")",
-    "20,59": "COUNTIF(AY22,\"<>\")",
+    "19,59": "COUNTIF(AY21,\"<>\")",
+    "24,57": "TEXTJOIN(\",\",TRUE,AY21)",
     "6,57": "BE7&\" \"&BC7&\"（\"&BD7&\"）\"",
     "3,11": "IF(L2>0,ODATA(\"m_customer?$select=住所&$filter=customer_id eq \"&IF(ISBLANK(L2),\"null\",L2)),\"\")",
-    "26,57": "TEXTJOIN(\",\",TRUE,AY22)",
+    "23,34": "\"指定：\"&BH20&\"社\"",
     "12,57": "TEXTJOIN(\",\",TRUE,AY7)",
-    "27,34": "\"指定：\"&BH21&\"社\""
+    "30,3": "IF(BN26<>\"\",\"最終更新日時：\"&BN26,\"\")",
+    "6,68": "IFERROR(ODATA(\"m_customer_default?$select=aida_flow_flg&$filter=customer_id eq \"&IF(ISBLANK(L2),\"null\",L2)),0)"
   },
   "CustomNames": [
     {
       "Name": "顧客ID削除",
-      "Formula": "メール通知設定登録編集!$BN$22"
+      "Formula": "メール通知設定登録編集!$BN$21"
     },
     {
       "Name": "ユーザーID削除",
-      "Formula": "メール通知設定登録編集!$BF$16"
+      "Formula": "メール通知設定登録編集!$BF$15"
     },
     {
       "Name": "顧客メールID",
