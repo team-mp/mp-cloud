@@ -1,12 +1,12 @@
 {
   "PageType": 0,
-  "ColumnCount": 92,
+  "ColumnCount": 93,
   "RowCount": 34,
   "Formulas": {
-    "33,1": "\"表示データ件数：\"&TEXT(CA11,\"#,##0\")&\"件\"",
-    "10,78": "COUNTIF(BP11,\"<>\")",
-    "13,78": "COUNTIF(BT11,1)",
-    "16,78": "CA11-CA14",
-    "10,84": "TEXTJOINIF(\",\",TRUE,BT11,1,BP11)"
+    "33,1": "\"表示データ件数：\"&TEXT(CB11,\"#,##0\")&\"件\"",
+    "10,85": "TEXTJOINIF(\",\",TRUE,BU11,1,BQ11)",
+    "16,79": "CB11-CB14",
+    "13,79": "COUNTIF(BU11,1)",
+    "10,79": "COUNTIF(BQ11,\"<>\")"
   }
 }

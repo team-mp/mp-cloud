@@ -1,6 +1,6 @@
 {
   "PageType": 0,
-  "ColumnCount": 144,
+  "ColumnCount": 139,
   "RowCount": 80,
   "Formulas": {
     "74,83": "SUM(CN75)",
@@ -49,12 +49,12 @@
     "22,83": "SUM(CL25)",
     "55,83": "SUM(CS51)",
     "64,83": "SUM(CO64)",
-    "13,129": "DQ28",
-    "16,129": "DR28",
-    "25,129": "TEXTJOIN(\",\",TRUE,DO32)",
-    "28,129": "DV28",
+    "22,124": "DO28",
+    "10,124": "DK24",
+    "19,113": "DJ28",
+    "28,124": "DQ28",
     "13,83": "SUM(CO13)",
-    "19,118": "DO28",
+    "25,124": "TEXTJOIN(\",\",TRUE,DJ32)",
     "35,83": "SUM(CS31)",
     "14,83": "SUM(CP13)",
     "29,83": "SUM(CM31)",
@@ -63,23 +63,20 @@
     "62,83": "SUM(CM64)",
     "61,83": "SUM(CL64)",
     "28,83": "SUM(CL31)",
-    "10,129": "DP24",
+    "16,124": "DM28",
     "54,83": "SUM(CR51)",
-    "22,129": "DT28",
-    "36,118": "IF(DQ28=1,2,IF(DR28=1,3,1))",
-    "19,129": "DS28",
-    "8,83": "SUM(CR7)",
-    "6,83": "SUM(CL7)",
-    "7,83": "SUM(CX7)"
+    "13,124": "DL28",
+    "19,124": "DN28",
+    "36,113": "IF(DL28=1,2,IF(DM28=1,3,1))"
   },
   "ArrayFormulas": {
-    "27,118,1,8": "ODATA(\"m_customer?$select=customer_name,customer_abbr,agency_flg,brokerage_flg,main_office_flg,group_id,belong_group_ids,management_customer_ids&$filter=customer_id eq \"&IF(ISBLANK(参照顧客ID),\"null\",参照顧客ID))",
-    "23,118,1,3": "ODATA(\"m_user?$select=customer_id,user_authority_id,user_group_ids&$filter=user_id eq \"&IF(ISBLANK(DO17),\"null\",DO17))"
+    "23,113,1,3": "ODATA(\"m_user?$select=customer_id,user_authority_id,user_group_ids&$filter=user_id eq \"&IF(ISBLANK(DJ17),\"null\",DJ17))",
+    "27,113,1,8": "ODATA(\"m_customer?$select=customer_name,customer_abbr,agency_flg,brokerage_flg,main_office_flg,group_id,belong_group_ids,management_customer_ids&$filter=customer_id eq \"&IF(ISBLANK(参照顧客ID),\"null\",参照顧客ID))"
   },
   "CustomNames": [
     {
       "Name": "TOPコンテンツ表示切替ボタン",
-      "Formula": "メインフォーム_サブ!$DZ$8"
+      "Formula": "メインフォーム_サブ!$DU$8"
     },
     {
       "Name": "マスタフレーム更新フラグ",
@@ -91,19 +88,19 @@
     },
     {
       "Name": "ユーザーグループID",
-      "Formula": "メインフォーム_サブ!$DO$11"
+      "Formula": "メインフォーム_サブ!$DJ$11"
     },
     {
       "Name": "ユーザー権限",
-      "Formula": "メインフォーム_サブ!$DZ$11"
+      "Formula": "メインフォーム_サブ!$DU$11"
     },
     {
       "Name": "ログイン者本社フラグ",
-      "Formula": "メインフォーム_サブ!$DO$8"
+      "Formula": "メインフォーム_サブ!$DJ$8"
     },
     {
       "Name": "ロケーションURL",
-      "Formula": "メインフォーム_サブ!$DO$14"
+      "Formula": "メインフォーム_サブ!$DJ$14"
     },
     {
       "Name": "解析_解析完了待ち件数",
@@ -123,11 +120,11 @@
     },
     {
       "Name": "解析STカウント更新ボタン",
-      "Formula": "メインフォーム_サブ!$DE$24"
+      "Formula": "メインフォーム_サブ!$CZ$24"
     },
     {
       "Name": "計上STカウント更新ボタン",
-      "Formula": "メインフォーム_サブ!$DE$74"
+      "Formula": "メインフォーム_サブ!$CZ$74"
     },
     {
       "Name": "工事_見積手配待ち件数",
@@ -175,7 +172,7 @@
     },
     {
       "Name": "工事STカウント更新ボタン",
-      "Formula": "メインフォーム_サブ!$DE$50"
+      "Formula": "メインフォーム_サブ!$CZ$50"
     },
     {
       "Name": "工事見積_見積手配待ち件数",
@@ -207,7 +204,7 @@
     },
     {
       "Name": "工事見積ステータス更新ボタン",
-      "Formula": "メインフォーム_サブ!$DE$42"
+      "Formula": "メインフォーム_サブ!$CZ$42"
     },
     {
       "Name": "最新件数取得ボタン",
@@ -219,31 +216,31 @@
     },
     {
       "Name": "参照管理顧客IDs",
-      "Formula": "メインフォーム_サブ!$DZ$29"
+      "Formula": "メインフォーム_サブ!$DU$29"
     },
     {
       "Name": "参照顧客ID",
-      "Formula": "メインフォーム_サブ!$DO$5"
+      "Formula": "メインフォーム_サブ!$DJ$5"
     },
     {
       "Name": "参照顧客グループIDs",
-      "Formula": "メインフォーム_サブ!$DZ$26"
+      "Formula": "メインフォーム_サブ!$DU$26"
     },
     {
       "Name": "参照顧客既定グループID",
-      "Formula": "メインフォーム_サブ!$DZ$23"
+      "Formula": "メインフォーム_サブ!$DU$23"
     },
     {
       "Name": "参照顧客取次店フラグ",
-      "Formula": "メインフォーム_サブ!$DZ$17"
+      "Formula": "メインフォーム_サブ!$DU$17"
     },
     {
       "Name": "参照顧客代理店フラグ",
-      "Formula": "メインフォーム_サブ!$DZ$14"
+      "Formula": "メインフォーム_サブ!$DU$14"
     },
     {
       "Name": "参照顧客本社フラグ",
-      "Formula": "メインフォーム_サブ!$DZ$20"
+      "Formula": "メインフォーム_サブ!$DU$20"
     },
     {
       "Name": "申込_タスク期限切れ件数",
@@ -291,7 +288,7 @@
     },
     {
       "Name": "測量STカウント更新ボタン",
-      "Formula": "メインフォーム_サブ!$DE$18"
+      "Formula": "メインフォーム_サブ!$CZ$18"
     },
     {
       "Name": "調査_手配待ち件数",
@@ -315,7 +312,7 @@
     },
     {
       "Name": "調査STカウント更新ボタン",
-      "Formula": "メインフォーム_サブ!$DE$12"
+      "Formula": "メインフォーム_サブ!$CZ$12"
     },
     {
       "Name": "転圧_プラン確定待ち件数",
@@ -363,7 +360,7 @@
     },
     {
       "Name": "転圧STカウント更新ボタン",
-      "Formula": "メインフォーム_サブ!$DE$30"
+      "Formula": "メインフォーム_サブ!$CZ$30"
     },
     {
       "Name": "付保_キャンセル申請待ち件数",
@@ -383,7 +380,7 @@
     },
     {
       "Name": "付保STカウント更新ボタン",
-      "Formula": "メインフォーム_サブ!$DE$69"
+      "Formula": "メインフォーム_サブ!$CZ$69"
     },
     {
       "Name": "保証_プラン決定待ち件数",
@@ -407,27 +404,23 @@
     },
     {
       "Name": "保証STカウント更新ボタン",
-      "Formula": "メインフォーム_サブ!$DE$63"
+      "Formula": "メインフォーム_サブ!$CZ$63"
     },
     {
       "Name": "ログイン所属会社名",
-      "Formula": "メインフォーム_サブ!$DO$20"
+      "Formula": "メインフォーム_サブ!$DJ$20"
     },
     {
       "Name": "工事_プラン確定待ち件数",
       "Formula": "メインフォーム_サブ!$CF$55"
     },
     {
-      "Name": "住あん申請待ちカウント更新ボタン",
-      "Formula": "メインフォーム_サブ!$DE$8"
+      "Name": "申込カウント更新ボタン",
+      "Formula": "メインフォーム_サブ!$CZ$8"
     },
     {
-      "Name": "資料待ちカウント更新ボタン",
-      "Formula": "メインフォーム_サブ!$DE$6"
-    },
-    {
-      "Name": "タスク期限切れカウント更新ボタン",
-      "Formula": "メインフォーム_サブ!$DE$10"
+      "Name": "物件件数取得ボタン",
+      "Formula": "メインフォーム_サブ!$CZ$3"
     }
   ]
 }

@@ -1,33 +1,33 @@
 {
   "PageType": 0,
-  "ColumnCount": 134,
+  "ColumnCount": 135,
   "RowCount": 33,
   "Formulas": {
-    "32,1": "\"表示データ件数：\"&TEXT(DQ11,\"#,##0\")&\"件\"",
-    "25,113": "TEXTJOINIF(\",\",TRUE,DC11,1,CK11)",
-    "16,113": "IF(DJ14>0,LEFT(L2,DJ14-1),IF(L2<>\"\",L2,\"\"))",
-    "10,126": "COUNTIF(DC11,1)",
-    "19,113": "IF(DJ14>0,MID(L2,DJ14+1,1000),\"\")",
-    "13,113": "IF(IFERROR(FIND(\"　\",DJ11),0)>0,FIND(\"　\",DJ11),IF(IFERROR(FIND(\" \",DJ11),0)>0,FIND(\" \",DJ11),0))",
-    "10,120": "COUNTIF(CH11,\"<>\")",
-    "10,113": "TRIM(L2)"
+    "32,1": "\"表示データ件数：\"&TEXT(DR11,\"#,##0\")&\"件\"",
+    "19,114": "IF(DK14>0,MID(L2,DK14+1,1000),\"\")",
+    "10,127": "COUNTIF(DD11,1)",
+    "16,114": "IF(DK14>0,LEFT(L2,DK14-1),IF(L2<>\"\",L2,\"\"))",
+    "25,114": "TEXTJOINIF(\",\",TRUE,DD11,1,CL11)",
+    "13,114": "IF(IFERROR(FIND(\"　\",DK11),0)>0,FIND(\"　\",DK11),IF(IFERROR(FIND(\" \",DK11),0)>0,FIND(\" \",DK11),0))",
+    "10,114": "TRIM(L2)",
+    "10,121": "COUNTIF(CI11,\"<>\")"
   },
   "CustomNames": [
     {
       "Name": "最新化フラグ",
-      "Formula": "登録内容確認中検索リスト!$DH$11"
+      "Formula": "登録内容確認中検索リスト!$DI$11"
     },
     {
       "Name": "選択カウント",
-      "Formula": "登録内容確認中検索リスト!$DW$11"
+      "Formula": "登録内容確認中検索リスト!$DX$11"
     },
     {
       "Name": "抽出カウント",
-      "Formula": "登録内容確認中検索リスト!$DQ$11"
+      "Formula": "登録内容確認中検索リスト!$DR$11"
     },
     {
       "Name": "ロケーションURL",
-      "Formula": "登録内容確認中検索リスト!$DW$23"
+      "Formula": "登録内容確認中検索リスト!$DX$23"
     }
   ]
 }

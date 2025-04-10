@@ -1,0 +1,92 @@
+{
+  "Name": "v_billing_summary",
+  "Columns": [
+    {
+      "$type": "Forguncy.SaveLoad.BindingColumnSaveData, ServerDesignerCommon",
+      "DatabaseColumnType": "varchar",
+      "MaxLength": 190,
+      "Name": "請求番号",
+      "ColumnType": "System.String, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+    },
+    {
+      "$type": "Forguncy.SaveLoad.BindingColumnSaveData, ServerDesignerCommon",
+      "DatabaseColumnType": "bigint",
+      "MaxLength": -1,
+      "Name": "請求先ID",
+      "ColumnType": "System.Int64, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+    },
+    {
+      "$type": "Forguncy.SaveLoad.BindingColumnSaveData, ServerDesignerCommon",
+      "DatabaseColumnType": "varchar",
+      "MaxLength": 190,
+      "Name": "請求先名",
+      "ColumnType": "System.String, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+    },
+    {
+      "$type": "Forguncy.SaveLoad.BindingColumnSaveData, ServerDesignerCommon",
+      "DatabaseColumnType": "datetime",
+      "MaxLength": -1,
+      "Name": "請求日",
+      "ColumnType": "System.DateTime, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+    },
+    {
+      "$type": "Forguncy.SaveLoad.BindingColumnSaveData, ServerDesignerCommon",
+      "DatabaseColumnType": "varchar",
+      "MaxLength": 2000,
+      "Name": "請求コメント",
+      "ColumnType": "System.String, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+    },
+    {
+      "$type": "Forguncy.SaveLoad.BindingColumnSaveData, ServerDesignerCommon",
+      "DatabaseColumnType": "datetime",
+      "MaxLength": -1,
+      "Name": "回収予定日",
+      "ColumnType": "System.DateTime, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+    },
+    {
+      "$type": "Forguncy.SaveLoad.BindingColumnSaveData, ServerDesignerCommon",
+      "DatabaseColumnType": "bigint",
+      "MaxLength": -1,
+      "Name": "営業担当ID",
+      "ColumnType": "System.Int64, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+    },
+    {
+      "$type": "Forguncy.SaveLoad.BindingColumnSaveData, ServerDesignerCommon",
+      "DatabaseColumnType": "decimal",
+      "MaxLength": -1,
+      "Name": "請求合計",
+      "ColumnType": "System.Decimal, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+    }
+  ],
+  "ExternalDatabaseInfo": {
+    "DataBaseType": "6db454c0-531c-4395-9122-921a18942902",
+    "AllowModifySchema": true,
+    "ConnectionId": "MySql2",
+    "SourceTableName": "v_billing_summary",
+    "SourceTableSchema": "",
+    "CreateViewSql": "select `a`.`billing_no` AS `請求番号`,`a`.`billing_comp_id` AS `請求先ID`,`a`.`billing_name` AS `請求先名`,`a`.`billing_date` AS `請求日`,`a`.`invoice_comment` AS `請求コメント`,`a`.`collect_scheduled_date` AS `回収予定日`,`b`.`sales_staff_id` AS `営業担当ID`,sum(`a`.`excluding_tax_amount`) AS `請求合計` from (`t_sales` `a` join `m_customer` `b` on((`a`.`billing_comp_id` = `b`.`customer_id`))) where (`a`.`delete_flg` = 0) group by `a`.`billing_no`,`a`.`billing_comp_id`,`a`.`billing_name`,`a`.`billing_date`,`a`.`invoice_comment`,`a`.`collect_scheduled_date`,`b`.`sales_staff_id`",
+    "ViewInfo": {
+      "ViewName": "v_billing_summary",
+      "QueryColumns": [
+        "請求番号"
+      ]
+    }
+  },
+  "Relations": [
+    {
+      "PrimaryTable": "m_customer",
+      "PrimaryColumn": "customer_id",
+      "ForeignTable": "v_billing_summary",
+      "ForeignColumn": "請求先ID",
+      "IsDetailTableRelation": false
+    },
+    {
+      "PrimaryTable": "m_user",
+      "PrimaryColumn": "user_id",
+      "ForeignTable": "v_billing_summary",
+      "ForeignColumn": "営業担当ID",
+      "IsDetailTableRelation": false
+    }
+  ],
+  "Indexes": []
+}
