@@ -1,19 +1,19 @@
 {
   "PageType": 0,
-  "ColumnCount": 90,
+  "ColumnCount": 95,
   "RowCount": 28,
   "Formulas": {
-    "5,75": "顧客ID",
-    "23,83": "SUM(CF21)",
-    "5,23": "ROW(BC6)",
-    "5,19": "ODATA(\"m_customer_specify_surveying/$count?$filter=customer_id eq \"&IF(ISBLANK($BX$6),\"null\",$BX$6)&\" and builder_id eq \"&IF(ISBLANK(P6),\"null\",P6))",
-    "2,10": "\"共通の測量会社：\"&BX24&\"社\"",
-    "26,1": "\"住宅事業者数：\"&TEXT(CF12,\"#,##0\")&\"社\"",
-    "11,75": "COUNT(BC6)",
-    "23,75": "SUM(BX21)",
-    "26,23": "\"表示件数：\"&TEXT(BX12,\"#,##0\")&\"社\"",
-    "11,83": "COUNT(P6)",
-    "14,75": "IF(BX9<>\"\",COUNTIFS(BC6,X1,BG6,BX9),CF24)",
-    "2,23": "\"※対象事業者：\"&CF9"
+    "11,88": "COUNT(P6)",
+    "23,88": "SUM(CK21)",
+    "5,23": "ROW(BH6)",
+    "5,19": "ODATA(\"m_customer_specify_surveying/$count?$filter=customer_id eq \"&IF(ISBLANK($CC$6),\"null\",$CC$6)&\" and builder_id eq \"&IF(ISBLANK(P6),\"null\",P6))",
+    "2,10": "\"共通の測量会社：\"&CC24&\"社\"",
+    "26,1": "\"住宅事業者数：\"&TEXT(CK12,\"#,##0\")&\"社\"",
+    "5,80": "顧客ID",
+    "23,80": "SUM(CC21)",
+    "26,23": "\"表示件数：\"&TEXT(CC12,\"#,##0\")&\"社\"",
+    "14,80": "IF(CC9<>\"\",COUNTIFS(BH6,X1,BL6,CC9),CK24)",
+    "11,80": "COUNT(BH6)",
+    "2,23": "\"※対象事業者：\"&CK9"
   }
 }

@@ -1,8 +1,8 @@
 {
   "PageType": 0,
-  "ColumnCount": 73,
-  "RowCount": 25,
+  "ColumnCount": 77,
+  "RowCount": 24,
   "Formulas": {
-    "6,43": "IFERROR(ODATA(\"m_customer_order_type?$select=special_note&$filter=customer_id eq \"&IF(ISBLANK($BH$7),\"null\",$BH$7)&\" and group_id eq \"&IF(ISBLANK(AJ7),\"null\",AJ7)&\" and order_type_id eq \"&IF(ISBLANK(AF7),\"null\",AF7)),\"\")"
+    "4,47": "IFERROR(ODATA(\"m_customer_order_type?$select=special_note&$filter=customer_id eq \"&IF(ISBLANK($BL$5),\"null\",$BL$5)&\" and group_id eq \"&IF(ISBLANK(AN5),\"null\",AN5)&\" and order_type_id eq \"&IF(ISBLANK(AJ5),\"null\",AJ5)),\"\")"
   }
 }

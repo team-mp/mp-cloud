@@ -1,23 +1,23 @@
 {
   "PageType": 0,
-  "ColumnCount": 235,
+  "ColumnCount": 227,
   "RowCount": 30,
   "Formulas": {
-    "24,209": "TEXTJOINIF(\",\",TRUE,GU7,1,GK7)",
-    "21,215": "HH16-HH19",
-    "12,222": "SUM(HO24)",
-    "15,215": "COUNT(GK7)",
-    "29,1": "\"該当データ件数：\"&TEXT(HO13,\"#,##0\")&\"件　　表示データ件数：\"&TEXT(HH16,\"#,##0\")&\"件\"",
-    "18,215": "COUNTIF(GU7,1)",
-    "15,209": "IF(HB10>0,MID(HB7,HB10+1,1000),\"\")",
-    "12,209": "IF(HB10>0,LEFT(HB7,HB10-1),IF(HB7<>\"\",HB7,\"\"))",
-    "9,209": "IF(IFERROR(FIND(\"　\",HB7),0)>0,FIND(\"　\",HB7),IF(IFERROR(FIND(\" \",HB7),0)>0,FIND(\" \",HB7),0))",
-    "6,209": "TRIM(O2)"
+    "9,201": "IF(IFERROR(FIND(\"　\",GT7),0)>0,FIND(\"　\",GT7),IF(IFERROR(FIND(\" \",GT7),0)>0,FIND(\" \",GT7),0))",
+    "12,201": "IF(GT10>0,LEFT(GT7,GT10-1),IF(GT7<>\"\",GT7,\"\"))",
+    "12,214": "SUM(HG24)",
+    "6,201": "TRIM(O2)",
+    "29,1": "\"該当データ件数：\"&TEXT(HG13,\"#,##0\")&\"件　　表示データ件数：\"&TEXT(GZ16,\"#,##0\")&\"件\"",
+    "15,201": "IF(GT10>0,MID(GT7,GT10+1,1000),\"\")",
+    "18,207": "COUNTIF(GM7,1)",
+    "21,207": "GZ16-GZ19",
+    "24,201": "TEXTJOINIF(\",\",TRUE,GM7,1,GC7)",
+    "15,207": "COUNT(GC7)"
   },
   "CustomNames": [
     {
       "Name": "検索フラグ",
-      "Formula": "保証検索リスト!$HH$7"
+      "Formula": "保証検索リスト!$GZ$7"
     },
     {
       "Name": "検索リストページタイトル",
@@ -25,11 +25,11 @@
     },
     {
       "Name": "検索_保証ステータスID",
-      "Formula": "保証検索リスト!$HH$10"
+      "Formula": "保証検索リスト!$GZ$10"
     },
     {
       "Name": "ロケーションURL",
-      "Formula": "保証検索リスト!$HH$13"
+      "Formula": "保証検索リスト!$GZ$13"
     }
   ]
 }

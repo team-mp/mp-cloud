@@ -1,19 +1,24 @@
 {
   "PageType": 0,
-  "ColumnCount": 63,
+  "ColumnCount": 69,
   "RowCount": 18,
   "Formulas": {
-    "6,54": "IF(新規グループID>0,ODATA(\"m_group?$select=group_type_id&$filter=group_id eq \"&IF(ISBLANK(新規グループID),\"null\",新規グループID)),\"\")",
-    "13,54": "COUNTIF(AN7,1)",
-    "3,54": "IF(既定グループID>0,ODATA(\"m_group?$select=group_type_id&$filter=group_id eq \"&IF(ISBLANK(既定グループID),\"null\",既定グループID)),\"\")",
-    "13,47": "TEXTJOIN(\",\",TRUE,AK7)",
-    "16,47": "COUNTIF(AK7,\"<>\")",
-    "3,47": "顧客ID"
+    "12,62": "ODATA(\"m_customer_group/$count?$filter=customer_id eq \"&IF(ISBLANK(AV4),\"null\",AV4)&\" and active_flg eq 0\")",
+    "9,62": "COUNTIFS(AK7,既定グループID,AD7,1)",
+    "15,62": "COUNTIF(AD7,1)",
+    "15,47": "COUNT(AK7)",
+    "12,55": "COUNTIF(AN7,1)",
+    "3,47": "顧客ID",
+    "12,47": "TEXTJOINIF(\",\",TRUE,AD7,1,AK7)",
+    "15,55": "COUNTIF(AK7,新規グループID)",
+    "3,55": "IF(既定グループID>0,ODATA(\"m_group?$select=group_type_id&$filter=group_id eq \"&IF(ISBLANK(既定グループID),\"null\",既定グループID)),\"\")",
+    "6,55": "IF(新規グループID>0,ODATA(\"m_group?$select=group_type_id&$filter=group_id eq \"&IF(ISBLANK(新規グループID),\"null\",新規グループID)),\"\")",
+    "6,62": "IFERROR(MINIFS(AK7,AD7,1),\"\")"
   },
   "CustomNames": [
     {
       "Name": "グループチェックボタン",
-      "Formula": "顧客マスタ_グループ!$AV$11"
+      "Formula": "顧客マスタ_グループ!$AV$10"
     },
     {
       "Name": "既定グループID",
@@ -21,7 +26,7 @@
     },
     {
       "Name": "所属グループIDs",
-      "Formula": "顧客マスタ_グループ!$AV$14"
+      "Formula": "顧客マスタ_グループ!$AV$13"
     },
     {
       "Name": "新規グループID",
@@ -33,19 +38,27 @@
     },
     {
       "Name": "直営カウント",
-      "Formula": "顧客マスタ_グループ!$BC$14"
+      "Formula": "顧客マスタ_グループ!$BD$13"
     },
     {
       "Name": "既定グループ区分ID",
-      "Formula": "顧客マスタ_グループ!$BC$4"
+      "Formula": "顧客マスタ_グループ!$BD$4"
     },
     {
       "Name": "新規グループ区分ID",
-      "Formula": "顧客マスタ_グループ!$BC$7"
+      "Formula": "顧客マスタ_グループ!$BD$7"
     },
     {
       "Name": "グループ更新ボタン",
-      "Formula": "顧客マスタ_グループ!$BC$11"
+      "Formula": "顧客マスタ_グループ!$BD$10"
+    },
+    {
+      "Name": "グループ無効表示フラグ",
+      "Formula": "顧客マスタ_グループ!$AC$4"
+    },
+    {
+      "Name": "グループ有効カウント",
+      "Formula": "顧客マスタ_グループ!$BK$16"
     }
   ]
 }

@@ -16,7 +16,7 @@
         "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
         "SerializeProperty": "=Private_Server_Path"
       },
-      "ID": "6fa672f6b1224b30987f2832068fa7a2"
+      "ID": "bbe17b2f62044471864a5db1c49dae37"
     },
     {
       "$type": "OperateFilesCommand.GetFilesFromFolderCommand, OperateFilesCommand",
@@ -25,7 +25,8 @@
         "SerializeProperty": "=プライベートサーバーパス名"
       },
       "IncludeSubFolder": true,
-      "ToParameterName": "取得ファイル一覧"
+      "ToParameterName": "取得ファイル一覧",
+      "Comments": "privateフォルダの一次ファイルを全て削除する"
     },
     {
       "$type": "Forguncy.Model.LoopCommand, ServerDesignerCommon",
@@ -54,7 +55,7 @@
         "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
         "SerializeProperty": "=FtpFile_Server_Path"
       },
-      "ID": "71596257c23447b791a3daf4519b400e"
+      "ID": "554a915692414723a501bdca33cb8cd3"
     },
     {
       "$type": "OperateFilesCommand.GetFilesFromFolderCommand, OperateFilesCommand",
@@ -84,6 +85,111 @@
           }
         }
       ]
+    },
+    {
+      "$type": "OperateFilesCommand.GetFilesFromFolderCommand, OperateFilesCommand",
+      "FolderPath": {
+        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+        "SerializeProperty": "=Download_Server_Path"
+      },
+      "ToParameterName": "取得ファイル一覧",
+      "Comments": "ダウンロードリンクの一次ファイルを取得し、作成日時から14日経過した場合に削除する"
+    },
+    {
+      "$type": "Forguncy.Model.LoopCommand, ServerDesignerCommon",
+      "LoopInfo": {
+        "$type": "Forguncy.Model.CountLoopInfo, ServerDesignerCommon",
+        "LoopCount": {
+          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+          "SerializeProperty": "=取得ファイル一覧"
+        },
+        "LoopItemParamName": "ファイルパス名"
+      },
+      "CommandList": [
+        {
+          "$type": "OperateFilesCommand.GetFileInformation, OperateFilesCommand",
+          "FilePath": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=ファイルパス名"
+          },
+          "ToParameterName": "ファイル名"
+        },
+        {
+          "$type": "OperateFilesCommand.GetFileInformation, OperateFilesCommand",
+          "FilePath": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=ファイルパス名"
+          },
+          "FileInfomationType": 1,
+          "ToParameterName": "拡張子"
+        },
+        {
+          "$type": "OperateFilesCommand.GetFileInformation, OperateFilesCommand",
+          "FilePath": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=ファイルパス名"
+          },
+          "FileInfomationType": 3,
+          "ToParameterName": "作成日時"
+        },
+        {
+          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+          "ParameterName": "filekeyフォルダ名",
+          "ParameterValue": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=SUBSTITUTE(ファイル名,拡張子,\"\")"
+          },
+          "ID": "478a6ab19b8e4ef58ef910550a64c5ec"
+        },
+        {
+          "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+          "ConditionAndCommandPairList": [
+            {
+              "Condition": {
+                "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                "param": {
+                  "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                  "ParamObject": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=作成日時"
+                  }
+                },
+                "value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=TODAY()-14"
+                },
+                "compareType": 5
+              },
+              "CommandList": [
+                {
+                  "$type": "OperateFilesCommand.DeleteFolderCommand, OperateFilesCommand",
+                  "FolderPath": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=Download_Server_Path&filekeyフォルダ名"
+                  }
+                }
+              ],
+              "ID": "11334694-61a6-40c4-9e41-1451dda22622"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "圧縮ダウンロードパス名",
+      "ParameterValue": {
+        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+        "SerializeProperty": "=Export_Server_Path&\"Temp\\\""
+      },
+      "ID": "4e2f5a21870640c79d90300065310544"
+    },
+    {
+      "$type": "OperateFilesCommand.DeleteFolderCommand, OperateFilesCommand",
+      "FolderPath": {
+        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+        "SerializeProperty": "=圧縮ダウンロードパス名"
+      }
     }
   ]
 }

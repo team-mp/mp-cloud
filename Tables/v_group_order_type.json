@@ -25,6 +25,13 @@
     },
     {
       "$type": "Forguncy.SaveLoad.BindingColumnSaveData, ServerDesignerCommon",
+      "DatabaseColumnType": "bigint",
+      "MaxLength": -1,
+      "Name": "申込タイプ公開フラグ",
+      "ColumnType": "System.Int64, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+    },
+    {
+      "$type": "Forguncy.SaveLoad.BindingColumnSaveData, ServerDesignerCommon",
       "DatabaseColumnType": "text",
       "MaxLength": 2000,
       "Name": "特記事項",
@@ -44,7 +51,7 @@
     "ConnectionId": "MySql2",
     "SourceTableName": "v_group_order_type",
     "SourceTableSchema": "",
-    "CreateViewSql": "select `main`.`group_id` AS `グループID`,`main`.`order_type_id` AS `申込タイプID`,`main`.`default_set_flg` AS `初期セットフラグ`,(case when (`main`.`special_note` is not null) then `main`.`special_note` else `sub`.`special_note` end) AS `特記事項`,`sub`.`active_flg` AS `有効フラグ` from (`m_group_order_type` `main` join `m_order_type` `sub` on((`main`.`order_type_id` = `sub`.`order_type_id`)))",
+    "CreateViewSql": "SELECT \r\n    `main`.`group_id` AS `グループID`,\r\n    `main`.`order_type_id` AS `申込タイプID`,\r\n    `main`.`default_set_flg` AS `初期セットフラグ`,\r\n    `main`.`order_type_public_flg` AS `申込タイプ公開フラグ`,\r\n    CASE \r\n        WHEN `main`.`special_note` IS NOT NULL THEN `main`.`special_note` \r\n        ELSE `sub`.`special_note` \r\n    END AS `特記事項`,\r\n    `sub`.`active_flg` AS `有効フラグ`\r\nFROM \r\n    `m_group_order_type` `main`\r\nJOIN \r\n    `m_order_type` `sub` \r\n    ON (`main`.`order_type_id` = `sub`.`order_type_id`)",
     "UserSetQueryColumns": [
       "グループID",
       "申込タイプID"
@@ -57,6 +64,21 @@
       ]
     }
   },
-  "Relations": [],
+  "Relations": [
+    {
+      "PrimaryTable": "m_group",
+      "PrimaryColumn": "group_id",
+      "ForeignTable": "v_group_order_type",
+      "ForeignColumn": "グループID",
+      "IsDetailTableRelation": false
+    },
+    {
+      "PrimaryTable": "m_order_type",
+      "PrimaryColumn": "order_type_id",
+      "ForeignTable": "v_group_order_type",
+      "ForeignColumn": "申込タイプID",
+      "IsDetailTableRelation": false
+    }
+  ],
   "Indexes": []
 }

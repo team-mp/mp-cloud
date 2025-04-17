@@ -506,7 +506,8 @@
     "100,13": "SUBSTITUTE(N100,C101,G101)",
     "24,13": "SUBSTITUTE(N24,C25,G25)",
     "26,13": "SUBSTITUTE(N26,C27,G27)",
-    "25,13": "SUBSTITUTE(N25,C26,G26)"
+    "25,13": "SUBSTITUTE(N25,C26,G26)",
+    "14,42": "AQ4&\"/ServerCommand/FileDownload\""
   },
   "ArrayFormulas": {
     "11,42,1,2": "ODATA(\"m_customer?$select=customer_name,phone&$filter=customer_id eq \"&IF(ISBLANK(AR8),\"null\",AR8))",
@@ -593,6 +594,10 @@
     {
       "Name": "CCユーザーIDs",
       "Formula": "メールテンプレート!$R$154"
+    },
+    {
+      "Name": "ダウンロードリンクURL",
+      "Formula": "メールテンプレート!$AQ$15"
     }
   ]
 }

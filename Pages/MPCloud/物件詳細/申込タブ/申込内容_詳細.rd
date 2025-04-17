@@ -40,10 +40,11 @@
     "17,97": "IF(CR18=0,\"\",CR18)",
     "10,44": "CT18",
     "17,120": "IF(DB16>0,IFERROR(ODATA(\"m_user?$select=mobile_phone&$filter=user_id eq \"&IF(ISBLANK(DB16),\"null\",DB16)),\"\"),\"\")",
-    "17,122": "IF(DQ18=0,\"\",DQ18)"
+    "17,122": "IF(DQ18=0,\"\",DQ18)",
+    "11,126": "IF(AND(DL10=1,DW6=0,DZ6=1,EA6=1),1,0)"
   },
   "ArrayFormulas": {
-    "5,126,1,3": "ODATA(\"m_order_type?$select=groud_survey_flg,site_survey_flg,object_overview_display_flg&$filter=order_type_id eq \"&IF(ISBLANK(CC6),\"null\",CC6))"
+    "5,126,1,5": "ODATA(\"m_order_type?$select=groud_survey_flg,site_survey_flg,object_overview_display_flg,analyze_flg,warranty_flg&$filter=order_type_id eq \"&IF(ISBLANK(CC6),\"null\",CC6))"
   },
   "CustomNames": [
     {
@@ -229,6 +230,10 @@
     {
       "Name": "元_住宅タイプ",
       "Formula": "申込内容_詳細!$CM$30"
+    },
+    {
+      "Name": "元_解析保証調査実施日",
+      "Formula": "申込内容_詳細!$CR$42"
     }
   ]
 }
