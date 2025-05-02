@@ -1,7 +1,7 @@
 {
   "PageType": 0,
   "ColumnCount": 42,
-  "RowCount": 38,
+  "RowCount": 29,
   "CustomNames": [
     {
       "Name": "リッチテキスト",

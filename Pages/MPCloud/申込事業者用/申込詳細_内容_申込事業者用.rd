@@ -18,7 +18,9 @@
     "13,147": "IF(申込ID>0,IFERROR(ODATA(\"t_object_attachment/$count?$filter=object_order_id eq \"&IF(ISBLANK(申込ID),\"null\",申込ID)&\" and active_flg eq 1\"),0),0)",
     "10,147": "IF(申込ID>0,IFERROR(ODATA(\"t_object_product/$count?$filter=object_order_id eq \"&IF(ISBLANK(申込ID),\"null\",申込ID)&\" and purchase_required_flg eq 1 and purchase_receipt_date eq null\"),0),0)",
     "16,133": "IF(申込ID>0,ODATA(\"t_object_wait_documents/$count?$filter=object_order_id eq \"&IF(ISBLANK(申込ID),\"null\",申込ID)&\" and target_customer_id eq \"&IF(ISBLANK(IF(ED20>0,ED20,顧客ID)),\"null\",IF(ED20>0,ED20,顧客ID))&\" and receipt_flg eq 0\"),0)",
-    "7,128": "IFERROR(GETURLQUERYVALUE(\"index\"),\"\")"
+    "7,128": "IFERROR(GETURLQUERYVALUE(\"index\"),\"\")",
+    "30,157": "IF(連絡事項タブ検索<>\"\",連絡事項タブ検索,1000)",
+    "27,157": "IF(連絡事項タブ検索<>\"\",連絡事項タブ検索,1)"
   },
   "CustomNames": [
     {

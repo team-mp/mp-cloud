@@ -1,11 +1,11 @@
 {
   "PageType": 0,
-  "ColumnCount": 19,
+  "ColumnCount": 20,
   "RowCount": 6,
   "CustomNames": [
     {
       "Name": "選択アクション",
-      "Formula": "請求修正アクション選択!$N$2"
+      "Formula": "請求修正アクション選択!$O$2"
     }
   ]
 }

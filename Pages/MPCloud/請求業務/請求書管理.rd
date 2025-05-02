@@ -1,9 +1,9 @@
 {
   "PageType": 0,
-  "ColumnCount": 295,
+  "ColumnCount": 300,
   "RowCount": 38,
   "Formulas": {
-    "16,258": "検索_請求書送付方法",
+    "25,278": "COUNTIF(IW17,1)",
     "16,136": "IF(HS17=0,\"\",HX17)",
     "16,141": "IF(HI17=0,\"\",HN17)",
     "37,1": "\"表示データ件数：\"&TEXT(請求書抽出カウント,\"#,##0\")&\"件\"",
@@ -13,18 +13,18 @@
     "9,76": "COUNTIFS(CN7,\"*3*\",DB7,0)",
     "7,76": "COUNTIFS(CN7,\"*2*\",CW7,0)",
     "5,76": "COUNTIFS(CN7,\"*1*\",CR7,0)",
-    "28,273": "TEXTJOINIF(\",\",TRUE,IR17,1,M17)",
-    "25,287": "請求書抽出カウント-請求書選択カウント",
-    "25,273": "COUNTIF(IR17,1)",
-    "28,258": "IF(IY26>0,LEFT(IY23,IY26-1),IF(IY23<>\"\",IY23,\"\"))",
-    "22,258": "TRIM(H2)",
-    "25,258": "IF(IFERROR(FIND(\"　\",IY23),0)>0,FIND(\"　\",IY23),IF(IFERROR(FIND(\" \",IY23),0)>0,FIND(\" \",IY23),0))",
-    "31,258": "IF(IY26>0,MID(IY23,IY26+1,1000),\"\")",
+    "25,285": "COUNTIF(M17,\"<>\")",
+    "28,263": "IF(JD26>0,LEFT(JD23,JD26-1),IF(JD23<>\"\",JD23,\"\"))",
+    "16,263": "検索_請求書送付方法",
+    "16,285": "ODATA(\"v_billing_date?$select=*&$filter=請求日 le \"&IF(ISBLANK(TODAY()),\"null\",TEXT(TODAY(),\"yyyy-MM-ddThh:mm:ssZ\"))&\"&$top=1&$orderby=請求日 desc\")",
+    "25,263": "IF(IFERROR(FIND(\"　\",JD23),0)>0,FIND(\"　\",JD23),IF(IFERROR(FIND(\" \",JD23),0)>0,FIND(\" \",JD23),0))",
+    "31,263": "IF(JD26>0,MID(JD23,JD26+1,1000),\"\")",
+    "25,292": "請求書抽出カウント-請求書選択カウント",
     "16,121": "IF(GO17=0,\"\",GT17)",
     "16,131": "IF(GY17=0,\"\",HD17)",
-    "16,280": "ODATA(\"v_billing_date?$select=*&$filter=請求日 le \"&IF(ISBLANK(TODAY()),\"null\",TEXT(TODAY(),\"yyyy-MM-ddThh:mm:ssZ\"))&\"&$top=1&$orderby=請求日 desc\")",
+    "22,263": "TRIM(H2)",
     "16,79": "IFERROR(ODATA(\"m_customer_notice?$select=content&$filter=customer_id eq \"&IF(ISBLANK(FA17),\"null\",FA17)&\" and tab_id eq 8\"),\"\")",
-    "25,280": "COUNTIF(M17,\"<>\")",
+    "28,278": "TEXTJOINIF(\",\",TRUE,IW17,1,M17)",
     "13,76": "COUNTIF(DL7,0)"
   },
   "CustomNames": [
@@ -46,7 +46,7 @@
     },
     {
       "Name": "検索_営業担当者ID",
-      "Formula": "請求書管理!$IY$20"
+      "Formula": "請求書管理!$JD$20"
     },
     {
       "Name": "検索_営業担当者名",
@@ -70,23 +70,23 @@
     },
     {
       "Name": "最新化フラグ",
-      "Formula": "請求書管理!$JG$17"
+      "Formula": "請求書管理!$JL$17"
     },
     {
       "Name": "請求書アクション",
-      "Formula": "請求書管理!$JG$20"
+      "Formula": "請求書管理!$JL$20"
     },
     {
       "Name": "請求書選択カウント",
-      "Formula": "請求書管理!$JN$26"
+      "Formula": "請求書管理!$JS$26"
     },
     {
       "Name": "請求書抽出カウント",
-      "Formula": "請求書管理!$JU$26"
+      "Formula": "請求書管理!$JZ$26"
     },
     {
       "Name": "請求書未選択カウント",
-      "Formula": "請求書管理!$KB$26"
+      "Formula": "請求書管理!$KG$26"
     },
     {
       "Name": "メール未送信件数",
@@ -114,7 +114,7 @@
     },
     {
       "Name": "ダウンロードアクション",
-      "Formula": "請求書管理!$JN$17"
+      "Formula": "請求書管理!$JS$17"
     }
   ]
 }

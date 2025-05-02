@@ -1,13 +1,13 @@
 {
   "PageType": 0,
   "ColumnCount": 153,
-  "RowCount": 173,
+  "RowCount": 184,
   "Formulas": {
     "87,18": "IFERROR(ODATA(\"m_order_type?$select=required_documents_notice&$filter=order_type_id eq \"&IF(ISBLANK(申込タイプID),\"null\",申込タイプID)),\"\")",
     "116,147": "IF(EL117<>0,EL117,DZ117)",
     "7,124": "IF(AD4=\"\",0,AD4)",
     "17,127": "IFERROR(ODATA(\"v_customer_order_type?$select=申込タイプID&$filter=顧客ID eq \"&IF(ISBLANK(DU18),\"null\",DU18)&\" and グループID eq \"&IF(ISBLANK(AD4),\"null\",AD4)&\" and 初期セットフラグ eq 1 and 非公開フラグ eq 0\"),\"\")",
-    "164,124": "\"申込タイプの追加を受付いたしました。\"&CHAR(10)&\"弊社クラウドサービスよりお申込みいただき、誠にありがとうございます。\"&CHAR(10)&DZ54",
+    "173,18": "IF(ED158=0,\"\",ED158)",
     "26,137": "IFERROR(IF(CP31>0,ODATA(\"m_user?$select=mail_address&$filter=user_id eq \"&IF(ISBLANK(CP31),\"null\",CP31)),\"\"),\"\")",
     "136,31": "DU108",
     "115,99": "EG117",
@@ -16,13 +16,13 @@
     "73,124": "COUNTIF(EF69,\"<>\")",
     "37,124": "IF(S40=\"\",0,S40)",
     "101,128": "SUM(DU103)",
-    "107,124": "SUMIF(DT94,1,EJ94)",
+    "107,124": "SUMIF(DU94,1,EK94)",
     "136,61": "IF(S49=1,1,物件カウント)",
     "23,131": "申込タイプ追加フラグ",
     "81,124": "COUNTIF(DU69,\"<>\")",
     "27,138": "IF(EH28=0,\"\",EH28)",
     "138,31": "DU139+DU130",
-    "93,123": "IF(DU94=選択商品ID,1,0)",
+    "93,140": "IF(EC94=\"\",\"\",IF(EA94=0,DZ94,IF(AND(EA94=1,EB94=1),DZ94,IF(OR(AND(EF94=1,EE94>EC94),AND(EF94=2,EE94>=EC94)),IF(EI94=1,EH94+EM94+EN94,0),EH94+EM94+EN94+((ROUNDUP((EC94-EE94)/EG94,0)+IF(AND(EF94=1,MOD((EC94-EE94),EG94)=0),1,0))*DZ94)))))",
     "42,124": "IF(DV43=申込タイプID,1,0)",
     "5,29": "IF(DV12>0,IFERROR(ODATA(\"m_customer?$select=customer_name&$filter=customer_id eq \"&IF(ISBLANK(DV12),\"null\",DV12)),\"\"))",
     "20,127": "IF(DX18<>\"\",ODATA(\"m_order_type?$select=order_type_calss_id&$filter=order_type_id eq \"&IF(ISBLANK(DX18),\"null\",DX18)),\"\")",
@@ -41,7 +41,7 @@
     "56,130": "IF(DV35>0,DV35,\"\")",
     "27,137": "IFERROR(IF(AD33>0,ODATA(\"m_user?$select=mail_address&$filter=user_id eq \"&IF(ISBLANK(AD33),\"null\",AD33)),\"\"),\"\")",
     "29,137": "IFERROR(IF(CP33>0,ODATA(\"m_user?$select=mail_address&$filter=user_id eq \"&IF(ISBLANK(CP33),\"null\",CP33)),\"\"),\"\")",
-    "162,18": "IF(ED156=0,\"\",ED156)",
+    "175,124": "\"申込タイプの追加を受付いたしました。\"&CHAR(10)&\"弊社クラウドサービスよりお申込みいただき、誠にありがとうございます。\"&CHAR(10)&DZ54",
     "4,138": "IF(EH5=0,\"\",EH5)",
     "5,138": "IF(EH6=0,\"\",EH6)",
     "6,138": "IF(EH7=0,\"\",EH7)",
@@ -54,7 +54,7 @@
     "25,138": "IF(EH26=0,\"\",EH26)",
     "28,138": "IF(EH29=0,\"\",EH29)",
     "56,128": "IF(DU35>0,DU35,\"\")",
-    "161,124": "\"新規物件の登録を受付いたしました。\"&CHAR(10)&\"弊社クラウドサービスよりお申込みいただき、誠にありがとうございます。\"&CHAR(10)&DZ54",
+    "172,124": "\"新規物件の登録を受付いたしました。\"&CHAR(10)&\"弊社クラウドサービスよりお申込みいただき、誠にありがとうございます。\"&CHAR(10)&DZ54",
     "122,149": "IF(EP123<>\"\",EP123,EJ123)",
     "29,131": "追加申込タイプ分類ID",
     "11,141": "IFERROR(参照顧客ID,\"\")",
@@ -73,14 +73,14 @@
     "24,138": "IF(EH25=0,\"\",EH25)",
     "37,127": "IF(申込タイプID=\"\",0,申込タイプID)",
     "20,29": "IF(DY31=0,\"\",DY31)",
-    "93,139": "IF(EB94=\"\",\"\",IF(DZ94=0,DY94,IF(AND(DZ94=1,EA94=1),DY94,IF(OR(AND(EE94=1,ED94>EB94),AND(EE94=2,ED94>=EB94)),IF(EH94=1,EG94+EL94+EM94,0),EG94+EL94+EM94+((ROUNDUP((EB94-ED94)/EF94,0)+IF(AND(EE94=1,MOD((EB94-ED94),EF94)=0),1,0))*DY94)))))",
-    "93,131": "IF(EC94<>\"\",EC94,\"\")",
+    "93,132": "IF(ED94<>\"\",ED94,\"\")",
+    "93,124": "IF(DV94=選択商品ID,1,0)",
     "118,51": "ES120",
-    "147,124": "SUM(DU144)",
+    "149,124": "SUM(DU144)",
     "26,131": "追加申込タイプID",
     "134,141": "IF(EC135=\"\",\"\",IF(EA135=0,DZ135,IF(AND(EA135=1,EB135=1),DZ135,IF(OR(AND(EF135=1,EE135>EC135),AND(EF135=2,EE135>=EC135)),IF(EI135=1,EH135+EM135+EN135,0),EH135+EM135+EN135+((ROUNDUP((EC135-EE135)/EG135,0)+IF(AND(EF135=1,MOD((EC135-EE135),EG135)=0),1,0))*DZ135)))))",
-    "149,124": "IF(DU148>0,\"リストから選択可能です\",\"指定調査会社は設定されていないため選択できません\")",
-    "155,133": "IFERROR(ODATA(\"v_customer_order_type?$select=特記事項&$filter=顧客ID eq \"&IF(ISBLANK(AD17),\"null\",AD17)&\" and グループID eq \"&IF(ISBLANK(AD4),\"null\",AD4)&\" and 申込タイプID eq \"&IF(ISBLANK(申込タイプID),\"null\",申込タイプID)),\"\")",
+    "151,124": "IF(DU150>0,\"リストから選択可能です\",\"指定調査会社は設定されていないため選択できません\")",
+    "157,133": "IFERROR(ODATA(\"v_customer_order_type?$select=特記事項&$filter=顧客ID eq \"&IF(ISBLANK(AD17),\"null\",AD17)&\" and グループID eq \"&IF(ISBLANK(AD4),\"null\",AD4)&\" and 申込タイプID eq \"&IF(ISBLANK(申込タイプID),\"null\",申込タイプID)),\"\")",
     "122,147": "IF(EL123<>0,EL123,DZ123)",
     "7,131": "IF(EL6=1,1000000,0)",
     "119,149": "IF(EP120<>\"\",EP120,EJ120)",
@@ -89,20 +89,20 @@
     "22,29": "IF(DW31=0,\"\",DW31)",
     "28,137": "IFERROR(IF(BJ33>0,ODATA(\"m_user?$select=mail_address&$filter=user_id eq \"&IF(ISBLANK(BJ33),\"null\",BJ33)),\"\"),\"\")",
     "25,137": "IFERROR(IF(BJ31>0,ODATA(\"m_user?$select=mail_address&$filter=user_id eq \"&IF(ISBLANK(BJ31),\"null\",BJ31)),\"\"),\"\")",
-    "107,126": "COUNTIFS(DW94,\"<>\")",
+    "107,126": "COUNTIFS(DX94,\"<>\")",
     "56,132": "IF(AND(DU35>0,DV35>0),0,1)",
     "116,149": "IF(EP117<>\"\",EP117,EJ117)",
     "134,132": "IF(ED135<>\"\",ED135,\"\")",
     "116,148": "IF(EO117<>\"\",EO117,EI117)",
-    "146,70": "IF(AB147=1,\"以降\",\"～\")",
+    "148,70": "IF(AB149=1,\"以降\",\"～\")",
     "49,126": "IF(RIGHT(AD53,2)=\"様邸\",1,0)",
     "121,51": "ES123",
-    "147,127": "IF(VALUE(DX12)=1,DV12,AD17)",
+    "149,127": "IF(VALUE(DX12)=1,DV12,AD17)",
     "136,75": "AF137*BJ137",
     "118,105": "IF(CO120=\"\",\"\",IF(EA120=0,ET120,IF(AND(EA120=1,EH120=1),ET120,IF(OR(AND(ED120=1,EC120>CO120),AND(ED120=2,EC120>=CO120)),IF(EK120=1,EF120,0),EF120+((ROUNDUP((CO120-EC120)/EE120,0)+IF(AND(ED120=1,MOD((CO120-EC120),EE120)=0),1,0))*ET120)))))",
     "138,124": "SUMIF(DU135,1,EL135)",
     "138,61": "IF(S49=1,1,IF(AZ131=2,1,物件カウント))",
-    "149,127": "IF(VALUE(DX12)=1,AD17,\"\")",
+    "151,127": "IF(VALUE(DX12)=1,AD17,\"\")",
     "138,127": "COUNTIFS(DX135,\"<>\")",
     "49,124": "IF(AND(OR(IFERROR(FIND(\"様邸\",AD53),0)>0,RIGHT(TRIM(AD53),1)=\"様\"),CC53=1),1,0)",
     "129,124": "IFERROR(VALUE(DB116)+VALUE(DB119)+VALUE(DB122),0)",
@@ -131,6 +131,10 @@
   },
   "CustomNames": [
     {
+      "Name": "解析保証調査日必須フラグ",
+      "Formula": "新規申込!$DZ$12"
+    },
+    {
       "Name": "初期化フラグ",
       "Formula": "新規申込!$DX$5"
     },
@@ -144,11 +148,11 @@
     },
     {
       "Name": "登録ボタン",
-      "Formula": "新規申込!$DU$170"
+      "Formula": "新規申込!$DU$181"
     },
     {
       "Name": "入力数量チェックボタン",
-      "Formula": "新規申込!$DY$170"
+      "Formula": "新規申込!$DY$181"
     },
     {
       "Name": "物件カウント",
@@ -167,12 +171,16 @@
       "Formula": "新規申込!$DU$50"
     },
     {
-      "Name": "解析保証調査日必須フラグ",
-      "Formula": "新規申込!$DZ$12"
+      "Name": "連棟物件チェックボタン",
+      "Formula": "新規申込!$EB$181"
     },
     {
-      "Name": "連棟物件チェックボタン",
-      "Formula": "新規申込!$EB$170"
+      "Name": "添付ファイル",
+      "Formula": "新規申込!$BL$88"
+    },
+    {
+      "Name": "変換ファイル",
+      "Formula": "新規申込!$DU$89"
     }
   ]
 }

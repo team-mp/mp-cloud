@@ -1,5 +1,5 @@
 {
   "PageType": 2,
-  "ColumnCount": 78,
+  "ColumnCount": 84,
   "RowCount": 2
 }

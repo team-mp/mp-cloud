@@ -7,14 +7,14 @@
     "17,14": "ODATA(\"m_file_attirbute?$select=file_attibute_name&$filter=file_attribute_id eq \"&IF(ISBLANK(ファイル属性ID),\"null\",ファイル属性ID))",
     "9,106": "TEXTJOINIF(\",\",TRUE,CK8,1,CL8)",
     "7,99": "CS8/1000",
-    "28,100": "LEN(C20)-LEN(SUBSTITUTE(C20,\"|\",\"\"))",
+    "26,100": "LEN(C20)-LEN(SUBSTITUTE(C20,\"|\",\"\"))",
     "12,88": "COUNTIF(CL8,\"<>\")",
     "12,94": "ODATA(\"t_object_attachment/$count?$filter=object_order_id eq \"&IF(ISBLANK(申込ID),\"null\",申込ID)&\" and file_attribute_id eq \"&IF(ISBLANK(ファイル属性ID),\"null\",ファイル属性ID)&\" and active_flg eq 0\")"
   },
   "CustomNames": [
     {
       "Name": "アップロード完了フラグ",
-      "Formula": "ファイルアップロード!$CK$29"
+      "Formula": "ファイルアップロード!$CK$27"
     },
     {
       "Name": "ファイル属性ID",
@@ -67,6 +67,14 @@
     {
       "Name": "外販ID",
       "Formula": "ファイルアップロード!$DC$21"
+    },
+    {
+      "Name": "添付ファイル",
+      "Formula": "ファイルアップロード!$C$20"
+    },
+    {
+      "Name": "変換ファイル",
+      "Formula": "ファイルアップロード!$DE$27"
     }
   ]
 }

@@ -54,7 +54,7 @@
     "19,113": "DJ28",
     "28,124": "DQ28",
     "13,83": "SUM(CO13)",
-    "25,124": "TEXTJOIN(\",\",TRUE,DJ32)",
+    "25,124": "TEXTJOIN(\",\",TRUE,DJ37)",
     "35,83": "SUM(CS31)",
     "14,83": "SUM(CP13)",
     "29,83": "SUM(CM31)",
@@ -67,7 +67,7 @@
     "54,83": "SUM(CR51)",
     "13,124": "DL28",
     "19,124": "DN28",
-    "36,113": "IF(DL28=1,2,IF(DM28=1,3,1))"
+    "31,113": "IFERROR(ODATA(\"m_group?$select=builder_notice_flg&$filter=group_id eq \"&IF(ISBLANK(DO28),\"null\",DO28)),0)"
   },
   "ArrayFormulas": {
     "23,113,1,3": "ODATA(\"m_user?$select=customer_id,user_authority_id,user_group_ids&$filter=user_id eq \"&IF(ISBLANK(DJ17),\"null\",DJ17))",
@@ -421,6 +421,10 @@
     {
       "Name": "物件件数取得ボタン",
       "Formula": "メインフォーム_サブ!$CZ$3"
+    },
+    {
+      "Name": "既定グループ住宅事業者通知フラグ",
+      "Formula": "メインフォーム_サブ!$DJ$32"
     }
   ]
 }

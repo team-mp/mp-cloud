@@ -3,7 +3,6 @@
   "ColumnCount": 120,
   "RowCount": 32,
   "Formulas": {
-    "21,96": "ODATA(\"t_object_attachment/$count?$filter=object_order_id eq \"&IF(ISBLANK(CS7),\"null\",CS7)&\" and active_flg eq 0\")",
     "10,107": "ODATA(\"t_object_attachment_comment/$count?$filter=attachment_id eq \"&IF(ISBLANK(VALUE(CT11)),\"null\",VALUE(CT11)))",
     "10,108": "IF(DD11>0,ODATA(\"t_object_attachment_comment?$select=attachment_comment&$filter=attachment_id eq \"&IF(ISBLANK(CT11),\"null\",CT11)&\"&$top=1&$orderby=attachment_comment_id desc\"),\"\")",
     "10,105": "CY11/1000",

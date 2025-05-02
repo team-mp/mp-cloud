@@ -1,9 +1,9 @@
 {
   "PageType": 0,
   "ColumnCount": 88,
-  "RowCount": 25,
+  "RowCount": 28,
   "Formulas": {
-    "5,16": "IF(K4=1,\"以降\",\"～\")",
+    "7,16": "IF(K6=1,\"以降\",\"～\")",
     "23,47": "IF(VALUE(BD21)=1,18,6)",
     "20,47": "ODATA(\"t_object_attachment/$count?$filter=file_attribute_id eq \"&IF(ISBLANK(AV24),\"null\",AV24)&\" and survey_id eq \"&IF(ISBLANK(調査ID),\"null\",調査ID)&\" and active_flg eq 1\")",
     "17,47": "ODATA(\"t_object_compaction/$count?$filter=survey_id eq \"&IF(ISBLANK(調査ID),\"null\",調査ID))"
@@ -86,6 +86,10 @@
       "Formula": "調査内容_詳細!$BS$18"
     },
     {
+      "Name": "元_調査予定時間",
+      "Formula": "調査内容_詳細!$BS$20"
+    },
+    {
       "Name": "元_調査予定終了日",
       "Formula": "調査内容_詳細!$BS$19"
     },
@@ -120,10 +124,6 @@
     {
       "Name": "調査ID",
       "Formula": "調査内容_詳細!$AV$3"
-    },
-    {
-      "Name": "元_調査予定時間",
-      "Formula": "調査内容_詳細!$BS$20"
     }
   ]
 }

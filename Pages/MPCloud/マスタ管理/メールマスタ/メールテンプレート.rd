@@ -507,7 +507,8 @@
     "24,13": "SUBSTITUTE(N24,C25,G25)",
     "26,13": "SUBSTITUTE(N26,C27,G27)",
     "25,13": "SUBSTITUTE(N25,C26,G26)",
-    "14,42": "AQ4&\"/ServerCommand/FileDownload\""
+    "14,42": "AQ4&\"/ServerCommand/FileDownload\"",
+    "158,15": "TEXTJOIN(\",\",TRUE,P138,IF(AND(メール宛先区分=2,P157=1),L147,\"\"))"
   },
   "ArrayFormulas": {
     "11,42,1,2": "ODATA(\"m_customer?$select=customer_name,phone&$filter=customer_id eq \"&IF(ISBLANK(AR8),\"null\",AR8))",
