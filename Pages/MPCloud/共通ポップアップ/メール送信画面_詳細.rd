@@ -18,7 +18,8 @@
     "34,59": "ダウンロードリンクURL&\"?id=\"&AQ3&\"&filekey=\"&filekey",
     "26,68": "\"※有効期限は、\"&TEXT(TODAY()+14,\"yyyy/mm/dd\")&\"までとなります。\"",
     "25,68": "BH35",
-    "30,68": "BQ25&CHAR(10)&BQ26&CHAR(10)&BQ27&CHAR(10)&BQ28"
+    "30,68": "BQ25&CHAR(10)&BQ26&CHAR(10)&BQ27&CHAR(10)&BQ28",
+    "13,66": "IF(COUNTIF(BD9,0)+COUNTIF(BL9,0)>0,1,0)"
   },
   "CustomNames": [
     {
@@ -56,6 +57,10 @@
     {
       "Name": "filekey",
       "Formula": "メール送信画面_詳細!$BH$38"
+    },
+    {
+      "Name": "送信先本社以外フラグ",
+      "Formula": "メール送信画面_詳細!$BO$14"
     }
   ]
 }

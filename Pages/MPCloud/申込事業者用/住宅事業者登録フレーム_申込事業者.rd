@@ -7,7 +7,7 @@
   },
   "CustomNames": [
     {
-      "Name": "参照顧客グループIDs",
+      "Name": "参照管理グループIDs",
       "Formula": "住宅事業者登録フレーム_申込事業者!$AX$6"
     },
     {

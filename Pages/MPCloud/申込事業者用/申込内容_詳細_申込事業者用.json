@@ -792,6 +792,8 @@
     "4,126": "地盤調査フラグ",
     "4,127": "測量調査フラグ",
     "4,128": "建物概要表示フラグ",
+    "4,129": "解析フラグ",
+    "4,130": "保証フラグ",
     "5,1": "申込グループ",
     "5,50": "(携帯電話番号)",
     "6,80": "▼営業担当ID",
@@ -804,6 +806,7 @@
     "8,95": "退避ID",
     "8,100": "▼申込グループ区分",
     "8,105": "▼グループ表示制御フラグ",
+    "8,115": "▼解析保証実施日必要フラグ",
     "9,1": "申込担当者",
     "9,34": "(メールアドレス)",
     "9,105": "0",
@@ -816,6 +819,7 @@
     "10,105": "名称",
     "10,110": "退避ID",
     "10,115": "▼住宅事業者情報セットフラグ",
+    "10,126": "▼調査実施日表示制御フラグ",
     "11,13": "追加担当者を表示する",
     "11,115": "0",
     "12,13": "追加担当者を非表示にする",
@@ -900,6 +904,7 @@
     "40,80": "▼緯度",
     "40,85": "▼経度",
     "40,90": "▼お客様管理番号",
+    "40,95": "▼解析保証調査実施日",
     "41,13": "町名番地",
     "43,13": "住所表示",
     "43,90": "元ID",
@@ -911,7 +916,8 @@
     "45,80": "建物構造ID",
     "45,110": "0",
     "46,80": "基礎形状ID",
-    "47,1": "お客様管理番号",
+    "47,13": "お客様番号",
+    "47,37": "調査実施日",
     "47,80": "設計接地圧",
     "49,1": "建物概要",
     "49,13": "建物構造",
@@ -989,10 +995,11 @@
     "17,97": "IF(CR18=0,\"\",CR18)",
     "10,44": "CT18",
     "17,120": "IF(DB16>0,IFERROR(ODATA(\"m_user?$select=mobile_phone&$filter=user_id eq \"&IF(ISBLANK(DB16),\"null\",DB16)),\"\"),\"\")",
-    "17,122": "IF(DQ18=0,\"\",DQ18)"
+    "17,122": "IF(DQ18=0,\"\",DQ18)",
+    "11,126": "IF(AND(DL10=1,DW6=0,DZ6=1,EA6=1),1,0)"
   },
   "ArrayFormulas": {
-    "5,126,1,3": "ODATA(\"m_order_type?$select=groud_survey_flg,site_survey_flg,object_overview_display_flg&$filter=order_type_id eq \"&IF(ISBLANK(CC6),\"null\",CC6))"
+    "5,126,1,5": "ODATA(\"m_order_type?$select=groud_survey_flg,site_survey_flg,object_overview_display_flg,analyze_flg,warranty_flg&$filter=order_type_id eq \"&IF(ISBLANK(CC6),\"null\",CC6))"
   },
   "AttachInfos": {
     "1,13": {
@@ -1143,7 +1150,7 @@
                     ]
                   }
                 ],
-                "ID": "ea091b0b-4845-406a-b3c2-11ba223ebc4a"
+                "ID": "2ce818c5-cc51-4b5b-b5af-1c773b232390"
               },
               {
                 "CommandList": [
@@ -1177,7 +1184,7 @@
                     ]
                   }
                 ],
-                "ID": "7f51b483-de50-4fd4-90f4-5e74223c84cd"
+                "ID": "b58fc79c-894e-4d17-8be8-852bb7bf8bad"
               }
             ]
           }
@@ -1600,7 +1607,7 @@
                             ]
                           }
                         ],
-                        "ID": "f97e74b6-5709-4028-9db5-14e18d7a527f"
+                        "ID": "752a2d2e-e34c-48e5-bb0e-fa6fe74ed21c"
                       },
                       {
                         "CommandList": [
@@ -1617,12 +1624,12 @@
                             ]
                           }
                         ],
-                        "ID": "cbe4d048-2c6a-4e73-8539-f7b27c79c63f"
+                        "ID": "7e10cba3-43ba-4999-8924-6c190dbf523e"
                       }
                     ]
                   }
                 ],
-                "ID": "267d25a2-5f8e-4835-9421-6e2c9269ac3a"
+                "ID": "43a3ad4a-707c-40f9-859d-07d313f4bceb"
               }
             ]
           }
@@ -1665,21 +1672,6 @@
           "RelatedColumn": "order_type_id",
           "DisplayColumn": "order_type_calss_id"
         }
-      }
-    },
-    "5,126": {
-      "CellComment": {
-        "Comments": "▼地盤調査フラグ"
-      }
-    },
-    "5,127": {
-      "CellComment": {
-        "Comments": "▼測量調査フラグ"
-      }
-    },
-    "5,128": {
-      "CellComment": {
-        "Comments": "▼建物概要表示フラグ"
       }
     },
     "7,13": {
@@ -1751,24 +1743,19 @@
         "CommandList": [
           {
             "$type": "Forguncy.Model.ShowPopupCommand, ServerDesignerCommon",
-            "PageName": "担当者検索",
+            "PopupDisplayMode": 1,
+            "Placement": {
+              "SerializeProperty": "=申込内容_詳細_申込事業者用!N10"
+            },
+            "PageName": "担当者検索_申込事業者用",
             "PassValues": [
               {
                 "Source": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=申込内容_詳細_申込事業者用!CC12"
+                  "SerializeProperty": "=申込内容_詳細_申込事業者用!$CC$12"
                 },
                 "TargetCell": {
-                  "SerializeProperty": "=担当者検索!顧客ID"
-                }
-              },
-              {
-                "Source": {
-                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=申込内容_詳細_申込事業者用!N8"
-                },
-                "TargetCell": {
-                  "SerializeProperty": "=担当者検索!顧客略称名"
+                  "SerializeProperty": "=担当者検索_申込事業者用!顧客ID"
                 }
               },
               {
@@ -1777,7 +1764,7 @@
                   "SerializeProperty": "=申込内容_詳細_申込事業者用!CC16"
                 },
                 "TargetCell": {
-                  "SerializeProperty": "=担当者検索!担当者ID"
+                  "SerializeProperty": "=担当者検索_申込事業者用!担当者ID"
                 }
               },
               {
@@ -1786,7 +1773,7 @@
                   "SerializeProperty": "=申込内容_詳細_申込事業者用!N10"
                 },
                 "TargetCell": {
-                  "SerializeProperty": "=担当者検索!担当者名"
+                  "SerializeProperty": "=担当者検索_申込事業者用!担当者名"
                 }
               }
             ],
@@ -1795,7 +1782,7 @@
         ],
         "TemplateKey": "余白2グレー",
         "IsInvisible": true,
-        "ImagePath": "Application/023_edit_3.svg",
+        "ImagePath": "ExpandCollapse/475_expand_3.svg",
         "BuiltIn": true,
         "UseCellForeColor": true
       },
@@ -1827,6 +1814,7 @@
             ]
           }
         ],
+        "Size": 14,
         "TemplateKey": "余白2グレー",
         "ImagePath": "Application/034_close_delete_2.svg",
         "BuiltIn": true,
@@ -2061,7 +2049,7 @@
                             ]
                           }
                         ],
-                        "ID": "6d0ae4a2-78c7-48c3-abb6-7ddd2eea59b6"
+                        "ID": "981ecd06-31d3-45c2-a2f6-f524ac795da0"
                       },
                       {
                         "CommandList": [
@@ -2092,12 +2080,12 @@
                             ]
                           }
                         ],
-                        "ID": "4d8c5da6-19a9-4ffc-bfea-5a03475c1e4e"
+                        "ID": "0a8380e2-dee5-4996-be4f-dcda83ed8b05"
                       }
                     ]
                   }
                 ],
-                "ID": "ed26a316-e059-424b-82e8-1c5f892f059e"
+                "ID": "d081573d-14ce-46d6-bc0c-e39431afb758"
               }
             ],
             "Comments": "申込グループが変更されたら"
@@ -2220,11 +2208,23 @@
                     ]
                   }
                 ],
-                "ID": "bdec8ec7-a4ab-41d5-b4d0-6840eafb47b8"
+                "ID": "43add8d2-6ae0-4646-ad6f-1ab99b095413"
               }
             ]
           }
         ]
+      }
+    },
+    "9,115": {
+      "BindingInfo": {
+        "TableName": "t_object_order",
+        "ColumnName": "group_id",
+        "GUID": "c8afbf32-ac08-47ee-8868-8046f7aea0cc",
+        "RelationBinding": {
+          "RelatedTable": "m_group",
+          "RelatedColumn": "group_id",
+          "DisplayColumn": "analysis_warranty_surveydate_required_flg"
+        }
       }
     },
     "11,13": {
@@ -2407,7 +2407,7 @@
                     ]
                   }
                 ],
-                "ID": "4499907e-fdc4-442e-a1d8-a2ac96c8043e"
+                "ID": "da05980c-7914-4ea6-bf6f-da6c6e6960e0"
               }
             ]
           }
@@ -3141,7 +3141,7 @@
                             ]
                           }
                         ],
-                        "ID": "d1f9aa98-5a07-4c6e-96dd-c1e68423bc95"
+                        "ID": "1d65db9f-0caf-4fde-ace3-94eaf937ee86"
                       },
                       {
                         "CommandList": [
@@ -3158,7 +3158,7 @@
                             ]
                           }
                         ],
-                        "ID": "677806f0-ef21-4459-be0c-aa4ae23ce76c"
+                        "ID": "da7c369b-7ace-4094-8151-18e967fc2f38"
                       }
                     ]
                   },
@@ -3179,7 +3179,7 @@
                     "Comments": "編集保持住宅事業者IDセット"
                   }
                 ],
-                "ID": "fc721e6e-f549-4ca8-b386-9a457d77e0ef"
+                "ID": "ae62c3aa-9b8e-44f2-968a-4390041d6742"
               }
             ]
           }
@@ -3555,24 +3555,19 @@
         "CommandList": [
           {
             "$type": "Forguncy.Model.ShowPopupCommand, ServerDesignerCommon",
-            "PageName": "担当者検索",
+            "PopupDisplayMode": 1,
+            "Placement": {
+              "SerializeProperty": "=申込内容_詳細_申込事業者用!T15"
+            },
+            "PageName": "担当者検索_申込事業者用",
             "PassValues": [
               {
                 "Source": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=申込内容_詳細_申込事業者用!CC12"
+                  "SerializeProperty": "=申込内容_詳細_申込事業者用!$CC$12"
                 },
                 "TargetCell": {
-                  "SerializeProperty": "=担当者検索!顧客ID"
-                }
-              },
-              {
-                "Source": {
-                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=申込内容_詳細_申込事業者用!N8"
-                },
-                "TargetCell": {
-                  "SerializeProperty": "=担当者検索!顧客略称名"
+                  "SerializeProperty": "=担当者検索_申込事業者用!顧客ID"
                 }
               },
               {
@@ -3581,7 +3576,7 @@
                   "SerializeProperty": "=申込内容_詳細_申込事業者用!CC20"
                 },
                 "TargetCell": {
-                  "SerializeProperty": "=担当者検索!担当者ID"
+                  "SerializeProperty": "=担当者検索_申込事業者用!担当者ID"
                 }
               },
               {
@@ -3590,7 +3585,7 @@
                   "SerializeProperty": "=申込内容_詳細_申込事業者用!T15"
                 },
                 "TargetCell": {
-                  "SerializeProperty": "=担当者検索!担当者名"
+                  "SerializeProperty": "=担当者検索_申込事業者用!担当者名"
                 }
               }
             ],
@@ -3599,7 +3594,7 @@
         ],
         "TemplateKey": "余白2グレー",
         "IsInvisible": true,
-        "ImagePath": "Application/023_edit_3.svg",
+        "ImagePath": "ExpandCollapse/475_expand_3.svg",
         "BuiltIn": true,
         "UseCellForeColor": true
       },
@@ -3631,6 +3626,7 @@
             ]
           }
         ],
+        "Size": 14,
         "TemplateKey": "余白2グレー",
         "ImagePath": "Application/034_close_delete_2.svg",
         "BuiltIn": true,
@@ -3672,24 +3668,19 @@
         "CommandList": [
           {
             "$type": "Forguncy.Model.ShowPopupCommand, ServerDesignerCommon",
-            "PageName": "担当者検索",
+            "PopupDisplayMode": 1,
+            "Placement": {
+              "SerializeProperty": "=申込内容_詳細_申込事業者用!AP15"
+            },
+            "PageName": "担当者検索_申込事業者用",
             "PassValues": [
               {
                 "Source": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=申込内容_詳細_申込事業者用!CC12"
+                  "SerializeProperty": "=申込内容_詳細_申込事業者用!$CC$12"
                 },
                 "TargetCell": {
-                  "SerializeProperty": "=担当者検索!顧客ID"
-                }
-              },
-              {
-                "Source": {
-                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=申込内容_詳細_申込事業者用!N8"
-                },
-                "TargetCell": {
-                  "SerializeProperty": "=担当者検索!顧客略称名"
+                  "SerializeProperty": "=担当者検索_申込事業者用!顧客ID"
                 }
               },
               {
@@ -3698,7 +3689,7 @@
                   "SerializeProperty": "=申込内容_詳細_申込事業者用!CC21"
                 },
                 "TargetCell": {
-                  "SerializeProperty": "=担当者検索!担当者ID"
+                  "SerializeProperty": "=担当者検索_申込事業者用!担当者ID"
                 }
               },
               {
@@ -3707,15 +3698,16 @@
                   "SerializeProperty": "=申込内容_詳細_申込事業者用!AP15"
                 },
                 "TargetCell": {
-                  "SerializeProperty": "=担当者検索!担当者名"
+                  "SerializeProperty": "=担当者検索_申込事業者用!担当者名"
                 }
               }
-            ]
+            ],
+            "LoadBindingDataOption": 2
           }
         ],
         "TemplateKey": "余白2グレー",
         "IsInvisible": true,
-        "ImagePath": "Application/023_edit_3.svg",
+        "ImagePath": "ExpandCollapse/475_expand_3.svg",
         "BuiltIn": true,
         "UseCellForeColor": true
       },
@@ -3747,6 +3739,7 @@
             ]
           }
         ],
+        "Size": 14,
         "TemplateKey": "余白2グレー",
         "ImagePath": "Application/034_close_delete_2.svg",
         "BuiltIn": true,
@@ -3788,24 +3781,19 @@
         "CommandList": [
           {
             "$type": "Forguncy.Model.ShowPopupCommand, ServerDesignerCommon",
-            "PageName": "担当者検索",
+            "PopupDisplayMode": 1,
+            "Placement": {
+              "SerializeProperty": "=申込内容_詳細_申込事業者用!BL15"
+            },
+            "PageName": "担当者検索_申込事業者用",
             "PassValues": [
               {
                 "Source": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=申込内容_詳細_申込事業者用!CC12"
+                  "SerializeProperty": "=申込内容_詳細_申込事業者用!$CC$12"
                 },
                 "TargetCell": {
-                  "SerializeProperty": "=担当者検索!顧客ID"
-                }
-              },
-              {
-                "Source": {
-                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=申込内容_詳細_申込事業者用!N8"
-                },
-                "TargetCell": {
-                  "SerializeProperty": "=担当者検索!顧客略称名"
+                  "SerializeProperty": "=担当者検索_申込事業者用!顧客ID"
                 }
               },
               {
@@ -3814,7 +3802,7 @@
                   "SerializeProperty": "=申込内容_詳細_申込事業者用!CC22"
                 },
                 "TargetCell": {
-                  "SerializeProperty": "=担当者検索!担当者ID"
+                  "SerializeProperty": "=担当者検索_申込事業者用!担当者ID"
                 }
               },
               {
@@ -3823,15 +3811,16 @@
                   "SerializeProperty": "=申込内容_詳細_申込事業者用!BL15"
                 },
                 "TargetCell": {
-                  "SerializeProperty": "=担当者検索!担当者名"
+                  "SerializeProperty": "=担当者検索_申込事業者用!担当者名"
                 }
               }
-            ]
+            ],
+            "LoadBindingDataOption": 2
           }
         ],
         "TemplateKey": "余白2グレー",
         "IsInvisible": true,
-        "ImagePath": "Application/023_edit_3.svg",
+        "ImagePath": "ExpandCollapse/475_expand_3.svg",
         "BuiltIn": true,
         "UseCellForeColor": true
       },
@@ -3863,6 +3852,7 @@
             ]
           }
         ],
+        "Size": 14,
         "TemplateKey": "余白2グレー",
         "ImagePath": "Application/034_close_delete_2.svg",
         "BuiltIn": true,
@@ -3956,24 +3946,19 @@
         "CommandList": [
           {
             "$type": "Forguncy.Model.ShowPopupCommand, ServerDesignerCommon",
-            "PageName": "担当者検索",
+            "PopupDisplayMode": 1,
+            "Placement": {
+              "SerializeProperty": "=申込内容_詳細_申込事業者用!T17"
+            },
+            "PageName": "担当者検索_申込事業者用",
             "PassValues": [
               {
                 "Source": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=申込内容_詳細_申込事業者用!CC12"
+                  "SerializeProperty": "=申込内容_詳細_申込事業者用!$CC$12"
                 },
                 "TargetCell": {
-                  "SerializeProperty": "=担当者検索!顧客ID"
-                }
-              },
-              {
-                "Source": {
-                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=申込内容_詳細_申込事業者用!N8"
-                },
-                "TargetCell": {
-                  "SerializeProperty": "=担当者検索!顧客略称名"
+                  "SerializeProperty": "=担当者検索_申込事業者用!顧客ID"
                 }
               },
               {
@@ -3982,7 +3967,7 @@
                   "SerializeProperty": "=申込内容_詳細_申込事業者用!CC23"
                 },
                 "TargetCell": {
-                  "SerializeProperty": "=担当者検索!担当者ID"
+                  "SerializeProperty": "=担当者検索_申込事業者用!担当者ID"
                 }
               },
               {
@@ -3991,15 +3976,16 @@
                   "SerializeProperty": "=申込内容_詳細_申込事業者用!T17"
                 },
                 "TargetCell": {
-                  "SerializeProperty": "=担当者検索!担当者名"
+                  "SerializeProperty": "=担当者検索_申込事業者用!担当者名"
                 }
               }
-            ]
+            ],
+            "LoadBindingDataOption": 2
           }
         ],
         "TemplateKey": "余白2グレー",
         "IsInvisible": true,
-        "ImagePath": "Application/023_edit_3.svg",
+        "ImagePath": "ExpandCollapse/475_expand_3.svg",
         "BuiltIn": true,
         "UseCellForeColor": true
       },
@@ -4031,6 +4017,7 @@
             ]
           }
         ],
+        "Size": 14,
         "TemplateKey": "余白2グレー",
         "ImagePath": "Application/034_close_delete_2.svg",
         "BuiltIn": true,
@@ -4072,24 +4059,19 @@
         "CommandList": [
           {
             "$type": "Forguncy.Model.ShowPopupCommand, ServerDesignerCommon",
-            "PageName": "担当者検索",
+            "PopupDisplayMode": 1,
+            "Placement": {
+              "SerializeProperty": "=申込内容_詳細_申込事業者用!AP17"
+            },
+            "PageName": "担当者検索_申込事業者用",
             "PassValues": [
               {
                 "Source": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=申込内容_詳細_申込事業者用!CC12"
+                  "SerializeProperty": "=申込内容_詳細_申込事業者用!$CC$12"
                 },
                 "TargetCell": {
-                  "SerializeProperty": "=担当者検索!顧客ID"
-                }
-              },
-              {
-                "Source": {
-                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=申込内容_詳細_申込事業者用!N8"
-                },
-                "TargetCell": {
-                  "SerializeProperty": "=担当者検索!顧客略称名"
+                  "SerializeProperty": "=担当者検索_申込事業者用!顧客ID"
                 }
               },
               {
@@ -4098,7 +4080,7 @@
                   "SerializeProperty": "=申込内容_詳細_申込事業者用!CC24"
                 },
                 "TargetCell": {
-                  "SerializeProperty": "=担当者検索!担当者ID"
+                  "SerializeProperty": "=担当者検索_申込事業者用!担当者ID"
                 }
               },
               {
@@ -4107,15 +4089,16 @@
                   "SerializeProperty": "=申込内容_詳細_申込事業者用!AP17"
                 },
                 "TargetCell": {
-                  "SerializeProperty": "=担当者検索!担当者名"
+                  "SerializeProperty": "=担当者検索_申込事業者用!担当者名"
                 }
               }
-            ]
+            ],
+            "LoadBindingDataOption": 2
           }
         ],
         "TemplateKey": "余白2グレー",
         "IsInvisible": true,
-        "ImagePath": "Application/023_edit_3.svg",
+        "ImagePath": "ExpandCollapse/475_expand_3.svg",
         "BuiltIn": true,
         "UseCellForeColor": true
       },
@@ -4147,6 +4130,7 @@
             ]
           }
         ],
+        "Size": 14,
         "TemplateKey": "余白2グレー",
         "ImagePath": "Application/034_close_delete_2.svg",
         "BuiltIn": true,
@@ -4188,24 +4172,19 @@
         "CommandList": [
           {
             "$type": "Forguncy.Model.ShowPopupCommand, ServerDesignerCommon",
-            "PageName": "担当者検索",
+            "PopupDisplayMode": 1,
+            "Placement": {
+              "SerializeProperty": "=申込内容_詳細_申込事業者用!BL17"
+            },
+            "PageName": "担当者検索_申込事業者用",
             "PassValues": [
               {
                 "Source": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=申込内容_詳細_申込事業者用!CC12"
+                  "SerializeProperty": "=申込内容_詳細_申込事業者用!$CC$12"
                 },
                 "TargetCell": {
-                  "SerializeProperty": "=担当者検索!顧客ID"
-                }
-              },
-              {
-                "Source": {
-                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=申込内容_詳細_申込事業者用!N8"
-                },
-                "TargetCell": {
-                  "SerializeProperty": "=担当者検索!顧客略称名"
+                  "SerializeProperty": "=担当者検索_申込事業者用!顧客ID"
                 }
               },
               {
@@ -4214,7 +4193,7 @@
                   "SerializeProperty": "=申込内容_詳細_申込事業者用!CC25"
                 },
                 "TargetCell": {
-                  "SerializeProperty": "=担当者検索!担当者ID"
+                  "SerializeProperty": "=担当者検索_申込事業者用!担当者ID"
                 }
               },
               {
@@ -4223,15 +4202,16 @@
                   "SerializeProperty": "=申込内容_詳細_申込事業者用!BL17"
                 },
                 "TargetCell": {
-                  "SerializeProperty": "=担当者検索!担当者名"
+                  "SerializeProperty": "=担当者検索_申込事業者用!担当者名"
                 }
               }
-            ]
+            ],
+            "LoadBindingDataOption": 2
           }
         ],
         "TemplateKey": "余白2グレー",
         "IsInvisible": true,
-        "ImagePath": "Application/023_edit_3.svg",
+        "ImagePath": "ExpandCollapse/475_expand_3.svg",
         "BuiltIn": true,
         "UseCellForeColor": true
       },
@@ -4263,6 +4243,7 @@
             ]
           }
         ],
+        "Size": 14,
         "TemplateKey": "余白2グレー",
         "ImagePath": "Application/034_close_delete_2.svg",
         "BuiltIn": true,
@@ -4284,129 +4265,8 @@
           "DisplayColumn": "customer_abbr"
         }
       },
-      "CellType": {
-        "$type": "Forguncy.TextCellType, ServerDesignerCommon",
-        "SavedValidators": [
-          {
-            "$type": "Forguncy.CellTypes.Models.UniqueValidadator, ServerDesignerCommon"
-          }
-        ],
-        "TemplateKey": "_RS_LightLine_Translucent_SmallRoundCorner_Normal1",
-        "ReadOnly": true
-      },
       "RulesGuidList": [
         "4af20c8c-86a7-4f95-aeb8-de916421a9df"
-      ]
-    },
-    "18,64": {
-      "CellType": {
-        "$type": "Forguncy.ImageCellType, ServerDesignerCommon",
-        "CommandList": [
-          {
-            "$type": "Forguncy.Model.ShareCommand, ServerDesignerCommon",
-            "ShareCommandContainerRefer": {
-              "ShareCommandContainerID": "bd2b65b1-655e-487a-a5c4-a5e8eccac022"
-            },
-            "Params": [
-              {
-                "ParamReferObject": {
-                  "ParamID": "f6049859-7213-4e57-91e1-feb1955b999c",
-                  "ShareCommandContainerReferObject": {
-                    "ShareCommandContainerID": "bd2b65b1-655e-487a-a5c4-a5e8eccac022"
-                  }
-                },
-                "Value": {
-                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=申込内容_詳細_申込事業者用!CR12"
-                }
-              },
-              {
-                "ParamReferObject": {
-                  "ParamID": "6ba80694-0208-45aa-b052-beb9ca3569ca",
-                  "ShareCommandContainerReferObject": {
-                    "ShareCommandContainerID": "bd2b65b1-655e-487a-a5c4-a5e8eccac022"
-                  }
-                },
-                "Value": "0"
-              }
-            ]
-          }
-        ],
-        "TemplateKey": "余白2グレー",
-        "IsInvisible": true,
-        "ImagePath": "Application/053_settings_4.svg",
-        "BuiltIn": true,
-        "UseCellForeColor": true
-      },
-      "RulesGuidList": [
-        "b9caffb2-5503-48c0-af92-e383c8739860"
-      ]
-    },
-    "18,66": {
-      "CellType": {
-        "$type": "Forguncy.ImageCellType, ServerDesignerCommon",
-        "CommandList": [
-          {
-            "$type": "Forguncy.Model.ShowPopupCommand, ServerDesignerCommon",
-            "PageName": "顧客検索",
-            "PassValues": [
-              {
-                "Source": {
-                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=申込内容_詳細_申込事業者用!CR12"
-                },
-                "TargetCell": {
-                  "SerializeProperty": "=顧客検索!顧客ID"
-                }
-              },
-              {
-                "Source": {
-                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=申込内容_詳細_申込事業者用!N19"
-                },
-                "TargetCell": {
-                  "SerializeProperty": "=顧客検索!顧客略称名"
-                }
-              },
-              {
-                "Source": {
-                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=申込内容_詳細_申込事業者用!CC10"
-                },
-                "TargetCell": {
-                  "SerializeProperty": "=顧客検索!グループフィルタ"
-                }
-              },
-              {
-                "Source": "1",
-                "TargetCell": {
-                  "SerializeProperty": "=顧客検索!属性フィルタ"
-                }
-              },
-              {
-                "Source": "1",
-                "TargetCell": {
-                  "SerializeProperty": "=顧客検索!属性固定フラグ"
-                }
-              },
-              {
-                "Source": "1",
-                "TargetCell": {
-                  "SerializeProperty": "=顧客検索!グループ固定フラグ"
-                }
-              }
-            ],
-            "DeleteCachedQuery": true,
-            "LoadBindingDataOption": 2
-          }
-        ],
-        "TemplateKey": "余白2グレー",
-        "ImagePath": "Application/023_edit_3.svg",
-        "BuiltIn": true,
-        "UseCellForeColor": true
-      },
-      "RulesGuidList": [
-        "9df188ba-ab3c-4e00-b4d8-4b60472537f7"
       ]
     },
     "19,80": {
@@ -4534,7 +4394,7 @@
                             "Comments": "物件担当者欄表示"
                           }
                         ],
-                        "ID": "1be1e842-182c-4513-809c-cf103131b3bc"
+                        "ID": "7c2902ea-e6e0-4b18-91df-2e850691c5d6"
                       },
                       {
                         "CommandList": [
@@ -4552,12 +4412,12 @@
                             "Comments": "物件担当者欄非表示"
                           }
                         ],
-                        "ID": "9b361ff4-fe95-4677-bea5-e40ff899e482"
+                        "ID": "cf5f8034-de16-49f8-a262-c0f31fc72efe"
                       }
                     ]
                   }
                 ],
-                "ID": "f67a3dd2-2089-47db-9ac9-d59b3239f156"
+                "ID": "59e7f09a-e105-4cf7-a50a-0348c10f6c27"
               }
             ]
           },
@@ -4611,8 +4471,8 @@
     "20,105": {
       "BindingInfo": {
         "TableName": "t_object_order",
-        "ColumnName": "object_user_id",
-        "GUID": "a3dc15b6-1800-4921-90fb-0544f57085c6"
+        "ColumnName": "builder_adduser2_id",
+        "GUID": "67e607f6-edd0-458a-b3b4-06488aae4387"
       }
     },
     "20,110": {
@@ -4717,24 +4577,19 @@
         "CommandList": [
           {
             "$type": "Forguncy.Model.ShowPopupCommand, ServerDesignerCommon",
-            "PageName": "担当者検索",
+            "PopupDisplayMode": 1,
+            "Placement": {
+              "SerializeProperty": "=申込内容_詳細_申込事業者用!N23"
+            },
+            "PageName": "担当者検索_申込事業者用",
             "PassValues": [
               {
                 "Source": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=申込内容_詳細_申込事業者用!CR12"
+                  "SerializeProperty": "=申込内容_詳細_申込事業者用!$CR$12"
                 },
                 "TargetCell": {
-                  "SerializeProperty": "=担当者検索!顧客ID"
-                }
-              },
-              {
-                "Source": {
-                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=申込内容_詳細_申込事業者用!N19"
-                },
-                "TargetCell": {
-                  "SerializeProperty": "=担当者検索!顧客略称名"
+                  "SerializeProperty": "=担当者検索_申込事業者用!顧客ID"
                 }
               },
               {
@@ -4743,7 +4598,7 @@
                   "SerializeProperty": "=申込内容_詳細_申込事業者用!DB16"
                 },
                 "TargetCell": {
-                  "SerializeProperty": "=担当者検索!担当者ID"
+                  "SerializeProperty": "=担当者検索_申込事業者用!担当者ID"
                 }
               },
               {
@@ -4752,15 +4607,16 @@
                   "SerializeProperty": "=申込内容_詳細_申込事業者用!N23"
                 },
                 "TargetCell": {
-                  "SerializeProperty": "=担当者検索!担当者名"
+                  "SerializeProperty": "=担当者検索_申込事業者用!担当者名"
                 }
               }
-            ]
+            ],
+            "LoadBindingDataOption": 2
           }
         ],
         "TemplateKey": "余白2グレー",
         "IsInvisible": true,
-        "ImagePath": "Application/023_edit_3.svg",
+        "ImagePath": "ExpandCollapse/475_expand_3.svg",
         "BuiltIn": true,
         "UseCellForeColor": true
       },
@@ -4792,6 +4648,7 @@
             ]
           }
         ],
+        "Size": 14,
         "TemplateKey": "余白2グレー",
         "ImagePath": "Application/034_close_delete_2.svg",
         "BuiltIn": true,
@@ -4805,8 +4662,8 @@
     "22,80": {
       "BindingInfo": {
         "TableName": "t_object_order",
-        "ColumnName": "builder_adduser4_id",
-        "GUID": "c70ee2d6-a638-4581-9419-e3c46db7766b"
+        "ColumnName": "order_adduser4_id",
+        "GUID": "d30bb21a-4bb5-409c-98cc-c2992c530a9a"
       }
     },
     "22,85": {
@@ -4883,8 +4740,8 @@
     "23,105": {
       "BindingInfo": {
         "TableName": "t_object_order",
-        "ColumnName": "order_adduser5_id",
-        "GUID": "f5e1e72d-6915-4e22-9941-37df19b36ed6"
+        "ColumnName": "builder_adduser5_id",
+        "GUID": "18f07509-53ef-453a-9fee-7afdce66cbc6"
       }
     },
     "23,110": {
@@ -5071,24 +4928,19 @@
         "CommandList": [
           {
             "$type": "Forguncy.Model.ShowPopupCommand, ServerDesignerCommon",
-            "PageName": "担当者検索",
+            "PopupDisplayMode": 1,
+            "Placement": {
+              "SerializeProperty": "=申込内容_詳細_申込事業者用!T28"
+            },
+            "PageName": "担当者検索_申込事業者用",
             "PassValues": [
               {
                 "Source": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=申込内容_詳細_申込事業者用!CR12"
+                  "SerializeProperty": "=申込内容_詳細_申込事業者用!$CR$12"
                 },
                 "TargetCell": {
-                  "SerializeProperty": "=担当者検索!顧客ID"
-                }
-              },
-              {
-                "Source": {
-                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=申込内容_詳細_申込事業者用!N19"
-                },
-                "TargetCell": {
-                  "SerializeProperty": "=担当者検索!顧客略称名"
+                  "SerializeProperty": "=担当者検索_申込事業者用!顧客ID"
                 }
               },
               {
@@ -5097,7 +4949,7 @@
                   "SerializeProperty": "=申込内容_詳細_申込事業者用!CR32"
                 },
                 "TargetCell": {
-                  "SerializeProperty": "=担当者検索!担当者ID"
+                  "SerializeProperty": "=担当者検索_申込事業者用!担当者ID"
                 }
               },
               {
@@ -5106,15 +4958,16 @@
                   "SerializeProperty": "=申込内容_詳細_申込事業者用!T28"
                 },
                 "TargetCell": {
-                  "SerializeProperty": "=担当者検索!担当者名"
+                  "SerializeProperty": "=担当者検索_申込事業者用!担当者名"
                 }
               }
-            ]
+            ],
+            "LoadBindingDataOption": 2
           }
         ],
         "TemplateKey": "余白2グレー",
         "IsInvisible": true,
-        "ImagePath": "Application/023_edit_3.svg",
+        "ImagePath": "ExpandCollapse/475_expand_3.svg",
         "BuiltIn": true,
         "UseCellForeColor": true
       },
@@ -5146,6 +4999,7 @@
             ]
           }
         ],
+        "Size": 14,
         "TemplateKey": "余白2グレー",
         "ImagePath": "Application/034_close_delete_2.svg",
         "BuiltIn": true,
@@ -5187,24 +5041,19 @@
         "CommandList": [
           {
             "$type": "Forguncy.Model.ShowPopupCommand, ServerDesignerCommon",
-            "PageName": "担当者検索",
+            "PopupDisplayMode": 1,
+            "Placement": {
+              "SerializeProperty": "=申込内容_詳細_申込事業者用!AP28"
+            },
+            "PageName": "担当者検索_申込事業者用",
             "PassValues": [
               {
                 "Source": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=申込内容_詳細_申込事業者用!CR12"
+                  "SerializeProperty": "=申込内容_詳細_申込事業者用!$CR$12"
                 },
                 "TargetCell": {
-                  "SerializeProperty": "=担当者検索!顧客ID"
-                }
-              },
-              {
-                "Source": {
-                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=申込内容_詳細_申込事業者用!N19"
-                },
-                "TargetCell": {
-                  "SerializeProperty": "=担当者検索!顧客略称名"
+                  "SerializeProperty": "=担当者検索_申込事業者用!顧客ID"
                 }
               },
               {
@@ -5213,7 +5062,7 @@
                   "SerializeProperty": "=申込内容_詳細_申込事業者用!CR33"
                 },
                 "TargetCell": {
-                  "SerializeProperty": "=担当者検索!担当者ID"
+                  "SerializeProperty": "=担当者検索_申込事業者用!担当者ID"
                 }
               },
               {
@@ -5222,15 +5071,16 @@
                   "SerializeProperty": "=申込内容_詳細_申込事業者用!AP28"
                 },
                 "TargetCell": {
-                  "SerializeProperty": "=担当者検索!担当者名"
+                  "SerializeProperty": "=担当者検索_申込事業者用!担当者名"
                 }
               }
-            ]
+            ],
+            "LoadBindingDataOption": 2
           }
         ],
         "TemplateKey": "余白2グレー",
         "IsInvisible": true,
-        "ImagePath": "Application/023_edit_3.svg",
+        "ImagePath": "ExpandCollapse/475_expand_3.svg",
         "BuiltIn": true,
         "UseCellForeColor": true
       },
@@ -5262,6 +5112,7 @@
             ]
           }
         ],
+        "Size": 14,
         "TemplateKey": "余白2グレー",
         "ImagePath": "Application/034_close_delete_2.svg",
         "BuiltIn": true,
@@ -5303,24 +5154,19 @@
         "CommandList": [
           {
             "$type": "Forguncy.Model.ShowPopupCommand, ServerDesignerCommon",
-            "PageName": "担当者検索",
+            "PopupDisplayMode": 1,
+            "Placement": {
+              "SerializeProperty": "=申込内容_詳細_申込事業者用!BL28"
+            },
+            "PageName": "担当者検索_申込事業者用",
             "PassValues": [
               {
                 "Source": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=申込内容_詳細_申込事業者用!CR12"
+                  "SerializeProperty": "=申込内容_詳細_申込事業者用!$CR$12"
                 },
                 "TargetCell": {
-                  "SerializeProperty": "=担当者検索!顧客ID"
-                }
-              },
-              {
-                "Source": {
-                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=申込内容_詳細_申込事業者用!N19"
-                },
-                "TargetCell": {
-                  "SerializeProperty": "=担当者検索!顧客略称名"
+                  "SerializeProperty": "=担当者検索_申込事業者用!顧客ID"
                 }
               },
               {
@@ -5329,7 +5175,7 @@
                   "SerializeProperty": "=申込内容_詳細_申込事業者用!CR34"
                 },
                 "TargetCell": {
-                  "SerializeProperty": "=担当者検索!担当者ID"
+                  "SerializeProperty": "=担当者検索_申込事業者用!担当者ID"
                 }
               },
               {
@@ -5338,15 +5184,16 @@
                   "SerializeProperty": "=申込内容_詳細_申込事業者用!BL28"
                 },
                 "TargetCell": {
-                  "SerializeProperty": "=担当者検索!担当者名"
+                  "SerializeProperty": "=担当者検索_申込事業者用!担当者名"
                 }
               }
-            ]
+            ],
+            "LoadBindingDataOption": 2
           }
         ],
         "TemplateKey": "余白2グレー",
         "IsInvisible": true,
-        "ImagePath": "Application/023_edit_3.svg",
+        "ImagePath": "ExpandCollapse/475_expand_3.svg",
         "BuiltIn": true,
         "UseCellForeColor": true
       },
@@ -5378,6 +5225,7 @@
             ]
           }
         ],
+        "Size": 14,
         "TemplateKey": "余白2グレー",
         "ImagePath": "Application/034_close_delete_2.svg",
         "BuiltIn": true,
@@ -5419,24 +5267,19 @@
         "CommandList": [
           {
             "$type": "Forguncy.Model.ShowPopupCommand, ServerDesignerCommon",
-            "PageName": "担当者検索",
+            "PopupDisplayMode": 1,
+            "Placement": {
+              "SerializeProperty": "=申込内容_詳細_申込事業者用!T30"
+            },
+            "PageName": "担当者検索_申込事業者用",
             "PassValues": [
               {
                 "Source": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=申込内容_詳細_申込事業者用!CR12"
+                  "SerializeProperty": "=申込内容_詳細_申込事業者用!$CR$12"
                 },
                 "TargetCell": {
-                  "SerializeProperty": "=担当者検索!顧客ID"
-                }
-              },
-              {
-                "Source": {
-                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=申込内容_詳細_申込事業者用!N19"
-                },
-                "TargetCell": {
-                  "SerializeProperty": "=担当者検索!顧客略称名"
+                  "SerializeProperty": "=担当者検索_申込事業者用!顧客ID"
                 }
               },
               {
@@ -5445,7 +5288,7 @@
                   "SerializeProperty": "=申込内容_詳細_申込事業者用!DB20"
                 },
                 "TargetCell": {
-                  "SerializeProperty": "=担当者検索!担当者ID"
+                  "SerializeProperty": "=担当者検索_申込事業者用!担当者ID"
                 }
               },
               {
@@ -5454,15 +5297,16 @@
                   "SerializeProperty": "=申込内容_詳細_申込事業者用!T30"
                 },
                 "TargetCell": {
-                  "SerializeProperty": "=担当者検索!担当者名"
+                  "SerializeProperty": "=担当者検索_申込事業者用!担当者名"
                 }
               }
-            ]
+            ],
+            "LoadBindingDataOption": 2
           }
         ],
         "TemplateKey": "余白2グレー",
         "IsInvisible": true,
-        "ImagePath": "Application/023_edit_3.svg",
+        "ImagePath": "ExpandCollapse/475_expand_3.svg",
         "BuiltIn": true,
         "UseCellForeColor": true
       },
@@ -5494,6 +5338,7 @@
             ]
           }
         ],
+        "Size": 14,
         "TemplateKey": "余白2グレー",
         "ImagePath": "Application/034_close_delete_2.svg",
         "BuiltIn": true,
@@ -5535,24 +5380,19 @@
         "CommandList": [
           {
             "$type": "Forguncy.Model.ShowPopupCommand, ServerDesignerCommon",
-            "PageName": "担当者検索",
+            "PopupDisplayMode": 1,
+            "Placement": {
+              "SerializeProperty": "=申込内容_詳細_申込事業者用!AP30"
+            },
+            "PageName": "担当者検索_申込事業者用",
             "PassValues": [
               {
                 "Source": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=申込内容_詳細_申込事業者用!CR12"
+                  "SerializeProperty": "=申込内容_詳細_申込事業者用!$CR$12"
                 },
                 "TargetCell": {
-                  "SerializeProperty": "=担当者検索!顧客ID"
-                }
-              },
-              {
-                "Source": {
-                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=申込内容_詳細_申込事業者用!N19"
-                },
-                "TargetCell": {
-                  "SerializeProperty": "=担当者検索!顧客略称名"
+                  "SerializeProperty": "=担当者検索_申込事業者用!顧客ID"
                 }
               },
               {
@@ -5561,7 +5401,7 @@
                   "SerializeProperty": "=申込内容_詳細_申込事業者用!DB21"
                 },
                 "TargetCell": {
-                  "SerializeProperty": "=担当者検索!担当者ID"
+                  "SerializeProperty": "=担当者検索_申込事業者用!担当者ID"
                 }
               },
               {
@@ -5570,15 +5410,16 @@
                   "SerializeProperty": "=申込内容_詳細_申込事業者用!AP30"
                 },
                 "TargetCell": {
-                  "SerializeProperty": "=担当者検索!担当者名"
+                  "SerializeProperty": "=担当者検索_申込事業者用!担当者名"
                 }
               }
-            ]
+            ],
+            "LoadBindingDataOption": 2
           }
         ],
         "TemplateKey": "余白2グレー",
         "IsInvisible": true,
-        "ImagePath": "Application/023_edit_3.svg",
+        "ImagePath": "ExpandCollapse/475_expand_3.svg",
         "BuiltIn": true,
         "UseCellForeColor": true
       },
@@ -5610,6 +5451,7 @@
             ]
           }
         ],
+        "Size": 14,
         "TemplateKey": "余白2グレー",
         "ImagePath": "Application/034_close_delete_2.svg",
         "BuiltIn": true,
@@ -5651,24 +5493,19 @@
         "CommandList": [
           {
             "$type": "Forguncy.Model.ShowPopupCommand, ServerDesignerCommon",
-            "PageName": "担当者検索",
+            "PopupDisplayMode": 1,
+            "Placement": {
+              "SerializeProperty": "=申込内容_詳細_申込事業者用!BL30"
+            },
+            "PageName": "担当者検索_申込事業者用",
             "PassValues": [
               {
                 "Source": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=申込内容_詳細_申込事業者用!CR12"
+                  "SerializeProperty": "=申込内容_詳細_申込事業者用!$CR$12"
                 },
                 "TargetCell": {
-                  "SerializeProperty": "=担当者検索!顧客ID"
-                }
-              },
-              {
-                "Source": {
-                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=申込内容_詳細_申込事業者用!N19"
-                },
-                "TargetCell": {
-                  "SerializeProperty": "=担当者検索!顧客略称名"
+                  "SerializeProperty": "=担当者検索_申込事業者用!顧客ID"
                 }
               },
               {
@@ -5677,7 +5514,7 @@
                   "SerializeProperty": "=申込内容_詳細_申込事業者用!DB22"
                 },
                 "TargetCell": {
-                  "SerializeProperty": "=担当者検索!担当者ID"
+                  "SerializeProperty": "=担当者検索_申込事業者用!担当者ID"
                 }
               },
               {
@@ -5686,15 +5523,16 @@
                   "SerializeProperty": "=申込内容_詳細_申込事業者用!BL30"
                 },
                 "TargetCell": {
-                  "SerializeProperty": "=担当者検索!担当者名"
+                  "SerializeProperty": "=担当者検索_申込事業者用!担当者名"
                 }
               }
-            ]
+            ],
+            "LoadBindingDataOption": 2
           }
         ],
         "TemplateKey": "余白2グレー",
         "IsInvisible": true,
-        "ImagePath": "Application/023_edit_3.svg",
+        "ImagePath": "ExpandCollapse/475_expand_3.svg",
         "BuiltIn": true,
         "UseCellForeColor": true
       },
@@ -5726,6 +5564,7 @@
             ]
           }
         ],
+        "Size": 14,
         "TemplateKey": "余白2グレー",
         "ImagePath": "Application/034_close_delete_2.svg",
         "BuiltIn": true,
@@ -5800,24 +5639,19 @@
         "CommandList": [
           {
             "$type": "Forguncy.Model.ShowPopupCommand, ServerDesignerCommon",
-            "PageName": "担当者検索",
+            "PopupDisplayMode": 1,
+            "Placement": {
+              "SerializeProperty": "=申込内容_詳細_申込事業者用!T32"
+            },
+            "PageName": "担当者検索_申込事業者用",
             "PassValues": [
               {
                 "Source": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=申込内容_詳細_申込事業者用!CR12"
+                  "SerializeProperty": "=申込内容_詳細_申込事業者用!$CR$12"
                 },
                 "TargetCell": {
-                  "SerializeProperty": "=担当者検索!顧客ID"
-                }
-              },
-              {
-                "Source": {
-                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=申込内容_詳細_申込事業者用!N19"
-                },
-                "TargetCell": {
-                  "SerializeProperty": "=担当者検索!顧客略称名"
+                  "SerializeProperty": "=担当者検索_申込事業者用!顧客ID"
                 }
               },
               {
@@ -5826,7 +5660,7 @@
                   "SerializeProperty": "=申込内容_詳細_申込事業者用!DB23"
                 },
                 "TargetCell": {
-                  "SerializeProperty": "=担当者検索!担当者ID"
+                  "SerializeProperty": "=担当者検索_申込事業者用!担当者ID"
                 }
               },
               {
@@ -5835,15 +5669,16 @@
                   "SerializeProperty": "=申込内容_詳細_申込事業者用!T32"
                 },
                 "TargetCell": {
-                  "SerializeProperty": "=担当者検索!担当者名"
+                  "SerializeProperty": "=担当者検索_申込事業者用!担当者名"
                 }
               }
-            ]
+            ],
+            "LoadBindingDataOption": 2
           }
         ],
         "TemplateKey": "余白2グレー",
         "IsInvisible": true,
-        "ImagePath": "Application/023_edit_3.svg",
+        "ImagePath": "ExpandCollapse/475_expand_3.svg",
         "BuiltIn": true,
         "UseCellForeColor": true
       },
@@ -5875,6 +5710,7 @@
             ]
           }
         ],
+        "Size": 14,
         "TemplateKey": "余白2グレー",
         "ImagePath": "Application/034_close_delete_2.svg",
         "BuiltIn": true,
@@ -5916,24 +5752,19 @@
         "CommandList": [
           {
             "$type": "Forguncy.Model.ShowPopupCommand, ServerDesignerCommon",
-            "PageName": "担当者検索",
+            "PopupDisplayMode": 1,
+            "Placement": {
+              "SerializeProperty": "=申込内容_詳細_申込事業者用!AP32"
+            },
+            "PageName": "担当者検索_申込事業者用",
             "PassValues": [
               {
                 "Source": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=申込内容_詳細_申込事業者用!CR12"
+                  "SerializeProperty": "=申込内容_詳細_申込事業者用!$CR$12"
                 },
                 "TargetCell": {
-                  "SerializeProperty": "=担当者検索!顧客ID"
-                }
-              },
-              {
-                "Source": {
-                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=申込内容_詳細_申込事業者用!N19"
-                },
-                "TargetCell": {
-                  "SerializeProperty": "=担当者検索!顧客略称名"
+                  "SerializeProperty": "=担当者検索_申込事業者用!顧客ID"
                 }
               },
               {
@@ -5942,7 +5773,7 @@
                   "SerializeProperty": "=申込内容_詳細_申込事業者用!DB24"
                 },
                 "TargetCell": {
-                  "SerializeProperty": "=担当者検索!担当者ID"
+                  "SerializeProperty": "=担当者検索_申込事業者用!担当者ID"
                 }
               },
               {
@@ -5951,15 +5782,16 @@
                   "SerializeProperty": "=申込内容_詳細_申込事業者用!AP32"
                 },
                 "TargetCell": {
-                  "SerializeProperty": "=担当者検索!担当者名"
+                  "SerializeProperty": "=担当者検索_申込事業者用!担当者名"
                 }
               }
-            ]
+            ],
+            "LoadBindingDataOption": 2
           }
         ],
         "TemplateKey": "余白2グレー",
         "IsInvisible": true,
-        "ImagePath": "Application/023_edit_3.svg",
+        "ImagePath": "ExpandCollapse/475_expand_3.svg",
         "BuiltIn": true,
         "UseCellForeColor": true
       },
@@ -5991,6 +5823,7 @@
             ]
           }
         ],
+        "Size": 14,
         "TemplateKey": "余白2グレー",
         "ImagePath": "Application/034_close_delete_2.svg",
         "BuiltIn": true,
@@ -6032,15 +5865,19 @@
         "CommandList": [
           {
             "$type": "Forguncy.Model.ShowPopupCommand, ServerDesignerCommon",
-            "PageName": "担当者検索",
+            "PopupDisplayMode": 1,
+            "Placement": {
+              "SerializeProperty": "=申込内容_詳細_申込事業者用!BL32"
+            },
+            "PageName": "担当者検索_申込事業者用",
             "PassValues": [
               {
                 "Source": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=申込内容_詳細_申込事業者用!CR12"
+                  "SerializeProperty": "=申込内容_詳細_申込事業者用!$CR$12"
                 },
                 "TargetCell": {
-                  "SerializeProperty": "=担当者検索!顧客ID"
+                  "SerializeProperty": "=担当者検索_申込事業者用!顧客ID"
                 }
               },
               {
@@ -6049,7 +5886,7 @@
                   "SerializeProperty": "=申込内容_詳細_申込事業者用!DB25"
                 },
                 "TargetCell": {
-                  "SerializeProperty": "=担当者検索!担当者ID"
+                  "SerializeProperty": "=担当者検索_申込事業者用!担当者ID"
                 }
               },
               {
@@ -6058,24 +5895,16 @@
                   "SerializeProperty": "=申込内容_詳細_申込事業者用!BL32"
                 },
                 "TargetCell": {
-                  "SerializeProperty": "=担当者検索!担当者名"
-                }
-              },
-              {
-                "Source": {
-                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=申込内容_詳細_申込事業者用!N19"
-                },
-                "TargetCell": {
-                  "SerializeProperty": "=担当者検索!顧客略称名"
+                  "SerializeProperty": "=担当者検索_申込事業者用!担当者名"
                 }
               }
-            ]
+            ],
+            "LoadBindingDataOption": 2
           }
         ],
         "TemplateKey": "余白2グレー",
         "IsInvisible": true,
-        "ImagePath": "Application/023_edit_3.svg",
+        "ImagePath": "ExpandCollapse/475_expand_3.svg",
         "BuiltIn": true,
         "UseCellForeColor": true
       },
@@ -6107,6 +5936,7 @@
             ]
           }
         ],
+        "Size": 14,
         "TemplateKey": "余白2グレー",
         "ImagePath": "Application/034_close_delete_2.svg",
         "BuiltIn": true,
@@ -6398,7 +6228,7 @@
                 },
                 "Value": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=申込内容_詳細_申込事業者用!CR38"
+                  "SerializeProperty": "=申込内容_詳細_申込事業者用!元_物件名カナ"
                 }
               },
               {
@@ -6408,7 +6238,7 @@
                 },
                 "Value": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=申込内容_詳細_申込事業者用!CC40"
+                  "SerializeProperty": "=申込内容_詳細_申込事業者用!元_都道府県名"
                 }
               },
               {
@@ -6418,7 +6248,7 @@
                 },
                 "Value": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=申込内容_詳細_申込事業者用!CH40"
+                  "SerializeProperty": "=申込内容_詳細_申込事業者用!元_市区郡名"
                 }
               },
               {
@@ -6428,7 +6258,7 @@
                 },
                 "Value": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=申込内容_詳細_申込事業者用!CM40"
+                  "SerializeProperty": "=申込内容_詳細_申込事業者用!元_町名番地"
                 }
               },
               {
@@ -6438,27 +6268,37 @@
                 },
                 "Value": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=申込内容_詳細_申込事業者用!CC42"
+                  "SerializeProperty": "=申込内容_詳細_申込事業者用!元_緯度"
                 }
               },
               {
                 "TargetCells": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=申込内容_詳細_申込事業者用!AR46"
+                  "SerializeProperty": "=申込内容_詳細_申込事業者用!AT46"
                 },
                 "Value": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=申込内容_詳細_申込事業者用!CH42"
+                  "SerializeProperty": "=申込内容_詳細_申込事業者用!元_経度"
                 }
               },
               {
                 "TargetCells": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=申込内容_詳細_申込事業者用!N48"
+                  "SerializeProperty": "=申込内容_詳細_申込事業者用!V48"
                 },
                 "Value": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=申込内容_詳細_申込事業者用!CM42"
+                  "SerializeProperty": "=申込内容_詳細_申込事業者用!元_お客様管理番号"
+                }
+              },
+              {
+                "TargetCells": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=申込内容_詳細_申込事業者用!AT48"
+                },
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=申込内容_詳細_申込事業者用!元_解析保証調査実施日"
                 }
               }
             ]
@@ -6649,6 +6489,13 @@
         "GUID": "365b3cd9-e3b8-4adc-b653-d408cd7a25ca"
       }
     },
+    "41,95": {
+      "BindingInfo": {
+        "TableName": "t_object_order",
+        "ColumnName": "analysis_warranty_survey_date",
+        "GUID": "5bee8c65-9e17-4434-acbe-b6f21a2f6d79"
+      }
+    },
     "45,21": {
       "BindingInfo": {
         "TableName": "t_object_order",
@@ -6669,7 +6516,7 @@
         "42043640-e117-4c28-a87a-f71dfea3b953"
       ]
     },
-    "45,43": {
+    "45,45": {
       "BindingInfo": {
         "TableName": "t_object_order",
         "ColumnName": "object_id",
@@ -6805,7 +6652,7 @@
                     ]
                   }
                 ],
-                "ID": "708a4d51-506c-4e0d-84d5-fd071ebe8d77"
+                "ID": "36af08f6-85e0-4149-8799-b55a2281b2db"
               }
             ]
           }
@@ -7073,7 +6920,7 @@
                     ]
                   }
                 ],
-                "ID": "a75f87b9-e22c-4483-a6c6-4afbfa212422"
+                "ID": "3f9a9545-5c5d-452a-a7a7-d967d102b448"
               }
             ]
           }
@@ -7121,7 +6968,7 @@
         }
       }
     },
-    "47,13": {
+    "47,21": {
       "BindingInfo": {
         "TableName": "t_object_order",
         "ColumnName": "customer_number",
@@ -7138,6 +6985,27 @@
       },
       "RulesGuidList": [
         "fbee00bd-3985-4235-a84b-8a2d9e6ab6ad"
+      ]
+    },
+    "47,37": {
+      "RulesGuidList": [
+        "1ebd0197-2034-4e60-8f55-06f451657b7d"
+      ]
+    },
+    "47,45": {
+      "BindingInfo": {
+        "TableName": "t_object_order",
+        "ColumnName": "analysis_warranty_survey_date",
+        "GUID": "8846a3fb-ee2c-4daa-b634-c6ec37097073"
+      },
+      "CellType": {
+        "$type": "Forguncy.DateCellType, ServerDesignerCommon",
+        "ShowCalendarScrollBar": true,
+        "TemplateKey": "_RS_LightLine_Translucent_SmallRoundCorner_Normal1"
+      },
+      "RulesGuidList": [
+        "af78dcb6-68cc-4b69-a48a-489adbe61892",
+        "c70c5dae-7cef-4298-87bd-e282098310af"
       ]
     },
     "47,90": {
@@ -7474,7 +7342,7 @@
                             ]
                           }
                         ],
-                        "ID": "719d983a-0ac1-4040-9b01-920a024f8e55"
+                        "ID": "5bd7f554-9bdb-46f3-9032-c74f7a4fe678"
                       },
                       {
                         "CommandList": [
@@ -7543,12 +7411,12 @@
                             "UpdateRowType": 2
                           }
                         ],
-                        "ID": "883d85ec-b65b-4e3f-bd86-b4e2863c9bd3"
+                        "ID": "24aea044-6a20-4c17-853d-53a9143814dd"
                       }
                     ]
                   }
                 ],
-                "ID": "12fa31bd-4db8-409e-b7ae-d5a0ddc27c57"
+                "ID": "d481338d-b5a4-4751-a134-4883ca898491"
               }
             ]
           }
@@ -7623,7 +7491,7 @@
               "ColumnBindingInfo": {
                 "TableName": "t_object_order_product",
                 "ColumnName": "object_order_id",
-                "GUID": "9856076d-bebe-47a6-9aa9-58ae20e75bbf"
+                "GUID": "a4cead9e-db50-4a68-86d3-7c79f3c3fbb9"
               },
               "Value": {
                 "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
@@ -7635,7 +7503,7 @@
               "ColumnBindingInfo": {
                 "TableName": "t_object_order_product",
                 "ColumnName": "product_order_type",
-                "GUID": "64a5abe4-9fba-4c45-89a4-a2da4e1b3385"
+                "GUID": "7b2c6ff1-f9fd-44ae-9d38-17cf9a86b37f"
               },
               "Value": "1"
             }
@@ -7666,7 +7534,7 @@
               "ColumnBindingInfo": {
                 "TableName": "v_object_order_product",
                 "ColumnName": "object_order_id",
-                "GUID": "8e4bce6b-7149-4573-8a1d-3554d5834199"
+                "GUID": "78049e23-5767-4be1-8e71-dd7b7fcf5632"
               },
               "Value": {
                 "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
@@ -7678,7 +7546,7 @@
               "ColumnBindingInfo": {
                 "TableName": "v_object_order_product",
                 "ColumnName": "product_order_type",
-                "GUID": "2c4dc87c-692c-4f39-bd1d-570942ff0215"
+                "GUID": "401d2e25-75c1-495b-8dcb-b56921a2bd71"
               },
               "Value": "2"
             }
@@ -7913,6 +7781,14 @@
               "ShareCommandContainerID": "976c250e-e196-48d5-a8e3-b1caf8616b8e"
             },
             "Params": [
+              {
+                "ParamReferObject": {
+                  "ParamID": "ac8c4360-f67a-4e64-a1da-3e3c06f8b888",
+                  "ShareCommandContainerReferObject": {
+                    "ShareCommandContainerID": "976c250e-e196-48d5-a8e3-b1caf8616b8e"
+                  }
+                }
+              },
               {
                 "ParamReferObject": {
                   "ParamID": "aa6e73e9-bca3-4873-9946-a91eacc4d53d",
@@ -8497,6 +8373,94 @@
               },
               {
                 "ParamReferObject": {
+                  "ParamID": "d78d4c6e-797e-4259-ae51-1eea52945b3e",
+                  "ShareCommandContainerReferObject": {
+                    "ShareCommandContainerID": "976c250e-e196-48d5-a8e3-b1caf8616b8e"
+                  }
+                }
+              },
+              {
+                "ParamReferObject": {
+                  "ParamID": "615773dc-44b1-4422-bc82-803e2c0ff791",
+                  "ShareCommandContainerReferObject": {
+                    "ShareCommandContainerID": "976c250e-e196-48d5-a8e3-b1caf8616b8e"
+                  }
+                }
+              },
+              {
+                "ParamReferObject": {
+                  "ParamID": "fcc49d58-493b-4b10-9d08-c81faecda11d",
+                  "ShareCommandContainerReferObject": {
+                    "ShareCommandContainerID": "976c250e-e196-48d5-a8e3-b1caf8616b8e"
+                  }
+                }
+              },
+              {
+                "ParamReferObject": {
+                  "ParamID": "0e8bf24a-06ff-4ef4-ad82-e87571f35e6c",
+                  "ShareCommandContainerReferObject": {
+                    "ShareCommandContainerID": "976c250e-e196-48d5-a8e3-b1caf8616b8e"
+                  }
+                }
+              },
+              {
+                "ParamReferObject": {
+                  "ParamID": "4ac745aa-0984-4f0f-ae2a-0abad97354c8",
+                  "ShareCommandContainerReferObject": {
+                    "ShareCommandContainerID": "976c250e-e196-48d5-a8e3-b1caf8616b8e"
+                  }
+                }
+              },
+              {
+                "ParamReferObject": {
+                  "ParamID": "b79d182f-dc96-4cf4-8a35-b32ef18c4fcf",
+                  "ShareCommandContainerReferObject": {
+                    "ShareCommandContainerID": "976c250e-e196-48d5-a8e3-b1caf8616b8e"
+                  }
+                }
+              },
+              {
+                "ParamReferObject": {
+                  "ParamID": "f033ff8e-462c-4993-a850-3713d41155b6",
+                  "ShareCommandContainerReferObject": {
+                    "ShareCommandContainerID": "976c250e-e196-48d5-a8e3-b1caf8616b8e"
+                  }
+                }
+              },
+              {
+                "ParamReferObject": {
+                  "ParamID": "5d659dd9-0537-4a2c-9554-84a8fa4c9e0c",
+                  "ShareCommandContainerReferObject": {
+                    "ShareCommandContainerID": "976c250e-e196-48d5-a8e3-b1caf8616b8e"
+                  }
+                }
+              },
+              {
+                "ParamReferObject": {
+                  "ParamID": "b63cf697-4125-4574-85d7-1fe10595d829",
+                  "ShareCommandContainerReferObject": {
+                    "ShareCommandContainerID": "976c250e-e196-48d5-a8e3-b1caf8616b8e"
+                  }
+                }
+              },
+              {
+                "ParamReferObject": {
+                  "ParamID": "86638fcc-2d4c-47a0-8411-523b7fadad43",
+                  "ShareCommandContainerReferObject": {
+                    "ShareCommandContainerID": "976c250e-e196-48d5-a8e3-b1caf8616b8e"
+                  }
+                }
+              },
+              {
+                "ParamReferObject": {
+                  "ParamID": "84ca8fa0-788f-4056-9016-e3537727a66b",
+                  "ShareCommandContainerReferObject": {
+                    "ShareCommandContainerID": "976c250e-e196-48d5-a8e3-b1caf8616b8e"
+                  }
+                }
+              },
+              {
+                "ParamReferObject": {
                   "ParamID": "d4c0d55a-fcab-4844-a10f-529589ad2bb5",
                   "ShareCommandContainerReferObject": {
                     "ShareCommandContainerID": "976c250e-e196-48d5-a8e3-b1caf8616b8e"
@@ -8545,7 +8509,7 @@
                     "$type": "Forguncy.Model.StopCommand, ServerDesignerCommon"
                   }
                 ],
-                "ID": "2065e045-531e-4e89-ae28-e9a0c3a30ac7"
+                "ID": "b78521ef-3e73-4032-83ac-0dc9407e18bf"
               }
             ]
           },
@@ -8612,7 +8576,7 @@
                     ]
                   }
                 ],
-                "ID": "91079077-2088-4161-80f6-751ade134a7f"
+                "ID": "d358a2e6-d010-4e04-bc98-a877c00700c9"
               },
               {
                 "CommandList": [
@@ -8629,7 +8593,7 @@
                     ]
                   }
                 ],
-                "ID": "ce1e17f6-ae8b-4032-9887-158a413eb926"
+                "ID": "11b3c8dd-46d1-4180-9431-3c3611c7ca72"
               }
             ],
             "Comments": "申込タイプ変更チェック"
@@ -8760,7 +8724,11 @@
               },
               {
                 "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
-                "ParamName": "P_住宅タイプ"
+                "ParamName": "P_住宅タイプ",
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=申込内容_詳細_申込事業者用!N34"
+                }
               },
               {
                 "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
@@ -8903,12 +8871,16 @@
                 "ParamName": "P_お客様管理番号",
                 "Value": {
                   "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=申込内容_詳細_申込事業者用!N48"
+                  "SerializeProperty": "=申込内容_詳細_申込事業者用!V48"
                 }
               },
               {
                 "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
-                "ParamName": "P_解析保証調査実施日"
+                "ParamName": "P_解析保証調査実施日",
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=申込内容_詳細_申込事業者用!AT48"
+                }
               },
               {
                 "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
@@ -9267,7 +9239,11 @@
               },
               {
                 "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
-                "ParamName": "P_元_解析保証調査実施日"
+                "ParamName": "P_元_解析保証調査実施日",
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=申込内容_詳細_申込事業者用!元_解析保証調査実施日"
+                }
               },
               {
                 "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
@@ -9344,7 +9320,7 @@
                             "LoadBindingDataOption": 1
                           }
                         ],
-                        "ID": "b1656099-2419-4963-898e-217bfd194e9b"
+                        "ID": "31629e6d-5a94-42ec-b72e-459dec0876a0"
                       },
                       {
                         "CommandList": [
@@ -9396,12 +9372,12 @@
                             ]
                           }
                         ],
-                        "ID": "9f676a18-a69d-4ab6-8d7b-b2adb392ad29"
+                        "ID": "e22cb922-4ce6-470a-b5fd-ed5ed528400c"
                       }
                     ]
                   }
                 ],
-                "ID": "e658ed7f-ee8e-4f27-a406-3f9bc4d1da51"
+                "ID": "8e54ed9e-7992-4175-89f6-2a6bdd1fc707"
               },
               {
                 "CommandList": [
@@ -9416,7 +9392,7 @@
                     }
                   }
                 ],
-                "ID": "7e702e2d-5466-47ab-9a04-c39faf7b7a4f"
+                "ID": "1be99412-3acd-4f3a-baca-e42793aee35f"
               }
             ]
           }
@@ -9513,6 +9489,12 @@
         "FontSize": 12.0
       },
       {
+        "Background": 15,
+        "FontFamily": 0,
+        "FontSize": 12.0,
+        "Formatter": 6
+      },
+      {
         "FontFamily": 0,
         "FontSize": 13.333333333333332,
         "Foreground": 1,
@@ -9539,6 +9521,10 @@
       {
         "Background": 18,
         "FontFamily": 0,
+        "FontSize": 12.0
+      },
+      {
+        "Background": 18,
         "FontSize": 12.0
       },
       {
@@ -9604,16 +9590,6 @@
       },
       {
         "FontFamily": 0,
-        "FontWeight": 7,
-        "Formatter": 13,
-        "TextIndent": 4
-      },
-      {
-        "FontFamily": 0,
-        "FontWeight": 7
-      },
-      {
-        "FontFamily": 0,
         "FontSize": 13.333333333333332,
         "Formatter": 6
       },
@@ -9625,6 +9601,12 @@
         "FontSize": 13.333333333333332,
         "Foreground": 21,
         "Underline": false
+      },
+      {
+        "FontFamily": 0,
+        "FontWeight": 7,
+        "Formatter": 13,
+        "TextIndent": 4
       },
       {
         "FontFamily": 0,
@@ -9664,6 +9646,12 @@
       },
       {
         "FontFamily": 0,
+        "HorizontalAlignment": 4
+      },
+      {
+        "FontFamily": 0,
+        "Formatter": 3,
+        "TextIndent": 4,
         "HorizontalAlignment": 4
       },
       {
@@ -10014,6 +10002,8 @@
       "4,126": 16,
       "4,127": 16,
       "4,128": 16,
+      "4,129": 16,
+      "4,130": 17,
       "5,1": 0,
       "5,13": 7,
       "5,14": 4,
@@ -10045,7 +10035,7 @@
       "5,40": 4,
       "5,41": 4,
       "5,42": 4,
-      "5,50": 17,
+      "5,50": 18,
       "5,51": 1,
       "5,52": 1,
       "5,53": 1,
@@ -10054,7 +10044,7 @@
       "5,56": 1,
       "5,57": 1,
       "5,58": 1,
-      "5,60": 18,
+      "5,60": 19,
       "5,61": 4,
       "5,62": 4,
       "5,63": 4,
@@ -10069,18 +10059,20 @@
       "5,72": 4,
       "5,73": 4,
       "5,74": 4,
-      "5,80": 19,
+      "5,80": 20,
       "5,84": 1,
       "5,85": 11,
       "5,86": 5,
       "5,87": 5,
       "5,88": 5,
       "5,90": 12,
-      "5,95": 20,
+      "5,95": 21,
       "5,100": 11,
-      "5,126": 21,
-      "5,127": 21,
-      "5,128": 21,
+      "5,126": 22,
+      "5,127": 22,
+      "5,128": 22,
+      "5,129": 23,
+      "5,130": 23,
       "6,1": 1,
       "6,80": 5,
       "6,81": 5,
@@ -10304,7 +10296,7 @@
       "8,112": 1,
       "8,113": 1,
       "8,114": 1,
-      "8,115": 1,
+      "8,115": 5,
       "8,116": 1,
       "8,117": 1,
       "8,118": 1,
@@ -10338,14 +10330,14 @@
       "9,10": 2,
       "9,11": 1,
       "9,12": 1,
-      "9,13": 22,
+      "9,13": 24,
       "9,29": 1,
       "9,30": 1,
       "9,31": 1,
       "9,32": 1,
-      "9,34": 23,
+      "9,34": 25,
       "9,44": 1,
-      "9,80": 19,
+      "9,80": 20,
       "9,81": 1,
       "9,82": 1,
       "9,83": 1,
@@ -10360,7 +10352,7 @@
       "9,92": 5,
       "9,93": 5,
       "9,94": 1,
-      "9,95": 24,
+      "9,95": 26,
       "9,96": 5,
       "9,97": 5,
       "9,98": 5,
@@ -10370,15 +10362,19 @@
       "9,102": 5,
       "9,103": 5,
       "9,104": 1,
-      "9,105": 25,
+      "9,105": 27,
       "9,109": 1,
       "9,110": 1,
       "9,111": 1,
       "9,112": 1,
       "9,113": 1,
+      "9,115": 11,
+      "9,116": 1,
+      "9,117": 1,
+      "9,118": 1,
       "10,1": 1,
-      "10,34": 23,
-      "10,44": 26,
+      "10,34": 25,
+      "10,44": 28,
       "10,45": 1,
       "10,46": 1,
       "10,47": 1,
@@ -10447,9 +10443,10 @@
       "10,116": 5,
       "10,117": 1,
       "10,118": 1,
+      "10,126": 6,
       "11,1": 1,
-      "11,13": 27,
-      "11,80": 19,
+      "11,13": 29,
+      "11,80": 20,
       "11,81": 1,
       "11,82": 1,
       "11,83": 1,
@@ -10464,7 +10461,7 @@
       "11,92": 5,
       "11,93": 5,
       "11,94": 1,
-      "11,95": 19,
+      "11,95": 20,
       "11,96": 1,
       "11,97": 1,
       "11,98": 5,
@@ -10479,13 +10476,14 @@
       "11,107": 5,
       "11,108": 1,
       "11,109": 1,
-      "11,110": 24,
+      "11,110": 26,
       "11,115": 14,
       "11,116": 1,
       "11,117": 1,
       "11,118": 1,
+      "11,126": 11,
       "12,1": 1,
-      "12,13": 27,
+      "12,13": 29,
       "12,98": 1,
       "12,99": 1,
       "12,100": 1,
@@ -10500,31 +10498,31 @@
       "13,102": 1,
       "13,103": 1,
       "14,1": 1,
-      "14,13": 28,
-      "14,14": 29,
-      "14,19": 22,
+      "14,13": 30,
+      "14,14": 31,
+      "14,19": 24,
       "14,29": 1,
       "14,30": 1,
       "14,31": 1,
       "14,32": 1,
-      "14,35": 30,
-      "14,36": 31,
+      "14,35": 32,
+      "14,36": 33,
       "14,37": 1,
       "14,38": 1,
       "14,39": 1,
       "14,40": 1,
-      "14,41": 22,
+      "14,41": 24,
       "14,51": 1,
       "14,52": 1,
       "14,53": 1,
       "14,54": 1,
-      "14,57": 30,
-      "14,58": 31,
+      "14,57": 32,
+      "14,58": 33,
       "14,59": 1,
       "14,60": 1,
       "14,61": 1,
       "14,62": 1,
-      "14,63": 22,
+      "14,63": 24,
       "14,73": 1,
       "14,74": 1,
       "14,75": 1,
@@ -10562,10 +10560,10 @@
       "14,122": 1,
       "14,123": 5,
       "15,1": 1,
-      "15,13": 32,
-      "15,35": 32,
-      "15,57": 32,
-      "15,80": 33,
+      "15,13": 34,
+      "15,35": 34,
+      "15,57": 34,
+      "15,80": 35,
       "15,85": 11,
       "15,87": 5,
       "15,88": 5,
@@ -10593,35 +10591,35 @@
       "15,122": 12,
       "15,123": 5,
       "16,1": 1,
-      "16,13": 30,
-      "16,14": 31,
+      "16,13": 32,
+      "16,14": 33,
       "16,15": 1,
       "16,16": 1,
       "16,17": 1,
       "16,18": 1,
-      "16,19": 22,
+      "16,19": 24,
       "16,29": 1,
       "16,30": 1,
       "16,31": 1,
       "16,32": 1,
-      "16,35": 30,
-      "16,36": 31,
+      "16,35": 32,
+      "16,36": 33,
       "16,37": 1,
       "16,38": 1,
       "16,39": 1,
       "16,40": 1,
-      "16,41": 22,
+      "16,41": 24,
       "16,51": 1,
       "16,52": 1,
       "16,53": 1,
       "16,54": 1,
-      "16,57": 30,
-      "16,58": 31,
+      "16,57": 32,
+      "16,58": 33,
       "16,59": 1,
       "16,60": 1,
       "16,61": 1,
       "16,62": 1,
-      "16,63": 22,
+      "16,63": 24,
       "16,73": 1,
       "16,74": 1,
       "16,75": 1,
@@ -10644,7 +10642,7 @@
       "16,122": 1,
       "16,123": 5,
       "17,1": 1,
-      "17,95": 34,
+      "17,95": 36,
       "17,97": 12,
       "17,98": 5,
       "17,120": 11,
@@ -10652,11 +10650,56 @@
       "17,122": 12,
       "17,123": 5,
       "18,1": 0,
-      "18,13": 35,
-      "18,64": 1,
-      "18,65": 1,
-      "18,66": 36,
-      "18,67": 1,
+      "18,13": 7,
+      "18,14": 4,
+      "18,15": 4,
+      "18,16": 4,
+      "18,17": 4,
+      "18,18": 4,
+      "18,19": 4,
+      "18,20": 4,
+      "18,21": 4,
+      "18,22": 4,
+      "18,23": 4,
+      "18,24": 4,
+      "18,25": 4,
+      "18,26": 4,
+      "18,27": 4,
+      "18,28": 4,
+      "18,29": 4,
+      "18,30": 4,
+      "18,31": 4,
+      "18,32": 4,
+      "18,33": 4,
+      "18,34": 4,
+      "18,35": 4,
+      "18,36": 4,
+      "18,37": 4,
+      "18,38": 4,
+      "18,39": 4,
+      "18,40": 4,
+      "18,41": 4,
+      "18,42": 4,
+      "18,43": 4,
+      "18,44": 4,
+      "18,45": 4,
+      "18,46": 4,
+      "18,47": 4,
+      "18,48": 4,
+      "18,49": 4,
+      "18,50": 4,
+      "18,51": 4,
+      "18,52": 4,
+      "18,53": 4,
+      "18,54": 4,
+      "18,55": 4,
+      "18,56": 4,
+      "18,57": 4,
+      "18,58": 4,
+      "18,59": 4,
+      "18,60": 4,
+      "18,61": 4,
+      "18,62": 4,
       "18,75": 1,
       "18,76": 1,
       "18,77": 1,
@@ -10780,9 +10823,6 @@
       "20,98": 5,
       "20,104": 6,
       "20,105": 10,
-      "20,106": 5,
-      "20,107": 5,
-      "20,108": 1,
       "20,109": 5,
       "20,110": 11,
       "20,111": 5,
@@ -10839,13 +10879,13 @@
       "21,121": 1,
       "21,122": 12,
       "21,123": 5,
-      "22,1": 31,
-      "22,13": 22,
+      "22,1": 33,
+      "22,13": 24,
       "22,29": 1,
       "22,30": 1,
       "22,31": 1,
       "22,32": 1,
-      "22,34": 23,
+      "22,34": 25,
       "22,35": 1,
       "22,36": 1,
       "22,37": 1,
@@ -10857,9 +10897,6 @@
       "22,44": 1,
       "22,79": 37,
       "22,80": 10,
-      "22,81": 1,
-      "22,82": 1,
-      "22,83": 1,
       "22,84": 1,
       "22,85": 11,
       "22,86": 5,
@@ -10895,24 +10932,24 @@
       "22,121": 1,
       "22,122": 12,
       "22,123": 5,
-      "23,1": 31,
-      "23,13": 22,
-      "23,14": 22,
-      "23,15": 22,
-      "23,16": 22,
-      "23,17": 22,
-      "23,18": 22,
-      "23,19": 22,
-      "23,20": 22,
-      "23,21": 22,
-      "23,22": 22,
-      "23,23": 22,
-      "23,24": 22,
-      "23,25": 22,
-      "23,26": 22,
-      "23,27": 22,
-      "23,28": 22,
-      "23,34": 23,
+      "23,1": 33,
+      "23,13": 24,
+      "23,14": 24,
+      "23,15": 24,
+      "23,16": 24,
+      "23,17": 24,
+      "23,18": 24,
+      "23,19": 24,
+      "23,20": 24,
+      "23,21": 24,
+      "23,22": 24,
+      "23,23": 24,
+      "23,24": 24,
+      "23,25": 24,
+      "23,26": 24,
+      "23,27": 24,
+      "23,28": 24,
+      "23,34": 25,
       "23,35": 1,
       "23,36": 1,
       "23,37": 1,
@@ -10921,7 +10958,7 @@
       "23,40": 1,
       "23,41": 1,
       "23,42": 1,
-      "23,44": 26,
+      "23,44": 28,
       "23,45": 1,
       "23,46": 1,
       "23,47": 1,
@@ -10964,9 +11001,6 @@
       "23,98": 5,
       "23,104": 6,
       "23,105": 10,
-      "23,106": 5,
-      "23,107": 5,
-      "23,108": 5,
       "23,109": 5,
       "23,110": 11,
       "23,111": 5,
@@ -10982,8 +11016,8 @@
       "23,121": 1,
       "23,122": 12,
       "23,123": 5,
-      "24,1": 31,
-      "24,13": 27,
+      "24,1": 33,
+      "24,13": 29,
       "24,39": 1,
       "24,40": 1,
       "24,41": 1,
@@ -11034,8 +11068,8 @@
       "24,121": 1,
       "24,122": 12,
       "24,123": 5,
-      "25,1": 31,
-      "25,13": 27,
+      "25,1": 33,
+      "25,13": 29,
       "25,39": 1,
       "25,40": 1,
       "25,41": 1,
@@ -11060,7 +11094,7 @@
       "25,105": 38,
       "25,106": 38,
       "25,107": 38,
-      "26,1": 31,
+      "26,1": 33,
       "26,13": 39,
       "26,14": 39,
       "26,15": 39,
@@ -11074,9 +11108,9 @@
       "26,23": 39,
       "26,24": 39,
       "26,25": 39,
-      "26,26": 22,
-      "26,27": 22,
-      "26,28": 22,
+      "26,26": 24,
+      "26,27": 24,
+      "26,28": 24,
       "26,39": 1,
       "26,40": 1,
       "26,41": 1,
@@ -11101,36 +11135,36 @@
       "26,105": 38,
       "26,106": 38,
       "26,107": 38,
-      "27,1": 31,
-      "27,13": 30,
-      "27,14": 31,
+      "27,1": 33,
+      "27,13": 32,
+      "27,14": 33,
       "27,15": 1,
       "27,16": 1,
       "27,17": 1,
       "27,18": 1,
-      "27,19": 22,
+      "27,19": 24,
       "27,29": 1,
       "27,30": 1,
       "27,31": 1,
       "27,32": 1,
-      "27,35": 30,
-      "27,36": 31,
+      "27,35": 32,
+      "27,36": 33,
       "27,37": 1,
       "27,38": 1,
       "27,39": 1,
       "27,40": 1,
-      "27,41": 22,
+      "27,41": 24,
       "27,51": 1,
       "27,52": 1,
       "27,53": 1,
       "27,54": 1,
-      "27,57": 30,
-      "27,58": 31,
+      "27,57": 32,
+      "27,58": 33,
       "27,59": 1,
       "27,60": 1,
       "27,61": 1,
       "27,62": 1,
-      "27,63": 22,
+      "27,63": 24,
       "27,73": 1,
       "27,74": 1,
       "27,75": 1,
@@ -11141,24 +11175,24 @@
       "27,105": 38,
       "27,106": 38,
       "27,107": 38,
-      "28,1": 31,
-      "28,13": 22,
-      "28,14": 22,
-      "28,15": 22,
-      "28,16": 22,
-      "28,17": 22,
-      "28,18": 22,
-      "28,19": 22,
-      "28,20": 22,
-      "28,21": 22,
-      "28,22": 22,
-      "28,23": 22,
-      "28,24": 22,
-      "28,25": 22,
-      "28,26": 22,
-      "28,27": 22,
-      "28,28": 22,
-      "28,35": 32,
+      "28,1": 33,
+      "28,13": 24,
+      "28,14": 24,
+      "28,15": 24,
+      "28,16": 24,
+      "28,17": 24,
+      "28,18": 24,
+      "28,19": 24,
+      "28,20": 24,
+      "28,21": 24,
+      "28,22": 24,
+      "28,23": 24,
+      "28,24": 24,
+      "28,25": 24,
+      "28,26": 24,
+      "28,27": 24,
+      "28,28": 24,
+      "28,35": 34,
       "28,39": 1,
       "28,40": 1,
       "28,41": 1,
@@ -11169,7 +11203,7 @@
       "28,46": 1,
       "28,47": 1,
       "28,48": 1,
-      "28,57": 32,
+      "28,57": 34,
       "28,80": 15,
       "28,90": 6,
       "28,91": 5,
@@ -11180,42 +11214,42 @@
       "28,96": 1,
       "28,97": 1,
       "28,98": 5,
-      "29,1": 31,
-      "29,13": 31,
-      "29,14": 31,
+      "29,1": 33,
+      "29,13": 33,
+      "29,14": 33,
       "29,15": 1,
       "29,16": 1,
       "29,17": 1,
       "29,18": 1,
-      "29,19": 22,
+      "29,19": 24,
       "29,29": 1,
       "29,30": 1,
       "29,31": 1,
       "29,32": 1,
-      "29,35": 30,
-      "29,36": 31,
+      "29,35": 32,
+      "29,36": 33,
       "29,37": 1,
       "29,38": 1,
       "29,39": 1,
       "29,40": 1,
-      "29,41": 22,
+      "29,41": 24,
       "29,51": 1,
       "29,52": 1,
       "29,53": 1,
       "29,54": 1,
-      "29,57": 30,
-      "29,58": 31,
+      "29,57": 32,
+      "29,58": 33,
       "29,59": 1,
       "29,60": 1,
       "29,61": 1,
       "29,62": 1,
-      "29,63": 22,
+      "29,63": 24,
       "29,73": 1,
       "29,74": 1,
       "29,75": 1,
       "29,76": 1,
       "29,80": 11,
-      "29,85": 20,
+      "29,85": 21,
       "29,86": 1,
       "29,87": 1,
       "29,88": 1,
@@ -11228,7 +11262,7 @@
       "29,96": 1,
       "29,97": 1,
       "29,98": 5,
-      "30,1": 31,
+      "30,1": 33,
       "30,13": 1,
       "30,14": 1,
       "30,15": 1,
@@ -11251,7 +11285,7 @@
       "30,32": 1,
       "30,33": 1,
       "30,34": 1,
-      "30,35": 26,
+      "30,35": 28,
       "30,36": 1,
       "30,37": 1,
       "30,38": 1,
@@ -11273,7 +11307,7 @@
       "30,54": 1,
       "30,55": 1,
       "30,56": 1,
-      "30,57": 26,
+      "30,57": 28,
       "30,58": 1,
       "30,59": 1,
       "30,60": 1,
@@ -11311,36 +11345,36 @@
       "30,106": 5,
       "30,107": 5,
       "30,108": 1,
-      "31,1": 31,
-      "31,13": 31,
-      "31,14": 31,
+      "31,1": 33,
+      "31,13": 33,
+      "31,14": 33,
       "31,15": 1,
       "31,16": 1,
       "31,17": 1,
       "31,18": 1,
-      "31,19": 22,
+      "31,19": 24,
       "31,29": 1,
       "31,30": 1,
       "31,31": 1,
       "31,32": 1,
-      "31,35": 30,
-      "31,36": 31,
+      "31,35": 32,
+      "31,36": 33,
       "31,37": 1,
       "31,38": 1,
       "31,39": 1,
       "31,40": 1,
-      "31,41": 22,
+      "31,41": 24,
       "31,51": 1,
       "31,52": 1,
       "31,53": 1,
       "31,54": 1,
-      "31,57": 30,
-      "31,58": 31,
+      "31,57": 32,
+      "31,58": 33,
       "31,59": 1,
       "31,60": 1,
       "31,61": 1,
       "31,62": 1,
-      "31,63": 22,
+      "31,63": 24,
       "31,73": 1,
       "31,74": 1,
       "31,75": 1,
@@ -11390,7 +11424,7 @@
       "32,106": 5,
       "32,107": 5,
       "32,108": 1,
-      "33,1": 31,
+      "33,1": 33,
       "33,2": 1,
       "33,3": 1,
       "33,4": 1,
@@ -11466,12 +11500,12 @@
       "34,106": 38,
       "34,107": 38,
       "35,1": 0,
-      "35,13": 35,
-      "35,58": 40,
+      "35,13": 40,
+      "35,58": 41,
       "35,59": 1,
       "35,60": 1,
       "35,61": 1,
-      "35,63": 22,
+      "35,63": 24,
       "35,98": 1,
       "35,99": 1,
       "35,100": 1,
@@ -11506,7 +11540,7 @@
       "36,111": 5,
       "36,112": 1,
       "37,1": 0,
-      "37,13": 41,
+      "37,13": 42,
       "37,80": 11,
       "37,84": 1,
       "37,85": 11,
@@ -11539,14 +11573,14 @@
       "38,93": 5,
       "38,103": 1,
       "39,1": 0,
-      "39,13": 29,
-      "39,14": 29,
-      "39,21": 42,
+      "39,13": 31,
+      "39,14": 31,
+      "39,21": 43,
       "39,33": 1,
       "39,34": 1,
-      "39,37": 29,
-      "39,38": 29,
-      "39,45": 43,
+      "39,37": 31,
+      "39,38": 31,
+      "39,45": 44,
       "39,80": 11,
       "39,84": 1,
       "39,85": 11,
@@ -11568,11 +11602,15 @@
       "40,91": 5,
       "40,92": 5,
       "40,93": 5,
+      "40,95": 6,
+      "40,96": 5,
+      "40,97": 5,
+      "40,98": 5,
       "40,103": 1,
       "41,1": 1,
       "41,13": 0,
       "41,14": 0,
-      "41,21": 43,
+      "41,21": 44,
       "41,80": 11,
       "41,84": 1,
       "41,85": 11,
@@ -11581,6 +11619,10 @@
       "41,91": 5,
       "41,92": 5,
       "41,93": 5,
+      "41,95": 11,
+      "41,96": 1,
+      "41,97": 1,
+      "41,98": 5,
       "41,103": 1,
       "42,1": 1,
       "42,100": 5,
@@ -11588,10 +11630,10 @@
       "42,102": 1,
       "42,103": 5,
       "43,1": 1,
-      "43,13": 44,
-      "43,14": 31,
-      "43,21": 45,
-      "43,72": 46,
+      "43,13": 45,
+      "43,14": 33,
+      "43,21": 46,
+      "43,72": 47,
       "43,90": 6,
       "43,91": 5,
       "43,92": 5,
@@ -11619,22 +11661,35 @@
       "44,111": 5,
       "44,112": 1,
       "45,1": 1,
-      "45,13": 31,
-      "45,14": 31,
-      "45,21": 47,
-      "45,37": 31,
-      "45,38": 31,
+      "45,13": 33,
+      "45,14": 33,
+      "45,21": 48,
+      "45,37": 33,
+      "45,38": 33,
       "45,39": 1,
       "45,40": 1,
       "45,41": 1,
       "45,42": 1,
-      "45,43": 48,
+      "45,45": 49,
+      "45,46": 1,
+      "45,47": 1,
+      "45,48": 1,
+      "45,49": 1,
+      "45,50": 1,
+      "45,51": 1,
+      "45,52": 1,
+      "45,53": 1,
+      "45,54": 1,
+      "45,55": 1,
+      "45,56": 1,
+      "45,57": 1,
+      "45,58": 1,
       "45,74": 1,
       "45,75": 1,
       "45,76": 1,
       "45,80": 15,
       "45,84": 1,
-      "45,85": 19,
+      "45,85": 20,
       "45,89": 1,
       "45,90": 11,
       "45,91": 5,
@@ -11643,7 +11698,7 @@
       "45,94": 1,
       "45,95": 12,
       "45,99": 5,
-      "45,100": 24,
+      "45,100": 26,
       "45,101": 5,
       "45,102": 5,
       "45,103": 5,
@@ -11654,30 +11709,38 @@
       "45,112": 1,
       "46,1": 1,
       "46,80": 15,
-      "46,85": 19,
+      "46,85": 20,
       "46,90": 11,
       "46,91": 5,
       "46,92": 5,
       "46,93": 5,
       "46,95": 12,
-      "46,100": 24,
+      "46,100": 26,
       "46,101": 5,
       "46,102": 5,
       "46,103": 5,
-      "47,1": 31,
-      "47,13": 22,
-      "47,14": 1,
-      "47,15": 1,
-      "47,16": 1,
-      "47,17": 1,
-      "47,18": 1,
-      "47,19": 1,
-      "47,20": 1,
-      "47,21": 1,
-      "47,22": 1,
-      "47,23": 1,
-      "47,24": 1,
-      "47,25": 1,
+      "47,13": 33,
+      "47,21": 24,
+      "47,37": 33,
+      "47,38": 1,
+      "47,39": 1,
+      "47,40": 1,
+      "47,41": 1,
+      "47,42": 1,
+      "47,43": 1,
+      "47,44": 1,
+      "47,45": 50,
+      "47,46": 1,
+      "47,47": 1,
+      "47,48": 1,
+      "47,49": 1,
+      "47,50": 1,
+      "47,51": 1,
+      "47,52": 1,
+      "47,53": 1,
+      "47,54": 1,
+      "47,55": 1,
+      "47,56": 1,
       "47,80": 5,
       "47,85": 38,
       "47,86": 38,
@@ -11694,19 +11757,19 @@
       "48,102": 5,
       "48,103": 5,
       "49,1": 0,
-      "49,13": 31,
-      "49,21": 42,
+      "49,13": 33,
+      "49,21": 43,
       "49,32": 1,
       "49,33": 1,
-      "49,35": 31,
-      "49,43": 42,
+      "49,35": 33,
+      "49,43": 43,
       "49,54": 1,
       "49,55": 1,
-      "49,57": 31,
-      "49,66": 49,
-      "49,72": 50,
+      "49,57": 33,
+      "49,66": 51,
+      "49,72": 52,
       "49,73": 1,
-      "49,75": 51,
+      "49,75": 53,
       "49,76": 1,
       "49,95": 5,
       "49,96": 5,
@@ -11744,71 +11807,71 @@
       "51,111": 5,
       "51,112": 5,
       "51,113": 5,
-      "52,1": 22,
-      "52,13": 52,
-      "52,14": 53,
-      "52,15": 53,
-      "52,16": 53,
-      "52,17": 53,
-      "52,18": 53,
-      "52,19": 53,
-      "52,20": 53,
-      "52,21": 53,
-      "52,22": 53,
-      "52,23": 53,
-      "52,24": 53,
-      "52,25": 53,
-      "52,26": 53,
-      "52,27": 53,
-      "52,28": 53,
-      "52,29": 53,
-      "52,30": 53,
-      "52,31": 53,
-      "52,32": 53,
-      "52,33": 53,
-      "52,34": 53,
-      "52,35": 53,
-      "52,36": 53,
-      "52,37": 53,
-      "52,38": 53,
-      "52,39": 53,
-      "52,40": 53,
-      "52,41": 53,
-      "52,42": 53,
-      "52,43": 53,
-      "52,44": 53,
-      "52,45": 53,
-      "52,46": 53,
-      "52,47": 53,
-      "52,48": 53,
-      "52,49": 54,
-      "52,50": 53,
-      "52,51": 53,
-      "52,52": 53,
-      "52,53": 53,
-      "52,54": 53,
-      "52,55": 53,
-      "52,56": 53,
-      "52,57": 53,
-      "52,58": 55,
-      "52,59": 56,
-      "52,60": 56,
-      "52,61": 56,
-      "52,62": 56,
-      "52,63": 56,
-      "52,64": 52,
-      "52,65": 53,
-      "52,66": 53,
-      "52,67": 53,
-      "52,68": 53,
-      "52,69": 53,
-      "52,70": 53,
-      "52,71": 53,
-      "52,72": 53,
-      "52,73": 57,
-      "52,80": 19,
+      "52,1": 24,
+      "52,13": 54,
+      "52,14": 55,
+      "52,15": 55,
+      "52,16": 55,
+      "52,17": 55,
+      "52,18": 55,
+      "52,19": 55,
+      "52,20": 55,
+      "52,21": 55,
+      "52,22": 55,
+      "52,23": 55,
+      "52,24": 55,
+      "52,25": 55,
+      "52,26": 55,
+      "52,27": 55,
+      "52,28": 55,
+      "52,29": 55,
+      "52,30": 55,
+      "52,31": 55,
+      "52,32": 55,
+      "52,33": 55,
+      "52,34": 55,
+      "52,35": 55,
+      "52,36": 55,
+      "52,37": 55,
+      "52,38": 55,
+      "52,39": 55,
+      "52,40": 55,
+      "52,41": 55,
+      "52,42": 55,
+      "52,43": 55,
+      "52,44": 55,
+      "52,45": 55,
+      "52,46": 55,
+      "52,47": 55,
+      "52,48": 55,
+      "52,49": 56,
+      "52,50": 55,
+      "52,51": 55,
+      "52,52": 55,
+      "52,53": 55,
+      "52,54": 55,
+      "52,55": 55,
+      "52,56": 55,
+      "52,57": 55,
+      "52,58": 57,
+      "52,59": 58,
+      "52,60": 58,
+      "52,61": 58,
+      "52,62": 58,
+      "52,63": 58,
+      "52,64": 54,
+      "52,65": 55,
+      "52,66": 55,
+      "52,67": 55,
+      "52,68": 55,
+      "52,69": 55,
+      "52,70": 55,
+      "52,71": 55,
+      "52,72": 55,
+      "52,73": 59,
+      "52,80": 20,
       "52,85": 11,
-      "52,90": 20,
+      "52,90": 21,
       "52,95": 10,
       "52,96": 5,
       "52,97": 5,
@@ -11829,7 +11892,7 @@
       "52,112": 5,
       "52,113": 5,
       "53,1": 1,
-      "53,13": 58,
+      "53,13": 60,
       "53,14": 4,
       "53,15": 4,
       "53,16": 4,
@@ -11889,7 +11952,7 @@
       "53,70": 4,
       "53,71": 4,
       "53,72": 4,
-      "53,73": 59,
+      "53,73": 61,
       "54,1": 1,
       "54,80": 5,
       "54,81": 1,
@@ -11927,74 +11990,74 @@
       "55,96": 5,
       "55,97": 5,
       "55,98": 5,
-      "55,100": 60,
+      "55,100": 62,
       "55,110": 14,
       "55,111": 1,
       "55,112": 1,
-      "56,1": 31,
-      "56,12": 61,
-      "56,13": 62,
-      "56,14": 56,
-      "56,15": 56,
-      "56,16": 56,
-      "56,17": 56,
-      "56,18": 56,
-      "56,19": 56,
-      "56,20": 56,
-      "56,21": 56,
-      "56,22": 56,
-      "56,23": 56,
-      "56,24": 56,
-      "56,25": 56,
-      "56,26": 56,
-      "56,27": 56,
-      "56,28": 56,
-      "56,29": 56,
-      "56,30": 56,
-      "56,31": 56,
-      "56,32": 56,
-      "56,33": 56,
-      "56,34": 53,
-      "56,35": 56,
-      "56,36": 56,
-      "56,37": 56,
-      "56,38": 56,
-      "56,39": 56,
-      "56,40": 56,
-      "56,41": 56,
-      "56,42": 56,
-      "56,43": 56,
-      "56,44": 56,
-      "56,45": 56,
-      "56,46": 56,
-      "56,47": 56,
-      "56,48": 56,
-      "56,49": 54,
-      "56,50": 56,
-      "56,51": 56,
-      "56,52": 56,
-      "56,53": 56,
-      "56,54": 56,
-      "56,55": 56,
-      "56,56": 56,
-      "56,57": 56,
-      "56,58": 55,
-      "56,59": 56,
-      "56,60": 56,
-      "56,61": 56,
-      "56,62": 56,
-      "56,63": 56,
-      "56,64": 54,
-      "56,65": 56,
-      "56,66": 56,
-      "56,67": 56,
-      "56,68": 56,
-      "56,69": 56,
-      "56,70": 56,
-      "56,71": 56,
-      "56,72": 56,
-      "56,73": 56,
-      "56,74": 63,
+      "56,1": 33,
+      "56,12": 63,
+      "56,13": 64,
+      "56,14": 58,
+      "56,15": 58,
+      "56,16": 58,
+      "56,17": 58,
+      "56,18": 58,
+      "56,19": 58,
+      "56,20": 58,
+      "56,21": 58,
+      "56,22": 58,
+      "56,23": 58,
+      "56,24": 58,
+      "56,25": 58,
+      "56,26": 58,
+      "56,27": 58,
+      "56,28": 58,
+      "56,29": 58,
+      "56,30": 58,
+      "56,31": 58,
+      "56,32": 58,
+      "56,33": 58,
+      "56,34": 55,
+      "56,35": 58,
+      "56,36": 58,
+      "56,37": 58,
+      "56,38": 58,
+      "56,39": 58,
+      "56,40": 58,
+      "56,41": 58,
+      "56,42": 58,
+      "56,43": 58,
+      "56,44": 58,
+      "56,45": 58,
+      "56,46": 58,
+      "56,47": 58,
+      "56,48": 58,
+      "56,49": 56,
+      "56,50": 58,
+      "56,51": 58,
+      "56,52": 58,
+      "56,53": 58,
+      "56,54": 58,
+      "56,55": 58,
+      "56,56": 58,
+      "56,57": 58,
+      "56,58": 57,
+      "56,59": 58,
+      "56,60": 58,
+      "56,61": 58,
+      "56,62": 58,
+      "56,63": 58,
+      "56,64": 56,
+      "56,65": 58,
+      "56,66": 58,
+      "56,67": 58,
+      "56,68": 58,
+      "56,69": 58,
+      "56,70": 58,
+      "56,71": 58,
+      "56,72": 58,
+      "56,73": 58,
+      "56,74": 65,
       "56,81": 1,
       "56,82": 5,
       "56,83": 5,
@@ -12011,139 +12074,139 @@
       "56,98": 5,
       "56,100": 6,
       "57,1": 1,
-      "57,12": 61,
-      "57,13": 64,
-      "57,74": 63,
+      "57,12": 63,
+      "57,13": 66,
+      "57,74": 65,
       "57,80": 1,
       "57,81": 1,
       "57,82": 1,
       "57,83": 1,
       "57,84": 1,
-      "57,85": 65,
-      "57,86": 65,
-      "57,87": 65,
+      "57,85": 67,
+      "57,86": 67,
+      "57,87": 67,
       "57,88": 38,
       "57,91": 38,
       "57,92": 38,
       "57,93": 38,
       "57,98": 38,
-      "57,100": 66,
+      "57,100": 68,
       "58,1": 1,
-      "58,13": 67,
-      "58,14": 67,
-      "58,15": 67,
-      "58,16": 67,
-      "58,17": 67,
-      "58,18": 67,
-      "58,19": 67,
-      "58,20": 67,
-      "58,21": 67,
-      "58,22": 67,
-      "58,23": 67,
-      "58,24": 67,
-      "58,25": 67,
-      "58,26": 67,
-      "58,27": 67,
-      "58,28": 67,
-      "58,29": 67,
-      "58,30": 67,
-      "58,31": 67,
-      "58,32": 67,
-      "58,33": 67,
-      "58,34": 67,
-      "58,35": 67,
-      "58,36": 67,
-      "58,37": 67,
-      "58,38": 67,
-      "58,39": 67,
-      "58,40": 67,
-      "58,41": 67,
-      "58,42": 67,
-      "58,43": 67,
-      "58,44": 67,
-      "58,45": 67,
-      "58,46": 67,
-      "58,47": 67,
-      "58,48": 67,
-      "58,49": 67,
-      "58,50": 67,
-      "58,51": 67,
-      "58,52": 67,
-      "58,53": 67,
-      "58,54": 67,
-      "58,55": 67,
-      "58,56": 67,
-      "58,57": 67,
-      "58,58": 67,
-      "58,59": 67,
-      "58,60": 67,
-      "58,61": 67,
-      "58,62": 67,
-      "58,63": 67,
-      "58,64": 67,
-      "58,65": 67,
-      "58,66": 67,
-      "58,67": 67,
-      "58,68": 67,
-      "58,69": 67,
-      "58,70": 67,
-      "58,71": 67,
-      "58,72": 67,
-      "58,73": 67,
-      "58,74": 68,
+      "58,13": 69,
+      "58,14": 69,
+      "58,15": 69,
+      "58,16": 69,
+      "58,17": 69,
+      "58,18": 69,
+      "58,19": 69,
+      "58,20": 69,
+      "58,21": 69,
+      "58,22": 69,
+      "58,23": 69,
+      "58,24": 69,
+      "58,25": 69,
+      "58,26": 69,
+      "58,27": 69,
+      "58,28": 69,
+      "58,29": 69,
+      "58,30": 69,
+      "58,31": 69,
+      "58,32": 69,
+      "58,33": 69,
+      "58,34": 69,
+      "58,35": 69,
+      "58,36": 69,
+      "58,37": 69,
+      "58,38": 69,
+      "58,39": 69,
+      "58,40": 69,
+      "58,41": 69,
+      "58,42": 69,
+      "58,43": 69,
+      "58,44": 69,
+      "58,45": 69,
+      "58,46": 69,
+      "58,47": 69,
+      "58,48": 69,
+      "58,49": 69,
+      "58,50": 69,
+      "58,51": 69,
+      "58,52": 69,
+      "58,53": 69,
+      "58,54": 69,
+      "58,55": 69,
+      "58,56": 69,
+      "58,57": 69,
+      "58,58": 69,
+      "58,59": 69,
+      "58,60": 69,
+      "58,61": 69,
+      "58,62": 69,
+      "58,63": 69,
+      "58,64": 69,
+      "58,65": 69,
+      "58,66": 69,
+      "58,67": 69,
+      "58,68": 69,
+      "58,69": 69,
+      "58,70": 69,
+      "58,71": 69,
+      "58,72": 69,
+      "58,73": 69,
+      "58,74": 70,
       "59,1": 1,
-      "59,13": 31,
-      "59,14": 50,
-      "59,15": 50,
-      "59,16": 50,
+      "59,13": 33,
+      "59,14": 52,
+      "59,15": 52,
+      "59,16": 52,
       "59,17": 1,
       "59,18": 1,
       "59,19": 1,
       "59,20": 1,
       "59,21": 1,
-      "59,22": 69,
-      "59,23": 69,
-      "59,24": 69,
-      "59,25": 69,
-      "59,26": 69,
-      "59,27": 69,
-      "59,28": 69,
-      "59,29": 69,
-      "59,30": 69,
-      "59,31": 69,
-      "59,32": 69,
-      "59,33": 69,
-      "59,34": 69,
-      "59,35": 69,
-      "59,36": 69,
-      "59,37": 69,
-      "59,38": 69,
-      "59,39": 69,
-      "59,40": 69,
-      "59,41": 31,
-      "59,48": 69,
-      "59,49": 69,
-      "59,50": 69,
-      "59,51": 69,
-      "59,52": 69,
-      "59,53": 69,
-      "59,54": 69,
-      "59,55": 69,
-      "59,56": 69,
-      "59,57": 69,
-      "59,58": 69,
-      "59,59": 69,
-      "59,60": 69,
-      "59,61": 69,
-      "59,62": 69,
-      "59,63": 69,
-      "59,65": 70,
-      "59,66": 70,
-      "59,67": 70,
-      "59,68": 70,
-      "59,69": 70,
-      "59,70": 70,
-      "59,71": 50,
+      "59,22": 71,
+      "59,23": 71,
+      "59,24": 71,
+      "59,25": 71,
+      "59,26": 71,
+      "59,27": 71,
+      "59,28": 71,
+      "59,29": 71,
+      "59,30": 71,
+      "59,31": 71,
+      "59,32": 71,
+      "59,33": 71,
+      "59,34": 71,
+      "59,35": 71,
+      "59,36": 71,
+      "59,37": 71,
+      "59,38": 71,
+      "59,39": 71,
+      "59,40": 71,
+      "59,41": 33,
+      "59,48": 71,
+      "59,49": 71,
+      "59,50": 71,
+      "59,51": 71,
+      "59,52": 71,
+      "59,53": 71,
+      "59,54": 71,
+      "59,55": 71,
+      "59,56": 71,
+      "59,57": 71,
+      "59,58": 71,
+      "59,59": 71,
+      "59,60": 71,
+      "59,61": 71,
+      "59,62": 71,
+      "59,63": 71,
+      "59,65": 72,
+      "59,66": 72,
+      "59,67": 72,
+      "59,68": 72,
+      "59,69": 72,
+      "59,70": 72,
+      "59,71": 52,
       "59,72": 1,
       "59,85": 38,
       "59,86": 38,
@@ -12159,8 +12222,8 @@
       "59,110": 6,
       "59,111": 1,
       "59,112": 1,
-      "60,1": 31,
-      "60,13": 71,
+      "60,1": 33,
+      "60,13": 73,
       "60,85": 38,
       "60,86": 38,
       "60,87": 38,
@@ -12186,70 +12249,70 @@
       "61,110": 1,
       "61,111": 1,
       "61,112": 1,
-      "62,13": 71,
-      "62,14": 71,
-      "62,15": 71,
-      "62,16": 71,
-      "62,17": 71,
-      "62,18": 71,
-      "62,19": 71,
-      "62,20": 71,
-      "62,21": 71,
-      "62,22": 71,
-      "62,23": 71,
-      "62,24": 71,
-      "62,25": 71,
-      "62,26": 71,
-      "62,27": 71,
-      "62,28": 71,
-      "62,29": 71,
-      "62,30": 71,
-      "62,31": 71,
-      "62,32": 71,
-      "62,33": 71,
-      "62,34": 71,
-      "62,35": 71,
-      "62,36": 71,
-      "62,37": 71,
-      "62,38": 71,
-      "62,39": 71,
-      "62,40": 71,
-      "62,41": 71,
-      "62,42": 71,
-      "62,43": 71,
-      "62,44": 71,
-      "62,45": 71,
-      "62,46": 71,
-      "62,47": 71,
-      "62,48": 71,
-      "62,49": 71,
-      "62,50": 71,
-      "62,51": 71,
-      "62,52": 71,
-      "62,53": 71,
-      "62,54": 71,
-      "62,55": 71,
-      "62,56": 71,
-      "62,57": 71,
-      "62,58": 71,
-      "62,59": 71,
-      "62,60": 71,
-      "62,61": 71,
-      "62,62": 71,
-      "62,63": 71,
-      "62,64": 71,
-      "62,65": 71,
-      "62,66": 71,
-      "62,67": 71,
-      "62,68": 71,
-      "62,69": 71,
-      "62,70": 71,
-      "62,71": 71,
-      "62,72": 71,
-      "62,73": 71,
-      "62,74": 71,
-      "62,75": 72,
-      "62,76": 72,
+      "62,13": 73,
+      "62,14": 73,
+      "62,15": 73,
+      "62,16": 73,
+      "62,17": 73,
+      "62,18": 73,
+      "62,19": 73,
+      "62,20": 73,
+      "62,21": 73,
+      "62,22": 73,
+      "62,23": 73,
+      "62,24": 73,
+      "62,25": 73,
+      "62,26": 73,
+      "62,27": 73,
+      "62,28": 73,
+      "62,29": 73,
+      "62,30": 73,
+      "62,31": 73,
+      "62,32": 73,
+      "62,33": 73,
+      "62,34": 73,
+      "62,35": 73,
+      "62,36": 73,
+      "62,37": 73,
+      "62,38": 73,
+      "62,39": 73,
+      "62,40": 73,
+      "62,41": 73,
+      "62,42": 73,
+      "62,43": 73,
+      "62,44": 73,
+      "62,45": 73,
+      "62,46": 73,
+      "62,47": 73,
+      "62,48": 73,
+      "62,49": 73,
+      "62,50": 73,
+      "62,51": 73,
+      "62,52": 73,
+      "62,53": 73,
+      "62,54": 73,
+      "62,55": 73,
+      "62,56": 73,
+      "62,57": 73,
+      "62,58": 73,
+      "62,59": 73,
+      "62,60": 73,
+      "62,61": 73,
+      "62,62": 73,
+      "62,63": 73,
+      "62,64": 73,
+      "62,65": 73,
+      "62,66": 73,
+      "62,67": 73,
+      "62,68": 73,
+      "62,69": 73,
+      "62,70": 73,
+      "62,71": 73,
+      "62,72": 73,
+      "62,73": 73,
+      "62,74": 73,
+      "62,75": 74,
+      "62,76": 74,
       "62,85": 38,
       "62,86": 38,
       "62,87": 38,
@@ -12261,68 +12324,68 @@
       "62,110": 1,
       "62,111": 1,
       "62,112": 1,
-      "63,13": 67,
-      "63,14": 67,
-      "63,15": 67,
-      "63,16": 67,
-      "63,17": 67,
-      "63,18": 67,
-      "63,19": 67,
-      "63,20": 67,
-      "63,21": 67,
-      "63,22": 67,
-      "63,23": 67,
-      "63,24": 67,
-      "63,25": 67,
-      "63,26": 67,
-      "63,27": 67,
-      "63,28": 67,
-      "63,29": 67,
-      "63,30": 67,
-      "63,31": 67,
-      "63,32": 67,
-      "63,33": 67,
-      "63,34": 67,
-      "63,35": 67,
-      "63,36": 67,
-      "63,37": 67,
-      "63,38": 67,
-      "63,39": 67,
-      "63,40": 67,
-      "63,41": 67,
-      "63,42": 67,
-      "63,43": 67,
-      "63,44": 67,
-      "63,45": 67,
-      "63,46": 67,
-      "63,47": 67,
-      "63,48": 67,
-      "63,49": 67,
-      "63,50": 67,
-      "63,51": 67,
-      "63,52": 67,
-      "63,53": 67,
-      "63,54": 67,
-      "63,55": 67,
-      "63,56": 67,
-      "63,57": 67,
-      "63,58": 67,
-      "63,59": 67,
-      "63,60": 67,
-      "63,61": 67,
-      "63,62": 67,
-      "63,63": 67,
-      "63,64": 67,
-      "63,65": 67,
-      "63,66": 67,
-      "63,67": 67,
-      "63,68": 67,
-      "63,69": 67,
-      "63,70": 67,
-      "63,71": 67,
-      "63,72": 67,
-      "63,73": 67,
-      "63,74": 67
+      "63,13": 69,
+      "63,14": 69,
+      "63,15": 69,
+      "63,16": 69,
+      "63,17": 69,
+      "63,18": 69,
+      "63,19": 69,
+      "63,20": 69,
+      "63,21": 69,
+      "63,22": 69,
+      "63,23": 69,
+      "63,24": 69,
+      "63,25": 69,
+      "63,26": 69,
+      "63,27": 69,
+      "63,28": 69,
+      "63,29": 69,
+      "63,30": 69,
+      "63,31": 69,
+      "63,32": 69,
+      "63,33": 69,
+      "63,34": 69,
+      "63,35": 69,
+      "63,36": 69,
+      "63,37": 69,
+      "63,38": 69,
+      "63,39": 69,
+      "63,40": 69,
+      "63,41": 69,
+      "63,42": 69,
+      "63,43": 69,
+      "63,44": 69,
+      "63,45": 69,
+      "63,46": 69,
+      "63,47": 69,
+      "63,48": 69,
+      "63,49": 69,
+      "63,50": 69,
+      "63,51": 69,
+      "63,52": 69,
+      "63,53": 69,
+      "63,54": 69,
+      "63,55": 69,
+      "63,56": 69,
+      "63,57": 69,
+      "63,58": 69,
+      "63,59": 69,
+      "63,60": 69,
+      "63,61": 69,
+      "63,62": 69,
+      "63,63": 69,
+      "63,64": 69,
+      "63,65": 69,
+      "63,66": 69,
+      "63,67": 69,
+      "63,68": 69,
+      "63,69": 69,
+      "63,70": 69,
+      "63,71": 69,
+      "63,72": 69,
+      "63,73": 69,
+      "63,74": 69
     },
     "ColStyles": {
       "85": 15,
@@ -12413,8 +12476,6 @@
     "17,97,1,2",
     "17,120,1,2",
     "17,122,1,2",
-    "18,64,1,2",
-    "18,66,1,2",
     "19,80,1,4",
     "19,85,1,4",
     "19,90,1,4",
@@ -12431,7 +12492,6 @@
     "20,90,1,4",
     "20,95,1,2",
     "20,97,1,2",
-    "20,105,1,4",
     "20,110,1,4",
     "20,115,1,4",
     "20,120,1,2",
@@ -12449,7 +12509,6 @@
     "22,13,1,16",
     "22,29,1,2",
     "22,31,1,2",
-    "22,80,1,4",
     "22,85,1,4",
     "22,90,1,4",
     "22,95,1,2",
@@ -12464,7 +12523,6 @@
     "23,90,1,4",
     "23,95,1,2",
     "23,97,1,2",
-    "23,105,1,4",
     "23,110,1,4",
     "23,115,1,4",
     "23,120,1,2",
@@ -12481,7 +12539,6 @@
     "24,122,1,2",
     "27,19,1,10",
     "27,29,1,2",
-    "27,31,1,2",
     "27,41,1,10",
     "27,51,1,2",
     "27,53,1,2",
@@ -12533,7 +12590,6 @@
     "45,110,1,3",
     "46,90,1,4",
     "46,95,1,4",
-    "47,13,1,13",
     "47,90,1,4",
     "49,21,1,11",
     "49,43,1,11",
@@ -12587,7 +12643,6 @@
     "1,13,1,12",
     "37,100,1,4",
     "45,21,1,14",
-    "45,43,1,14",
     "57,80,1,10",
     "57,91,1,8",
     "33,13,1,22",
@@ -12607,7 +12662,16 @@
     "5,60,1,15",
     "3,47,1,12",
     "7,13,1,50",
-    "18,13,1,50"
+    "18,13,1,50",
+    "20,105,1,4",
+    "47,21,1,14",
+    "47,45,1,12",
+    "45,45,1,14",
+    "9,115,1,4",
+    "41,95,1,4",
+    "22,80,1,4",
+    "23,105,1,4",
+    "27,31,1,2"
   ],
   "PageInfo": {
     "$type": "Forguncy.Model.Pages.NormalPage, ServerDesignerCommon",
@@ -12700,7 +12764,7 @@
                 ]
               }
             ],
-            "ID": "e4a6cf2c-66d2-4640-8a84-b199f3b37067"
+            "ID": "dbbb9b07-5486-4c70-b6b9-27800a964e3f"
           }
         ],
         "Comments": "営業設計工務表示"
@@ -12736,7 +12800,7 @@
                 "Comments": "申込事業者名非表示"
               }
             ],
-            "ID": "0f550d8e-54c2-4546-855c-9891c82f7a64"
+            "ID": "be865bcd-852b-4df9-bb72-30f4b1b29d75"
           }
         ]
       },
@@ -12770,7 +12834,7 @@
                 ]
               }
             ],
-            "ID": "cd021393-ce0c-4206-96d3-462edb82f493"
+            "ID": "0cffc989-8a60-4657-abcc-09e1d2c71cb0"
           }
         ],
         "Comments": "建物概要非表示"
@@ -12806,7 +12870,7 @@
                 "Comments": ""
               }
             ],
-            "ID": "6b90d50f-0981-4604-b226-0735b539eb1f"
+            "ID": "de4ee2f5-0136-40d3-998d-c9ec18d33ff5"
           }
         ],
         "Comments": "物件担当者欄非表示"
@@ -12910,7 +12974,7 @@
                 "MethodName": "ExecuteCommand"
               }
             ],
-            "ID": "ad9e0a0e-6ebf-4a2a-8198-ea4705dbab50"
+            "ID": "55efe07a-a251-4d16-afb7-2424b922ce28"
           }
         ],
         "Comments": "申込者追加表示"
@@ -13033,7 +13097,7 @@
                 "MethodName": "ExecuteCommand"
               }
             ],
-            "ID": "23bdd084-a434-4695-89b8-5d89bdb3bbfe"
+            "ID": "7a6579b2-2a06-46f3-80a5-9d80f70df60b"
           }
         ],
         "Comments": "物件担当者追加表示"
@@ -13068,7 +13132,7 @@
                 ]
               }
             ],
-            "ID": "bdfdffec-9692-438e-ac8a-b5aee781fce5"
+            "ID": "9b46f765-30eb-4c30-a142-8107dbbc669f"
           }
         ]
       },
@@ -13102,7 +13166,7 @@
                 ]
               }
             ],
-            "ID": "b7e61387-8528-4800-a8b0-7fd22670f1b5"
+            "ID": "f0c3dda8-9425-44b5-a35d-64527a941dc5"
           }
         ],
         "Comments": "アイダ設計フローの場合"
@@ -13640,38 +13704,6 @@
           },
           "IsDisabled": true,
           "IsInvisible": false,
-          "IsReadOnly": false
-        },
-        {
-          "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
-          "Formula": {
-            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-            "SerializeProperty": "=VALUE(申込内容_詳細_申込事業者用!編集モード)=1"
-          },
-          "Priority": 32,
-          "GUID": "b9caffb2-5503-48c0-af92-e383c8739860",
-          "StyleInfo": {
-            "Underline": null,
-            "Strikethrough": null
-          },
-          "IsDisabled": false,
-          "IsInvisible": false,
-          "IsReadOnly": false
-        },
-        {
-          "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
-          "Formula": {
-            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-            "SerializeProperty": "=VALUE(申込内容_詳細_申込事業者用!編集モード)=0"
-          },
-          "Priority": 33,
-          "GUID": "9df188ba-ab3c-4e00-b4d8-4b60472537f7",
-          "StyleInfo": {
-            "Underline": null,
-            "Strikethrough": null
-          },
-          "IsDisabled": false,
-          "IsInvisible": true,
           "IsReadOnly": false
         },
         {
@@ -14585,6 +14617,54 @@
           "IsDisabled": true,
           "IsInvisible": false,
           "IsReadOnly": false
+        },
+        {
+          "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
+          "Formula": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=申込内容_詳細_申込事業者用!$DW$12=0"
+          },
+          "Priority": 105,
+          "GUID": "1ebd0197-2034-4e60-8f55-06f451657b7d",
+          "StyleInfo": {
+            "Underline": null,
+            "Strikethrough": null
+          },
+          "IsDisabled": false,
+          "IsInvisible": true,
+          "IsReadOnly": false
+        },
+        {
+          "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
+          "Formula": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=VALUE(申込内容_詳細_申込事業者用!編集モード)=0"
+          },
+          "Priority": 1,
+          "GUID": "af78dcb6-68cc-4b69-a48a-489adbe61892",
+          "StyleInfo": {
+            "Underline": null,
+            "Strikethrough": null
+          },
+          "IsDisabled": true,
+          "IsInvisible": false,
+          "IsReadOnly": false
+        },
+        {
+          "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
+          "Formula": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=申込内容_詳細_申込事業者用!$DW$12=0"
+          },
+          "Priority": 106,
+          "GUID": "c70c5dae-7cef-4298-87bd-e282098310af",
+          "StyleInfo": {
+            "Underline": null,
+            "Strikethrough": null
+          },
+          "IsDisabled": false,
+          "IsInvisible": true,
+          "IsReadOnly": false
         }
       ]
     }
@@ -14607,6 +14687,10 @@
       "Formula": "申込内容_詳細_申込事業者用!$CW$32"
     },
     {
+      "Name": "元_解析保証調査実施日",
+      "Formula": "申込内容_詳細_申込事業者用!$CR$42"
+    },
+    {
       "Name": "元_区割名",
       "Formula": "申込内容_詳細_申込事業者用!$CM$38"
     },
@@ -14625,6 +14709,10 @@
     {
       "Name": "元_受付商品ID",
       "Formula": "申込内容_詳細_申込事業者用!$CH$53"
+    },
+    {
+      "Name": "元_住宅タイプ",
+      "Formula": "申込内容_詳細_申込事業者用!$CM$30"
     },
     {
       "Name": "元_住宅事業者ID",
@@ -14773,10 +14861,6 @@
     {
       "Name": "編集モード",
       "Formula": "申込内容_詳細_申込事業者用!$DB$4"
-    },
-    {
-      "Name": "元_住宅タイプ",
-      "Formula": "申込内容_詳細_申込事業者用!$CM$30"
     }
   ]
-}//l0fozn7MfU4Uemwx762YeNXf+mN4a5dx/JFn2P/cL0WFx2Ptn/VX8Prb2SPIb1npZ9aE+LOPxL0tk/JdN5l1iMTHom9gEEeyaX3ytQKVk2KK724Ecv56PHkc8JT6M9OHxcsyJYpu6OZOjDJLI2e93MAbhrtcnPNOpLqIpYfHvaXltOX/HcORTijajIMHbwqJ6/pcSR5geez/mTmvcaRx+JeSqZaJV/QbkQl5Mgs9rmj3SDnbfDA/jLZyXD2L5uFiY8u7kX4srztBmydlNyctUMeXx6ziFsdGihah1VZ9nTw7S9lxp7z9PPcwWXtEMLqgMQlr6jPKHiZ5S1NnT2Y3mZrSZGOzfvQQ/op6i+KIDWitzitVymq8+DesMJv3gIQAfoWuF/rcqCzrdECNybIRc2YJyPbP6O1do+BlSKV6D8eeMRG5qi/aqiIY0P15zffHSPvSObP9TWsvLeJuETogLNk97PO6Ft3au2OOh+qH/NR7umBJFHDDlnpxyz6Xj3SZkVS1dSNPxI0OOLRnBUla3SETWnv90a607PjZu9sqyuLhHg8kVO9k1XvEAmh5NIFa75yS36Il6f2GqbzKBHxbGKaicD01Kt/m9R2CMRbncD0tX7g3BqmPEGyNqcJZB/x2O3dpIR2xWqRS2rTAO/R0qONzw9sh5dgusPceVskmOaeBMgo5vi+w8RslZhffyjmmYVRPFLCF5znAoIPDvbe3VL8DNvCUliZqRqKmJAroVPhKeXJ5AGPqKqUsNPjlE9Taq1OOWnhEEkzUKn8duwcwZH8JF/sJcH6JeP3J245HMhgAsVRrg9N0S7ARkSiStPI60B9JRs0YllnCM7v/9Vk6mlcv5yy8rqW4e+5JoUSY+c2MIKJnmxUeXcSaZRHhe07h7WrePFbdL8TIy6IjPLfADA==|920
+}//Yst5uxPyL3NIU4VO0+AxzCEGCSae2Q/kJLm9eN5TBSVu6ju2g54KiIqIRhbsEy5ETBW83ojSLAg6hFjLFBaWqtuqC08XY/o37YMNx35yvBoCpCF6hHts/bWuNYx49XBTyqdEB/2FTYDac/V3ekEaEU3CtTTf28aRYVqf4IePKQqCwBfTJQ5LlLLNS93KnKxqFPz6Rir8PjPjE5mKFSe5nxyEF+cGxJ/TXET24rPOLt9rtdKAr0Ezxhuu+KGGHARzbMmpN7GXKPsmiMHdK70/kWivWsg1Gv8VxK7LQ+CzDGy/aGsJkFFn45GSKR0nPHWjCKx9390ZFdup0deQaReDOqXtuYosbzqyf0UfIHA8Kzmqf2r2MKx2TuFf6ObzpXlvqG3SDs1USiP2EpAkAtoU0YXXkU0gtVNh0JfrkrAUgk6Udd1dvAbbP5K8/prmzPxXjlykAkfKt+nKFRpTINQB0xCbo3bToCG2deu9NAf5hmX9sKTQg6Xq+HVLcpJCMIzkwipYZz37HGJVUv1UR6yeqRLr9czCo+QLKMhiVNIpzCiMfBt0s9ee73Uo56CuFtWvuPotjY0gRQ1j2lp5BIuxYZbsuCA9XJ2+Mx991K8e0sFkUDPPPXWA+IT2pULXtCfaxnE+qoKn8orpdgefkfvjW8QnLA3JJF/UZEx/Jvc4FQWcmgXen0nxoUGHlcmi5E2QZji5pmsvhkIz1PZp8OK3nW1o/1C6h0ZvwDlHJ5cVrbEecDyWuQValzgfQ+ijomD1iu04DOafquwjJmivTeAxn4JxV5fM8EBEONKetzowH+ZVygkwoKmIgFJPY8TNlEPgaY/SQTLzo3Vq6YcI5d/GwoLcFZC8+Kay3Q9U9l1YKL3ZQDhzIY0craiAeaMp5o9YXWAhQjJSxJWxYRFzyNdp3Q==|920

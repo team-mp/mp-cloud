@@ -4,7 +4,8 @@
   "RowCount": 31,
   "Formulas": {
     "5,13": "IF(指定ユーザーID=\"\",0,指定ユーザーID)",
-    "5,7": "TEXTJOIN(\",\",TRUE,N3)"
+    "5,7": "TEXTJOIN(\",\",TRUE,N3)",
+    "26,29": "IF(COUNTIF(R3,0)>0,1,0)"
   },
   "CustomNames": [
     {
@@ -178,6 +179,10 @@
     {
       "Name": "リンク連絡ID",
       "Formula": "メール送信ポップアップ!$H$21"
+    },
+    {
+      "Name": "送信先本社以外フラグ",
+      "Formula": "メール送信ポップアップ!$AD$27"
     }
   ]
 }

@@ -58,7 +58,7 @@
     "122,149": "IF(EP123<>\"\",EP123,EJ123)",
     "29,131": "追加申込タイプ分類ID",
     "11,141": "IFERROR(参照顧客ID,\"\")",
-    "9,141": "IFERROR(参照顧客グループIDs,\"\")",
+    "9,141": "IFERROR(参照管理グループIDs,\"\")",
     "8,141": "IFERROR(参照顧客既定グループID,\"\")",
     "7,141": "IFERROR(参照顧客取次店フラグ,\"\")",
     "6,141": "IFERROR(参照顧客代理店フラグ,\"\")",
@@ -68,7 +68,7 @@
     "29,138": "IF(EH30=0,\"\",EH30)",
     "10,141": "IFERROR(参照管理顧客IDs,\"\")",
     "14,141": "TEXTJOIN(\",\",TRUE,EL12,EL11)",
-    "14,131": "IF(OR(EL6=1,EL7=1,EL8=1),1000000,0)",
+    "14,131": "IF(OR(EL6=1,EL10<>\"\"),1000000,0)",
     "26,138": "IF(EH27=0,\"\",EH27)",
     "24,138": "IF(EH25=0,\"\",EH25)",
     "37,127": "IF(申込タイプID=\"\",0,申込タイプID)",
@@ -114,7 +114,9 @@
     "115,51": "ES117",
     "122,148": "IF(EO123<>\"\",EO123,EI123)",
     "138,75": "AF139*BJ139",
-    "119,147": "IF(EL120<>0,EL120,DZ120)"
+    "119,147": "IF(EL120<>0,EL120,DZ120)",
+    "163,32": "\"※17時までのご依頼の場合、2営業日中（土日祝は休業）の\"&IF(ED54=1,\"判定\",IF(EE54=1,\"審査\",\"\"))&\"となります。納期内にて優先対応いたします。\"",
+    "107,136": "COUNTIF(DU94,1)"
   },
   "ArrayFormulas": {
     "122,143,1,3": "IF(DX123>0,IFERROR(ODATA(\"v_customer_product?$select=商品名,商品注釈,販売単価&$filter=顧客ID eq \"&IF(ISBLANK(AD17),\"null\",AD17)&\" and グループID eq \"&IF(ISBLANK(AD4),\"null\",AD4)&\" and 申込タイプID eq \"&IF(ISBLANK(DZ45),\"null\",DZ45)&\" and 商品ID eq \"&IF(ISBLANK(DX123),\"null\",DX123)),\"\"),\"\")",
@@ -123,7 +125,7 @@
     "122,129,1,13": "IF(DX123<>\"\",ODATA(\"m_product?$select=product_name,quantity_need_flg,default_quantity,quantity_minimum,over_or_surpass,quantity_calc,base_price,quantity_unit,amount_fix_flg,special_note,standard_price,lessthan_basic_price_flg,billing_product_name&$filter=product_id eq \"&IF(ISBLANK(DX123),\"null\",DX123)),\"\")",
     "116,129,1,13": "IF(DX117<>\"\",ODATA(\"m_product?$select=product_name,quantity_need_flg,default_quantity,quantity_minimum,over_or_surpass,quantity_calc,base_price,quantity_unit,amount_fix_flg,special_note,standard_price,lessthan_basic_price_flg,billing_product_name&$filter=product_id eq \"&IF(ISBLANK(DX117),\"null\",DX117)),\"\")",
     "119,143,1,3": "IF(DX120>0,IFERROR(ODATA(\"v_customer_product?$select=商品名,商品注釈,販売単価&$filter=顧客ID eq \"&IF(ISBLANK(AD17),\"null\",AD17)&\" and グループID eq \"&IF(ISBLANK(AD4),\"null\",AD4)&\" and 申込タイプID eq \"&IF(ISBLANK(DZ45),\"null\",DZ45)&\" and 商品ID eq \"&IF(ISBLANK(DX120),\"null\",DX120)),\"\"),\"\")",
-    "53,124,1,9": "IFERROR(IF(申込タイプID>0,ODATA(\"m_order_type?$select=groud_survey_flg,site_survey_flg,object_overview_display_flg,multiple_permission_flg,order_document_ids,reception_message,initial_survey_type_id,analyze_flg,warranty_flg&$filter=order_type_id eq \"&IF(ISBLANK(申込タイプID),\"null\",申込タイプID)),\"\"),\"\")",
+    "53,124,1,11": "IFERROR(IF(申込タイプID>0,ODATA(\"m_order_type?$select=groud_survey_flg,site_survey_flg,object_overview_display_flg,multiple_permission_flg,order_document_ids,reception_message,initial_survey_type_id,analyze_flg,warranty_flg,analysis_starting_flg,design_review_flg&$filter=order_type_id eq \"&IF(ISBLANK(申込タイプID),\"null\",申込タイプID)),\"\"),\"\")",
     "30,124,1,5": "IFERROR(ODATA(\"m_customer?$select=customer_abbr,prefectures,phone,fax,住所&$filter=customer_id eq \"&IF(ISBLANK(AD17),\"null\",AD17)),\"\")",
     "34,124,1,11": "IF(AD17>0,ODATA(\"m_customer_default?$select=structure_id,foundation_id,responsible_add_display_flg,notice_user1_id,notice_user2_id,notice_user3_id,notice_user4_id,notice_user5_id,notice_user6_id,initial_survey_type,aida_flow_flg&$filter=customer_id eq \"&IF(ISBLANK(AD17),\"null\",AD17)),\"\")",
     "11,124,1,6": "IF(AD4>0,ODATA(\"m_group?$select=group_type_id,customer_id,builder_notice_flg,group_default_priority_flg,customer_number_required_flg,analysis_warranty_surveydate_required_flg&$filter=group_id eq \"&IF(ISBLANK(AD4),\"null\",AD4)),\"\")",
