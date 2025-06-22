@@ -3,19 +3,17 @@
   "ColumnCount": 133,
   "RowCount": 84,
   "Formulas": {
-    "33,106": "ODATA(\"t_object_surveying/$count?$filter=object_order_id eq \"&IF(ISBLANK(BA34),\"null\",BA34)&\" and surveying_id gt \"&IF(ISBLANK(BB34),\"null\",BB34))",
-    "33,105": "IF(DA34<>\"\",\"最終更新日時：\"&DA34,\"\")",
-    "33,103": "\"非公開データ(\"&CY34&\")\"",
-    "33,102": "ODATA(\"t_object_attachment/$count?$filter=file_attribute_id eq \"&IF(ISBLANK(測量非公開データファイル属性ID),\"null\",測量非公開データファイル属性ID)&\" and surveying_id eq \"&IF(ISBLANK(BB34),\"null\",BB34)&\" and active_flg eq 1\")",
+    "33,105": "IFERROR(ODATA(\"v_surveying_later_count?$select=後発件数&$filter=測量ID eq \"&IF(ISBLANK(BB34),\"null\",BB34)),0)",
     "33,54": "$BA$39-ROW(BA34)+1",
     "33,58": "IF(BD34=1,\"以降\",\"～\")",
     "38,52": "COUNT(BB34)",
-    "33,101": "\"仮杭報告書(\"&CW34&\")\"",
-    "33,96": "IFERROR(ODATA(\"v_surveying_product_summary?$select=売上合計&$filter=測量ID eq \"&IF(ISBLANK(BB34),\"null\",BB34)),0)",
-    "33,100": "ODATA(\"t_object_attachment/$count?$filter=file_attribute_id eq \"&IF(ISBLANK(仮杭報告書ファイル属性ID),\"null\",仮杭報告書ファイル属性ID)&\" and surveying_id eq \"&IF(ISBLANK(BB34),\"null\",BB34)&\" and active_flg eq 1\")",
-    "33,99": "\"測量報告書(\"&CU34&\")\"",
-    "33,98": "ODATA(\"t_object_attachment/$count?$filter=file_attribute_id eq \"&IF(ISBLANK(測量報告書ファイル属性ID),\"null\",測量報告書ファイル属性ID)&\" and surveying_id eq \"&IF(ISBLANK(BB34),\"null\",BB34)&\" and active_flg eq 1\")",
-    "33,97": "IFERROR(ODATA(\"v_surveying_product_summary?$select=仕入合計&$filter=測量ID eq \"&IF(ISBLANK(BB34),\"null\",BB34)),0)"
+    "33,101": "\"測量ファイル(\"&CW34&\")\"",
+    "33,67": "IF(BO34<>\"\",BO34,\"敷地測量会社を選択してください\")",
+    "33,82": "IF(CD34<>\"\",CD34,\"役所調査会社を選択してください\")",
+    "33,98": "ODATA(\"v_surveying_product_summary?$select=売上合計&$filter=測量ID eq \"&IF(ISBLANK(BB34),\"null\",BB34))",
+    "33,99": "ODATA(\"v_surveying_product_summary?$select=仕入合計&$filter=測量ID eq \"&IF(ISBLANK(BB34),\"null\",BB34))",
+    "33,104": "IF(CZ34<>\"\",\"最終更新日時：\"&CZ34,\"\")",
+    "33,100": "IFERROR(ODATA(\"v_surveying_file_count?$select=ファイル数&$filter=測量ID eq \"&IF(ISBLANK(BB34),\"null\",BB34)),0)"
   },
   "CustomNames": [
     {
@@ -29,6 +27,10 @@
     {
       "Name": "元_仮杭フラグ",
       "Formula": "物件詳細_測量!$BO$77"
+    },
+    {
+      "Name": "元_真北測量フラグ",
+      "Formula": "物件詳細_測量!$BO$79"
     },
     {
       "Name": "元_図面変更フラグ",
@@ -61,6 +63,14 @@
     {
       "Name": "元_測量申込日",
       "Formula": "物件詳細_測量!$BO$46"
+    },
+    {
+      "Name": "元_納品データ3Dフラグ",
+      "Formula": "物件詳細_測量!$BO$80"
+    },
+    {
+      "Name": "元_納品ファイル形式",
+      "Formula": "物件詳細_測量!$BO$81"
     },
     {
       "Name": "元_敷地調査フラグ",
@@ -101,6 +111,10 @@
     {
       "Name": "元_敷調予定開始日",
       "Formula": "物件詳細_測量!$BO$58"
+    },
+    {
+      "Name": "元_敷調予定時間",
+      "Formula": "物件詳細_測量!$BO$60"
     },
     {
       "Name": "元_敷調予定終了日",
@@ -147,6 +161,10 @@
       "Formula": "物件詳細_測量!$BO$70"
     },
     {
+      "Name": "元_役調予定時間",
+      "Formula": "物件詳細_測量!$BO$72"
+    },
+    {
       "Name": "元_役調予定終了日",
       "Formula": "物件詳細_測量!$BO$71"
     },
@@ -165,26 +183,6 @@
     {
       "Name": "測量報告書ファイル属性ID",
       "Formula": "物件詳細_測量!$BP$39"
-    },
-    {
-      "Name": "元_敷調予定時間",
-      "Formula": "物件詳細_測量!$BO$60"
-    },
-    {
-      "Name": "元_役調予定時間",
-      "Formula": "物件詳細_測量!$BO$72"
-    },
-    {
-      "Name": "元_真北測量フラグ",
-      "Formula": "物件詳細_測量!$BO$79"
-    },
-    {
-      "Name": "元_納品データ3Dフラグ",
-      "Formula": "物件詳細_測量!$BO$80"
-    },
-    {
-      "Name": "元_納品ファイル形式",
-      "Formula": "物件詳細_測量!$BO$81"
     }
   ]
 }

@@ -22,10 +22,6 @@
       },
       "Parameters": [
         {
-          "Name": "P_申込ID",
-          "DataValidationInfo": {}
-        },
-        {
           "Name": "P_調査ID",
           "DataValidationInfo": {}
         },
@@ -63,44 +59,12 @@
   "Commands": [
     {
       "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
-      "ParameterName": "申込情報",
-      "TableValue": {
-        "TableName": "t_object_order",
-        "TableValueType": 1,
-        "BindingInfos": [
-          {
-            "GUID": "1f03982a-7326-45ec-8177-4795a5bfcffd",
-            "BindingInfo": {
-              "TableName": "t_object_order",
-              "ColumnName": "object_id",
-              "GUID": "74d22280-90ce-47e5-81b2-3f8fb389326e"
-            },
-            "ColumnName": "物件ID"
-          }
-        ],
-        "SqlCondition": {
-          "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
-          "ColumnBindingInfo": {
-            "TableName": "t_object_order",
-            "ColumnName": "object_order_id",
-            "GUID": "c218e179-6d7f-492a-9b19-9e53a36e6eea"
-          },
-          "Value": {
-            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-            "SerializeProperty": "=P_申込ID"
-          }
-        }
-      },
-      "ID": "4455f7c3c03b45e2b5ff35f1676befb8"
-    },
-    {
-      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
       "ParameterName": "非公開ファイル",
       "TableValue": {
         "TableName": "t_object_attachment",
         "BindingInfos": [
           {
-            "GUID": "1354c503-24f0-490a-9be9-d83f6af20323",
+            "GUID": "a0d5d08e-a96a-492a-b605-b0880232d2eb",
             "BindingInfo": {
               "TableName": "t_object_attachment",
               "ColumnName": "attachment_id",
@@ -252,7 +216,7 @@
           ]
         }
       },
-      "ID": "db72130e7b7b4052b91f53f7f344c896"
+      "ID": "d38f562e8fac46c69fdad9c5b36cac86"
     },
     {
       "$type": "Forguncy.Model.LoopCommand, ServerDesignerCommon",
@@ -287,29 +251,74 @@
               "BindingInfo": {
                 "TableName": "t_object_attachment",
                 "ColumnName": "publish_flg",
-                "GUID": "8731b9bb-4129-4855-b97c-e96e6f402382"
+                "GUID": "4277acfa-34e8-4971-b0b1-9757f7484c20"
               },
               "Value": "1"
             }
           ]
+        },
+        {
+          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+          "ParameterName": "添付関連付け情報",
+          "TableValue": {
+            "TableName": "t_object_attachment_relation",
+            "BindingInfos": [
+              {
+                "GUID": "808a6733-d155-4fe9-a234-ce6eaf6aabb0",
+                "BindingInfo": {
+                  "TableName": "t_object_attachment_relation",
+                  "ColumnName": "object_id",
+                  "GUID": "106b762c-11b1-470e-8ea3-47a5fab798bb"
+                },
+                "ColumnName": "物件ID"
+              }
+            ],
+            "SqlCondition": {
+              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+              "ColumnBindingInfo": {
+                "TableName": "t_object_attachment_relation",
+                "ColumnName": "attachment_id",
+                "GUID": "8234994e-f28e-4739-9c1a-1a70ce32dbf0"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=Item.添付ID"
+              }
+            },
+            "NullFormulaValueQueryPolicy": 0
+          },
+          "ID": "2209ed0e75cd4279a0aa23a27cd0a932"
+        },
+        {
+          "$type": "Forguncy.Model.LoopCommand, ServerDesignerCommon",
+          "LoopInfo": {
+            "$type": "Forguncy.Model.CountLoopInfo, ServerDesignerCommon",
+            "LoopCount": {
+              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+              "SerializeProperty": "=添付関連付け情報"
+            },
+            "LoopItemParamName": "Item添付関連付け"
+          },
+          "CommandList": [
+            {
+              "$type": "Forguncy.Model.RequestServerCommand, ServerDesignerCommon",
+              "ServerCommandName": "ファイル数更新処理",
+              "Parameters": [
+                {
+                  "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                  "ParamName": "P_物件IDs",
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=Item添付関連付け.物件ID"
+                  }
+                }
+              ],
+              "RefreshAfterFinish": true,
+              "CheckDataValidation": true
+            }
+          ]
         }
       ]
-    },
-    {
-      "$type": "Forguncy.Model.RequestServerCommand, ServerDesignerCommon",
-      "ServerCommandName": "ファイル数更新処理",
-      "Parameters": [
-        {
-          "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
-          "ParamName": "P_物件ID",
-          "Value": {
-            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-            "SerializeProperty": "=申込情報.物件ID"
-          }
-        }
-      ],
-      "RefreshAfterFinish": true,
-      "CheckDataValidation": true
     }
   ]
 }

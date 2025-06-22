@@ -12,24 +12,19 @@
     "28,139": "IF(EF29=2,EH29,\"\")",
     "7,133": "IF(タブ番号<>\"\",ODATA(\"m_tab_class?$select=tab_name&$filter=tab_id eq \"&IF(ISBLANK(タブ番号),\"null\",タブ番号)),\"申込\")",
     "22,128": "IF(申込ID>0,ODATA(\"m_group_notice/$count?$filter=group_id eq \"&IF(ISBLANK(DY26),\"null\",DY26))+ODATA(\"m_customer_notice/$count?$filter=customer_id eq \"&IF(ISBLANK(顧客ID),\"null\",顧客ID)),0)",
-    "18,147": "IF(申込ID>0,ODATA(\"t_object/$count?$filter=parent_object_id eq \"&IF(ISBLANK(ER17),\"null\",ER17)),0)",
     "16,128": "IFERROR(GETURLQUERYVALUE(\"follow_id\"),0)",
     "10,128": "IFERROR(GETURLQUERYVALUE(\"tab\"),1)",
     "28,134": "IF(ED29=\"\",\"共通\",ED29)",
-    "1,78": "\"添付ファイル(\"&IF(ED14<EZ26,EZ26,ED14)&\")\"",
+    "1,78": "\"添付ファイル(\"&ED14&\")\"",
     "3,128": "IFERROR(GETURLQUERYVALUE(\"id\"),\"\")",
-    "22,147": "IF(申込ID>0,ODATA(\"t_object_follow/$count?$filter=object_order_id eq \"&IF(ISBLANK(申込ID),\"null\",申込ID)),0)",
     "1,30": "IF(ER11=1,\"キャンセル解除\",\"申込キャンセル\")",
-    "25,155": "IF(申込ID>0,IFERROR(ODATA(\"t_object_attachment/$count?$filter=object_order_id eq \"&IF(ISBLANK(申込ID),\"null\",申込ID)&\" and active_flg eq 1\"),0),0)",
-    "7,163": "IF(申込ID>0,IFERROR(ODATA(\"t_object_product/$count?$filter=object_order_id eq \"&IF(ISBLANK(申込ID),\"null\",申込ID)&\" and purchase_required_flg eq 1 and purchase_receipt_date eq null\"),0),0)",
-    "10,163": "IF(申込ID>0,ODATA(\"t_object_product/$count?$filter=object_order_id eq \"&IF(ISBLANK(申込ID),\"null\",申込ID)&\" and (accounting_type eq 1 and (sales_account_complete_flg eq 0 or purchase_account_complete_flg eq 0) or (accounting_type eq 2 and sales_account_complete_flg eq 0) or (accounting_type eq 3 and purchase_account_complete_flg eq 0))\"),0)",
-    "16,133": "IF(申込ID>0,ODATA(\"t_object_wait_documents/$count?$filter=receipt_flg eq 0 and object_order_id eq \"&IF(ISBLANK(申込ID),\"null\",申込ID)),0)",
     "1,66": "FH21",
     "14,163": "IF(連絡事項タブ検索<>\"\",連絡事項タブ検索,1)",
     "17,163": "IF(連絡事項タブ検索<>\"\",連絡事項タブ検索,1000)",
     "20,163": "IF(ER13=1,\"処理終了解除\",IF(ER15=1,\"保証辞退解除\",IF(AND(EZ15>EZ11,EZ15<=EZ13),\"処理終了\",\"保証辞退\")))",
     "22,163": "IF(ER13=1,1,IF(ER15=1,2,IF(AND(EZ15>EZ11,EZ15<=EZ13),3,4)))",
-    "7,128": "IFERROR(GETURLQUERYVALUE(\"index\"),\"\")"
+    "7,128": "IFERROR(GETURLQUERYVALUE(\"index\"),\"\")",
+    "22,147": "IFERROR(ODATA(\"v_order_follow_count?$select=フォローカウント&$filter=申込ID eq \"&IF(ISBLANK(申込ID),\"null\",申込ID)),0)"
   },
   "CustomNames": [
     {
@@ -51,14 +46,6 @@
     {
       "Name": "ページリロードフラグ",
       "Formula": "申込詳細_内容!$ER$8"
-    },
-    {
-      "Name": "ポップアップメッセージ",
-      "Formula": "申込詳細_内容!$DY$33"
-    },
-    {
-      "Name": "ポップアップ表示フラグ",
-      "Formula": "申込詳細_内容!$EG$33"
     },
     {
       "Name": "メニュータブ",

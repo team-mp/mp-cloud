@@ -3,8 +3,8 @@
   "ColumnCount": 48,
   "RowCount": 16,
   "Formulas": {
-    "4,36": "IF(商品ID=AL5,1,0)",
-    "14,36": "COUNTIF(AK5,1)"
+    "3,36": "IF(商品ID=AL4,1,0)",
+    "7,36": "COUNTIF(AK4,1)"
   },
   "CustomNames": [
     {
@@ -17,27 +17,31 @@
     },
     {
       "Name": "単位",
-      "Formula": "受付商品選択!$AQ$12"
+      "Formula": "受付商品選択!$AQ$11"
     },
     {
       "Name": "金額",
-      "Formula": "受付商品選択!$AQ$14"
+      "Formula": "受付商品選択!$AQ$13"
     },
     {
       "Name": "住宅事業者ID",
-      "Formula": "受付商品選択!$AQ$4"
+      "Formula": "受付商品選択!$AQ$3"
     },
     {
       "Name": "グループID",
-      "Formula": "受付商品選択!$AQ$6"
+      "Formula": "受付商品選択!$AQ$5"
     },
     {
       "Name": "申込タイプID",
-      "Formula": "受付商品選択!$AQ$8"
+      "Formula": "受付商品選択!$AQ$7"
     },
     {
       "Name": "商品注釈",
-      "Formula": "受付商品選択!$AQ$10"
+      "Formula": "受付商品選択!$AQ$9"
+    },
+    {
+      "Name": "更新フラグ",
+      "Formula": "受付商品選択!$AK$14"
     }
   ]
 }

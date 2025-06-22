@@ -1,0 +1,78 @@
+{
+  "Name": "v_warranty_file_attribute",
+  "Columns": [
+    {
+      "$type": "Forguncy.SaveLoad.BindingColumnSaveData, ServerDesignerCommon",
+      "DefaultValue": 0,
+      "Required": true,
+      "DatabaseColumnType": "bigint",
+      "MaxLength": -1,
+      "Name": "保証ID",
+      "ColumnType": "System.Int64, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+    },
+    {
+      "$type": "Forguncy.SaveLoad.BindingColumnSaveData, ServerDesignerCommon",
+      "DatabaseColumnType": "bigint",
+      "MaxLength": -1,
+      "Name": "ファイル分類ID",
+      "ColumnType": "System.Int64, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+    },
+    {
+      "$type": "Forguncy.SaveLoad.BindingColumnSaveData, ServerDesignerCommon",
+      "DefaultValue": 0,
+      "Required": true,
+      "DatabaseColumnType": "bigint",
+      "MaxLength": -1,
+      "Name": "ファイル属性ID",
+      "ColumnType": "System.Int64, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+    },
+    {
+      "$type": "Forguncy.SaveLoad.BindingColumnSaveData, ServerDesignerCommon",
+      "Required": true,
+      "DatabaseColumnType": "varchar",
+      "MaxLength": 214,
+      "Name": "ファイル属性名",
+      "ColumnType": "System.String, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+    }
+  ],
+  "ExternalDatabaseInfo": {
+    "DataBaseType": "6db454c0-531c-4395-9122-921a18942902",
+    "AllowModifySchema": true,
+    "ConnectionId": "MySql2",
+    "SourceTableName": "v_warranty_file_attribute",
+    "SourceTableSchema": "",
+    "CreateViewSql": "select `main`.`warranty_id` AS `保証ID`,`main`.`file_class_id` AS `ファイル分類ID`,`main`.`file_attribute_id` AS `ファイル属性ID`,concat(`main`.`file_attibute_name`,'…(',count(`sub`.`attachment_id`),')') AS `ファイル属性名` from ((select `a`.`warranty_id` AS `warranty_id`,`b`.`file_class_id` AS `file_class_id`,`b`.`file_attribute_id` AS `file_attribute_id`,`b`.`file_attibute_name` AS `file_attibute_name` from (`t_object_warranty` `a` join (select `a`.`file_class_id` AS `file_class_id`,`a`.`file_attribute_id` AS `file_attribute_id`,`a`.`file_attibute_name` AS `file_attibute_name` from (`m_file_attirbute` `a` join `m_file_class` `b` on((`a`.`file_class_id` = `b`.`file_class_id`))) where (`b`.`warranty_flg` = 1)) `b`)) `main` left join (select `t_object_attachment`.`attachment_id` AS `attachment_id`,`t_object_attachment`.`file_attribute_id` AS `file_attribute_id`,`t_object_attachment`.`warranty_id` AS `warranty_id` from `t_object_attachment` where ((`t_object_attachment`.`warranty_id` is not null) and (`t_object_attachment`.`active_flg` = 1))) `sub` on(((`main`.`warranty_id` = `sub`.`warranty_id`) and (`main`.`file_attribute_id` = `sub`.`file_attribute_id`)))) group by `main`.`warranty_id`,`main`.`file_class_id`,`main`.`file_attribute_id`,`main`.`file_attibute_name`",
+    "ViewInfo": {
+      "ViewName": "v_warranty_file_attribute",
+      "QueryColumns": [
+        "保証ID",
+        "ファイル分類ID",
+        "ファイル属性ID"
+      ]
+    }
+  },
+  "Relations": [
+    {
+      "PrimaryTable": "t_object_warranty",
+      "PrimaryColumn": "warranty_id",
+      "ForeignTable": "v_warranty_file_attribute",
+      "ForeignColumn": "保証ID",
+      "IsDetailTableRelation": false
+    },
+    {
+      "PrimaryTable": "m_file_class",
+      "PrimaryColumn": "file_class_id",
+      "ForeignTable": "v_warranty_file_attribute",
+      "ForeignColumn": "ファイル分類ID",
+      "IsDetailTableRelation": false
+    },
+    {
+      "PrimaryTable": "m_file_attirbute",
+      "PrimaryColumn": "file_attribute_id",
+      "ForeignTable": "v_warranty_file_attribute",
+      "ForeignColumn": "ファイル属性ID",
+      "IsDetailTableRelation": false
+    }
+  ],
+  "Indexes": []
+}

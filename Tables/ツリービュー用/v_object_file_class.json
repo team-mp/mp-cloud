@@ -1,0 +1,58 @@
+{
+  "Name": "v_object_file_class",
+  "Columns": [
+    {
+      "$type": "Forguncy.SaveLoad.BindingColumnSaveData, ServerDesignerCommon",
+      "DatabaseColumnType": "bigint",
+      "MaxLength": -1,
+      "Name": "物件ID",
+      "ColumnType": "System.Int64, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+    },
+    {
+      "$type": "Forguncy.SaveLoad.BindingColumnSaveData, ServerDesignerCommon",
+      "DatabaseColumnType": "bigint",
+      "MaxLength": -1,
+      "Name": "ファイル分類ID",
+      "ColumnType": "System.Int64, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+    },
+    {
+      "$type": "Forguncy.SaveLoad.BindingColumnSaveData, ServerDesignerCommon",
+      "DatabaseColumnType": "varchar",
+      "MaxLength": 41,
+      "Name": "ファイル分類キー",
+      "ColumnType": "System.String, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+    }
+  ],
+  "ExternalDatabaseInfo": {
+    "DataBaseType": "6db454c0-531c-4395-9122-921a18942902",
+    "AllowModifySchema": true,
+    "ConnectionId": "MySql2",
+    "SourceTableName": "v_object_file_class",
+    "SourceTableSchema": "",
+    "CreateViewSql": "with `active_files` as (select `t_object_attachment`.`attachment_id` AS `attachment_id`,`t_object_attachment`.`file_attribute_id` AS `file_attribute_id` from `t_object_attachment` where (`t_object_attachment`.`active_flg` = 1)) select `r`.`object_id` AS `物件ID`,`f`.`file_class_id` AS `ファイル分類ID`,concat(`r`.`object_id`,'_',`f`.`file_class_id`) AS `ファイル分類キー` from ((`t_object_attachment_relation` `r` join `active_files` `af` on((`r`.`attachment_id` = `af`.`attachment_id`))) join `m_file_attirbute` `f` on((`af`.`file_attribute_id` = `f`.`file_attribute_id`))) group by `r`.`object_id`,`f`.`file_class_id`",
+    "ViewInfo": {
+      "ViewName": "v_object_file_class",
+      "QueryColumns": [
+        "物件ID",
+        "ファイル分類ID"
+      ]
+    }
+  },
+  "Relations": [
+    {
+      "PrimaryTable": "t_object",
+      "PrimaryColumn": "object_id",
+      "ForeignTable": "v_object_file_class",
+      "ForeignColumn": "物件ID",
+      "IsDetailTableRelation": false
+    },
+    {
+      "PrimaryTable": "m_file_class",
+      "PrimaryColumn": "file_class_id",
+      "ForeignTable": "v_object_file_class",
+      "ForeignColumn": "ファイル分類ID",
+      "IsDetailTableRelation": false
+    }
+  ],
+  "Indexes": []
+}

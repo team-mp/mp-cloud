@@ -1,26 +1,23 @@
 {
   "PageType": 0,
-  "ColumnCount": 133,
+  "ColumnCount": 136,
   "RowCount": 63,
   "Formulas": {
-    "24,130": "IF(OR(DM25=1,DN25=1),1,0)",
-    "24,129": "ODATA(\"t_object_compaction/$count?$filter=object_order_id eq \"&IF(ISBLANK(CC25),\"null\",CC25)&\" and compaction_id gt \"&IF(ISBLANK(CD25),\"null\",CD25))",
+    "24,126": "IF(OR(DN25=1,DO25=1),1,0)",
     "24,82": "$CC$30-ROW(CC25)+1",
-    "24,128": "IF(DX25<>\"\",\"最終更新日時：\"&DX25,\"\")",
-    "24,125": "\"施工報告書(\"&DS25&\")\"",
-    "24,123": "\"転圧設計書(\"&DQ25&\")\"",
+    "24,125": "IFERROR(ODATA(\"v_compaction_later_count?$select=後発件数&$filter=転圧ID eq \"&IF(ISBLANK(CD25),\"null\",CD25)),0)",
+    "24,122": "\"転圧ファイル(\"&DR25&\")\"",
     "11,27": "CZ21",
-    "24,122": "ODATA(\"t_object_attachment/$count?$filter=file_attribute_id eq \"&IF(ISBLANK(転圧報告書ファイル属性ID),\"null\",転圧報告書ファイル属性ID)&\" and compaction_id eq \"&IF(ISBLANK(CD25),\"null\",CD25)&\" and active_flg eq 1\")",
-    "24,121": "ODATA(\"t_object_attachment/$count?$filter=file_attribute_id eq \"&IF(ISBLANK(転圧見積書ファイル属性ID),\"null\",転圧見積書ファイル属性ID)&\" and compaction_id eq \"&IF(ISBLANK(CD25),\"null\",CD25)&\" and active_flg eq 1\")",
     "32,94": "転圧設計書ファイル属性ID&\",\"&転圧見積書ファイル属性ID",
-    "24,120": "ODATA(\"t_object_attachment/$count?$filter=file_attribute_id eq \"&IF(ISBLANK(転圧設計書ファイル属性ID),\"null\",転圧設計書ファイル属性ID)&\" and compaction_id eq \"&IF(ISBLANK(CD25),\"null\",CD25)&\" and active_flg eq 1\")",
     "11,41": "DA21",
-    "24,119": "IFERROR(ODATA(\"v_compaction_product_summary?$select=仕入合計&$filter=転圧ID eq \"&IF(ISBLANK(CD25),\"null\",CD25)),0)",
     "11,57": "DB21",
     "11,12": "CY21",
-    "24,124": "\"転圧見積書(\"&DR25&\")\"",
     "29,80": "COUNT(CD25)",
-    "24,118": "IFERROR(ODATA(\"v_compaction_product_summary?$select=売上合計&$filter=転圧ID eq \"&IF(ISBLANK(CD25),\"null\",CD25)),0)"
+    "24,86": "IF(CH25<>\"\",CH25,\"転圧会社を選択してください\")",
+    "24,119": "IFERROR(ODATA(\"v_compaction_product_summary?$select=売上合計&$filter=転圧ID eq \"&IF(ISBLANK(CD25),\"null\",CD25)),0)",
+    "24,120": "IFERROR(ODATA(\"v_compaction_product_summary?$select=仕入合計&$filter=転圧ID eq \"&IF(ISBLANK(CD25),\"null\",CD25)),0)",
+    "24,121": "IFERROR(ODATA(\"v_compaction_file_count?$select=ファイル数&$filter=転圧ID eq \"&IF(ISBLANK(CD25),\"null\",CD25)),0)",
+    "24,124": "IF(DT25<>\"\",\"最終更新日時：\"&DT25,\"\")"
   },
   "ArrayFormulas": {
     "20,102,1,4": "ODATA(\"v_group_customer_default?$select=転圧見積不要フラグ,転圧他社施工フラグ,転圧再調査フラグ,残土処分フラグ&$filter=グループID eq \"&IF(ISBLANK(CR18),\"null\",CR18)&\" and 顧客ID eq \"&IF(ISBLANK(CY18),\"null\",CY18))"
@@ -57,6 +54,10 @@
     {
       "Name": "元_設計作成日",
       "Formula": "物件詳細_転圧!$CP$41"
+    },
+    {
+      "Name": "元_設計図区分",
+      "Formula": "物件詳細_転圧!$CP$42"
     },
     {
       "Name": "元_転圧ステータスID",
@@ -135,16 +136,12 @@
       "Formula": "物件詳細_転圧!$CQ$30"
     },
     {
-      "Name": "転圧報告書ファイル属性ID",
-      "Formula": "物件詳細_転圧!$DI$30"
-    },
-    {
       "Name": "転圧登録件数",
       "Formula": "物件詳細_転圧!$CC$30"
     },
     {
-      "Name": "元_設計図区分",
-      "Formula": "物件詳細_転圧!$CP$42"
+      "Name": "転圧報告書ファイル属性ID",
+      "Formula": "物件詳細_転圧!$DI$30"
     }
   ]
 }

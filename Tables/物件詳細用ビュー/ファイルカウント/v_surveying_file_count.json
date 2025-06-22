@@ -1,0 +1,90 @@
+{
+  "Name": "v_surveying_file_count",
+  "Columns": [
+    {
+      "$type": "Forguncy.SaveLoad.BindingColumnSaveData, ServerDesignerCommon",
+      "DatabaseColumnType": "bigint",
+      "MaxLength": -1,
+      "Name": "測量ID",
+      "ColumnType": "System.Int64, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+    },
+    {
+      "$type": "Forguncy.SaveLoad.BindingColumnSaveData, ServerDesignerCommon",
+      "DefaultValue": 0,
+      "Required": true,
+      "DatabaseColumnType": "bigint",
+      "MaxLength": -1,
+      "Name": "ファイル数",
+      "ColumnType": "System.Int64, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+    },
+    {
+      "$type": "Forguncy.SaveLoad.BindingColumnSaveData, ServerDesignerCommon",
+      "DefaultValue": 0,
+      "Required": true,
+      "DatabaseColumnType": "bigint",
+      "MaxLength": -1,
+      "Name": "測量報告書_納品用数",
+      "ColumnType": "System.Int64, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+    },
+    {
+      "$type": "Forguncy.SaveLoad.BindingColumnSaveData, ServerDesignerCommon",
+      "DefaultValue": 0,
+      "Required": true,
+      "DatabaseColumnType": "bigint",
+      "MaxLength": -1,
+      "Name": "仮杭報告書_納品用数",
+      "ColumnType": "System.Int64, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+    },
+    {
+      "$type": "Forguncy.SaveLoad.BindingColumnSaveData, ServerDesignerCommon",
+      "DefaultValue": 0,
+      "Required": true,
+      "DatabaseColumnType": "bigint",
+      "MaxLength": -1,
+      "Name": "測量データ_非公開数",
+      "ColumnType": "System.Int64, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+    },
+    {
+      "$type": "Forguncy.SaveLoad.BindingColumnSaveData, ServerDesignerCommon",
+      "DefaultValue": 0,
+      "Required": true,
+      "DatabaseColumnType": "bigint",
+      "MaxLength": -1,
+      "Name": "測量報告書_納品用数_申込事業者",
+      "ColumnType": "System.Int64, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+    },
+    {
+      "$type": "Forguncy.SaveLoad.BindingColumnSaveData, ServerDesignerCommon",
+      "DefaultValue": 0,
+      "Required": true,
+      "DatabaseColumnType": "bigint",
+      "MaxLength": -1,
+      "Name": "仮杭報告書_納品用数_申込事業者",
+      "ColumnType": "System.Int64, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+    },
+    {
+      "$type": "Forguncy.SaveLoad.BindingColumnSaveData, ServerDesignerCommon",
+      "DefaultValue": 0,
+      "Required": true,
+      "DatabaseColumnType": "bigint",
+      "MaxLength": -1,
+      "Name": "測量データ_非公開数_申込事業者",
+      "ColumnType": "System.Int64, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+    }
+  ],
+  "ExternalDatabaseInfo": {
+    "DataBaseType": "6db454c0-531c-4395-9122-921a18942902",
+    "AllowModifySchema": true,
+    "ConnectionId": "MySql2",
+    "SourceTableName": "v_surveying_file_count",
+    "SourceTableSchema": "",
+    "CreateViewSql": "SELECT \r\n    a.surveying_id AS '測量ID',\r\n    COUNT(a.attachment_id) AS 'ファイル数',\r\n    \r\n    COUNT(CASE \r\n              WHEN a.file_attribute_id = 19 \r\n              THEN 1 \r\n          END) AS '測量報告書_納品用数',\r\n    \r\n    COUNT(CASE \r\n              WHEN a.file_attribute_id = 27 \r\n              THEN 1 \r\n          END) AS '仮杭報告書_納品用数',\r\n    \r\n    COUNT(CASE \r\n              WHEN a.file_attribute_id = 28 \r\n              THEN 1 \r\n          END) AS '測量データ_非公開数',\r\n    \r\n    COUNT(CASE \r\n              WHEN a.file_attribute_id = 19 \r\n                   AND a.publish_flg = 1 \r\n                   AND a.hidden_flg = 0 \r\n                   AND b.applicant_company_authority > 0 \r\n              THEN 1 \r\n          END) AS '測量報告書_納品用数_申込事業者',\r\n    \r\n    COUNT(CASE \r\n              WHEN a.file_attribute_id = 27 \r\n                   AND a.publish_flg = 1 \r\n                   AND a.hidden_flg = 0 \r\n                   AND b.applicant_company_authority > 0 \r\n              THEN 1 \r\n          END) AS '仮杭報告書_納品用数_申込事業者',\r\n    \r\n    COUNT(CASE \r\n              WHEN a.file_attribute_id = 28 \r\n                   AND a.publish_flg = 1 \r\n                   AND a.hidden_flg = 0 \r\n                   AND b.applicant_company_authority > 0 \r\n              THEN 1 \r\n          END) AS '測量データ_非公開数_申込事業者'\r\n\r\nFROM \r\n    t_object_attachment a\r\n    INNER JOIN m_file_attirbute b ON a.file_attribute_id = b.file_attribute_id\r\n    INNER JOIN m_file_class c     ON b.file_class_id = c.file_class_id\r\n\r\nWHERE \r\n    c.surveying_flg = 1\r\n    AND a.surveying_id IS NOT NULL\r\n    AND a.active_flg = 1\r\n\r\nGROUP BY \r\n    a.surveying_id",
+    "ViewInfo": {
+      "ViewName": "v_surveying_file_count",
+      "QueryColumns": [
+        "測量ID"
+      ]
+    }
+  },
+  "Indexes": []
+}

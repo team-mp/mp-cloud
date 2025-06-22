@@ -1,9 +1,9 @@
 {
   "PageType": 0,
   "ColumnCount": 65,
-  "RowCount": 32,
+  "RowCount": 30,
   "Formulas": {
-    "30,36": "IF(顧客ID=\"\",\"登録する\",\"更新する\")"
+    "28,36": "IF(顧客ID=\"\",\"登録する\",\"更新する\")"
   },
   "CustomNames": [
     {

@@ -1,0 +1,52 @@
+{
+  "Name": "v_object_attachment_cout",
+  "Columns": [
+    {
+      "$type": "Forguncy.SaveLoad.BindingColumnSaveData, ServerDesignerCommon",
+      "DefaultValue": 0,
+      "Required": true,
+      "DatabaseColumnType": "bigint",
+      "MaxLength": -1,
+      "Name": "添付ID",
+      "ColumnType": "System.Int64, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+    },
+    {
+      "$type": "Forguncy.SaveLoad.BindingColumnSaveData, ServerDesignerCommon",
+      "DefaultValue": 0,
+      "Required": true,
+      "DatabaseColumnType": "bigint",
+      "MaxLength": -1,
+      "Name": "コメント数",
+      "ColumnType": "System.Int64, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+    },
+    {
+      "$type": "Forguncy.SaveLoad.BindingColumnSaveData, ServerDesignerCommon",
+      "DatabaseColumnType": "varchar",
+      "MaxLength": 2000,
+      "Name": "最終コメント",
+      "ColumnType": "System.String, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+    },
+    {
+      "$type": "Forguncy.SaveLoad.BindingColumnSaveData, ServerDesignerCommon",
+      "DatabaseColumnType": "varchar",
+      "MaxLength": 190,
+      "Name": "最終更新ラベル",
+      "ColumnType": "System.String, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+    }
+  ],
+  "ExternalDatabaseInfo": {
+    "DataBaseType": "6db454c0-531c-4395-9122-921a18942902",
+    "AllowModifySchema": true,
+    "ConnectionId": "MySql2",
+    "SourceTableName": "v_object_attachment_cout",
+    "SourceTableSchema": "",
+    "CreateViewSql": "select `a`.`attachment_id` AS `添付ID`,count(`c`.`attachment_comment_id`) AS `コメント数`,`max_comment`.`attachment_comment` AS `最終コメント`,`max_comment`.`last_updated_label` AS `最終更新ラベル` from ((`t_object_attachment` `a` left join `t_object_attachment_comment` `c` on((`a`.`attachment_id` = `c`.`attachment_id`))) left join (select `t1`.`attachment_id` AS `attachment_id`,`t1`.`attachment_comment` AS `attachment_comment`,`t1`.`last_updated_label` AS `last_updated_label` from `t_object_attachment_comment` `t1` where (`t1`.`attachment_comment_id` = (select max(`t2`.`attachment_comment_id`) from `t_object_attachment_comment` `t2` where (`t2`.`attachment_id` = `t1`.`attachment_id`)))) `max_comment` on((`a`.`attachment_id` = `max_comment`.`attachment_id`))) group by `a`.`attachment_id`,`max_comment`.`attachment_comment`,`max_comment`.`last_updated_label` order by `a`.`attachment_id`",
+    "ViewInfo": {
+      "ViewName": "v_object_attachment_cout",
+      "QueryColumns": [
+        "添付ID"
+      ]
+    }
+  },
+  "Indexes": []
+}

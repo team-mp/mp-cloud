@@ -1,0 +1,82 @@
+{
+  "ID": "3dcd9641-a340-4231-83a8-3a8f147e3830",
+  "Name": "複数物件アップロード",
+  "Params": [
+    {
+      "ID": "e757e312-2f6d-4f64-9949-16ed3bf6866c",
+      "Name": "P_申込IDs"
+    },
+    {
+      "ID": "026b87ee-7757-463f-a5ee-6ed710b97172",
+      "Name": "P_ファイル分類ID"
+    }
+  ],
+  "Commands": [
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "物件数カウント",
+      "ParameterValue": {
+        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+        "SerializeProperty": "=LEN(P_申込IDs)-LEN(SUBSTITUTE(P_申込IDs,\",\",\"\"))"
+      },
+      "ID": "1ca9ee920d494b74affe914bd96bc44b"
+    },
+    {
+      "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+      "ConditionAndCommandPairList": [
+        {
+          "Condition": {
+            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+            "param": {
+              "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+              "cellLocations": [
+                {
+                  "SerializeProperty": "=物件数カウント"
+                }
+              ]
+            },
+            "value": "50",
+            "compareType": 2
+          },
+          "CommandList": [
+            {
+              "$type": "Forguncy.Model.ShowMessageCommand, ServerDesignerCommon",
+              "MessageFormula": "一回のアップロード処理は最大50物件までとなります。"
+            },
+            {
+              "$type": "Forguncy.Model.RunJavaScriptCommand, ServerDesignerCommon",
+              "JavaScript": "return false;",
+              "ID": "2987a00ba2864cd2bbee560b1a994ebb"
+            }
+          ],
+          "ID": "05dd3d22-2636-4d43-9078-35ab1c6d3e5b"
+        }
+      ]
+    },
+    {
+      "$type": "Forguncy.Model.ShowPopupCommand, ServerDesignerCommon",
+      "PageName": "複数物件アップロード",
+      "PassValues": [
+        {
+          "Source": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=P_申込IDs"
+          },
+          "TargetCell": {
+            "SerializeProperty": "=複数物件アップロード!申込IDs"
+          }
+        },
+        {
+          "Source": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=P_ファイル分類ID"
+          },
+          "TargetCell": {
+            "SerializeProperty": "=複数物件アップロード!ファイル分類ID"
+          }
+        }
+      ],
+      "LoadBindingDataOption": 2
+    }
+  ]
+}

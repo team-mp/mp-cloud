@@ -1,15 +1,15 @@
 {
   "PageType": 0,
-  "ColumnCount": 20,
+  "ColumnCount": 25,
   "RowCount": 21,
   "CustomNames": [
     {
       "Name": "編集リセットフラグ",
-      "Formula": "ファイル属性マスタ!$M$3"
+      "Formula": "ファイル属性マスタ!$R$3"
     },
     {
       "Name": "編集確定フラグ",
-      "Formula": "ファイル属性マスタ!$M$6"
+      "Formula": "ファイル属性マスタ!$R$6"
     }
   ]
 }

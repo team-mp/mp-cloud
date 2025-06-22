@@ -1,7 +1,7 @@
 {
   "PageType": 0,
   "ColumnCount": 37,
-  "RowCount": 23,
+  "RowCount": 26,
   "CustomNames": [
     {
       "Name": "計上選択",
@@ -17,7 +17,7 @@
     },
     {
       "Name": "連絡事項",
-      "Formula": "調査キャンセル確認画面!$D$14"
+      "Formula": "調査キャンセル確認画面!$D$17"
     }
   ]
 }

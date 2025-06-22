@@ -3,17 +3,19 @@
   "ColumnCount": 123,
   "RowCount": 66,
   "Formulas": {
-    "28,97": "ODATA(\"t_object_survey/$count?$filter=object_order_id eq \"&IF(ISBLANK(AX29),\"null\",AX29)&\" and survey_id gt \"&IF(ISBLANK(BA29),\"null\",BA29))",
-    "28,96": "IF(CR29<>\"\",\"最終更新日時：\"&CR29,\"\")",
-    "28,94": "CO29",
+    "28,99": "IF(CU29<>\"\",\"最終更新日時：\"&CU29,\"\")",
+    "28,97": "CR29",
     "33,62": "IF(VALUE(BT34)=1,18,6)",
-    "28,93": "\"調査報告書(\"&CO29&\")\"",
-    "28,92": "ODATA(\"t_object_attachment/$count?$filter=file_attribute_id eq \"&IF(ISBLANK(調査報告書ファイル属性ID),\"null\",調査報告書ファイル属性ID)&\" and survey_id eq \"&IF(ISBLANK(BA29),\"null\",BA29)&\" and active_flg eq 1\")",
-    "28,90": "IFERROR(ODATA(\"v_survey_product_summary?$select=仕入合計&$filter=調査ID eq \"&IF(ISBLANK(BA29),\"null\",BA29)),0)",
-    "28,89": "IFERROR(ODATA(\"v_survey_product_summary?$select=売上合計&$filter=調査ID eq \"&IF(ISBLANK(BA29),\"null\",BA29)),0)",
-    "33,49": "COUNT(BA29)",
-    "28,53": "$AX$34-ROW(AX29)+1",
-    "28,60": "IF(BF29=1,\"以降\",\"～\")"
+    "28,96": "\"調査ファイル(\"&CR29&\")\"",
+    "33,49": "COUNT(BB29)",
+    "28,71": "IF(BS29<>\"\",BS29,\"調査会社を選択してください\")",
+    "28,67": "IF(BO29<>\"\",BO29,\"指定調査会社があれば選択してください\")",
+    "28,61": "IF(BG29=1,\"以降\",\"～\")",
+    "28,54": "$AX$34-ROW(AX29)+1",
+    "28,92": "IFERROR(ODATA(\"v_survey_product_summary?$select=売上合計&$filter=調査ID eq \"&IF(ISBLANK(BB29),\"null\",BB29)),0)",
+    "28,93": "IFERROR(ODATA(\"v_survey_product_summary?$select=仕入合計&$filter=調査ID eq \"&IF(ISBLANK(BB29),\"null\",BB29)),0)",
+    "28,95": "IFERROR(ODATA(\"v_survey_file_count?$select=ファイル数&$filter=調査ID eq \"&IF(ISBLANK(BB29),\"null\",BB29)),0)",
+    "28,100": "ODATA(\"v_survey_later_count?$select=後発件数&$filter=調査ID eq \"&IF(ISBLANK(BB29),\"null\",BB29))"
   },
   "CustomNames": [
     {

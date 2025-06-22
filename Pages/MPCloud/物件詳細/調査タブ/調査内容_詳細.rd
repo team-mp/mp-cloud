@@ -6,7 +6,7 @@
     "7,16": "IF(K6=1,\"以降\",\"～\")",
     "23,47": "IF(VALUE(BD21)=1,18,6)",
     "20,47": "ODATA(\"t_object_attachment/$count?$filter=file_attribute_id eq \"&IF(ISBLANK(AV24),\"null\",AV24)&\" and survey_id eq \"&IF(ISBLANK(調査ID),\"null\",調査ID)&\" and active_flg eq 1\")",
-    "17,47": "ODATA(\"t_object_compaction/$count?$filter=survey_id eq \"&IF(ISBLANK(調査ID),\"null\",調査ID))"
+    "17,47": "IF(調査ID>0,ODATA(\"t_object_compaction/$count?$filter=survey_id eq \"&IF(ISBLANK(調査ID),\"null\",調査ID)),0)"
   },
   "CustomNames": [
     {

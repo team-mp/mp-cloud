@@ -51,13 +51,13 @@
         "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
         "SerializeProperty": "=Private_Server_Path"
       },
-      "ID": "54656729ef2143628f36efb97a4817f8"
+      "ID": "43032b3ceecb40a1b68dd957a2820da3"
     },
     {
       "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
       "ParameterName": "個人フォルダ名",
       "ParameterValue": "%CurrentUser.user_id%",
-      "ID": "04a8aad7e1f649c09ae3aaf8f83003b3"
+      "ID": "36098e43c67c4e4d92a62e3c59346977"
     },
     {
       "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
@@ -105,12 +105,46 @@
               "CommandList": [
                 {
                   "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                  "ParameterName": "変換請求先名",
+                  "ParameterValue": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=SUBSTITUTE(Item.P_請求先名,\":\",\"：\")"
+                  },
+                  "ID": "a35ea761f02043888e6628c891df5ff4"
+                },
+                {
+                  "$type": "Forguncy.Model.RequestServerCommand, ServerDesignerCommon",
+                  "ServerCommandName": "ファイル名文字列変換",
+                  "Parameters": [
+                    {
+                      "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                      "ParamName": "P_変換元文字列",
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=Item.P_請求先名"
+                      }
+                    }
+                  ],
+                  "ReturnPropertiesTo": [
+                    {
+                      "ResultPropertyName": "R_変換後文字列",
+                      "ResultTo": {
+                        "SerializeProperty": "変換請求先名"
+                      }
+                    }
+                  ],
+                  "RefreshAfterFinish": true,
+                  "CheckDataValidation": true,
+                  "Comments": "文字列でファイル名に使えない文字を調整する"
+                },
+                {
+                  "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
                   "ParameterName": "出力ファイルパス名",
                   "ParameterValue": {
                     "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                    "SerializeProperty": "=個人フォルダフルパス名&Item.P_請求番号&\"_\"&Item.P_請求先名&\"様.pdf\""
+                    "SerializeProperty": "=個人フォルダフルパス名&Item.P_請求番号&\"_\"&変換請求先名&\"様.pdf\""
                   },
-                  "ID": "03ee17bd4d234256b040c55e0fc2b7e0"
+                  "ID": "d783f7f830a244588eae840bd8e7ded1"
                 },
                 {
                   "$type": "Forguncy.Model.ExportActiveReportCommand, ServerDesignerCommon",
@@ -121,6 +155,9 @@
                   "ServerExportFileName": {
                     "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
                     "SerializeProperty": "=出力ファイルパス名"
+                  },
+                  "ExportSettings": {
+                    "MultiSheet": true
                   },
                   "PassParameters": [
                     {
@@ -139,7 +176,7 @@
                   ]
                 }
               ],
-              "ID": "a3acdf92-5e73-45c0-a40e-0e056427f5aa"
+              "ID": "99f93b4f-63ea-4b6d-b477-9f5215c23c35"
             }
           ]
         }
