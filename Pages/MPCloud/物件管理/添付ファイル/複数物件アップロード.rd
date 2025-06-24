@@ -26,7 +26,7 @@
     "19,132": "IF(DV20=1,ODATA(\"m_file_class?$select=file_class_id&$filter=surveying_flg eq 1\"),\"\")",
     "25,132": "IF(DV26=1,ODATA(\"m_file_class?$select=file_class_id&$filter=external_flg eq 1\"),\"\")",
     "23,132": "IF(DV24=1,ODATA(\"m_file_class?$select=file_class_id&$filter=construction_flg eq 1\"),\"\")",
-    "22,132": "IF(DV23=1,ODATA(\"m_file_class?$select=file_class_id&$filter=construction_estimate_flg eq 1\"))",
+    "22,132": "IF(DV23=1,ODATA(\"m_file_class?$select=file_class_id&$filter=construction_estimate_flg eq 1\"),\"\")",
     "25,125": "IF(AND(COUNTIF(FT8,\"<>\")>0,ファイル分類ID=\"\"),1,0)",
     "21,132": "IF(DV22=1,ODATA(\"m_file_class?$select=file_class_id&$filter=compaction_flg eq 1\"),\"\")",
     "16,141": "TEXTJOIN(\",\",TRUE,EC17:EI28)",
@@ -34,14 +34,15 @@
     "17,125": "IF(ファイル分類ID<>\"\",0,1)",
     "18,125": "IF(AND(COUNTIF(FB8,\"<>\")>0,ファイル分類ID=\"\"),1,0)",
     "16,132": "IF(DV17=1,ファイル分類ID,\"\")",
-    "22,125": "IF(AND(COUNTIF(FN8,\"<>\")>0,ファイル分類ID=\"\"),1,0)",
+    "22,125": "IF(OR(AND(COUNTIF(FN8,\"<>\")>0,ファイル分類ID=\"\"),VALUE(BX4)=1),1,0)",
     "26,132": "IF(DV27=1,ODATA(\"m_file_class?$select=file_class_id&$filter=billing_flg eq 1\"),\"\")",
     "21,125": "IF(AND(COUNTIF(FK8,\"<>\")>0,ファイル分類ID=\"\"),1,0)",
     "24,125": "IF(AND(COUNTIF(FQ8,\"<>\")>0,ファイル分類ID=\"\"),1,0)",
     "20,125": "IF(AND(COUNTIF(FH8,\"<>\")>0,ファイル分類ID=\"\"),1,0)",
     "17,132": "IF(DV18=1,ODATA(\"m_file_class?$select=file_class_id&$filter=order_flg eq 1\"),\"\")",
     "23,125": "IF(AND(COUNTIF(FN8,\"<>\")>0,ファイル分類ID=\"\"),1,0)",
-    "19,125": "IF(AND(COUNTIF(FE8,\"<>\")>0,ファイル分類ID=\"\"),1,0)"
+    "19,125": "IF(AND(COUNTIF(FE8,\"<>\")>0,ファイル分類ID=\"\"),1,0)",
+    "3,75": "IFERROR(ODATA(\"m_file_class?$select=construction_flg&$filter=file_class_id eq \"&IF(ISBLANK(ファイル分類ID),\"null\",ファイル分類ID)),0)"
   },
   "ArrayFormulas": {
     "15,68,1,4": "IF(BQ13>0,ODATA(\"m_file_attirbute?$select=file_attibute_name,no_multiple_attached_flg,initial_priave_flg,file_class_id&$filter=file_attribute_id eq \"&IF(ISBLANK(BQ13),\"null\",BQ13)),\"\")"

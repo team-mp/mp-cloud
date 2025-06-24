@@ -100,7 +100,7 @@
           "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
           "ParameterName": "削除フォルダ名",
           "ParameterValue": "trashed",
-          "ID": "94b03ae2944a47339b09bfda642971e9"
+          "ID": "e61fd35d5b6b49d290f9e32e44a31432"
         },
         {
           "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
@@ -109,7 +109,7 @@
             "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
             "SerializeProperty": "=添付情報.ファイルパス名&削除フォルダ名&\"\\\""
           },
-          "ID": "2a8f2dc6716642cab625ef87e45504ad"
+          "ID": "8c7bfc73341d4b7f8a8561072b6d7ebf"
         },
         {
           "$type": "OperateFilesCommand.CreateFolderCommand, OperateFilesCommand",
@@ -140,7 +140,7 @@
               "BindingInfo": {
                 "TableName": "t_object_attachment",
                 "ColumnName": "file_path_name",
-                "GUID": "9a547f7b-b0d8-4ff4-923a-ec5929fb75f2"
+                "GUID": "a080273f-e7e5-4641-878c-e10b81a4b75b"
               },
               "Value": {
                 "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
@@ -151,7 +151,7 @@
               "BindingInfo": {
                 "TableName": "t_object_attachment",
                 "ColumnName": "active_flg",
-                "GUID": "222cabcc-4f5c-4aa9-bb5a-7b23522c460b"
+                "GUID": "ce2dc33a-2752-41e1-b925-18e2dc18eaa6"
               },
               "Value": "0"
             },
@@ -159,7 +159,7 @@
               "BindingInfo": {
                 "TableName": "t_object_attachment",
                 "ColumnName": "delete_user_id",
-                "GUID": "dba8c67b-ebde-463e-9206-2f882b415497"
+                "GUID": "ce638602-1dad-452a-a1ad-1c8720d06f7b"
               },
               "Value": "%CurrentUser.user_id%"
             },
@@ -167,7 +167,7 @@
               "BindingInfo": {
                 "TableName": "t_object_attachment",
                 "ColumnName": "deleted_datetime",
-                "GUID": "819d9ef3-d39e-4789-b62c-a08fe5f434f9"
+                "GUID": "fcd0ed70-6726-4777-aa06-4d2fc2bfb277"
               },
               "Value": {
                 "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
@@ -183,7 +183,25 @@
             "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
             "SerializeProperty": "=添付情報.ファイルパス名&添付情報.保存ファイル名"
           },
-          "ID": "bcc9f5e152bf4e4c871fa910b2ceb820"
+          "ID": "08e35ceb6b144a7ab0f592fbc7dbeb59"
+        },
+        {
+          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+          "ParameterName": "DropBoxフルパス名",
+          "ParameterValue": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=SUBSTITUTE(対象ファイルフルパス名,\"C:\\MP-Cloud\\Dropbox\",\"\")"
+          },
+          "ID": "4507187fae7a462aa3260983e60f3c64"
+        },
+        {
+          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+          "ParameterName": "DropBox削除フォルダパス名",
+          "ParameterValue": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=SUBSTITUTE(削除フォルダパス名,\"C:\\MP-Cloud\\Dropbox\",\"\")"
+          },
+          "ID": "f97486114e0f429197e5c619ac1e9266"
         },
         {
           "$type": "OperateFilesCommand.GetFileInformation, OperateFilesCommand",
@@ -216,19 +234,42 @@
                   "Message": "対象ファイルが存在しませんでした"
                 }
               ],
-              "ID": "9cb36839-b921-45e7-a512-f5468e707c93"
+              "ID": "9644aaaa-e17e-44f0-858e-42c32b855b8d"
             }
           ]
         },
         {
-          "$type": "OperateFilesCommand.MoveFileCommand, OperateFilesCommand",
-          "FilePath": {
-            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-            "SerializeProperty": "=対象ファイルフルパス名"
+          "$type": "Forguncy.Model.CatchExceptionCommand, ServerDesignerCommon",
+          "TryCommandPart": {
+            "CommandList": [
+              {
+                "$type": "OperateFilesCommand.CloudStorage.MoveFileCommand, OperateFilesCommand",
+                "FilePath": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=DropBoxフルパス名"
+                },
+                "TargetFolderPath": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=DropBox削除フォルダパス名"
+                },
+                "Type": "DropboxStrage"
+              }
+            ]
           },
-          "TargetFolderPath": {
-            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-            "SerializeProperty": "=削除フォルダパス名"
+          "CatchCommandPart": {
+            "CommandList": [
+              {
+                "$type": "OperateFilesCommand.MoveFileCommand, OperateFilesCommand",
+                "FilePath": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=対象ファイルフルパス名"
+                },
+                "TargetFolderPath": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=削除フォルダパス名"
+                }
+              }
+            ]
           }
         },
         {
@@ -238,7 +279,7 @@
             "TableName": "t_object_attachment_relation",
             "BindingInfos": [
               {
-                "GUID": "adab28b8-d57e-45f6-97f3-878856323fdf",
+                "GUID": "72c3f444-ee5d-49d0-a9d0-c6a3a50ac47c",
                 "BindingInfo": {
                   "TableName": "t_object_attachment_relation",
                   "ColumnName": "object_id",
@@ -261,7 +302,7 @@
             },
             "NullFormulaValueQueryPolicy": 0
           },
-          "ID": "7843af44be624ed18862efc6dffccc50"
+          "ID": "0835a11934c54dc7bbf1467844367ac8"
         },
         {
           "$type": "Forguncy.Model.LoopCommand, ServerDesignerCommon",

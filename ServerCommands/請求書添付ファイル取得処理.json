@@ -37,7 +37,7 @@
         "TableValueType": 1,
         "BindingInfos": [
           {
-            "GUID": "f6da2e85-afe0-41ee-93e8-1e4f6272f842",
+            "GUID": "7089219a-d563-4525-9f76-5888ab154cd4",
             "BindingInfo": {
               "TableName": "m_environment",
               "ColumnName": "app_name",
@@ -46,7 +46,7 @@
             "ColumnName": "アプリ名"
           },
           {
-            "GUID": "fc042169-4ffb-417a-93f0-40ea18de35a4",
+            "GUID": "2ec5c608-eeba-4223-b107-8e58456c994f",
             "BindingInfo": {
               "TableName": "m_environment",
               "ColumnName": "file_temp_path",
@@ -55,7 +55,7 @@
             "ColumnName": "ファイルTempパス"
           },
           {
-            "GUID": "616d7503-84f5-47b6-9a38-3717fdab2a12",
+            "GUID": "0c2ca3ec-c80a-43e5-b8a1-8bfeb9faa15a",
             "BindingInfo": {
               "TableName": "m_environment",
               "ColumnName": "dropbox_folder_path",
@@ -74,7 +74,7 @@
           "Value": "1"
         }
       },
-      "ID": "740f6fa7ea7f4fbb9ded0fbb3d252f49"
+      "ID": "49cc3631b7f54cdca5c0f3c51952e755"
     },
     {
       "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
@@ -83,7 +83,7 @@
         "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
         "SerializeProperty": "=環境設定.ファイルTempパス&環境設定.アプリ名&\"\\Temp\\\""
       },
-      "ID": "afccfc13b9c041f7a1035440e5be7a62"
+      "ID": "f84a038c777c45eeb32b5531cacf1ff1"
     },
     {
       "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
@@ -352,28 +352,64 @@
                 "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
                 "SerializeProperty": "=請求書添付情報.ファイルパス名&請求書添付情報.保存ファイル名"
               },
-              "ID": "5f2d9cce10584aceb501e5a28edd360c"
+              "ID": "3dba4f041db04eaa85bf5b4647e8c67d"
             },
             {
-              "$type": "OperateFilesCommand.CopyFileCommand, OperateFilesCommand",
-              "FilePath": {
+              "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+              "ParameterName": "DropBox保存ファイルフルパス名",
+              "ParameterValue": {
                 "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                "SerializeProperty": "=保存ファイルフルパス名"
+                "SerializeProperty": "=SUBSTITUTE(保存ファイルフルパス名,\"C:\\MP-Cloud\\Dropbox\",\"\")"
               },
-              "TargetFolderPath": {
-                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                "SerializeProperty": "=保存先Tempパス名"
-              }
+              "ID": "eabf08903e71440dbd926312894b062e"
             },
             {
-              "$type": "OperateFilesCommand.RenameFileCommand, OperateFilesCommand",
-              "FilePath": {
-                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                "SerializeProperty": "=保存先Tempパス名&元ファイル名"
+              "$type": "Forguncy.Model.CatchExceptionCommand, ServerDesignerCommon",
+              "TryCommandPart": {
+                "CommandList": [
+                  {
+                    "$type": "OperateFilesCommand.CloudStorage.DownloadCloudFileToServer, OperateFilesCommand",
+                    "FilePath": {
+                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                      "SerializeProperty": "=DropBox保存ファイルフルパス名"
+                    },
+                    "LocalFolderPath": {
+                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                      "SerializeProperty": "=保存先Tempパス名"
+                    },
+                    "Type": "DropboxStrage"
+                  }
+                ]
               },
-              "NewName": {
-                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                "SerializeProperty": "=出力ファイル名"
+              "CatchCommandPart": {
+                "CommandList": [
+                  {
+                    "$type": "OperateFilesCommand.CopyFileCommand, OperateFilesCommand",
+                    "FilePath": {
+                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                      "SerializeProperty": "=保存ファイルフルパス名"
+                    },
+                    "TargetFolderPath": {
+                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                      "SerializeProperty": "=保存先Tempパス名"
+                    }
+                  }
+                ]
+              },
+              "FinallyCommandPart": {
+                "CommandList": [
+                  {
+                    "$type": "OperateFilesCommand.RenameFileCommand, OperateFilesCommand",
+                    "FilePath": {
+                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                      "SerializeProperty": "=保存先Tempパス名&元ファイル名"
+                    },
+                    "NewName": {
+                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                      "SerializeProperty": "=出力ファイル名"
+                    }
+                  }
+                ]
               }
             },
             {
@@ -383,7 +419,7 @@
                 "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
                 "SerializeProperty": "=添付ファイル文字列&出力ファイル名&\"|\""
               },
-              "ID": "d0ae91960cad4e2fbbbd862faf0ee7e0"
+              "ID": "2ee95d0cb4944ff1b44e223ef8f6c70c"
             }
           ]
         }

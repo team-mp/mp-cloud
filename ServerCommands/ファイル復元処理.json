@@ -222,7 +222,7 @@
                 "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
                 "SerializeProperty": "=保存先サーバーパス名&年月フォルダ&\"\\\"&物件フォルダ&\"\\\""
               },
-              "ID": "7af5fd2c3ca440eb801bad050f8ef673"
+              "ID": "03c5dc077ae04e6ca78866dec7ed4d51"
             },
             {
               "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
@@ -231,7 +231,25 @@
                 "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
                 "SerializeProperty": "=添付情報.ファイルパス名&添付情報.保存ファイル名"
               },
-              "ID": "6ffe47faebf0442e996c852161c5fb1c"
+              "ID": "a2c0e491d69d4999a70ec63b0a1d21da"
+            },
+            {
+              "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+              "ParameterName": "DropBox復元先フォルダ名",
+              "ParameterValue": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=SUBSTITUTE(復元先フォルダ名,\"C:\\MP-Cloud\\Dropbox\",\"\")"
+              },
+              "ID": "df3f6fea36b2433e9780e6c8f9c99145"
+            },
+            {
+              "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+              "ParameterName": "DropBox復元ファイルフルパス名",
+              "ParameterValue": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=SUBSTITUTE(復元ファイルフルパス名,\"C:\\MP-Cloud\\Dropbox\",\"\")"
+              },
+              "ID": "c34b14642ac642b3b942d3c71321ffb3"
             },
             {
               "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
@@ -317,19 +335,42 @@
                       "Message": "対象ファイルが存在しませんでした"
                     }
                   ],
-                  "ID": "d121451f-55da-47da-b0c0-374bcd3727ef"
+                  "ID": "34a90036-6561-42b0-8915-a959215f298e"
                 }
               ]
             },
             {
-              "$type": "OperateFilesCommand.MoveFileCommand, OperateFilesCommand",
-              "FilePath": {
-                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                "SerializeProperty": "=復元ファイルフルパス名"
+              "$type": "Forguncy.Model.CatchExceptionCommand, ServerDesignerCommon",
+              "TryCommandPart": {
+                "CommandList": [
+                  {
+                    "$type": "OperateFilesCommand.CloudStorage.MoveFileCommand, OperateFilesCommand",
+                    "FilePath": {
+                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                      "SerializeProperty": "=DropBox復元ファイルフルパス名"
+                    },
+                    "TargetFolderPath": {
+                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                      "SerializeProperty": "=DropBox復元先フォルダ名"
+                    },
+                    "Type": "DropboxStrage"
+                  }
+                ]
               },
-              "TargetFolderPath": {
-                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                "SerializeProperty": "=復元先フォルダ名"
+              "CatchCommandPart": {
+                "CommandList": [
+                  {
+                    "$type": "OperateFilesCommand.MoveFileCommand, OperateFilesCommand",
+                    "FilePath": {
+                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                      "SerializeProperty": "=復元ファイルフルパス名"
+                    },
+                    "TargetFolderPath": {
+                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                      "SerializeProperty": "=復元先フォルダ名"
+                    }
+                  }
+                ]
               }
             },
             {
@@ -339,7 +380,7 @@
                 "TableName": "t_object_attachment_relation",
                 "BindingInfos": [
                   {
-                    "GUID": "fe8945ea-9248-4bc8-b506-005e45af52bb",
+                    "GUID": "8d243b70-b84d-4a0d-8f31-aba53cdc4ff0",
                     "BindingInfo": {
                       "TableName": "t_object_attachment_relation",
                       "ColumnName": "object_id",
@@ -362,7 +403,7 @@
                 },
                 "NullFormulaValueQueryPolicy": 0
               },
-              "ID": "90f68adf7913472abb6cfc25b784b1af"
+              "ID": "b59f0d926ac64c86a6826f43d3fc3339"
             },
             {
               "$type": "Forguncy.Model.LoopCommand, ServerDesignerCommon",

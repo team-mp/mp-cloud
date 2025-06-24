@@ -38,7 +38,7 @@
         "TableValueType": 0,
         "BindingInfos": [
           {
-            "GUID": "9b116565-ed04-4385-8439-72f0678ab4ca",
+            "GUID": "a9c6a0b7-9468-4f61-abe6-41c7b1573582",
             "BindingInfo": {
               "TableName": "m_environment",
               "ColumnName": "host_name",
@@ -57,7 +57,7 @@
           "Value": "1"
         }
       },
-      "ID": "41e7c446d4174443a24bb07e8a2d445e"
+      "ID": "14feaf98fa904eb9ba936d6aff480373"
     },
     {
       "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
@@ -125,19 +125,28 @@
         "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
         "SerializeProperty": "=請求書添付情報.ファイルパス名&請求書添付情報.保存ファイル名"
       },
-      "ID": "a05664ccd49440b787e2c52eb73ea284"
+      "ID": "27309bd2599f443ea7370b1849383635"
+    },
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "DropBox保存ファイルフルパス名",
+      "ParameterValue": {
+        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+        "SerializeProperty": "=SUBSTITUTE(保存ファイルフルパス名,\"C:\\MP-Cloud\\Dropbox\",\"\")"
+      },
+      "ID": "e1a5ab34422b4cf3bca0c9138334ac3e"
     },
     {
       "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
       "ParameterName": "保存先サーバーパス名",
       "ParameterValue": "C:\\inetpub\\wwwroot\\private\\",
-      "ID": "3c9b4973e39144949d639a64bcbae151"
+      "ID": "bb2dd4ee1c084801906649505843be5e"
     },
     {
       "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
       "ParameterName": "個人フォルダ名",
       "ParameterValue": "%CurrentUser.user_id%",
-      "ID": "05c18836ba3e49a9ad13ef8c28113f78"
+      "ID": "b1a65abd3f984c7489e0f11ddfbbf3f9"
     },
     {
       "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
@@ -146,7 +155,7 @@
         "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
         "SerializeProperty": "=保存先サーバーパス名&個人フォルダ名&\"\\\""
       },
-      "ID": "f0b8c19c11564bda953c9c96046aa36a"
+      "ID": "dc382ac6307c4ad7aa89365d9e9d3361"
     },
     {
       "$type": "OperateFilesCommand.CreateFolderCommand, OperateFilesCommand",
@@ -195,7 +204,7 @@
               ]
             }
           ],
-          "ID": "0b79f1b5-ab0f-470c-b5ef-01634dca148b"
+          "ID": "1640bb82-b7c0-479c-97cd-73e39e385561"
         }
       ],
       "Comments": "参照ファイルが無ければ終了"
@@ -225,7 +234,7 @@
         "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
         "SerializeProperty": "=個人フォルダフルパス名&変換ファイル名"
       },
-      "ID": "5ba141e606104956bad165d208a47ebf"
+      "ID": "8dfef83e428943d3834a64c19da6710f"
     },
     {
       "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
@@ -262,29 +271,56 @@
           },
           "CommandList": [
             {
-              "$type": "OperateFilesCommand.CopyFileCommand, OperateFilesCommand",
-              "FilePath": {
-                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                "SerializeProperty": "=保存ファイルフルパス名"
+              "$type": "Forguncy.Model.CatchExceptionCommand, ServerDesignerCommon",
+              "TryCommandPart": {
+                "CommandList": [
+                  {
+                    "$type": "OperateFilesCommand.CloudStorage.DownloadCloudFileToServer, OperateFilesCommand",
+                    "FilePath": {
+                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                      "SerializeProperty": "=DropBox保存ファイルフルパス名"
+                    },
+                    "LocalFolderPath": {
+                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                      "SerializeProperty": "=個人フォルダフルパス名"
+                    },
+                    "Type": "DropboxStrage"
+                  }
+                ]
               },
-              "TargetFolderPath": {
-                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                "SerializeProperty": "=個人フォルダフルパス名"
-              }
-            },
-            {
-              "$type": "OperateFilesCommand.RenameFileCommand, OperateFilesCommand",
-              "FilePath": {
-                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                "SerializeProperty": "=個人フォルダフルパス名&請求書添付情報.保存ファイル名"
+              "CatchCommandPart": {
+                "CommandList": [
+                  {
+                    "$type": "OperateFilesCommand.CopyFileCommand, OperateFilesCommand",
+                    "FilePath": {
+                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                      "SerializeProperty": "=保存ファイルフルパス名"
+                    },
+                    "TargetFolderPath": {
+                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                      "SerializeProperty": "=個人フォルダフルパス名"
+                    }
+                  }
+                ]
               },
-              "NewName": {
-                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                "SerializeProperty": "=変換ファイル名"
+              "FinallyCommandPart": {
+                "CommandList": [
+                  {
+                    "$type": "OperateFilesCommand.RenameFileCommand, OperateFilesCommand",
+                    "FilePath": {
+                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                      "SerializeProperty": "=個人フォルダフルパス名&請求書添付情報.保存ファイル名"
+                    },
+                    "NewName": {
+                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                      "SerializeProperty": "=変換ファイル名"
+                    }
+                  }
+                ]
               }
             }
           ],
-          "ID": "0e0fac79-86d7-4e94-9604-1da4775fd610"
+          "ID": "29675d0e-b972-4c21-b2a9-debd2b8678c9"
         },
         {
           "CommandList": [
@@ -318,34 +354,61 @@
                   },
                   "CommandList": [
                     {
-                      "$type": "OperateFilesCommand.CopyFileCommand, OperateFilesCommand",
-                      "FilePath": {
-                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                        "SerializeProperty": "=保存ファイルフルパス名"
+                      "$type": "Forguncy.Model.CatchExceptionCommand, ServerDesignerCommon",
+                      "TryCommandPart": {
+                        "CommandList": [
+                          {
+                            "$type": "OperateFilesCommand.CloudStorage.DownloadCloudFileToServer, OperateFilesCommand",
+                            "FilePath": {
+                              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                              "SerializeProperty": "=DropBox保存ファイルフルパス名"
+                            },
+                            "LocalFolderPath": {
+                              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                              "SerializeProperty": "=個人フォルダフルパス名"
+                            },
+                            "Type": "DropboxStrage"
+                          }
+                        ]
                       },
-                      "TargetFolderPath": {
-                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                        "SerializeProperty": "=個人フォルダフルパス名"
-                      }
-                    },
-                    {
-                      "$type": "OperateFilesCommand.RenameFileCommand, OperateFilesCommand",
-                      "FilePath": {
-                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                        "SerializeProperty": "=個人フォルダフルパス名&請求書添付情報.保存ファイル名"
+                      "CatchCommandPart": {
+                        "CommandList": [
+                          {
+                            "$type": "OperateFilesCommand.CopyFileCommand, OperateFilesCommand",
+                            "FilePath": {
+                              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                              "SerializeProperty": "=保存ファイルフルパス名"
+                            },
+                            "TargetFolderPath": {
+                              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                              "SerializeProperty": "=個人フォルダフルパス名"
+                            }
+                          }
+                        ]
                       },
-                      "NewName": {
-                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                        "SerializeProperty": "=変換ファイル名"
+                      "FinallyCommandPart": {
+                        "CommandList": [
+                          {
+                            "$type": "OperateFilesCommand.RenameFileCommand, OperateFilesCommand",
+                            "FilePath": {
+                              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                              "SerializeProperty": "=個人フォルダフルパス名&請求書添付情報.保存ファイル名"
+                            },
+                            "NewName": {
+                              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                              "SerializeProperty": "=変換ファイル名"
+                            }
+                          }
+                        ]
                       }
                     }
                   ],
-                  "ID": "11da1533-16db-41df-80be-fb6500dc57df"
+                  "ID": "8c10a3fa-cd03-4c82-83e3-90d89157c95a"
                 }
               ]
             }
           ],
-          "ID": "8ad41684-9a3f-4a6f-8309-08e551946467"
+          "ID": "db0d26e4-1c3c-43c8-896b-9b78b446b242"
         }
       ]
     },

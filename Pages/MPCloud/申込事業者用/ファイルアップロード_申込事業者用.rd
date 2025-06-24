@@ -3,11 +3,12 @@
   "ColumnCount": 75,
   "RowCount": 40,
   "Formulas": {
-    "14,54": "COUNT(BN10)",
+    "14,54": "COUNT(BO10)",
     "20,47": "TEXTJOINIF(\",\",TRUE,AV10,1,AW10)",
     "14,47": "COUNTIF(AY10,\"<>\")",
-    "17,54": "TEXTJOINIF(\",\",TRUE,AV10,1,BH10)",
-    "17,47": "COUNTIF(AV10,1)"
+    "20,54": "TEXTJOINIF(\",\",TRUE,AV10,1,BH10)",
+    "17,47": "COUNTIF(AV10,1)",
+    "17,54": "COUNTIF(BM10,1)"
   },
   "CustomNames": [
     {

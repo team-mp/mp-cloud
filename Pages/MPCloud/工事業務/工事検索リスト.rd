@@ -1,23 +1,23 @@
 {
   "PageType": 0,
-  "ColumnCount": 257,
+  "ColumnCount": 261,
   "RowCount": 30,
   "Formulas": {
-    "9,231": "IF(IFERROR(FIND(\"　\",HX7),0)>0,FIND(\"　\",HX7),IF(IFERROR(FIND(\" \",HX7),0)>0,FIND(\" \",HX7),0))",
-    "15,231": "IF(HX10>0,MID(HX7,HX10+1,1000),\"\")",
-    "18,237": "COUNTIF(HQ7,1)",
-    "21,237": "ID16-ID19",
-    "29,1": "\"該当データ件数：\"&TEXT(IK16,\"#,##0\")&\"件　　表示データ件数：\"&TEXT(ID16,\"#,##0\")&\"件\"",
-    "15,237": "COUNT(GO7)",
-    "12,231": "IF(HX10>0,LEFT(HX7,HX10-1),IF(HX7<>\"\",HX7,\"\"))",
-    "15,244": "SUM(IQ8)",
-    "21,231": "TEXTJOINIF(\",\",TRUE,HQ7,1,GO7)",
-    "6,231": "TRIM(L2)"
+    "15,248": "SUM(IU8)",
+    "9,235": "IF(IFERROR(FIND(\"　\",IB7),0)>0,FIND(\"　\",IB7),IF(IFERROR(FIND(\" \",IB7),0)>0,FIND(\" \",IB7),0))",
+    "12,235": "IF(IB10>0,LEFT(IB7,IB10-1),IF(IB7<>\"\",IB7,\"\"))",
+    "15,235": "IF(IB10>0,MID(IB7,IB10+1,1000),\"\")",
+    "29,1": "\"該当データ件数：\"&TEXT(IO16,\"#,##0\")&\"件　　表示データ件数：\"&TEXT(IH16,\"#,##0\")&\"件\"",
+    "15,241": "COUNT(GO7)",
+    "21,241": "IH16-IH19",
+    "18,241": "COUNTIF(HU7,1)",
+    "6,235": "TRIM(L2)",
+    "21,235": "TEXTJOINIF(\",\",TRUE,HU7,1,GO7)"
   },
   "CustomNames": [
     {
       "Name": "検索フラグ",
-      "Formula": "工事検索リスト!$ID$7"
+      "Formula": "工事検索リスト!$IH$7"
     },
     {
       "Name": "検索リストページタイトル",
@@ -25,11 +25,11 @@
     },
     {
       "Name": "検索_工事ステータスID",
-      "Formula": "工事検索リスト!$ID$13"
+      "Formula": "工事検索リスト!$IH$13"
     },
     {
       "Name": "ロケーションURL",
-      "Formula": "工事検索リスト!$ID$10"
+      "Formula": "工事検索リスト!$IH$10"
     }
   ]
 }
