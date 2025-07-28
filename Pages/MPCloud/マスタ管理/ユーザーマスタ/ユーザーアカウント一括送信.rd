@@ -1,6 +1,6 @@
 {
   "PageType": 0,
-  "ColumnCount": 43,
+  "ColumnCount": 55,
   "RowCount": 9,
   "Formulas": {
     "2,4": "AD7&\"名のユーザーへ通知します。\"",

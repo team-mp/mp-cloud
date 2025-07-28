@@ -32,99 +32,17 @@
           "Name": "filekey",
           "Remark": "ランダム変数",
           "DataValidationInfo": {}
+        },
+        {
+          "Name": "type",
+          "Remark": "ダウンロードリンク区分を適用する\r\n1:圧縮リンク\r\n2:ファイルリンク",
+          "DataValidationInfo": {}
         }
       ]
     }
   ],
   "Commands": [
     {
-      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
-      "ParameterName": "申込情報",
-      "TableValue": {
-        "TableName": "t_object_order",
-        "TableValueType": 1,
-        "BindingInfos": [
-          {
-            "GUID": "1d794276-9547-4937-95e3-7e06fff7de27",
-            "BindingInfo": {
-              "TableName": "t_object_order",
-              "ColumnName": "object_id",
-              "GUID": "7b9d5d22-dd7b-4238-9d23-050971fed935",
-              "RelationBinding": {
-                "RelatedTable": "t_object",
-                "RelatedColumn": "object_id",
-                "DisplayColumn": "物件番号"
-              }
-            },
-            "ColumnName": "物件番号"
-          },
-          {
-            "GUID": "0fb3ae90-900d-472b-9ff9-96237cf04dd7",
-            "BindingInfo": {
-              "TableName": "t_object_order",
-              "ColumnName": "object_id",
-              "GUID": "aa47e840-7f56-4fde-ac68-f62b02a09e6c",
-              "RelationBinding": {
-                "RelatedTable": "t_object",
-                "RelatedColumn": "object_id",
-                "DisplayColumn": "物件名"
-              }
-            },
-            "ColumnName": "物件名"
-          }
-        ],
-        "SqlCondition": {
-          "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
-          "ColumnBindingInfo": {
-            "TableName": "t_object_order",
-            "ColumnName": "object_order_id",
-            "GUID": "ab536030-bbfd-4741-a551-625d3b36a40a"
-          },
-          "Value": {
-            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-            "SerializeProperty": "=id"
-          }
-        },
-        "NullFormulaValueQueryPolicy": 0
-      },
-      "ID": "93a7d20350b643d2aa870c12ea31f010"
-    },
-    {
-      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
-      "ParameterName": "ZIP作成元パス名",
-      "ParameterValue": {
-        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-        "SerializeProperty": "=Download_Server_Path&filekey&\"\\\""
-      },
-      "ID": "287ed9e7f586480db9b0e4d7a7c5eeb9"
-    },
-    {
-      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
-      "ParameterName": "ZIP作成先パス名",
-      "ParameterValue": {
-        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-        "SerializeProperty": "=Export_Server_Path&\"Temp\\\"&filekey&\"\\\""
-      },
-      "ID": "6298068059554bb48790c721832c5cac"
-    },
-    {
-      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
-      "ParameterName": "ZIPファイルパス名",
-      "ParameterValue": {
-        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-        "SerializeProperty": "=ZIP作成先パス名&filekey&\".zip\""
-      },
-      "ID": "e5efba827ebd4e57990ddcfff5b2cfe6"
-    },
-    {
-      "$type": "OperateFilesCommand.GetFilesFromFolderCommand, OperateFilesCommand",
-      "FolderPath": {
-        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-        "SerializeProperty": "=ZIP作成元パス名"
-      },
-      "ToParameterName": "downLoadFile"
-    },
-    {
       "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
       "ConditionAndCommandPairList": [
         {
@@ -134,96 +52,296 @@
               "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
               "ParamObject": {
                 "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                "SerializeProperty": "=downLoadFile.Count"
+                "SerializeProperty": "=type"
               }
             },
-            "value": "0"
+            "value": "2"
           },
           "CommandList": [
             {
-              "$type": "Forguncy.Model.ReturnCommand, ServerDesignerCommon",
-              "ErrorCode": "100",
-              "Message": "ファイルは存在しませんでした。有効期間を過ぎた可能性があります。"
+              "$type": "OperateFilesCommand.GetFilesFromFolderCommand, OperateFilesCommand",
+              "FolderPath": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=Download_Server_Path&filekey&\"\\\""
+              },
+              "ToParameterName": "downLoadFile"
+            },
+            {
+              "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+              "ConditionAndCommandPairList": [
+                {
+                  "Condition": {
+                    "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                    "param": {
+                      "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                      "ParamObject": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=downLoadFile.Count"
+                      }
+                    },
+                    "value": "0"
+                  },
+                  "CommandList": [
+                    {
+                      "$type": "Forguncy.Model.ReturnCommand, ServerDesignerCommon",
+                      "ErrorCode": "100",
+                      "Message": "ファイルは存在しませんでした。有効期間を過ぎた可能性があります。"
+                    }
+                  ],
+                  "ID": "49ec163a-8df9-422b-abbb-270fd67006cc"
+                }
+              ]
+            },
+            {
+              "$type": "Forguncy.Model.LoopCommand, ServerDesignerCommon",
+              "LoopInfo": {
+                "$type": "Forguncy.Model.CountLoopInfo, ServerDesignerCommon",
+                "LoopCount": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=downLoadFile"
+                },
+                "LoopItemParamName": "filePath"
+              },
+              "CommandList": [
+                {
+                  "$type": "OperateFilesCommand.DownloadFileCommand, OperateFilesCommand",
+                  "FilePath": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=filePath"
+                  }
+                },
+                {
+                  "$type": "Forguncy.Model.ReturnCommand, ServerDesignerCommon",
+                  "ErrorCode": "0"
+                }
+              ]
             }
           ],
-          "ID": "5ae30b93-29d3-4f7b-9a7a-0d6829c0c867"
-        }
-      ]
-    },
-    {
-      "$type": "OperateFilesCommand.CreateFolderCommand, OperateFilesCommand",
-      "FolderPath": {
-        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-        "SerializeProperty": "=ZIP作成先パス名"
-      }
-    },
-    {
-      "$type": "OperateFilesCommand.GetFileInformation, OperateFilesCommand",
-      "FilePath": {
-        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-        "SerializeProperty": "=ZIPファイルパス名"
-      },
-      "FileInfomationType": 5,
-      "ToParameterName": "ZIPファイル有無"
-    },
-    {
-      "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
-      "ConditionAndCommandPairList": [
+          "Comments": "ファイルリンクダウンロードの場合",
+          "ID": "166e4f55-f1a9-48eb-b785-463470e50c1b"
+        },
         {
-          "Condition": {
-            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
-            "param": {
-              "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
-              "ParamObject": {
-                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                "SerializeProperty": "=ZIPファイル有無"
-              }
-            },
-            "value": "True"
-          },
           "CommandList": [
             {
-              "$type": "OperateFilesCommand.DeleteFileCommand, OperateFilesCommand",
+              "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+              "ParameterName": "ZIP作成元パス名",
+              "ParameterValue": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=Download_Server_Path&filekey&\"\\\""
+              },
+              "ID": "3baa7e74b1e040d1aa22b6df5718da58"
+            },
+            {
+              "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+              "ParameterName": "ZIP作成先パス名",
+              "ParameterValue": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=Export_Server_Path&\"Temp\\\"&filekey&\"\\\""
+              },
+              "ID": "8ae034cf21794cd98a02a42f131682a3"
+            },
+            {
+              "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+              "ParameterName": "ZIPファイルパス名",
+              "ParameterValue": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=ZIP作成先パス名&filekey&\".zip\""
+              },
+              "ID": "d61e17fe0e534a33ac87d16bc1db3d21"
+            },
+            {
+              "$type": "OperateFilesCommand.GetFilesFromFolderCommand, OperateFilesCommand",
+              "FolderPath": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=ZIP作成元パス名"
+              },
+              "ToParameterName": "downLoadFile"
+            },
+            {
+              "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+              "ConditionAndCommandPairList": [
+                {
+                  "Condition": {
+                    "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                    "param": {
+                      "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                      "ParamObject": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=downLoadFile.Count"
+                      }
+                    },
+                    "value": "0"
+                  },
+                  "CommandList": [
+                    {
+                      "$type": "Forguncy.Model.ReturnCommand, ServerDesignerCommon",
+                      "ErrorCode": "100",
+                      "Message": "ファイルは存在しませんでした。有効期間を過ぎた可能性があります。"
+                    }
+                  ],
+                  "ID": "82110a7c-6dc0-4413-81f3-ce2285ed72fd"
+                }
+              ]
+            },
+            {
+              "$type": "OperateFilesCommand.CreateFolderCommand, OperateFilesCommand",
+              "FolderPath": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=ZIP作成先パス名"
+              }
+            },
+            {
+              "$type": "OperateFilesCommand.GetFileInformation, OperateFilesCommand",
               "FilePath": {
                 "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
                 "SerializeProperty": "=ZIPファイルパス名"
+              },
+              "FileInfomationType": 5,
+              "ToParameterName": "ZIPファイル有無"
+            },
+            {
+              "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+              "ConditionAndCommandPairList": [
+                {
+                  "Condition": {
+                    "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                    "param": {
+                      "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                      "ParamObject": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=ZIPファイル有無"
+                      }
+                    },
+                    "value": "True"
+                  },
+                  "CommandList": [
+                    {
+                      "$type": "OperateFilesCommand.DeleteFileCommand, OperateFilesCommand",
+                      "FilePath": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=ZIPファイルパス名"
+                      }
+                    }
+                  ],
+                  "ID": "b06bf7c1-4648-4443-ae9a-4b8b0f504781"
+                }
+              ]
+            },
+            {
+              "$type": "OperateFilesCommand.ZipFolderCommand, OperateFilesCommand",
+              "FolderPath": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=ZIP作成元パス名"
+              },
+              "ZipfilePath": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=ZIPファイルパス名"
+              }
+            },
+            {
+              "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+              "ParameterName": "ダウンロードファイル名",
+              "ID": "cf71c54b99924158a73d0f37444f11eb"
+            },
+            {
+              "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+              "ConditionAndCommandPairList": [
+                {
+                  "Condition": {
+                    "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                    "param": {
+                      "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                      "ParamObject": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=id"
+                      }
+                    },
+                    "value": "%Null%",
+                    "compareType": 1
+                  },
+                  "CommandList": [
+                    {
+                      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                      "ParameterName": "申込情報",
+                      "TableValue": {
+                        "TableName": "t_object_order",
+                        "TableValueType": 1,
+                        "BindingInfos": [
+                          {
+                            "GUID": "a2ff356c-c0dc-456c-80f3-6cc3618f4acc",
+                            "BindingInfo": {
+                              "TableName": "t_object_order",
+                              "ColumnName": "object_id",
+                              "GUID": "7b9d5d22-dd7b-4238-9d23-050971fed935",
+                              "RelationBinding": {
+                                "RelatedTable": "t_object",
+                                "RelatedColumn": "object_id",
+                                "DisplayColumn": "物件番号"
+                              }
+                            },
+                            "ColumnName": "物件番号"
+                          },
+                          {
+                            "GUID": "65a9963e-cec4-48ab-8ba6-e6a259937679",
+                            "BindingInfo": {
+                              "TableName": "t_object_order",
+                              "ColumnName": "object_id",
+                              "GUID": "aa47e840-7f56-4fde-ac68-f62b02a09e6c",
+                              "RelationBinding": {
+                                "RelatedTable": "t_object",
+                                "RelatedColumn": "object_id",
+                                "DisplayColumn": "物件名"
+                              }
+                            },
+                            "ColumnName": "物件名"
+                          }
+                        ],
+                        "SqlCondition": {
+                          "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                          "ColumnBindingInfo": {
+                            "TableName": "t_object_order",
+                            "ColumnName": "object_order_id",
+                            "GUID": "ab536030-bbfd-4741-a551-625d3b36a40a"
+                          },
+                          "Value": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=id"
+                          }
+                        },
+                        "NullFormulaValueQueryPolicy": 0
+                      },
+                      "ID": "fb38ed13e70549ada04416bf990e9b04"
+                    },
+                    {
+                      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                      "ParameterName": "ダウンロードファイル名",
+                      "ParameterValue": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=申込情報.物件番号&\" \"&申込情報.物件名"
+                      },
+                      "ID": "63150b5004e54a05a6f8bc86a9b001ce"
+                    }
+                  ],
+                  "Comments": "id=申込IDがあれば物件番号と物件名を取得しダウンロードファイル名にする",
+                  "ID": "8f83ac3d-2779-4fa3-9e15-368f26e3a95c"
+                }
+              ]
+            },
+            {
+              "$type": "OperateFilesCommand.DownloadFileCommand, OperateFilesCommand",
+              "FilePath": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=ZIPファイルパス名"
+              },
+              "DownloadFileName": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=ダウンロードファイル名"
               }
             }
           ],
-          "ID": "94a224d8-88c0-4fbb-b484-4a3716e0bbe6"
+          "ID": "fb8a090d-faee-4e86-b15d-fd93c55a2374"
         }
       ]
-    },
-    {
-      "$type": "OperateFilesCommand.ZipFolderCommand, OperateFilesCommand",
-      "FolderPath": {
-        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-        "SerializeProperty": "=ZIP作成元パス名"
-      },
-      "ZipfilePath": {
-        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-        "SerializeProperty": "=ZIPファイルパス名"
-      }
-    },
-    {
-      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
-      "ParameterName": "ダウンロードファイル名",
-      "ParameterValue": {
-        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-        "SerializeProperty": "=申込情報.物件番号&\" \"&申込情報.物件名"
-      },
-      "ID": "7b15d9d1426547f085edd9819d905341"
-    },
-    {
-      "$type": "OperateFilesCommand.DownloadFileCommand, OperateFilesCommand",
-      "FilePath": {
-        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-        "SerializeProperty": "=ZIPファイルパス名"
-      },
-      "DownloadFileName": {
-        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-        "SerializeProperty": "=ダウンロードファイル名"
-      }
     }
   ]
 }

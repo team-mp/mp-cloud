@@ -1,0 +1,90 @@
+{
+  "Name": "v_mass_notification",
+  "Columns": [
+    {
+      "$type": "Forguncy.SaveLoad.BindingColumnSaveData, ServerDesignerCommon",
+      "DefaultValue": 0,
+      "Required": true,
+      "DatabaseColumnType": "bigint",
+      "MaxLength": -1,
+      "Name": "一斉通知ID",
+      "ColumnType": "System.Int64, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+    },
+    {
+      "$type": "Forguncy.SaveLoad.BindingColumnSaveData, ServerDesignerCommon",
+      "DatabaseColumnType": "varchar",
+      "MaxLength": 190,
+      "Name": "メールアドレス",
+      "ColumnType": "System.String, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+    },
+    {
+      "$type": "Forguncy.SaveLoad.BindingColumnSaveData, ServerDesignerCommon",
+      "DatabaseColumnType": "bigint",
+      "MaxLength": -1,
+      "Name": "差出人既定値フラグ",
+      "ColumnType": "System.Int64, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+    },
+    {
+      "$type": "Forguncy.SaveLoad.BindingColumnSaveData, ServerDesignerCommon",
+      "DatabaseColumnType": "bigint",
+      "MaxLength": -1,
+      "Name": "住宅事業者フラグ",
+      "ColumnType": "System.Int64, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+    },
+    {
+      "$type": "Forguncy.SaveLoad.BindingColumnSaveData, ServerDesignerCommon",
+      "DatabaseColumnType": "bigint",
+      "MaxLength": -1,
+      "Name": "代理取次店フラグ",
+      "ColumnType": "System.Int64, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+    },
+    {
+      "$type": "Forguncy.SaveLoad.BindingColumnSaveData, ServerDesignerCommon",
+      "DatabaseColumnType": "bigint",
+      "MaxLength": -1,
+      "Name": "外注先フラグ",
+      "ColumnType": "System.Int64, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+    },
+    {
+      "$type": "Forguncy.SaveLoad.BindingColumnSaveData, ServerDesignerCommon",
+      "DatabaseColumnType": "bigint",
+      "MaxLength": -1,
+      "Name": "その他取引先フラグ",
+      "ColumnType": "System.Int64, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+    },
+    {
+      "$type": "Forguncy.SaveLoad.BindingColumnSaveData, ServerDesignerCommon",
+      "DefaultValue": 0,
+      "Required": true,
+      "DatabaseColumnType": "int",
+      "MaxLength": -1,
+      "Name": "通知済みフラグ",
+      "ColumnType": "System.Int32, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+    }
+  ],
+  "ExternalDatabaseInfo": {
+    "DataBaseType": "6db454c0-531c-4395-9122-921a18942902",
+    "AllowModifySchema": true,
+    "ConnectionId": "MySql2",
+    "SourceTableName": "v_mass_notification",
+    "SourceTableSchema": "",
+    "CreateViewSql": "select `main`.`mass_notification_id` AS `一斉通知ID`,`sub`.`mail_address` AS `メールアドレス`,`sub`.`sender_defalut_flg` AS `差出人既定値フラグ`,`sub`.`builder_flg` AS `住宅事業者フラグ`,`sub`.`agency_flg` AS `代理取次店フラグ`,`sub`.`subcontractor_flg` AS `外注先フラグ`,`sub`.`other_partners_flg` AS `その他取引先フラグ`,(case when exists(select 1 from `t_notification_history` `subb` where ((`subb`.`mass_notification_id` = `main`.`mass_notification_id`) and (`subb`.`mail_address` = `sub`.`mail_address`))) then 1 else 0 end) AS `通知済みフラグ` from (`m_mass_notification` `main` join (select `a`.`mail_address` AS `mail_address`,max(`c`.`sender_defalut_flg`) AS `sender_defalut_flg`,max(`b`.`builder_flg`) AS `builder_flg`,max((case when ((`b`.`agency_flg` = 1) or (`b`.`brokerage_flg` = 1)) then 1 else 0 end)) AS `agency_flg`,max((case when ((`b`.`survey_flg` = 1) or (`b`.`surveying_flg` = 1) or (`b`.`compaction_flg` = 1) or (`b`.`construction_flg` = 1)) then 1 else 0 end)) AS `subcontractor_flg`,max((case when ((`b`.`builder_flg` <> 1) and (`b`.`agency_flg` <> 1) and (`b`.`brokerage_flg` <> 1) and (`b`.`survey_flg` <> 1) and (`b`.`surveying_flg` <> 1) and (`b`.`compaction_flg` <> 1) and (`b`.`construction_flg` <> 1)) then 1 else 0 end)) AS `other_partners_flg` from ((`m_user` `a` join `m_customer` `b` on((`a`.`customer_id` = `b`.`customer_id`))) join `m_customer_default` `c` on((`b`.`customer_id` = `c`.`customer_id`))) where ((`a`.`active_flg` = 1) and (`a`.`mail_address` is not null)) group by `a`.`mail_address`) `sub`)",
+    "ViewInfo": {
+      "ViewName": "v_mass_notification",
+      "QueryColumns": [
+        "一斉通知ID",
+        "メールアドレス"
+      ]
+    }
+  },
+  "Relations": [
+    {
+      "PrimaryTable": "m_mass_notification",
+      "PrimaryColumn": "mass_notification_id",
+      "ForeignTable": "v_mass_notification",
+      "ForeignColumn": "一斉通知ID",
+      "IsDetailTableRelation": false
+    }
+  ],
+  "Indexes": []
+}

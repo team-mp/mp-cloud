@@ -1,0 +1,207 @@
+{
+  "ID": "372349e4-af24-4c26-b59d-eedb02ce6a31",
+  "Name": "ダウンロードリンク本文挿入",
+  "Params": [
+    {
+      "ID": "051d5cab-1b99-4b69-8d28-87336f0fa34d",
+      "Name": "P_本文"
+    },
+    {
+      "ID": "9cae8ce7-0295-48db-aa66-f8857d888c93",
+      "Name": "P_リンクURL"
+    }
+  ],
+  "Returns": [
+    {
+      "ID": "d21e34cd-4031-4182-93a3-51d5041d40a5",
+      "Name": "R_挿入リンク結合文字列"
+    }
+  ],
+  "Commands": [
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "メッセージ1",
+      "ParameterValue": "以下のURLより、ファイルのダウンロードが可能です。",
+      "ID": "74dd2114914a4956aa6ff3f59228da5f"
+    },
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "メッセージ2",
+      "ParameterValue": {
+        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+        "SerializeProperty": "=\"※有効期限は、\"&TEXT(TODAY()+14,\"yyyy/mm/dd\")&\"までとなります。\""
+      },
+      "ID": "f1924199e5d3410a8e875ca72a428939"
+    },
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "メッセージ3",
+      "ParameterValue": "期限日を超えた場合は、ダウンロード不能となりますので、期限内でのダウンロードをお願いします。",
+      "ID": "05230b8039264e16ade8eec0c63a0cdc"
+    },
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "挿入リンク結合文字列",
+      "ParameterValue": {
+        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+        "SerializeProperty": "=CHAR(10)&メッセージ1&CHAR(10)&P_リンクURL&CHAR(10)&メッセージ2&CHAR(10)&メッセージ3&CHAR(10)&CHAR(10)"
+      },
+      "ID": "12f35b08a4884aa6958ad13f986c45ff"
+    },
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "署名情報",
+      "TableValue": {
+        "TableName": "m_mail_signature",
+        "BindingInfos": [
+          {
+            "GUID": "5e2c7829-7fba-43ed-ac4a-3d7c52165956",
+            "BindingInfo": {
+              "TableName": "m_mail_signature",
+              "ColumnName": "signature",
+              "GUID": "c40b0642-8560-4227-8272-932b4f2314fd"
+            },
+            "ColumnName": "署名"
+          }
+        ]
+      },
+      "ID": "9c60dd14a73a4112b4b4cf76c35d130b"
+    },
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "挿入文字列",
+      "ID": "6cfd535a31184288b9d8041b52920ba3"
+    },
+    {
+      "$type": "Forguncy.Model.LoopCommand, ServerDesignerCommon",
+      "LoopInfo": {
+        "$type": "Forguncy.Model.CountLoopInfo, ServerDesignerCommon",
+        "LoopCount": {
+          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+          "SerializeProperty": "=署名情報"
+        },
+        "LoopItemParamName": "Item"
+      },
+      "CommandList": [
+        {
+          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+          "ParameterName": "署名文字位置",
+          "ParameterValue": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=IFERROR(FIND(Item.署名,P_本文),0)"
+          },
+          "ID": "15dbb3c4d8a84249a2812f49178f5597"
+        },
+        {
+          "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+          "ConditionAndCommandPairList": [
+            {
+              "Condition": {
+                "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                "param": {
+                  "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+                  "cellLocations": [
+                    {
+                      "SerializeProperty": "=署名文字位置"
+                    }
+                  ]
+                },
+                "value": "1",
+                "compareType": 2
+              },
+              "CommandList": [
+                {
+                  "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                  "ParameterName": "挿入文字列",
+                  "ParameterValue": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=挿入リンク結合文字列&Item.署名"
+                  },
+                  "ID": "5edf3f4638c843cb8a5afaf0e6dc7100"
+                },
+                {
+                  "$type": "Forguncy.Model.SetCellPropertyCommand, ServerDesignerCommon",
+                  "PropertyItemsList": [
+                    {
+                      "TargetCells": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=P_本文"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=SUBSTITUTE(P_本文,Item.署名,挿入文字列)"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "$type": "Forguncy.Model.EndLoopCommand, ServerDesignerCommon"
+                }
+              ],
+              "ID": "fe4d8a2b-accf-4079-979d-917840b832f2"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+      "ConditionAndCommandPairList": [
+        {
+          "Condition": {
+            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+            "param": {
+              "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+              "cellLocations": [
+                {
+                  "SerializeProperty": "=署名情報.Count"
+                }
+              ]
+            },
+            "value": "0"
+          },
+          "CommandList": [
+            {
+              "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+              "ParameterName": "挿入文字列",
+              "ParameterValue": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=挿入リンク結合文字列"
+              },
+              "ID": "9a89a01635be4f71bdd3083239f3a195"
+            },
+            {
+              "$type": "Forguncy.Model.SetCellPropertyCommand, ServerDesignerCommon",
+              "PropertyItemsList": [
+                {
+                  "TargetCells": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=P_本文"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=P_本文&挿入文字列"
+                  }
+                }
+              ]
+            }
+          ],
+          "ID": "0bb9cb20-ea51-41f1-b9a1-fe97911eb1b6"
+        }
+      ]
+    },
+    {
+      "$type": "Forguncy.Model.ReturnCommand, ServerDesignerCommon",
+      "ErrorCode": "0",
+      "CustomReturns": [
+        {
+          "ReturnPropertyName": "R_挿入リンク結合文字列",
+          "Value": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=挿入リンク結合文字列"
+          }
+        }
+      ]
+    }
+  ]
+}

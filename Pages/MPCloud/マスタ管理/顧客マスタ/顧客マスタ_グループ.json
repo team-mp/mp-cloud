@@ -129,6 +129,7 @@
     "1,47": "▼顧客ID",
     "1,55": "▼既定グループ区分ID",
     "1,62": "▼最小グループID",
+    "1,70": "▼既定グループ無効カウント",
     "3,1": "新規グループ",
     "3,6": "＊",
     "3,28": 0,
@@ -158,7 +159,8 @@
     "9,70": "COUNTIF(AK7,新規グループID)",
     "3,55": "IF(既定グループID>0,ODATA(\"m_group?$select=group_type_id&$filter=group_id eq \"&IF(ISBLANK(既定グループID),\"null\",既定グループID)),\"\")",
     "6,55": "IF(新規グループID>0,ODATA(\"m_group?$select=group_type_id&$filter=group_id eq \"&IF(ISBLANK(新規グループID),\"null\",新規グループID)),\"\")",
-    "3,62": "IFERROR(MINIFS(AK7,AD7,1),\"\")"
+    "3,62": "IFERROR(MINIFS(AK7,AD7,1),\"\")",
+    "3,70": "COUNTIFS(AK7,既定グループID,AD7,0)"
   },
   "AttachInfos": {
     "1,6": {
@@ -337,26 +339,83 @@
                     "$type": "Forguncy.Model.StopCommand, ServerDesignerCommon"
                   }
                 ],
-                "ID": "22d1c9af-9daf-4bda-87e5-d6e4f29e36da"
+                "ID": "d0b27958-d81f-4e00-b173-dea571224db1"
               }
             ]
+          },
+          {
+            "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+            "ParameterName": "登録済みカウント",
+            "TableValue": {
+              "TableName": "m_customer_group",
+              "TableValueType": 3,
+              "SqlCondition": {
+                "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                "SubConditions": [
+                  {
+                    "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                    "ColumnBindingInfo": {
+                      "TableName": "m_customer_group",
+                      "ColumnName": "customer_id",
+                      "GUID": "78ba7e4d-7242-4dc7-8323-db59c120071a"
+                    },
+                    "Value": {
+                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                      "SerializeProperty": "=顧客マスタ_グループ!AV4"
+                    }
+                  },
+                  {
+                    "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                    "ColumnBindingInfo": {
+                      "TableName": "m_customer_group",
+                      "ColumnName": "group_id",
+                      "GUID": "350f3f91-b035-4a3b-a5b7-96a8b8c1c863"
+                    },
+                    "Value": {
+                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                      "SerializeProperty": "=顧客マスタ_グループ!新規グループID"
+                    }
+                  }
+                ]
+              }
+            },
+            "ID": "8ba59e01fd16420a8909ffa9b632ff21"
           },
           {
             "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
             "ConditionAndCommandPairList": [
               {
                 "Condition": {
-                  "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
-                  "param": {
-                    "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
-                    "cellLocations": [
-                      {
-                        "SerializeProperty": "=顧客マスタ_グループ!BS10"
-                      }
-                    ]
-                  },
-                  "value": "0",
-                  "compareType": 2
+                  "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                  "SubConditions": [
+                    {
+                      "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                      "param": {
+                        "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+                        "cellLocations": [
+                          {
+                            "SerializeProperty": "=顧客マスタ_グループ!BS10"
+                          }
+                        ]
+                      },
+                      "value": "0",
+                      "compareType": 2
+                    },
+                    {
+                      "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                      "param": {
+                        "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+                        "cellLocations": [
+                          {
+                            "SerializeProperty": "=登録済みカウント"
+                          }
+                        ]
+                      },
+                      "value": "0",
+                      "compareType": 2
+                    }
+                  ],
+                  "RelationType": 1
                 },
                 "CommandList": [
                   {
@@ -368,7 +427,7 @@
                   }
                 ],
                 "Comments": "登録済みカウント",
-                "ID": "a201668e-c675-4d72-b55e-4513350ab6fc"
+                "ID": "72d4097b-0c01-4bb9-a589-38298ac92d19"
               }
             ]
           },
@@ -512,7 +571,7 @@
                     ]
                   }
                 ],
-                "ID": "122b0d7b-ecf4-4699-affd-2b1af8d5e4b8"
+                "ID": "3513a42f-7d50-4502-867b-90e8a113aa02"
               }
             ]
           },
@@ -647,10 +706,7 @@
           "RelatedColumn": "group_id",
           "DisplayColumn": "group_name"
         }
-      },
-      "RulesGuidList": [
-        "dcf7c243-95fd-4cd9-a2b2-fc6cb73c391e"
-      ]
+      }
     },
     "6,18": {
       "NameUsedInJavaScript": "グループ区分名",
@@ -668,10 +724,7 @@
             "DisplayColumn": "group_type_name"
           }
         }
-      },
-      "RulesGuidList": [
-        "eed7c771-2058-41f5-9522-4ab803c121c7"
-      ]
+      }
     },
     "6,24": {
       "NameUsedInJavaScript": "管理グループフラグ",
@@ -746,12 +799,34 @@
                   },
                   "value": "0"
                 },
+                "CommandList": [],
+                "ID": "866d4f55-47e2-4a2d-ae60-ce30baf5b64b"
+              }
+            ]
+          },
+          {
+            "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+            "ConditionAndCommandPairList": [
+              {
+                "Condition": {
+                  "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                  "param": {
+                    "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+                    "cellLocations": [
+                      {
+                        "SerializeProperty": "=顧客マスタ_グループ!グループ無効表示フラグ"
+                      }
+                    ]
+                  },
+                  "value": "1"
+                },
                 "CommandList": [
                   {
                     "$type": "Forguncy.Model.StopCommand, ServerDesignerCommon"
                   }
                 ],
-                "ID": "81f4fd78-cd29-4034-8e43-c54b6bd2e571"
+                "Comments": "無効化表示の場合は編集不可",
+                "ID": "bb7d83d2-b21d-4185-96c7-c5bd65fe40fa"
               }
             ]
           },
@@ -820,7 +895,7 @@
                     "$type": "Forguncy.Model.StopCommand, ServerDesignerCommon"
                   }
                 ],
-                "ID": "bd4b001a-aaef-4f81-af8a-2e1e09ae3c46"
+                "ID": "d0d86f6e-a43f-447d-810b-f2eb19d652b9"
               }
             ]
           },
@@ -858,7 +933,7 @@
                     "Comments": "最小グループIDをセット"
                   }
                 ],
-                "ID": "8f3d9471-7a11-4829-81db-6fca1c6bf9ed"
+                "ID": "ded53667-6743-4191-b454-5429c6c15aa9"
               }
             ]
           },
@@ -875,63 +950,14 @@
         "UseCellForeColor": true
       },
       "RulesGuidList": [
-        "7f50a401-c5d7-4fe1-ad95-c00944f90888"
+        "7f50a401-c5d7-4fe1-ad95-c00944f90888",
+        "501375d4-b2bc-45c6-ace5-d7479d68fabd"
       ]
     },
     "9,47": {
       "CellType": {
         "$type": "Forguncy.ButtonCellType, ServerDesignerCommon",
         "CommandList": [
-          {
-            "$type": "Forguncy.Model.SetCellPropertyCommand, ServerDesignerCommon",
-            "PropertyItemsList": [
-              {
-                "TargetCells": {
-                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=顧客マスタ_グループ!グループ無効表示フラグ"
-                },
-                "Value": "0"
-              }
-            ]
-          },
-          {
-            "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
-            "ConditionAndCommandPairList": [
-              {
-                "Condition": {
-                  "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
-                  "param": {
-                    "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
-                    "cellLocations": [
-                      {
-                        "SerializeProperty": "=顧客マスタ_グループ!BK7"
-                      }
-                    ]
-                  },
-                  "value": "0"
-                },
-                "CommandList": [
-                  {
-                    "$type": "Forguncy.Model.SetCellPropertyCommand, ServerDesignerCommon",
-                    "PropertyItemsList": [
-                      {
-                        "TargetCells": {
-                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                          "SerializeProperty": "=顧客マスタ_グループ!既定グループID"
-                        },
-                        "Value": {
-                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                          "SerializeProperty": "=顧客マスタ_グループ!BK4"
-                        }
-                      }
-                    ],
-                    "Comments": "最小グループIDをセット"
-                  }
-                ],
-                "ID": "b2ea57c5-34d9-4f7f-8341-e3a0652d28a8"
-              }
-            ]
-          },
           {
             "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
             "ConditionAndCommandPairList": [
@@ -994,7 +1020,7 @@
                     "$type": "Forguncy.Model.StopCommand, ServerDesignerCommon"
                   }
                 ],
-                "ID": "8207d21c-2475-46db-8d29-55e59c411ec2"
+                "ID": "7e4f440e-1ce0-4624-b9aa-50c7d72a64e9"
               }
             ]
           },
@@ -1059,7 +1085,56 @@
                     "$type": "Forguncy.Model.StopCommand, ServerDesignerCommon"
                   }
                 ],
-                "ID": "3954f195-c87f-4a76-b917-964ee8020b23"
+                "ID": "1dabc938-e982-4201-9f72-360aabae224b"
+              }
+            ]
+          },
+          {
+            "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+            "ConditionAndCommandPairList": [
+              {
+                "Condition": {
+                  "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                  "param": {
+                    "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+                    "cellLocations": [
+                      {
+                        "SerializeProperty": "=顧客マスタ_グループ!BS4"
+                      }
+                    ]
+                  },
+                  "value": "0",
+                  "compareType": 2
+                },
+                "CommandList": [
+                  {
+                    "$type": "Forguncy.Model.OperateCellTypeCommand, ServerDesignerCommon",
+                    "TargetPageElement": {
+                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                      "SerializeProperty": "=顧客マスタ_グループ!顧客マスタタブ"
+                    },
+                    "TargetType": "Forguncy.TabControlCellType, ServerDesignerCommon, Version=10.0.12.0, Culture=neutral, PublicKeyToken=967100671921c115",
+                    "MethodName": "SetActiveTabIndex",
+                    "ParameterValues": {
+                      "index": "5"
+                    }
+                  },
+                  {
+                    "$type": "Forguncy.Model.ShowMessageCommand, ServerDesignerCommon",
+                    "MessageFormula": "既定グループを無効化することはできません。\r\n※既定グループを変更してから無効化してください\r\n"
+                  },
+                  {
+                    "$type": "SetFocusCommand.SetFocusCommand, SetFocusCommand",
+                    "TargetCell": {
+                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                      "SerializeProperty": "=顧客マスタ_グループ!既定グループID"
+                    }
+                  },
+                  {
+                    "$type": "Forguncy.Model.StopCommand, ServerDesignerCommon"
+                  }
+                ],
+                "ID": "41e66453-3b3b-4627-a521-e4cdda8cc561"
               }
             ]
           },
@@ -1130,7 +1205,7 @@
                     "$type": "Forguncy.Model.StopCommand, ServerDesignerCommon"
                   }
                 ],
-                "ID": "a969dfd0-2b82-4591-98e2-8040b8222d08"
+                "ID": "be5177b2-bac8-461a-be79-ae6e0d0dee01"
               }
             ]
           }
@@ -1185,7 +1260,7 @@
                     ]
                   }
                 ],
-                "ID": "ba1b691f-0996-4e8d-b771-1985e63136c1"
+                "ID": "b4e626c0-0ff2-4405-bc04-7cbcad6cf315"
               }
             ]
           }
@@ -1334,6 +1409,7 @@
       "3,62": 7,
       "3,63": 0,
       "3,64": 0,
+      "3,70": 8,
       "5,1": 9,
       "5,18": 5,
       "5,24": 9,
@@ -1542,7 +1618,8 @@
     "5,33,1,3",
     "5,36,1,3",
     "5,39,1,4",
-    "5,43,1,2"
+    "5,43,1,2",
+    "3,70,1,3"
   ],
   "PageInfo": {
     "$type": "Forguncy.Model.Pages.NormalPage, ServerDesignerCommon",
@@ -1584,7 +1661,21 @@
             "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
             "SerializeProperty": "=顧客マスタ_グループ!グループ無効表示フラグ=1"
           },
-          "Priority": 11,
+          "Priority": 10,
+          "GUID": "501375d4-b2bc-45c6-ace5-d7479d68fabd",
+          "StyleInfo": {
+            "Foreground": "Background 1 -15",
+            "Underline": null,
+            "Strikethrough": null
+          }
+        },
+        {
+          "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
+          "Formula": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=顧客マスタ_グループ!グループ無効表示フラグ=1"
+          },
+          "Priority": 9,
           "GUID": "93b59cf0-dcb7-40f0-a0ab-a6ecfc52f076",
           "StyleInfo": {
             "Foreground": "Text 1 0",
@@ -1598,7 +1689,7 @@
             "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
             "SerializeProperty": "=顧客マスタ_グループ!$BK$13=0"
           },
-          "Priority": 10,
+          "Priority": 8,
           "GUID": "08668fb7-325f-4df0-9a34-91f130802af3",
           "StyleInfo": {
             "Underline": null,
@@ -1607,34 +1698,6 @@
           "IsDisabled": false,
           "IsInvisible": true,
           "IsReadOnly": false
-        },
-        {
-          "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
-          "Formula": {
-            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-            "SerializeProperty": "=顧客マスタ_グループ!AD7=0"
-          },
-          "Priority": 9,
-          "GUID": "eed7c771-2058-41f5-9522-4ab803c121c7",
-          "StyleInfo": {
-            "Foreground": "#FFFF0000",
-            "Underline": null,
-            "Strikethrough": null
-          }
-        },
-        {
-          "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
-          "Formula": {
-            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-            "SerializeProperty": "=顧客マスタ_グループ!AD7=0"
-          },
-          "Priority": 8,
-          "GUID": "dcf7c243-95fd-4cd9-a2b2-fc6cb73c391e",
-          "StyleInfo": {
-            "Foreground": "#FFFF0000",
-            "Underline": null,
-            "Strikethrough": null
-          }
         },
         {
           "$type": "Forguncy.ConditionFormat.FormulaRule, ServerDesignerCommon",
@@ -1818,4 +1881,4 @@
       "Formula": "顧客マスタ_グループ!$BK$10"
     }
   ]
-}//IPjawuqgxezlTXKYvoSpVwFdG3tCo1azayObo6WxUQQlBFGHIODS29pS2LSDCtx3J77DyAsEadwYNePK8mXMgSJds2D2U6pAmIfmH37kATx2WCFErb16P0SXybH5wugJT5C4hLfA2WgwUq2L882dxVkWb4qXe2/2CQXWBVqJUseuJGR4VA3bBHziVmasSR2aiS6LSbRHIknyR0e+jNI7QY+W4OLMKlRzEesstLTszhsgV8so208E74y4t5oXR3fPmwbBAOiphqRMHUNWzjMFFZaFnFdhfHY5fnp4O+F3KMmMtD6BtTh8FcpNTOWVJzOMtU4JMfpH2N4NPZxOwg9l5+AitGCU4sajwGrxqO5EBpzk3LkBpuieo7KrGYyZJ9RFMCsZPvapLpCCAOAmWSG6EgZ1lNaFK+/WZPnbFuS5imNZxFrR2l4x27CSyxs6tRx+cZEhQM5y701rs7HcAnMPqD/RtLsMbuNQrqzcZCVIoiAmbCrTggHuzyD5suCWY2etg45y9+q985PVK2QYsAORW0b2I7mogwxHqYXbf1TWXRhwFHSm26bZtURM63Z9OVaXfLIgsnRO/gaVM8js5L8EwcA4jgdque1MECWzBfZ2MpxWlm+49B/vQ111/WKXeg0nR6fO2pOI9HXewPUWK2MP7Dt9VwqpJDEFZtyBuH46/4tQ8HcrwNr7iFtsgd/iISno9jIQEoEc1ix3BdMyNW01+3ufRLOxEOugmaWGT67q0SOd/1hHMCWEUl7j4WU1ha2LhhXNsC3ApKzfBiZj2yxTWnZRxmEaF4UvCUV6SKlbc62kdZ0jxOJj7ajY3fzek3MZhbpDQincqpJKswb4C4YcvCZEH1fV1OCSkeF7dOM1FybXD06r39F37uyu6cx55nQyzMLaGITJyM5QFRQEjPq41w==|920
+}//333s6HPAzRJFBQIRb2n9G0375VLhVt73W3y/xHxIIrbhJBvgB6+btd70t78Hn0mpHDrEcr27ykbIF+eX5Lifp03rdHfTMLAnQBpc+LVCOOrphDeP/gYqxE8/IVtkRmVWq8qySGbfWPejiof08N9MrBy21WC582Pa0bN5hP+Sccvv/QBODBTY6jh8JNoZZIdI/FQYmrVmIAe5z6NuVsypED/LJ0BQCgeC8vuZLIKX3aNXaTGGYpB9REXXbpU/aK7BTylnXvMU1pJcL6wPZPQABvVgvNJUUq7ylHebRaiOTFc/4Fwx7ufLbz/APp3idh7q9KH0o5Lo1n+4kmhoNg+/nXSbmLoFy3Wa3RZXCNGGRgh4eWkfPUgn0ZwTpSoc8DCSMYrPVSQTnNyIqi5lYSarPzpzRe8tg2nEpB4HVYiqZHHZfIav4yrhh/bPhmZq8w9Z87JRK4TfKIu7t0PTqIHtJjS+Iz+6u3M+Ja12sKapews+rmHtRpDe6RiT+JPKfjhBS4NCkmhEOHhm1pF8eevAXJUWTbS13+LDd4qlARk4GINgoAYOpvh38JYAfHwX+XLwdmx2xUfemTc6EBUiPES7my39y0yxRrGbGx1fdqc1LajZwt6k+tiR2iqYp1BKs9CmSkEpoI+E8yx5oS8GFBwqBm6NxqwQXQLgB+N/ArwwWtUGZBHNH6AhyGCDxdAeNUiOF3dz9t4Q+J87bs3GCV6Xz+odpoJaWA2NVREEfypgM+23GBrILU6zVjpSyUaBHeQBKVVr2eGw3m4Am+bKspk1oZEpjfEhShhDmFA7SLSYF5/kaYgs7eiY90YDBu9/RMgYmD/VxjBGwXr2J4K6I7XDgIzp6rMUQHiPU5SKEHKr/qTx9gvGA+zqKDIZzjSNwRve6H+3xhiIxWS8WQ/50HD6Bw==|920

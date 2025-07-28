@@ -1,18 +1,13 @@
 {
-  "Name": "v_order_count_yyyymm",
+  "Name": "v_user_notice",
   "Columns": [
     {
       "$type": "Forguncy.SaveLoad.BindingColumnSaveData, ServerDesignerCommon",
+      "DefaultValue": 0,
+      "Required": true,
       "DatabaseColumnType": "bigint",
       "MaxLength": -1,
-      "Name": "申込年月",
-      "ColumnType": "System.Int64, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
-    },
-    {
-      "$type": "Forguncy.SaveLoad.BindingColumnSaveData, ServerDesignerCommon",
-      "DatabaseColumnType": "bigint",
-      "MaxLength": -1,
-      "Name": "グループ区分",
+      "Name": "ユーザーID",
       "ColumnType": "System.Int64, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
     },
     {
@@ -21,7 +16,16 @@
       "Required": true,
       "DatabaseColumnType": "bigint",
       "MaxLength": -1,
-      "Name": "件数",
+      "Name": "お知らせID",
+      "ColumnType": "System.Int64, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+    },
+    {
+      "$type": "Forguncy.SaveLoad.BindingColumnSaveData, ServerDesignerCommon",
+      "DefaultValue": 0,
+      "Required": true,
+      "DatabaseColumnType": "bigint",
+      "MaxLength": -1,
+      "Name": "閲覧数",
       "ColumnType": "System.Int64, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
     }
   ],
@@ -29,16 +33,32 @@
     "DataBaseType": "6db454c0-531c-4395-9122-921a18942902",
     "AllowModifySchema": true,
     "ConnectionId": "MySql2",
-    "SourceTableName": "v_order_count_yyyymm",
+    "SourceTableName": "v_user_notice",
     "SourceTableSchema": "",
-    "CreateViewSql": "select `t_object_order`.`order_year_month` AS `申込年月`,`m_group`.`group_type_id` AS `グループ区分`,count(`t_object_order`.`object_order_id`) AS `件数` from (`t_object_order` join `m_group` on((`m_group`.`group_id` = `t_object_order`.`group_id`))) where (`t_object_order`.`active_flg` = 1) group by `t_object_order`.`order_year_month`,`m_group`.`group_type_id`",
+    "CreateViewSql": "select `u`.`user_id` AS `ユーザーID`,`n`.`notice_id` AS `お知らせID`,count(`h`.`browse_history_id`) AS `閲覧数` from ((`m_user` `u` join `t_notice` `n`) left join `t_notice_browse_history` `h` on(((`u`.`user_id` = `h`.`browse_user_id`) and (`n`.`notice_id` = `h`.`notice_id`)))) where (`u`.`active_flg` = 1) group by `u`.`user_id`,`n`.`notice_id`",
     "ViewInfo": {
-      "ViewName": "v_order_count_yyyymm",
+      "ViewName": "v_user_notice",
       "QueryColumns": [
-        "申込年月",
-        "グループ区分"
+        "ユーザーID",
+        "お知らせID"
       ]
     }
   },
+  "Relations": [
+    {
+      "PrimaryTable": "m_user",
+      "PrimaryColumn": "user_id",
+      "ForeignTable": "v_user_notice",
+      "ForeignColumn": "ユーザーID",
+      "IsDetailTableRelation": false
+    },
+    {
+      "PrimaryTable": "t_notice",
+      "PrimaryColumn": "notice_id",
+      "ForeignTable": "v_user_notice",
+      "ForeignColumn": "お知らせID",
+      "IsDetailTableRelation": false
+    }
+  ],
   "Indexes": []
 }

@@ -13,7 +13,8 @@
     "9,70": "COUNTIF(AK7,新規グループID)",
     "3,55": "IF(既定グループID>0,ODATA(\"m_group?$select=group_type_id&$filter=group_id eq \"&IF(ISBLANK(既定グループID),\"null\",既定グループID)),\"\")",
     "6,55": "IF(新規グループID>0,ODATA(\"m_group?$select=group_type_id&$filter=group_id eq \"&IF(ISBLANK(新規グループID),\"null\",新規グループID)),\"\")",
-    "3,62": "IFERROR(MINIFS(AK7,AD7,1),\"\")"
+    "3,62": "IFERROR(MINIFS(AK7,AD7,1),\"\")",
+    "3,70": "COUNTIFS(AK7,既定グループID,AD7,0)"
   },
   "CustomNames": [
     {

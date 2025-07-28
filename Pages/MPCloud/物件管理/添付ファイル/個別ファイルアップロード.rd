@@ -1,12 +1,12 @@
 {
   "PageType": 0,
-  "ColumnCount": 171,
+  "ColumnCount": 179,
   "RowCount": 29,
   "Formulas": {
     "27,57": "IF(DQ25=0,\"\",DQ25)",
     "12,120": "DX13&\"_\"&ファイル属性ID",
     "27,120": "LEN(添付ファイル)-LEN(SUBSTITUTE(添付ファイル,\"|\",\"\"))",
-    "24,128": "COUNTIF(FJ20,\"<>\")"
+    "24,128": "COUNTIF(FR20,\"<>\")"
   },
   "ArrayFormulas": {
     "24,120,1,3": "IFERROR(ODATA(\"m_file_attirbute?$select=file_attibute_name,file_class_id,no_multiple_attached_flg&$filter=file_attribute_id eq \"&IF(ISBLANK(ファイル属性ID),\"null\",ファイル属性ID)),0)"

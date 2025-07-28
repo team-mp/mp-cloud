@@ -3,20 +3,20 @@
   "ColumnCount": 138,
   "RowCount": 73,
   "Formulas": {
-    "20,128": "COUNT(CE21)",
+    "14,128": "COUNT(CE21)",
     "38,82": "COUNT(CF34)",
     "33,122": "IF(DR34<>\"\",\"最終更新日時：\"&DR34,\"\")",
     "33,119": "\"工事ファイル(\"&DO34&\")\"",
-    "20,120": "DM21+DN21+DO21+DP21",
-    "20,114": "IF(ISNUMBER(SEARCH(\",\"&CF21&\",\",\",\"&表示中IDs&\",\")),1,0)",
+    "20,124": "DQ21+DR21+DS21+DT21",
+    "20,118": "IF(ISNUMBER(SEARCH(\",\"&CF21&\",\",\",\"&表示中IDs&\",\")),1,0)",
     "11,26": "CF14",
     "11,13": "CE14",
     "29,130": "IF(DR26=1,CK7,\"\")",
-    "20,113": "\"見積書(\"&DI21&\")\"",
+    "20,117": "\"見積書(\"&DM21&\")\"",
     "33,117": "IF(OR(DK34=1,DL34=1,DM34=1),1,0)",
-    "14,17": "IF(DY21>0,\"※現在、\"&DY21&\"社の工事会社が設定されています\",\"\")",
+    "14,17": "IF(DY15>0,\"※現在、\"&DY15&\"社の工事会社が設定されています\",\"\")",
     "33,89": "IF(CJ34<>\"\",CK34,\"工事会社を選択して下さい\")",
-    "20,111": "ROW(CI21)",
+    "20,115": "ROW(CI21)",
     "29,113": "TEXTJOIN(\",\",TRUE,CF21)",
     "29,89": "SUM(DD40)",
     "25,130": "IF(DR26=1,CZ26,CK7)",
@@ -25,10 +25,10 @@
     "33,109": "IFERROR(ODATA(\"v_construction_product_summary?$select=仕入合計&$filter=工事ID eq \"&IF(ISBLANK(CF34),\"null\",CF34)),0)",
     "33,118": "IFERROR(ODATA(\"v_construction_file_count?$select=ファイル数&$filter=工事ID eq \"&IF(ISBLANK(CF34),\"null\",CF34)),0)",
     "33,123": "IFERROR(ODATA(\"v_construction_later_count?$select=後発件数&$filter=工事ID eq \"&IF(ISBLANK(CF34),\"null\",CF34)),0)",
-    "20,112": "IFERROR(ODATA(\"v_construction_est_file_count?$select=ファイル数&$filter=工事見積ID eq \"&IF(ISBLANK(CF21),\"null\",CF21)),0)"
+    "11,36": "CG14"
   },
   "ArrayFormulas": {
-    "13,82,1,2": "ODATA(\"v_group_customer_default?$select=工事見積不要フラグ,工事請負フラグ&$filter=グループID eq \"&IF(ISBLANK(CS26),\"null\",CS26)&\" and 顧客ID eq \"&IF(ISBLANK(CK7),\"null\",CK7))"
+    "13,82,1,3": "ODATA(\"v_group_customer_default?$select=工事見積不要フラグ,工事請負フラグ,改良判定時基礎図必要フラグ&$filter=グループID eq \"&IF(ISBLANK(CS26),\"null\",CS26)&\" and 顧客ID eq \"&IF(ISBLANK(CK7),\"null\",CK7))"
   },
   "CustomNames": [
     {
@@ -37,11 +37,11 @@
     },
     {
       "Name": "元_仮承認フラグ",
-      "Formula": "物件詳細_工事!$DQ$55"
+      "Formula": "物件詳細_工事!$DQ$58"
     },
     {
       "Name": "元_見積依頼コメント",
-      "Formula": "物件詳細_工事!$DQ$52"
+      "Formula": "物件詳細_工事!$DQ$55"
     },
     {
       "Name": "元_見積依頼日",
@@ -57,15 +57,15 @@
     },
     {
       "Name": "元_見積書受領日",
-      "Formula": "物件詳細_工事!$DQ$53"
+      "Formula": "物件詳細_工事!$DQ$56"
     },
     {
       "Name": "元_見積送付コメント",
-      "Formula": "物件詳細_工事!$DQ$59"
+      "Formula": "物件詳細_工事!$DQ$62"
     },
     {
       "Name": "元_見積送付日",
-      "Formula": "物件詳細_工事!$DQ$58"
+      "Formula": "物件詳細_工事!$DQ$61"
     },
     {
       "Name": "元_工事ステータスID",
@@ -81,7 +81,7 @@
     },
     {
       "Name": "元_工事見積ステータスID",
-      "Formula": "物件詳細_工事!$DQ$61"
+      "Formula": "物件詳細_工事!$DQ$64"
     },
     {
       "Name": "元_工事見積会社ID",
@@ -169,7 +169,7 @@
     },
     {
       "Name": "元_社内備考",
-      "Formula": "物件詳細_工事!$DQ$60"
+      "Formula": "物件詳細_工事!$DQ$63"
     },
     {
       "Name": "元_受注確定日",
@@ -177,19 +177,19 @@
     },
     {
       "Name": "元_設計承認フラグ",
-      "Formula": "物件詳細_工事!$DQ$57"
+      "Formula": "物件詳細_工事!$DQ$60"
     },
     {
       "Name": "元_設計審査コメント",
-      "Formula": "物件詳細_工事!$DQ$56"
+      "Formula": "物件詳細_工事!$DQ$59"
     },
     {
       "Name": "元_設計審査結果",
-      "Formula": "物件詳細_工事!$DQ$54"
+      "Formula": "物件詳細_工事!$DQ$57"
     },
     {
       "Name": "工事見積書ファイル属性ID",
-      "Formula": "物件詳細_工事!$CZ$30"
+      "Formula": "物件詳細_工事!$CS$15"
     },
     {
       "Name": "工事登録件数",
@@ -201,7 +201,23 @@
     },
     {
       "Name": "表示中IDs",
-      "Formula": "物件詳細_工事!$DL$14"
+      "Formula": "物件詳細_工事!$DR$15"
+    },
+    {
+      "Name": "調査報告書ファイル属性ID",
+      "Formula": "物件詳細_工事!$DC$15"
+    },
+    {
+      "Name": "元_見積期限日",
+      "Formula": "物件詳細_工事!$DQ$52"
+    },
+    {
+      "Name": "元_見積リマインドフラグ",
+      "Formula": "物件詳細_工事!$DQ$53"
+    },
+    {
+      "Name": "元_見積リマインド日",
+      "Formula": "物件詳細_工事!$DQ$54"
     }
   ]
 }

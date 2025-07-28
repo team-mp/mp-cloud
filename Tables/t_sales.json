@@ -22,6 +22,16 @@
     },
     {
       "$type": "Forguncy.SaveLoad.BindingColumnSaveData, ServerDesignerCommon",
+      "DefaultValue": 1,
+      "DatabaseColumnType": "bigint",
+      "MaxLength": -1,
+      "Name": "accounts_receivable_type",
+      "Alias": "売掛区分",
+      "ColumnType": "System.Int64, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+      "Comment": "1:売掛金\r\n2:未収金\r\n3:立替金\r\n4:前受金"
+    },
+    {
+      "$type": "Forguncy.SaveLoad.BindingColumnSaveData, ServerDesignerCommon",
       "DatabaseColumnType": "bigint",
       "MaxLength": -1,
       "Name": "sales_type",
@@ -476,8 +486,26 @@
       "ColumnType": "System.Int64, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
     },
     {
+      "$type": "Forguncy.SaveLoad.StatisticColumnSaveData, ServerDesignerCommon",
+      "BindingInfo": {
+        "TableName": "t_sales",
+        "ColumnName": "excluding_tax_amount",
+        "GUID": "6b046fc4-94a4-42d4-9c03-9c6819fd9ded"
+      },
+      "AggregateFunction": 4,
+      "DataColumnName": "excluding_tax_amount",
+      "Name": "売上合計",
+      "ColumnType": "System.Int64, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+    },
+    {
       "$type": "Forguncy.SaveLoad.FormulaColumnSaveData, ServerDesignerCommon",
-      "Formula": "IF([sales_type]=1,\"売上\",\"取消\")",
+      "Formula": "IF([accounts_receivable_type]=1,\"売掛\",IF([accounts_receivable_type]=2,\"未収\",IF([accounts_receivable_type]=3,\"立替\",IF([accounts_receivable_type]=4,\"前受\",\"\"))))",
+      "Name": "売掛区分略称",
+      "ColumnType": "System.String, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+    },
+    {
+      "$type": "Forguncy.SaveLoad.FormulaColumnSaveData, ServerDesignerCommon",
+      "Formula": "IF([sales_type]=1,\"加算\",\"減算\")",
       "Name": "売上区分名",
       "ColumnType": "System.String, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
     },
@@ -489,7 +517,7 @@
     },
     {
       "$type": "Forguncy.SaveLoad.FormulaColumnSaveData, ServerDesignerCommon",
-      "Formula": "YEAR([sales_date])&\"/\"&RIGHT(\"0\"&MONTH([sales_date]),2)",
+      "Formula": "YEAR([sales_date])&RIGHT(\"0\"&MONTH([sales_date]),2)",
       "Name": "売上年月",
       "ColumnType": "System.String, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
     },
@@ -504,6 +532,19 @@
       "DataColumnName": "sales_id",
       "Name": "レコード件数",
       "ColumnType": "System.Int32, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+    },
+    {
+      "$type": "Forguncy.SaveLoad.FormulaColumnSaveData, ServerDesignerCommon",
+      "Formula": "IF(ISBLANK([object_order_id]),2,1)",
+      "Name": "出力順",
+      "ColumnType": "System.Int64, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+      "Comment": "申込IDが無い場合は、請求書の表示順を最後尾にする"
+    },
+    {
+      "$type": "Forguncy.SaveLoad.FormulaColumnSaveData, ServerDesignerCommon",
+      "Formula": "IF([accounts_receivable_type]=1,\"売掛金\",IF([accounts_receivable_type]=2,\"未収金\",IF([accounts_receivable_type]=3,\"立替金\",\"前受金\")))",
+      "Name": "売掛区分名",
+      "ColumnType": "System.String, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
     },
     {
       "$type": "Forguncy.SaveLoad.UserExtraBingingColumnSaveData, ServerDesignerCommon",

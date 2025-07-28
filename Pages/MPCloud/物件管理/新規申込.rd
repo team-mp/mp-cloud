@@ -89,7 +89,7 @@
     "28,137": "IFERROR(IF(AD34>0,ODATA(\"m_user?$select=mail_address&$filter=user_id eq \"&IF(ISBLANK(AD34),\"null\",AD34)),\"\"),\"\")",
     "125,149": "IF(EP126<>\"\",EP126,EJ126)",
     "110,124": "SUMIF(DU97,1,EK97)",
-    "76,124": "COUNTIF(EF72,\"<>\")",
+    "76,124": "COUNTIF(EI72,\"<>\")",
     "118,105": "IF(CO120=\"\",\"\",IF(EA120=0,ET120,IF(AND(EA120=1,EH120=1),ET120,IF(OR(AND(ED120=1,EC120>CO120),AND(ED120=2,EC120>=CO120)),IF(EK120=1,EF120,0),EF120+((ROUNDUP((CO120-EC120)/EE120,0)+IF(AND(ED120=1,MOD((CO120-EC120),EE120)=0),1,0))*ET120)))))",
     "21,128": "IF(DY18<>\"\",ODATA(\"m_order_type?$select=order_type_calss_id&$filter=order_type_id eq \"&IF(ISBLANK(DY18),\"null\",DY18)),\"\")",
     "27,138": "IF(EH28=0,\"\",EH28)",
