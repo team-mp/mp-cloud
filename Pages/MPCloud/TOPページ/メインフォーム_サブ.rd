@@ -71,7 +71,8 @@
     "44,83": "SUM(CP43)",
     "43,83": "SUM(CO43)",
     "42,83": "SUM(CN43)",
-    "41,83": "SUM(CM43)"
+    "41,83": "SUM(CM43)",
+    "5,89": "IFERROR(GETURLQUERYVALUE(\"pagename\"),\"\")"
   },
   "ArrayFormulas": {
     "23,113,1,3": "ODATA(\"m_user?$select=customer_id,user_authority_id,user_group_ids&$filter=user_id eq \"&IF(ISBLANK(DJ17),\"null\",DJ17))",

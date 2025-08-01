@@ -4,12 +4,8 @@
   "RowCount": 21,
   "CustomNames": [
     {
-      "Name": "編集リセットフラグ",
-      "Formula": "調査方法マスタ!$F$3"
-    },
-    {
       "Name": "編集確定フラグ",
-      "Formula": "調査方法マスタ!$F$6"
+      "Formula": "調査方法マスタ!$F$3"
     }
   ]
 }

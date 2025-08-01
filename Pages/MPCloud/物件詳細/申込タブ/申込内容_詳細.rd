@@ -22,7 +22,7 @@
     "22,97": "IF(CR23=0,\"\",CR23)",
     "22,95": "IFERROR(IF(CC23>0,ODATA(\"m_user?$select=mail_address&$filter=user_id eq \"&IF(ISBLANK(CC23),\"null\",CC23)),\"\"),\"\")",
     "21,97": "IF(CR22=0,\"\",CR22)",
-    "55,100": "COUNTIF(CD57,\"<>\")",
+    "60,80": "COUNTIF(CC57,\"<>\")",
     "43,21": "V40&AT40&V42",
     "21,95": "IFERROR(IF(CC22>0,ODATA(\"m_user?$select=mail_address&$filter=user_id eq \"&IF(ISBLANK(CC22),\"null\",CC22)),\"\"),\"\")",
     "20,97": "IF(CR21=0,\"\",CR21)",
@@ -213,7 +213,7 @@
     },
     {
       "Name": "申込タイプ変更フラグ",
-      "Formula": "申込内容_詳細!$CW$61"
+      "Formula": "申込内容_詳細!$CN$61"
     },
     {
       "Name": "申込者情報セットフラグ",

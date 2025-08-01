@@ -4,12 +4,8 @@
   "RowCount": 23,
   "CustomNames": [
     {
-      "Name": "編集リセットフラグ",
-      "Formula": "会社休業日マスタ!$AG$3"
-    },
-    {
       "Name": "編集確定フラグ",
-      "Formula": "会社休業日マスタ!$AG$6"
+      "Formula": "会社休業日マスタ!$AG$3"
     }
   ]
 }
