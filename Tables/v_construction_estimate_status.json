@@ -63,6 +63,13 @@
       "MaxLength": -1,
       "Name": "工事見積_受注確定待ち件数",
       "ColumnType": "System.Decimal, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+    },
+    {
+      "$type": "Forguncy.SaveLoad.BindingColumnSaveData, ServerDesignerCommon",
+      "DatabaseColumnType": "decimal",
+      "MaxLength": -1,
+      "Name": "工事見積_リマインド予定件数",
+      "ColumnType": "System.Decimal, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
     }
   ],
   "ExternalDatabaseInfo": {
@@ -71,7 +78,7 @@
     "ConnectionId": "MySql2",
     "SourceTableName": "v_construction_estimate_status",
     "SourceTableSchema": "",
-    "CreateViewSql": "select sum((case when (`c`.`estimate_arrange_wait_flg` = 1) then 1 else 0 end)) AS `工事見積_見積手配待ち件数`,sum((case when (`c`.`estimate_arrange_pending_flg` = 1) then 1 else 0 end)) AS `工事見積_見積手配保留件数`,sum((case when (`c`.`design_wait_flg` = 1) then 1 else 0 end)) AS `工事見積_設計待ち件数`,sum((case when (`c`.`estimate_reminder_flg` = 1) then 1 else 0 end)) AS `工事見積_見積催促中件数`,sum((case when (`c`.`design_examination_flg` = 1) then 1 else 0 end)) AS `工事見積_設計審査中件数`,sum((case when (`c`.`requesting_correction_flg` = 1) then 1 else 0 end)) AS `工事見積_修正依頼中件数`,sum((case when (`c`.`pending_review_flg` = 1) then 1 else 0 end)) AS `工事見積_審査保留件数`,sum((case when (`c`.`examination_complete_flg` = 1) then 1 else 0 end)) AS `工事見積_審査完了件数`,sum((case when (`c`.`order_wait_flg` = 1) then 1 else 0 end)) AS `工事見積_受注確定待ち件数` from ((`t_object_construction_estimate` `a` left join `t_object_order` `b` on((`a`.`object_order_id` = `b`.`object_order_id`))) left join `m_construction_estimate_status` `c` on((`a`.`construction_estimate_status_id` = `c`.`construction_estimate_status_id`))) where ((`b`.`active_flg` = 1) and ((`c`.`estimate_arrange_wait_flg` = 1) or (`c`.`estimate_arrange_pending_flg` = 1) or (`c`.`design_wait_flg` = 1) or (`c`.`estimate_reminder_flg` = 1) or (`c`.`design_examination_flg` = 1) or (`c`.`requesting_correction_flg` = 1) or (`c`.`pending_review_flg` = 1) or (`c`.`examination_complete_flg` = 1) or (`c`.`order_wait_flg` = 1)))",
+    "CreateViewSql": "select sum((`c`.`estimate_arrange_wait_flg` = 1)) AS `工事見積_見積手配待ち件数`,sum((`c`.`estimate_arrange_pending_flg` = 1)) AS `工事見積_見積手配保留件数`,sum((`c`.`design_wait_flg` = 1)) AS `工事見積_設計待ち件数`,sum((`c`.`estimate_reminder_flg` = 1)) AS `工事見積_見積催促中件数`,sum((`c`.`design_examination_flg` = 1)) AS `工事見積_設計審査中件数`,sum((`c`.`requesting_correction_flg` = 1)) AS `工事見積_修正依頼中件数`,sum((`c`.`pending_review_flg` = 1)) AS `工事見積_審査保留件数`,sum((`c`.`examination_complete_flg` = 1)) AS `工事見積_審査完了件数`,sum((`c`.`order_wait_flg` = 1)) AS `工事見積_受注確定待ち件数`,sum(((`c`.`design_wait_flg` = 1) and (`a`.`estimate_reminder_flg` = 1) and (`a`.`estimate_reminder_date` = curdate()))) AS `工事見積_リマインド予定件数` from ((`t_object_construction_estimate` `a` left join `t_object_order` `b` on((`a`.`object_order_id` = `b`.`object_order_id`))) left join `m_construction_estimate_status` `c` on((`a`.`construction_estimate_status_id` = `c`.`construction_estimate_status_id`))) where ((`b`.`active_flg` = 1) and ((`c`.`estimate_arrange_wait_flg` = 1) or (`c`.`estimate_arrange_pending_flg` = 1) or (`c`.`design_wait_flg` = 1) or (`c`.`estimate_reminder_flg` = 1) or (`c`.`design_examination_flg` = 1) or (`c`.`requesting_correction_flg` = 1) or (`c`.`pending_review_flg` = 1) or (`c`.`examination_complete_flg` = 1) or (`c`.`order_wait_flg` = 1)))",
     "ViewInfo": {
       "ViewName": "v_construction_estimate_status",
       "QueryColumns": []

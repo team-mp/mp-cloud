@@ -4,7 +4,7 @@
   "RowCount": 41,
   "CustomNames": [
     {
-      "Name": "ユーザーグループID",
+      "Name": "ユーザーグループKEYs",
       "Formula": "TOPコンテンツ_代理店!$BG$4"
     },
     {

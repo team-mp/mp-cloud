@@ -12,7 +12,8 @@
     "21,266": "JG16-JG19",
     "18,266": "COUNTIF(IP7,1)",
     "15,266": "COUNT(HK7)",
-    "6,258": "TRIM(W2)"
+    "6,258": "TRIM(W2)",
+    "9,266": "ODATA(\"m_user_group?$select=user_group_key&$filter=analysis_user_flg eq 1\")"
   },
   "CustomNames": [
     {

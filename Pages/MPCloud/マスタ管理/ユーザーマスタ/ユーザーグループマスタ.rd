@@ -1,15 +1,15 @@
 {
   "PageType": 0,
-  "ColumnCount": 36,
+  "ColumnCount": 47,
   "RowCount": 21,
   "CustomNames": [
     {
       "Name": "編集リセットフラグ",
-      "Formula": "ユーザーグループマスタ!$AD$3"
+      "Formula": "ユーザーグループマスタ!$AO$3"
     },
     {
       "Name": "編集確定フラグ",
-      "Formula": "ユーザーグループマスタ!$AD$6"
+      "Formula": "ユーザーグループマスタ!$AO$6"
     }
   ]
 }

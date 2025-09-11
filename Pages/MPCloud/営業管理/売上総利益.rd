@@ -86,7 +86,8 @@
     "12,66": "BN13/BL13",
     "13,66": "BN14/BL14",
     "14,66": "BN15/BL15",
-    "15,66": "BN16/BL16"
+    "15,66": "BN16/BL16",
+    "21,60": "ODATA(\"m_user_group?$select=user_group_key&$filter=sales_user_flg eq 1\")"
   },
   "CustomNames": [
     {

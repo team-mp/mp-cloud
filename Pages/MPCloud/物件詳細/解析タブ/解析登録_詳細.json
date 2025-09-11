@@ -415,6 +415,7 @@
     "1,52": "▼申込ID",
     "1,60": "▼その他留意（テキスト）",
     "1,68": "▼地形条件（テキスト）",
+    "1,76": "▼連棟物件",
     "3,3": "解析確定日",
     "3,30": "完了解除",
     "3,38": "解析完了",
@@ -422,12 +423,14 @@
     "4,52": "▼グループID",
     "4,60": "▼建物構造（テキスト）",
     "4,68": "▼土地履歴（テキスト）",
+    "4,76": "▼物件ID",
     "5,3": "解析者",
     "7,3": "解析結果",
     "7,44": "▼解析キャンセルフラグ",
     "7,52": "▼住宅事業者ID",
     "7,60": "▼基礎形状（テキスト）",
     "7,68": "▼造成経過（テキスト）",
+    "7,76": "▼親物件ID",
     "9,3": "許容応力度",
     "10,44": "▼ユーザーID",
     "10,52": "▼画面ロックフラグ",
@@ -446,8 +449,9 @@
     "14,76": "0",
     "15,3": "建物構造",
     "15,23": "土地履歴",
-    "16,44": "▼解析ユーザーグループID",
-    "16,52": "▼既定値参照",
+    "16,44": "▼解析グループKEY",
+    "16,52": "▼総務グループKEY",
+    "16,60": "▼既定値参照",
     "17,3": "基礎形状",
     "17,23": "造成経過",
     "18,70": "以下は、解析データ更新前の元データです（差分チェック、排他チェックに使用）",
@@ -482,6 +486,7 @@
     "29,70": "その他留意ID",
     "30,44": "▼更新前地下変状ID",
     "30,52": "▼最新調査ID",
+    "30,59": "▼再解析依頼ID",
     "30,70": "その他留意内容",
     "31,70": "建物構造ID",
     "32,70": "基礎形状ID",
@@ -508,13 +513,15 @@
   },
   "Formulas": {
     "11,52": "IF(OR(AS6=1,AS9=1),1,0)",
-    "17,44": "ODATA(\"m_user_group?$select=user_group_id&$filter=analysis_user_flg eq 1\")",
+    "17,44": "ODATA(\"m_user_group?$select=user_group_key&$filter=analysis_user_flg eq 1\")",
     "2,52": "申込ID",
     "8,52": "住宅事業者ID",
-    "5,52": "グループID"
+    "5,52": "グループID",
+    "17,52": "ODATA(\"m_user_group?$select=user_group_key&$filter=soumu_user_flg eq 1\")",
+    "2,76": "ODATA(\"v_object_multiple_count?$select=連棟カウント&$filter=物件ID eq \"&IF(ISBLANK(BY6),\"null\",BY6))"
   },
   "ArrayFormulas": {
-    "17,52,1,6": "IFERROR(ODATA(\"v_group_customer_default?$select=解析時見積添付フラグ,検討書必要フラグ,転圧判定不可フラグ,液状化判定必要フラグ,改良判定時基礎図必要フラグ,工事見積不要フラグ&$filter=グループID eq \"&IF(ISBLANK(BA6),\"null\",BA6)&\" and 顧客ID eq \"&IF(ISBLANK(BA9),\"null\",BA9)),\"\")"
+    "17,60,1,6": "IFERROR(ODATA(\"v_group_customer_default?$select=解析時見積添付フラグ,検討書必要フラグ,転圧判定不可フラグ,液状化判定必要フラグ,改良判定時基礎図必要フラグ,工事見積不要フラグ&$filter=グループID eq \"&IF(ISBLANK(BA6),\"null\",BA6)&\" and 顧客ID eq \"&IF(ISBLANK(BA9),\"null\",BA9)),\"\")"
   },
   "AttachInfos": {
     "1,9": {
@@ -743,7 +750,7 @@
                             "ReloadData": true
                           }
                         ],
-                        "ID": "7eb3151c-0a84-4836-8bab-4749e4cc793b"
+                        "ID": "38401895-e41f-4b15-97aa-781bb4bfb125"
                       },
                       {
                         "CommandList": [
@@ -755,12 +762,12 @@
                             }
                           }
                         ],
-                        "ID": "14dce24b-8ae4-4757-a827-66ce9ff9d934"
+                        "ID": "6b02bf27-2557-4f73-bd75-41230518b652"
                       }
                     ]
                   }
                 ],
-                "ID": "e9b202fb-1492-45aa-aabe-9b57785525e3"
+                "ID": "6f506c99-47b3-4b5a-bb3e-22ee80ce10f4"
               }
             ]
           }
@@ -821,6 +828,7 @@
     "5,9": {
       "CellType": {
         "$type": "Forguncy.DropDownListCellType, ServerDesignerCommon",
+        "MaxDropDownItemCount": 10,
         "TemplateKey": "_RS_LightLine_Translucent_SmallRoundCorner_Normal1",
         "IsBounding": true,
         "DataSource": "m_user",
@@ -856,8 +864,8 @@
               "CompareType": 6,
               "ColumnBindingInfo": {
                 "TableName": "m_user",
-                "ColumnName": "user_group_ids",
-                "GUID": "941350c6-eabc-4a55-b9fe-815e685a489f"
+                "ColumnName": "user_group_keys",
+                "GUID": "7d74b637-52c9-4eb9-8765-8b4154fd5572"
               },
               "Value": {
                 "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
@@ -968,6 +976,18 @@
         "TableName": "t_object_analysis",
         "ColumnName": "land_history_content",
         "GUID": "c3c6a06a-2311-4d40-b19a-c1f8f8eab98b"
+      }
+    },
+    "5,76": {
+      "BindingInfo": {
+        "TableName": "t_object_analysis",
+        "ColumnName": "object_order_id",
+        "GUID": "8d859b92-6063-4298-b067-6b0ff5749431",
+        "RelationBinding": {
+          "RelatedTable": "t_object_order",
+          "RelatedColumn": "object_order_id",
+          "DisplayColumn": "object_id"
+        }
       }
     },
     "7,9": {
@@ -1140,7 +1160,7 @@
                             ]
                           }
                         ],
-                        "ID": "97478f39-01d4-4955-ad15-62e82e21b0c7"
+                        "ID": "7c27464f-27d4-4ac2-8609-cf468e67db36"
                       },
                       {
                         "CommandList": [
@@ -1164,12 +1184,12 @@
                             ]
                           }
                         ],
-                        "ID": "9bb3bb55-9523-4506-a026-3bf4267d72c4"
+                        "ID": "8b63a531-923e-436e-92f0-982a6b6a26f2"
                       }
                     ]
                   }
                 ],
-                "ID": "014896aa-ee04-457c-b2c5-0b013bcb8400"
+                "ID": "a04650be-5656-4a3f-b66d-899fe1468c61"
               }
             ]
           }
@@ -1238,6 +1258,23 @@
         "TableName": "t_object_analysis",
         "ColumnName": "development_process_content",
         "GUID": "34699469-41ed-4d53-80ad-84271b1c19a2"
+      }
+    },
+    "8,76": {
+      "BindingInfo": {
+        "TableName": "t_object_analysis",
+        "ColumnName": "object_order_id",
+        "GUID": "6578d28b-386c-4d3c-ad5d-5f7cec7dadb0",
+        "RelationBinding": {
+          "RelatedTable": "t_object_order",
+          "RelatedColumn": "object_order_id",
+          "DisplayColumn": "object_id",
+          "NextRelationBinding": {
+            "RelatedTable": "t_object",
+            "RelatedColumn": "object_id",
+            "DisplayColumn": "parent_object_id"
+          }
+        }
       }
     },
     "9,9": {
@@ -1410,7 +1447,7 @@
                             ]
                           }
                         ],
-                        "ID": "e9f231b8-b577-46f2-a601-c94899d7d33c"
+                        "ID": "8e0d7416-3cd9-4977-9354-eee4238a2d56"
                       },
                       {
                         "CommandList": [
@@ -1434,12 +1471,12 @@
                             ]
                           }
                         ],
-                        "ID": "1a215b37-7bed-4072-b8e4-f6bb4964525b"
+                        "ID": "471632ed-820f-4c2e-a35f-7b1b6405f24d"
                       }
                     ]
                   }
                 ],
-                "ID": "e31a14f9-9ade-411d-b406-93a63aed89fe"
+                "ID": "8902cf5d-978f-44ae-838b-235a435c3f40"
               }
             ]
           }
@@ -1639,7 +1676,7 @@
                             ]
                           }
                         ],
-                        "ID": "6e0b3fb2-ce79-4767-9ccb-7cc3645fba50"
+                        "ID": "7edde0c5-ab53-462e-8c2b-0b9029cbb611"
                       },
                       {
                         "CommandList": [
@@ -1663,12 +1700,12 @@
                             ]
                           }
                         ],
-                        "ID": "c1f27c3e-e27b-4bbb-ab8e-f9d0626f6c64"
+                        "ID": "e451d51c-2c93-45da-b211-af99398734ac"
                       }
                     ]
                   }
                 ],
-                "ID": "21cad41e-5dfc-4a0f-af6d-e384d60d29cd"
+                "ID": "b2b98601-29e4-4036-a273-c41e53a546cc"
               }
             ]
           }
@@ -2045,7 +2082,7 @@
                   }
                 ],
                 "Comments": "建物構造ID",
-                "ID": "2548d553-6c36-4d8b-851f-c5b5761d99c4"
+                "ID": "aad9018b-b148-4a2a-a47b-2ebd6c7d7b74"
               }
             ]
           },
@@ -2083,7 +2120,7 @@
                   }
                 ],
                 "Comments": "基礎形状ID",
-                "ID": "01f69c7d-a4ff-42c2-8cfd-6ec010a2d9de"
+                "ID": "edbc6631-00b8-4a71-aa52-2d4b65a963fb"
               }
             ]
           },
@@ -2121,7 +2158,7 @@
                   }
                 ],
                 "Comments": "設計接地圧",
-                "ID": "d181fd8c-c311-429b-be05-493a5495fe4e"
+                "ID": "146f7d64-7edd-40df-96d7-e88e78fc3521"
               }
             ]
           },
@@ -2158,7 +2195,7 @@
                     ]
                   }
                 ],
-                "ID": "c71949c9-2761-4afd-8433-79e9dd74f43c"
+                "ID": "9afcff69-dd1f-4dff-b8b5-9a0223fefd72"
               }
             ],
             "Comments": "解析者初期セット"
@@ -2345,7 +2382,7 @@
                     ]
                   }
                 ],
-                "ID": "b9806e6b-11e8-45c5-9155-bbbbce06b3d2"
+                "ID": "bc28d159-c62b-47c7-a0d1-925e316a1b90"
               }
             ]
           }
@@ -2640,7 +2677,7 @@
                     "Comments": "フラグリセット"
                   }
                 ],
-                "ID": "4f8d9ee8-2fc3-447c-b48d-d10634a98d78"
+                "ID": "f5882d36-ce72-4d29-adf1-dd8113e57fb3"
               }
             ]
           }
@@ -2850,32 +2887,32 @@
         "938007c1-06b0-4d2b-b8d8-5061644fb23c"
       ]
     },
-    "17,52": {
+    "17,60": {
       "CellComment": {
         "Comments": "解析時見積添付フラグ"
       }
     },
-    "17,53": {
+    "17,61": {
       "CellComment": {
         "Comments": "検討書必要フラグ"
       }
     },
-    "17,54": {
+    "17,62": {
       "CellComment": {
         "Comments": "転圧判定不可フラグ"
       }
     },
-    "17,55": {
+    "17,63": {
       "CellComment": {
         "Comments": "液状化判定必要フラグ"
       }
     },
-    "17,56": {
+    "17,64": {
       "CellComment": {
         "Comments": "改良判定時基礎図必要フラグ"
       }
     },
-    "17,57": {
+    "17,65": {
       "CellComment": {
         "Comments": "工事見積不要フラグ"
       }
@@ -3258,13 +3295,16 @@
             },
             {
               "$type": "ForguncyDataAccess.TextCESqlCondition, ForguncyDataAccess",
-              "CompareType": 7,
+              "CompareType": 6,
               "ColumnBindingInfo": {
                 "TableName": "m_user",
-                "ColumnName": "user_group_ids",
-                "GUID": "e938c063-56bd-4192-8295-927ed5cdae07"
+                "ColumnName": "user_group_keys",
+                "GUID": "6300b852-549d-4b21-82b7-d8f8e4b5ac46"
               },
-              "Value": "3"
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=解析登録_詳細!BA18"
+              }
             }
           ]
         },
@@ -3305,6 +3345,13 @@
           "RelatedColumn": "object_order_id",
           "DisplayColumn": "latest_survey_id"
         }
+      }
+    },
+    "31,59": {
+      "BindingInfo": {
+        "TableName": "t_object_analysis",
+        "ColumnName": "re_analysis_request_id",
+        "GUID": "009c0f70-c7be-4497-80c0-bae3319df39a"
       }
     },
     "31,76": {
@@ -3355,7 +3402,7 @@
               "TableValueType": 0,
               "BindingInfos": [
                 {
-                  "GUID": "efba66d7-ea8e-4961-8978-3af99988058e",
+                  "GUID": "986177db-dc4a-4803-b3b6-d9f2f17ab606",
                   "BindingInfo": {
                     "TableName": "v_group_customer_default",
                     "ColumnName": "転圧判定不可フラグ",
@@ -3395,7 +3442,7 @@
               },
               "NullFormulaValueQueryPolicy": 0
             },
-            "ID": "62697f7c188744b1b52d2a2fe4ad3555"
+            "ID": "730858ad94ec4aa99b4fbb61e18cc024"
           },
           {
             "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
@@ -3472,12 +3519,12 @@
                             "$type": "Forguncy.Model.StopCommand, ServerDesignerCommon"
                           }
                         ],
-                        "ID": "c23c2112-836c-41fe-9496-6ac6e002b7f1"
+                        "ID": "dc0037df-97e3-4570-aacd-eccf840a7de2"
                       }
                     ]
                   }
                 ],
-                "ID": "feb20d60-81cf-439d-b0e6-a0a81b98a37c"
+                "ID": "8c31c710-49ed-45a2-bb7d-322e853ea61c"
               }
             ]
           },
@@ -3531,520 +3578,544 @@
                   }
                 ],
                 "Comments": "業務対応中の場合",
-                "ID": "dac57ed3-363c-42c6-8a92-cbca007abfd9"
+                "ID": "2326e3b5-96ec-44bf-bd8b-43b2ac26cbbf"
               }
             ]
           },
           {
-            "$type": "Forguncy.Model.ShareCommand, ServerDesignerCommon",
-            "ShareCommandContainerRefer": {
-              "ShareCommandContainerID": "651037a9-ffaf-4591-9697-6b171676a452"
-            },
-            "Params": [
+            "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+            "ConditionAndCommandPairList": [
               {
-                "ParamReferObject": {
-                  "ParamID": "769b53af-30a0-4c8b-93cb-2097cb0976e4",
-                  "ShareCommandContainerReferObject": {
-                    "ShareCommandContainerID": "651037a9-ffaf-4591-9697-6b171676a452"
-                  }
+                "ConfirmDialogSettings": {
+                  "Title": "確認",
+                  "FormulaText": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=IF(解析登録_詳細!解析ID=\"\",\"登録\",\"更新\")&\"します。よろしいですか？\""
+                  },
+                  "YesButtonText": "はい",
+                  "NoButtonText": "いいえ",
+                  "ConfirmIcon": 1
                 },
-                "Value": {
-                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=IF(解析登録_詳細!解析ID=\"\",\"登録する\",\"\")"
-                }
-              },
-              {
-                "ParamReferObject": {
-                  "ParamID": "6c89412f-f509-4fef-b824-e7c2cb0fbece",
-                  "ShareCommandContainerReferObject": {
-                    "ShareCommandContainerID": "651037a9-ffaf-4591-9697-6b171676a452"
+                "CommandList": [
+                  {
+                    "$type": "LoadingCommand.StartLoadingCommand, LoadingCommand",
+                    "LoadingText": "お待ちください",
+                    "LoadingTextColor": "Background 1 0"
+                  },
+                  {
+                    "$type": "Forguncy.Model.OperateCellTypeCommand, ServerDesignerCommon",
+                    "TargetPageElement": {
+                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                      "SerializeProperty": "=解析登録_詳細!J14"
+                    },
+                    "TargetType": "Forguncy.DropDownListCellType, ServerDesignerCommon, Version=10.0.12.0, Culture=neutral, PublicKeyToken=967100671921c115",
+                    "MethodName": "GetDisplayTextForCommand",
+                    "RetrunParamNames": {
+                      "DisplayText": {
+                        "SerializeProperty": "=解析登録_詳細!BI3"
+                      }
+                    }
+                  },
+                  {
+                    "$type": "Forguncy.Model.OperateCellTypeCommand, ServerDesignerCommon",
+                    "TargetPageElement": {
+                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                      "SerializeProperty": "=解析登録_詳細!J16"
+                    },
+                    "TargetType": "Forguncy.DropDownListCellType, ServerDesignerCommon, Version=10.0.12.0, Culture=neutral, PublicKeyToken=967100671921c115",
+                    "MethodName": "GetDisplayTextForCommand",
+                    "RetrunParamNames": {
+                      "DisplayText": {
+                        "SerializeProperty": "=解析登録_詳細!BI6"
+                      }
+                    }
+                  },
+                  {
+                    "$type": "Forguncy.Model.OperateCellTypeCommand, ServerDesignerCommon",
+                    "TargetPageElement": {
+                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                      "SerializeProperty": "=解析登録_詳細!J18"
+                    },
+                    "TargetType": "Forguncy.DropDownListCellType, ServerDesignerCommon, Version=10.0.12.0, Culture=neutral, PublicKeyToken=967100671921c115",
+                    "MethodName": "GetDisplayTextForCommand",
+                    "RetrunParamNames": {
+                      "DisplayText": {
+                        "SerializeProperty": "=解析登録_詳細!BI9"
+                      }
+                    }
+                  },
+                  {
+                    "$type": "Forguncy.Model.OperateCellTypeCommand, ServerDesignerCommon",
+                    "TargetPageElement": {
+                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                      "SerializeProperty": "=解析登録_詳細!AD16"
+                    },
+                    "TargetType": "Forguncy.DropDownListCellType, ServerDesignerCommon, Version=10.0.12.0, Culture=neutral, PublicKeyToken=967100671921c115",
+                    "MethodName": "GetDisplayTextForCommand",
+                    "RetrunParamNames": {
+                      "DisplayText": {
+                        "SerializeProperty": "=解析登録_詳細!BQ6"
+                      }
+                    }
+                  },
+                  {
+                    "$type": "Forguncy.Model.OperateCellTypeCommand, ServerDesignerCommon",
+                    "TargetPageElement": {
+                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                      "SerializeProperty": "=解析登録_詳細!AD20"
+                    },
+                    "TargetType": "Forguncy.DropDownListCellType, ServerDesignerCommon, Version=10.0.12.0, Culture=neutral, PublicKeyToken=967100671921c115",
+                    "MethodName": "GetDisplayTextForCommand",
+                    "RetrunParamNames": {
+                      "DisplayText": {
+                        "SerializeProperty": "=解析登録_詳細!BQ3"
+                      }
+                    }
+                  },
+                  {
+                    "$type": "Forguncy.Model.OperateCellTypeCommand, ServerDesignerCommon",
+                    "TargetPageElement": {
+                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                      "SerializeProperty": "=解析登録_詳細!AD18"
+                    },
+                    "TargetType": "Forguncy.DropDownListCellType, ServerDesignerCommon, Version=10.0.12.0, Culture=neutral, PublicKeyToken=967100671921c115",
+                    "MethodName": "GetDisplayTextForCommand",
+                    "RetrunParamNames": {
+                      "DisplayText": {
+                        "SerializeProperty": "=解析登録_詳細!BQ9"
+                      }
+                    }
+                  },
+                  {
+                    "$type": "Forguncy.Model.ShareCommand, ServerDesignerCommon",
+                    "ShareCommandContainerRefer": {
+                      "ShareCommandContainerID": "6cb007b1-518f-41f2-8936-eec2693ac971"
+                    },
+                    "Params": [
+                      {
+                        "ParamReferObject": {
+                          "ParamID": "2ef95eb1-6ef9-4f07-9b40-c1abba7207c2",
+                          "ShareCommandContainerReferObject": {
+                            "ShareCommandContainerID": "6cb007b1-518f-41f2-8936-eec2693ac971"
+                          }
+                        },
+                        "Value": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=解析登録_詳細!BA3"
+                        }
+                      },
+                      {
+                        "ParamReferObject": {
+                          "ParamID": "be78019c-6554-4c25-8da4-f6dc39a91596",
+                          "ShareCommandContainerReferObject": {
+                            "ShareCommandContainerID": "6cb007b1-518f-41f2-8936-eec2693ac971"
+                          }
+                        },
+                        "Value": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=解析登録_詳細!解析ID"
+                        }
+                      },
+                      {
+                        "ParamReferObject": {
+                          "ParamID": "07e970f4-1d75-446e-840a-437b42c0ecb5",
+                          "ShareCommandContainerReferObject": {
+                            "ShareCommandContainerID": "6cb007b1-518f-41f2-8936-eec2693ac971"
+                          }
+                        },
+                        "Value": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=解析登録_詳細!AS15"
+                        }
+                      },
+                      {
+                        "ParamReferObject": {
+                          "ParamID": "d3f50382-25ec-4fef-9dcf-e5b0784f9bfd",
+                          "ShareCommandContainerReferObject": {
+                            "ShareCommandContainerID": "6cb007b1-518f-41f2-8936-eec2693ac971"
+                          }
+                        },
+                        "Value": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=解析登録_詳細!J2"
+                        }
+                      },
+                      {
+                        "ParamReferObject": {
+                          "ParamID": "3d11843f-55cf-41e9-ad25-c6d173e06d5d",
+                          "ShareCommandContainerReferObject": {
+                            "ShareCommandContainerID": "6cb007b1-518f-41f2-8936-eec2693ac971"
+                          }
+                        },
+                        "Value": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=解析登録_詳細!J4"
+                        }
+                      },
+                      {
+                        "ParamReferObject": {
+                          "ParamID": "9d145f29-b38d-4453-a512-458c224d7457",
+                          "ShareCommandContainerReferObject": {
+                            "ShareCommandContainerID": "6cb007b1-518f-41f2-8936-eec2693ac971"
+                          }
+                        },
+                        "Value": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=解析登録_詳細!J6"
+                        }
+                      },
+                      {
+                        "ParamReferObject": {
+                          "ParamID": "66eac0ee-8cfe-4260-969c-944637819ffe",
+                          "ShareCommandContainerReferObject": {
+                            "ShareCommandContainerID": "6cb007b1-518f-41f2-8936-eec2693ac971"
+                          }
+                        },
+                        "Value": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=解析登録_詳細!J8"
+                        }
+                      },
+                      {
+                        "ParamReferObject": {
+                          "ParamID": "887c6729-2c0c-472e-a244-d8bcc19a40b4",
+                          "ShareCommandContainerReferObject": {
+                            "ShareCommandContainerID": "6cb007b1-518f-41f2-8936-eec2693ac971"
+                          }
+                        },
+                        "Value": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=解析登録_詳細!N8"
+                        }
+                      },
+                      {
+                        "ParamReferObject": {
+                          "ParamID": "14e86195-bf3a-430d-9cf7-8ff037b947d8",
+                          "ShareCommandContainerReferObject": {
+                            "ShareCommandContainerID": "6cb007b1-518f-41f2-8936-eec2693ac971"
+                          }
+                        },
+                        "Value": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=解析登録_詳細!J10"
+                        }
+                      },
+                      {
+                        "ParamReferObject": {
+                          "ParamID": "eeb4c3d8-fed5-4c7d-943d-acde623dbd2a",
+                          "ShareCommandContainerReferObject": {
+                            "ShareCommandContainerID": "6cb007b1-518f-41f2-8936-eec2693ac971"
+                          }
+                        },
+                        "Value": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=解析登録_詳細!N10"
+                        }
+                      },
+                      {
+                        "ParamReferObject": {
+                          "ParamID": "3ff8d49a-e35f-4927-a9fc-55778df1560c",
+                          "ShareCommandContainerReferObject": {
+                            "ShareCommandContainerID": "6cb007b1-518f-41f2-8936-eec2693ac971"
+                          }
+                        },
+                        "Value": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=解析登録_詳細!J12"
+                        }
+                      },
+                      {
+                        "ParamReferObject": {
+                          "ParamID": "0b360a78-8ab1-4525-8fc4-e0b8e7de6203",
+                          "ShareCommandContainerReferObject": {
+                            "ShareCommandContainerID": "6cb007b1-518f-41f2-8936-eec2693ac971"
+                          }
+                        },
+                        "Value": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=解析登録_詳細!N12"
+                        }
+                      },
+                      {
+                        "ParamReferObject": {
+                          "ParamID": "927b00ee-fbac-49c8-a12f-34a95a90f531",
+                          "ShareCommandContainerReferObject": {
+                            "ShareCommandContainerID": "6cb007b1-518f-41f2-8936-eec2693ac971"
+                          }
+                        },
+                        "Value": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=解析登録_詳細!J14"
+                        }
+                      },
+                      {
+                        "ParamReferObject": {
+                          "ParamID": "c4eeba70-64b1-472f-a016-050646246e40",
+                          "ShareCommandContainerReferObject": {
+                            "ShareCommandContainerID": "6cb007b1-518f-41f2-8936-eec2693ac971"
+                          }
+                        },
+                        "Value": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=解析登録_詳細!BI3"
+                        }
+                      },
+                      {
+                        "ParamReferObject": {
+                          "ParamID": "18d91de9-aad6-44d7-8d03-5e457f3af235",
+                          "ShareCommandContainerReferObject": {
+                            "ShareCommandContainerID": "6cb007b1-518f-41f2-8936-eec2693ac971"
+                          }
+                        },
+                        "Value": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=解析登録_詳細!J16"
+                        }
+                      },
+                      {
+                        "ParamReferObject": {
+                          "ParamID": "4a1a7fb7-e926-49f3-aa23-90496f5f39ea",
+                          "ShareCommandContainerReferObject": {
+                            "ShareCommandContainerID": "6cb007b1-518f-41f2-8936-eec2693ac971"
+                          }
+                        },
+                        "Value": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=解析登録_詳細!BI6"
+                        }
+                      },
+                      {
+                        "ParamReferObject": {
+                          "ParamID": "4773c55c-a900-45f2-bd7e-06d19465376d",
+                          "ShareCommandContainerReferObject": {
+                            "ShareCommandContainerID": "6cb007b1-518f-41f2-8936-eec2693ac971"
+                          }
+                        },
+                        "Value": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=解析登録_詳細!J18"
+                        }
+                      },
+                      {
+                        "ParamReferObject": {
+                          "ParamID": "8433af11-54b8-4c9b-b121-d652d8783c1d",
+                          "ShareCommandContainerReferObject": {
+                            "ShareCommandContainerID": "6cb007b1-518f-41f2-8936-eec2693ac971"
+                          }
+                        },
+                        "Value": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=解析登録_詳細!BI9"
+                        }
+                      },
+                      {
+                        "ParamReferObject": {
+                          "ParamID": "64105282-3956-43ec-a42e-367ff55166c7",
+                          "ShareCommandContainerReferObject": {
+                            "ShareCommandContainerID": "6cb007b1-518f-41f2-8936-eec2693ac971"
+                          }
+                        },
+                        "Value": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=解析登録_詳細!J20"
+                        }
+                      },
+                      {
+                        "ParamReferObject": {
+                          "ParamID": "78a21131-d570-4c45-840f-6ff421d313ff",
+                          "ShareCommandContainerReferObject": {
+                            "ShareCommandContainerID": "6cb007b1-518f-41f2-8936-eec2693ac971"
+                          }
+                        },
+                        "Value": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=解析登録_詳細!AD16"
+                        }
+                      },
+                      {
+                        "ParamReferObject": {
+                          "ParamID": "4c26720e-fc8f-48b5-9388-9b0d5ad8a1b8",
+                          "ShareCommandContainerReferObject": {
+                            "ShareCommandContainerID": "6cb007b1-518f-41f2-8936-eec2693ac971"
+                          }
+                        },
+                        "Value": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=解析登録_詳細!BQ6"
+                        }
+                      },
+                      {
+                        "ParamReferObject": {
+                          "ParamID": "b18a97a9-36c9-428c-af30-9f0bc775c89c",
+                          "ShareCommandContainerReferObject": {
+                            "ShareCommandContainerID": "6cb007b1-518f-41f2-8936-eec2693ac971"
+                          }
+                        },
+                        "Value": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=解析登録_詳細!AD18"
+                        }
+                      },
+                      {
+                        "ParamReferObject": {
+                          "ParamID": "037bcd0a-f332-451c-9efe-8feae0cb348e",
+                          "ShareCommandContainerReferObject": {
+                            "ShareCommandContainerID": "6cb007b1-518f-41f2-8936-eec2693ac971"
+                          }
+                        },
+                        "Value": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=解析登録_詳細!BQ9"
+                        }
+                      },
+                      {
+                        "ParamReferObject": {
+                          "ParamID": "37788efd-8d51-4090-ad0c-79bef5a4c0e1",
+                          "ShareCommandContainerReferObject": {
+                            "ShareCommandContainerID": "6cb007b1-518f-41f2-8936-eec2693ac971"
+                          }
+                        },
+                        "Value": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=解析登録_詳細!AD20"
+                        }
+                      },
+                      {
+                        "ParamReferObject": {
+                          "ParamID": "1d6a22f5-c86d-40c3-98a0-078e0eedbf0c",
+                          "ShareCommandContainerReferObject": {
+                            "ShareCommandContainerID": "6cb007b1-518f-41f2-8936-eec2693ac971"
+                          }
+                        },
+                        "Value": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=解析登録_詳細!BQ3"
+                        }
+                      },
+                      {
+                        "ParamReferObject": {
+                          "ParamID": "5d31cba2-94e1-4139-85f5-ac7f7fde9331",
+                          "ShareCommandContainerReferObject": {
+                            "ShareCommandContainerID": "6cb007b1-518f-41f2-8936-eec2693ac971"
+                          }
+                        },
+                        "Value": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=解析登録_詳細!J22"
+                        }
+                      },
+                      {
+                        "ParamReferObject": {
+                          "ParamID": "52a6305b-f492-46bd-a2d2-4c9337c36cec",
+                          "ShareCommandContainerReferObject": {
+                            "ShareCommandContainerID": "6cb007b1-518f-41f2-8936-eec2693ac971"
+                          }
+                        },
+                        "Value": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=解析登録_詳細!J28"
+                        }
+                      },
+                      {
+                        "ParamReferObject": {
+                          "ParamID": "f49da82e-262c-46f7-8d7c-66d59403fe01",
+                          "ShareCommandContainerReferObject": {
+                            "ShareCommandContainerID": "6cb007b1-518f-41f2-8936-eec2693ac971"
+                          }
+                        },
+                        "Value": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=解析登録_詳細!S6"
+                        }
+                      },
+                      {
+                        "ParamReferObject": {
+                          "ParamID": "f70b93d2-207d-4514-a571-f1faf61e6fc7",
+                          "ShareCommandContainerReferObject": {
+                            "ShareCommandContainerID": "6cb007b1-518f-41f2-8936-eec2693ac971"
+                          }
+                        },
+                        "Value": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=解析登録_詳細!Z6"
+                        }
+                      },
+                      {
+                        "ParamReferObject": {
+                          "ParamID": "16690687-8fb3-4955-ac42-13428cecbdd3",
+                          "ShareCommandContainerReferObject": {
+                            "ShareCommandContainerID": "6cb007b1-518f-41f2-8936-eec2693ac971"
+                          }
+                        },
+                        "Value": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=解析登録_詳細!AM28"
+                        }
+                      },
+                      {
+                        "ParamReferObject": {
+                          "ParamID": "3256d1a7-ba23-49c2-a1d2-304d3ec21cc3",
+                          "ShareCommandContainerReferObject": {
+                            "ShareCommandContainerID": "6cb007b1-518f-41f2-8936-eec2693ac971"
+                          }
+                        },
+                        "Value": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=解析登録_詳細!J30"
+                        }
+                      },
+                      {
+                        "ParamReferObject": {
+                          "ParamID": "62c66fff-a3c4-4ebd-90c3-778c373989e4",
+                          "ShareCommandContainerReferObject": {
+                            "ShareCommandContainerID": "6cb007b1-518f-41f2-8936-eec2693ac971"
+                          }
+                        },
+                        "Value": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=解析登録_詳細!BH32"
+                        }
+                      },
+                      {
+                        "ParamReferObject": {
+                          "ParamID": "ea0b16d3-6f23-4ec5-9751-ce9f64580969",
+                          "ShareCommandContainerReferObject": {
+                            "ShareCommandContainerID": "6cb007b1-518f-41f2-8936-eec2693ac971"
+                          }
+                        },
+                        "Value": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=解析登録_詳細!AH2"
+                        }
+                      },
+                      {
+                        "ParamReferObject": {
+                          "ParamID": "b1095b4d-7ba5-49bf-be36-cc2731758a14",
+                          "ShareCommandContainerReferObject": {
+                            "ShareCommandContainerID": "6cb007b1-518f-41f2-8936-eec2693ac971"
+                          }
+                        }
+                      }
+                    ],
+                    "ResultErrorCodeTo": {
+                      "SerializeProperty": "リターンコード"
+                    },
+                    "ResultMessageTo": {
+                      "SerializeProperty": "リターンメッセージ"
+                    }
+                  },
+                  {
+                    "$type": "Forguncy.Model.IgnorePageDirtyCommand, ServerDesignerCommon"
+                  },
+                  {
+                    "$type": "Forguncy.Model.ClosePopupCommand, ServerDesignerCommon",
+                    "PassValueBack": true,
+                    "ReloadData": true
                   }
-                }
+                ],
+                "ID": "2527100f-db3f-4717-a2db-15ab8f52069f"
               }
             ]
-          },
-          {
-            "$type": "LoadingCommand.StartLoadingCommand, LoadingCommand",
-            "LoadingText": "お待ちください",
-            "LoadingTextColor": "Background 1 0"
-          },
-          {
-            "$type": "Forguncy.Model.OperateCellTypeCommand, ServerDesignerCommon",
-            "TargetPageElement": {
-              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-              "SerializeProperty": "=解析登録_詳細!J14"
-            },
-            "TargetType": "Forguncy.DropDownListCellType, ServerDesignerCommon, Version=10.0.12.0, Culture=neutral, PublicKeyToken=967100671921c115",
-            "MethodName": "GetDisplayTextForCommand",
-            "RetrunParamNames": {
-              "DisplayText": {
-                "SerializeProperty": "=解析登録_詳細!BI3"
-              }
-            }
-          },
-          {
-            "$type": "Forguncy.Model.OperateCellTypeCommand, ServerDesignerCommon",
-            "TargetPageElement": {
-              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-              "SerializeProperty": "=解析登録_詳細!J16"
-            },
-            "TargetType": "Forguncy.DropDownListCellType, ServerDesignerCommon, Version=10.0.12.0, Culture=neutral, PublicKeyToken=967100671921c115",
-            "MethodName": "GetDisplayTextForCommand",
-            "RetrunParamNames": {
-              "DisplayText": {
-                "SerializeProperty": "=解析登録_詳細!BI6"
-              }
-            }
-          },
-          {
-            "$type": "Forguncy.Model.OperateCellTypeCommand, ServerDesignerCommon",
-            "TargetPageElement": {
-              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-              "SerializeProperty": "=解析登録_詳細!J18"
-            },
-            "TargetType": "Forguncy.DropDownListCellType, ServerDesignerCommon, Version=10.0.12.0, Culture=neutral, PublicKeyToken=967100671921c115",
-            "MethodName": "GetDisplayTextForCommand",
-            "RetrunParamNames": {
-              "DisplayText": {
-                "SerializeProperty": "=解析登録_詳細!BI9"
-              }
-            }
-          },
-          {
-            "$type": "Forguncy.Model.OperateCellTypeCommand, ServerDesignerCommon",
-            "TargetPageElement": {
-              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-              "SerializeProperty": "=解析登録_詳細!AD16"
-            },
-            "TargetType": "Forguncy.DropDownListCellType, ServerDesignerCommon, Version=10.0.12.0, Culture=neutral, PublicKeyToken=967100671921c115",
-            "MethodName": "GetDisplayTextForCommand",
-            "RetrunParamNames": {
-              "DisplayText": {
-                "SerializeProperty": "=解析登録_詳細!BQ6"
-              }
-            }
-          },
-          {
-            "$type": "Forguncy.Model.OperateCellTypeCommand, ServerDesignerCommon",
-            "TargetPageElement": {
-              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-              "SerializeProperty": "=解析登録_詳細!AD20"
-            },
-            "TargetType": "Forguncy.DropDownListCellType, ServerDesignerCommon, Version=10.0.12.0, Culture=neutral, PublicKeyToken=967100671921c115",
-            "MethodName": "GetDisplayTextForCommand",
-            "RetrunParamNames": {
-              "DisplayText": {
-                "SerializeProperty": "=解析登録_詳細!BQ3"
-              }
-            }
-          },
-          {
-            "$type": "Forguncy.Model.OperateCellTypeCommand, ServerDesignerCommon",
-            "TargetPageElement": {
-              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-              "SerializeProperty": "=解析登録_詳細!AD18"
-            },
-            "TargetType": "Forguncy.DropDownListCellType, ServerDesignerCommon, Version=10.0.12.0, Culture=neutral, PublicKeyToken=967100671921c115",
-            "MethodName": "GetDisplayTextForCommand",
-            "RetrunParamNames": {
-              "DisplayText": {
-                "SerializeProperty": "=解析登録_詳細!BQ9"
-              }
-            }
-          },
-          {
-            "$type": "Forguncy.Model.ShareCommand, ServerDesignerCommon",
-            "ShareCommandContainerRefer": {
-              "ShareCommandContainerID": "6cb007b1-518f-41f2-8936-eec2693ac971"
-            },
-            "Params": [
-              {
-                "ParamReferObject": {
-                  "ParamID": "2ef95eb1-6ef9-4f07-9b40-c1abba7207c2",
-                  "ShareCommandContainerReferObject": {
-                    "ShareCommandContainerID": "6cb007b1-518f-41f2-8936-eec2693ac971"
-                  }
-                },
-                "Value": {
-                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=解析登録_詳細!BA3"
-                }
-              },
-              {
-                "ParamReferObject": {
-                  "ParamID": "be78019c-6554-4c25-8da4-f6dc39a91596",
-                  "ShareCommandContainerReferObject": {
-                    "ShareCommandContainerID": "6cb007b1-518f-41f2-8936-eec2693ac971"
-                  }
-                },
-                "Value": {
-                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=解析登録_詳細!解析ID"
-                }
-              },
-              {
-                "ParamReferObject": {
-                  "ParamID": "07e970f4-1d75-446e-840a-437b42c0ecb5",
-                  "ShareCommandContainerReferObject": {
-                    "ShareCommandContainerID": "6cb007b1-518f-41f2-8936-eec2693ac971"
-                  }
-                },
-                "Value": {
-                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=解析登録_詳細!AS15"
-                }
-              },
-              {
-                "ParamReferObject": {
-                  "ParamID": "d3f50382-25ec-4fef-9dcf-e5b0784f9bfd",
-                  "ShareCommandContainerReferObject": {
-                    "ShareCommandContainerID": "6cb007b1-518f-41f2-8936-eec2693ac971"
-                  }
-                },
-                "Value": {
-                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=解析登録_詳細!J2"
-                }
-              },
-              {
-                "ParamReferObject": {
-                  "ParamID": "3d11843f-55cf-41e9-ad25-c6d173e06d5d",
-                  "ShareCommandContainerReferObject": {
-                    "ShareCommandContainerID": "6cb007b1-518f-41f2-8936-eec2693ac971"
-                  }
-                },
-                "Value": {
-                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=解析登録_詳細!J4"
-                }
-              },
-              {
-                "ParamReferObject": {
-                  "ParamID": "9d145f29-b38d-4453-a512-458c224d7457",
-                  "ShareCommandContainerReferObject": {
-                    "ShareCommandContainerID": "6cb007b1-518f-41f2-8936-eec2693ac971"
-                  }
-                },
-                "Value": {
-                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=解析登録_詳細!J6"
-                }
-              },
-              {
-                "ParamReferObject": {
-                  "ParamID": "66eac0ee-8cfe-4260-969c-944637819ffe",
-                  "ShareCommandContainerReferObject": {
-                    "ShareCommandContainerID": "6cb007b1-518f-41f2-8936-eec2693ac971"
-                  }
-                },
-                "Value": {
-                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=解析登録_詳細!J8"
-                }
-              },
-              {
-                "ParamReferObject": {
-                  "ParamID": "887c6729-2c0c-472e-a244-d8bcc19a40b4",
-                  "ShareCommandContainerReferObject": {
-                    "ShareCommandContainerID": "6cb007b1-518f-41f2-8936-eec2693ac971"
-                  }
-                },
-                "Value": {
-                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=解析登録_詳細!N8"
-                }
-              },
-              {
-                "ParamReferObject": {
-                  "ParamID": "14e86195-bf3a-430d-9cf7-8ff037b947d8",
-                  "ShareCommandContainerReferObject": {
-                    "ShareCommandContainerID": "6cb007b1-518f-41f2-8936-eec2693ac971"
-                  }
-                },
-                "Value": {
-                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=解析登録_詳細!J10"
-                }
-              },
-              {
-                "ParamReferObject": {
-                  "ParamID": "eeb4c3d8-fed5-4c7d-943d-acde623dbd2a",
-                  "ShareCommandContainerReferObject": {
-                    "ShareCommandContainerID": "6cb007b1-518f-41f2-8936-eec2693ac971"
-                  }
-                },
-                "Value": {
-                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=解析登録_詳細!N10"
-                }
-              },
-              {
-                "ParamReferObject": {
-                  "ParamID": "3ff8d49a-e35f-4927-a9fc-55778df1560c",
-                  "ShareCommandContainerReferObject": {
-                    "ShareCommandContainerID": "6cb007b1-518f-41f2-8936-eec2693ac971"
-                  }
-                },
-                "Value": {
-                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=解析登録_詳細!J12"
-                }
-              },
-              {
-                "ParamReferObject": {
-                  "ParamID": "0b360a78-8ab1-4525-8fc4-e0b8e7de6203",
-                  "ShareCommandContainerReferObject": {
-                    "ShareCommandContainerID": "6cb007b1-518f-41f2-8936-eec2693ac971"
-                  }
-                },
-                "Value": {
-                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=解析登録_詳細!N12"
-                }
-              },
-              {
-                "ParamReferObject": {
-                  "ParamID": "927b00ee-fbac-49c8-a12f-34a95a90f531",
-                  "ShareCommandContainerReferObject": {
-                    "ShareCommandContainerID": "6cb007b1-518f-41f2-8936-eec2693ac971"
-                  }
-                },
-                "Value": {
-                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=解析登録_詳細!J14"
-                }
-              },
-              {
-                "ParamReferObject": {
-                  "ParamID": "c4eeba70-64b1-472f-a016-050646246e40",
-                  "ShareCommandContainerReferObject": {
-                    "ShareCommandContainerID": "6cb007b1-518f-41f2-8936-eec2693ac971"
-                  }
-                },
-                "Value": {
-                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=解析登録_詳細!BI3"
-                }
-              },
-              {
-                "ParamReferObject": {
-                  "ParamID": "18d91de9-aad6-44d7-8d03-5e457f3af235",
-                  "ShareCommandContainerReferObject": {
-                    "ShareCommandContainerID": "6cb007b1-518f-41f2-8936-eec2693ac971"
-                  }
-                },
-                "Value": {
-                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=解析登録_詳細!J16"
-                }
-              },
-              {
-                "ParamReferObject": {
-                  "ParamID": "4a1a7fb7-e926-49f3-aa23-90496f5f39ea",
-                  "ShareCommandContainerReferObject": {
-                    "ShareCommandContainerID": "6cb007b1-518f-41f2-8936-eec2693ac971"
-                  }
-                },
-                "Value": {
-                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=解析登録_詳細!BI6"
-                }
-              },
-              {
-                "ParamReferObject": {
-                  "ParamID": "4773c55c-a900-45f2-bd7e-06d19465376d",
-                  "ShareCommandContainerReferObject": {
-                    "ShareCommandContainerID": "6cb007b1-518f-41f2-8936-eec2693ac971"
-                  }
-                },
-                "Value": {
-                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=解析登録_詳細!J18"
-                }
-              },
-              {
-                "ParamReferObject": {
-                  "ParamID": "8433af11-54b8-4c9b-b121-d652d8783c1d",
-                  "ShareCommandContainerReferObject": {
-                    "ShareCommandContainerID": "6cb007b1-518f-41f2-8936-eec2693ac971"
-                  }
-                },
-                "Value": {
-                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=解析登録_詳細!BI9"
-                }
-              },
-              {
-                "ParamReferObject": {
-                  "ParamID": "64105282-3956-43ec-a42e-367ff55166c7",
-                  "ShareCommandContainerReferObject": {
-                    "ShareCommandContainerID": "6cb007b1-518f-41f2-8936-eec2693ac971"
-                  }
-                },
-                "Value": {
-                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=解析登録_詳細!J20"
-                }
-              },
-              {
-                "ParamReferObject": {
-                  "ParamID": "78a21131-d570-4c45-840f-6ff421d313ff",
-                  "ShareCommandContainerReferObject": {
-                    "ShareCommandContainerID": "6cb007b1-518f-41f2-8936-eec2693ac971"
-                  }
-                },
-                "Value": {
-                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=解析登録_詳細!AD16"
-                }
-              },
-              {
-                "ParamReferObject": {
-                  "ParamID": "4c26720e-fc8f-48b5-9388-9b0d5ad8a1b8",
-                  "ShareCommandContainerReferObject": {
-                    "ShareCommandContainerID": "6cb007b1-518f-41f2-8936-eec2693ac971"
-                  }
-                },
-                "Value": {
-                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=解析登録_詳細!BQ6"
-                }
-              },
-              {
-                "ParamReferObject": {
-                  "ParamID": "b18a97a9-36c9-428c-af30-9f0bc775c89c",
-                  "ShareCommandContainerReferObject": {
-                    "ShareCommandContainerID": "6cb007b1-518f-41f2-8936-eec2693ac971"
-                  }
-                },
-                "Value": {
-                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=解析登録_詳細!AD18"
-                }
-              },
-              {
-                "ParamReferObject": {
-                  "ParamID": "037bcd0a-f332-451c-9efe-8feae0cb348e",
-                  "ShareCommandContainerReferObject": {
-                    "ShareCommandContainerID": "6cb007b1-518f-41f2-8936-eec2693ac971"
-                  }
-                },
-                "Value": {
-                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=解析登録_詳細!BQ9"
-                }
-              },
-              {
-                "ParamReferObject": {
-                  "ParamID": "37788efd-8d51-4090-ad0c-79bef5a4c0e1",
-                  "ShareCommandContainerReferObject": {
-                    "ShareCommandContainerID": "6cb007b1-518f-41f2-8936-eec2693ac971"
-                  }
-                },
-                "Value": {
-                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=解析登録_詳細!AD20"
-                }
-              },
-              {
-                "ParamReferObject": {
-                  "ParamID": "1d6a22f5-c86d-40c3-98a0-078e0eedbf0c",
-                  "ShareCommandContainerReferObject": {
-                    "ShareCommandContainerID": "6cb007b1-518f-41f2-8936-eec2693ac971"
-                  }
-                },
-                "Value": {
-                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=解析登録_詳細!BQ3"
-                }
-              },
-              {
-                "ParamReferObject": {
-                  "ParamID": "5d31cba2-94e1-4139-85f5-ac7f7fde9331",
-                  "ShareCommandContainerReferObject": {
-                    "ShareCommandContainerID": "6cb007b1-518f-41f2-8936-eec2693ac971"
-                  }
-                },
-                "Value": {
-                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=解析登録_詳細!J22"
-                }
-              },
-              {
-                "ParamReferObject": {
-                  "ParamID": "52a6305b-f492-46bd-a2d2-4c9337c36cec",
-                  "ShareCommandContainerReferObject": {
-                    "ShareCommandContainerID": "6cb007b1-518f-41f2-8936-eec2693ac971"
-                  }
-                },
-                "Value": {
-                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=解析登録_詳細!J28"
-                }
-              },
-              {
-                "ParamReferObject": {
-                  "ParamID": "f49da82e-262c-46f7-8d7c-66d59403fe01",
-                  "ShareCommandContainerReferObject": {
-                    "ShareCommandContainerID": "6cb007b1-518f-41f2-8936-eec2693ac971"
-                  }
-                },
-                "Value": {
-                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=解析登録_詳細!S6"
-                }
-              },
-              {
-                "ParamReferObject": {
-                  "ParamID": "f70b93d2-207d-4514-a571-f1faf61e6fc7",
-                  "ShareCommandContainerReferObject": {
-                    "ShareCommandContainerID": "6cb007b1-518f-41f2-8936-eec2693ac971"
-                  }
-                },
-                "Value": {
-                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=解析登録_詳細!Z6"
-                }
-              },
-              {
-                "ParamReferObject": {
-                  "ParamID": "3256d1a7-ba23-49c2-a1d2-304d3ec21cc3",
-                  "ShareCommandContainerReferObject": {
-                    "ShareCommandContainerID": "6cb007b1-518f-41f2-8936-eec2693ac971"
-                  }
-                },
-                "Value": {
-                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=解析登録_詳細!J30"
-                }
-              },
-              {
-                "ParamReferObject": {
-                  "ParamID": "ea0b16d3-6f23-4ec5-9751-ce9f64580969",
-                  "ShareCommandContainerReferObject": {
-                    "ShareCommandContainerID": "6cb007b1-518f-41f2-8936-eec2693ac971"
-                  }
-                },
-                "Value": {
-                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                  "SerializeProperty": "=解析登録_詳細!AH2"
-                }
-              }
-            ],
-            "ResultErrorCodeTo": {
-              "SerializeProperty": "リターンコード"
-            },
-            "ResultMessageTo": {
-              "SerializeProperty": "リターンメッセージ"
-            }
-          },
-          {
-            "$type": "Forguncy.Model.IgnorePageDirtyCommand, ServerDesignerCommon"
-          },
-          {
-            "$type": "Forguncy.Model.ClosePopupCommand, ServerDesignerCommon",
-            "PassValueBack": true,
-            "ReloadData": true
           }
         ],
         "TemplateKey": "_RS_Normal_Style2"
@@ -4131,7 +4202,7 @@
                             "ReloadData": true
                           }
                         ],
-                        "ID": "7fcf4272-0728-4311-b522-f54ae2e785bc"
+                        "ID": "05d0d2fc-b776-45b1-9785-02e5f06c5636"
                       },
                       {
                         "CommandList": [
@@ -4143,12 +4214,12 @@
                             }
                           }
                         ],
-                        "ID": "35b5bf5c-e4f1-43c9-b809-0353f41ca855"
+                        "ID": "3d8eb64d-6797-416f-9997-664232e42267"
                       }
                     ]
                   }
                 ],
-                "ID": "1ba87a26-cd27-42f1-abdd-44e5cfe59477"
+                "ID": "e1333917-bee6-4d0f-ad3e-93b46ae0b09a"
               }
             ]
           }
@@ -5205,7 +5276,8 @@
         "HorizontalAlignment": 8
       },
       {
-        "Background": 11
+        "Background": 11,
+        "FontFamily": 0
       },
       {
         "FontFamily": 0,
@@ -5336,6 +5408,7 @@
       "2,68": 5,
       "2,69": 3,
       "2,70": 3,
+      "2,76": 4,
       "3,3": 3,
       "3,9": 0,
       "3,16": 3,
@@ -5371,6 +5444,9 @@
       "4,68": 2,
       "4,69": 3,
       "4,70": 3,
+      "4,76": 3,
+      "4,77": 3,
+      "4,78": 3,
       "5,3": 3,
       "5,9": 3,
       "5,18": 7,
@@ -5399,6 +5475,7 @@
       "5,68": 5,
       "5,69": 3,
       "5,70": 3,
+      "5,76": 5,
       "6,60": 3,
       "6,61": 3,
       "6,62": 3,
@@ -5455,8 +5532,9 @@
       "7,73": 3,
       "7,74": 3,
       "7,75": 3,
-      "7,76": 3,
+      "7,76": 2,
       "7,77": 3,
+      "7,78": 3,
       "8,3": 3,
       "8,4": 3,
       "8,5": 3,
@@ -5513,6 +5591,7 @@
       "8,68": 5,
       "8,69": 3,
       "8,70": 3,
+      "8,76": 5,
       "9,3": 3,
       "9,4": 3,
       "9,5": 3,
@@ -5872,6 +5951,12 @@
       "16,41": 3,
       "16,42": 3,
       "16,43": 3,
+      "16,60": 3,
+      "16,61": 3,
+      "16,62": 3,
+      "16,63": 3,
+      "16,64": 3,
+      "16,65": 3,
       "16,66": 3,
       "17,3": 2,
       "17,4": 3,
@@ -5906,12 +5991,13 @@
       "17,42": 3,
       "17,43": 3,
       "17,44": 4,
-      "17,52": 15,
-      "17,53": 15,
-      "17,54": 15,
-      "17,55": 15,
-      "17,56": 15,
-      "17,57": 15,
+      "17,52": 4,
+      "17,60": 15,
+      "17,61": 15,
+      "17,62": 15,
+      "17,63": 15,
+      "17,64": 15,
+      "17,65": 15,
       "17,66": 3,
       "18,3": 3,
       "18,4": 3,
@@ -6323,7 +6409,6 @@
       "27,56": 3,
       "27,57": 3,
       "27,58": 3,
-      "27,59": 3,
       "27,63": 3,
       "27,64": 3,
       "27,65": 3,
@@ -6349,7 +6434,6 @@
       "28,56": 3,
       "28,57": 3,
       "28,58": 3,
-      "28,59": 3,
       "28,63": 3,
       "28,64": 3,
       "28,65": 3,
@@ -6462,9 +6546,7 @@
       "31,56": 3,
       "31,57": 3,
       "31,58": 3,
-      "31,59": 3,
-      "31,60": 3,
-      "31,61": 3,
+      "31,59": 5,
       "31,62": 3,
       "31,63": 3,
       "31,64": 3,
@@ -6798,7 +6880,12 @@
     "22,62,1,3",
     "11,76,1,3",
     "27,38,1,3",
-    "40,76,1,5"
+    "40,76,1,5",
+    "17,52,1,3",
+    "2,76,1,3",
+    "5,76,1,3",
+    "8,76,1,3",
+    "31,59,1,3"
   ],
   "PageInfo": {
     "$type": "Forguncy.Model.Pages.NormalPage, ServerDesignerCommon",
@@ -6915,7 +7002,7 @@
                 "Comments": "解析予定日に今日日付セット"
               }
             ],
-            "ID": "942315b0-2758-4a75-9cb1-27c05f8e3a53"
+            "ID": "d2b9077b-02f1-4555-ba14-a569ee95232d"
           }
         ]
       },
@@ -6983,7 +7070,7 @@
                 ]
               }
             ],
-            "ID": "5c4d46d0-0fe3-44ac-8009-ad00bdb9f5cc"
+            "ID": "03f8dfbb-18ff-4d57-9042-6f31f9ee742d"
           }
         ]
       },
@@ -7019,7 +7106,7 @@
               }
             ],
             "Comments": "最新調査IDがある場合",
-            "ID": "9b7c4e51-b10a-4018-9238-aa33ef9b443a"
+            "ID": "dc31d62d-72af-44e9-b0de-c5640bb78a23"
           }
         ]
       }
@@ -7835,11 +7922,11 @@
     },
     {
       "Name": "工事見積不要フラグ",
-      "Formula": "解析登録_詳細!$BF$18"
+      "Formula": "解析登録_詳細!$BN$18"
     },
     {
       "Name": "改良判定時基礎図必要フラグ",
-      "Formula": "解析登録_詳細!$BE$18"
+      "Formula": "解析登録_詳細!$BM$18"
     }
   ]
-}//jhHFNzQeow0f9u9M+bJf+3CYIbHJZ5+QyKOfMJByql7IBKiTDKw70zXSYTfKjjXz/hT3a7raKfsbUSVPOMXpKCCm8nLEMRUrxRybq/q7A7xZvu87CqnuNddg1Y5eFtjSPFZoc/F306CRBLIqBuUB+PrECM7bHHO9Ve0/JcQnsEgTGcU9oIjumoDxRex095hZsmL5oAKh+3KpfdTEd31YyVGkBoU/TUBYdL6MoD2flQ8AJdDU20TXAYmzdmkOpj+scI4Hf5EsGkUr2i5J0asqSmqmvc0I8mIzb3UfKzvA4KVP+uNNBqnB6Bq5qQgAED9B9hCIcQJm8rLxhmOG0BfeYeRpo8xqWdSfLt92FYjjmhS21C86B1ql/S+RhTDZb/I94vjkFxwZYZSThtK1+Rc+Tr4cqVr63iRhqPXFWcsfsNdWR1PIglx0M9uCBV1fQsvJQCYNEbCbyyIZJNlm74cub0k15M/ksvWRanDjQnl5HCSiCmJNKRh4uZe0L8YdFGq57JKPIoETQfAVxfnvdbhU/3W8j2rHdCIQdkp5WJ/ITyyhEn7u+dbmZFw3Da/jNGfZ2PBgkXg8dEmM482gs4N2plYCEsyZyB/oTPH7J1o/X6iofoREv/ibN/zLr27CKI5FGPbTdW4wdEGG48IEMc/8l48bsBlwWBj8ZdR3GjhwWBzObIa8D/uhzsFM1YYq6TtmsOC4NjhSSDxl+AOZgk+Lg80/5DrO8xhGx3DhXDgFU5Xz5M8QVF8OCmyCJJlNVImCRtGe12k2pEubs7BjyGi921j05mQY2sUWSEd1CiDTISWMvzZ7kaHYz3I6LO5gqOz+/NBKIRwxyCVWZL2YNxnuncMdZcpFrgRnWNZxXTu5zbhP+NXquKLazEqmNApoaxq6xeuIp6r2fTCLUe5AxL1FMw==|920
+}//Augp0sXBMZNKe6sE312No0fkt59U3Z0IPO8/jKOKZri3j3uyvSg2DdLDptMC+jscXADl5LhLtiVUf56p+eSXjcopxl+u+TRcaGaLF0FRhd4Yk23W2dO/xaGsAeDQNnDF8Kpmq46NlkSoCTfc1cRpxhCgYRkG1NOyKufv0cHBgfZtotcqgC1k6/jSvOpo63vJRU+Bpt/l7GtaUsldRHEOZZdpoZbqeBi4FvOquoTiBe21aQIq2gpqZzi0OS70PLB5Y3LEPICkcNxuYRK8f7RwMf/EGym0k+f8f4EuKlqByl8WH1XxDgOcGcodLLZ5npul1ydz2LMiMSD7U2zoHXbhMuGgp6h46WGKn2T/bnQFINv+mg5108gWzNEHnHxRJ+4IsIa1wwwbf57bBU85crVpOPe/ZU29tYYvZK/1/XVROpxo47RaAXjKFgDoCV3iWDixA9cTLG+f1WWm/hoXNGsTEMYn4cTl60Frl5YGxLGSGeUeveQfY22m/BMyUzvZj4z4wnUm0RsnksViQh9piXTzAL6sMbkeAkKRMdh6Z3096wdiFWuSL737YUBzTbLgTZ7JiyAc7dR2SodK8thMXZS3zX1ZZDtBA3APWXxXCRNrUXYSuqkynihKDS5fDL2gzJIgSq4fp5bQaWIZoWlXeMLh6EKNEh/NsoezfOR6tbzcGVy/NuZh42l3CBoqXAkDwOxiHSC5Xct4TRTFBuA+nENfDG8oEEbEmOXH+1MoAOVU0JbUj5nbi6G5FwviIL3Ro/uqoggdtyTvLd0fcpN2+sHpCIVu3UwgGij9Pf78I0cCC9VeicAD3xoc4PC+yTT5tfxAlERaFAb19mhQ/NJXV75qaZKO/CkXjK7CxXEZPes+bDd0Vn5x3STM708ye+DhLVykG3OuoGNRyFu9QX6IyJ5PXA==|920

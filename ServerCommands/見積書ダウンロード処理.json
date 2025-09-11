@@ -1,0 +1,140 @@
+{
+  "Name": "見積書ダウンロード処理",
+  "Enabled": true,
+  "Triggers": [
+    {
+      "$type": "Forguncy.SaveLoad.PostRequestTriggerSaveData, ServerDesignerCommon",
+      "Permission": {
+        "PermissionData": {
+          "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionData, Forguncy.RbacPermission.Core",
+          "permissionResource": {
+            "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionResource, Forguncy.RbacPermission.Core"
+          },
+          "permissionBindings": [
+            {
+              "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionBinding, Forguncy.RbacPermission.Core",
+              "roleNames": [
+                "FGC_LoginUser"
+              ]
+            }
+          ]
+        }
+      },
+      "Parameters": [
+        {
+          "Name": "P_見積No",
+          "DataValidationInfo": {}
+        }
+      ]
+    }
+  ],
+  "Commands": [
+    {
+      "$type": "Forguncy.Model.RequestServerCommand, ServerDesignerCommon",
+      "ServerCommandName": "個人フォルダパス取得",
+      "ReturnPropertiesTo": [
+        {
+          "ResultPropertyName": "R_個人フォルダパス名",
+          "ResultTo": {
+            "SerializeProperty": "個人フォルダパス名"
+          },
+          "Remark": "サーバーのフォルダパスを返却"
+        },
+        {
+          "ResultPropertyName": "P_個人フォルダ名",
+          "Remark": "ユーザーIDを返却"
+        }
+      ],
+      "RefreshAfterFinish": true,
+      "CheckDataValidation": true
+    },
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "物件名",
+      "TableValue": {
+        "TableName": "t_object_estimate",
+        "OnlyGetValue": true,
+        "TableValueType": 0,
+        "BindingInfos": [
+          {
+            "GUID": "ee8d6f98-1b19-4a89-8e4e-80a2f71a9fb0",
+            "BindingInfo": {
+              "TableName": "t_object_estimate",
+              "ColumnName": "object_name",
+              "GUID": "f06d1766-44c6-4537-b4d0-bdb2fb9c3f39"
+            },
+            "ColumnName": "object_name"
+          }
+        ],
+        "SqlCondition": {
+          "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+          "ColumnBindingInfo": {
+            "TableName": "t_object_estimate",
+            "ColumnName": "estimate_no",
+            "GUID": "73b445a9-49f6-4f50-b790-8c7858591d99"
+          },
+          "Value": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=P_見積No"
+          }
+        },
+        "TopCount": "1"
+      },
+      "ID": "cb26963f30694da492b13b0504c3c3b0"
+    },
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "ファイル名",
+      "ParameterValue": {
+        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+        "SerializeProperty": "=\"見積書_\"&物件名&\".pdf\""
+      },
+      "ID": "5c1daffd7b8e40a688b4e5244095f86c"
+    },
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "出力ファイルパス名",
+      "ParameterValue": {
+        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+        "SerializeProperty": "=個人フォルダパス名&ファイル名"
+      },
+      "ID": "096d424b47a543a2a04a8092575f5140"
+    },
+    {
+      "$type": "Forguncy.Model.ExportActiveReportCommand, ServerDesignerCommon",
+      "ExportReportNameList": [
+        "見積書"
+      ],
+      "CustomName": "見積書",
+      "ServerExportFileName": {
+        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+        "SerializeProperty": "=出力ファイルパス名"
+      },
+      "ExportSettings": {
+        "MultiSheet": true
+      },
+      "PassParameters": [
+        {
+          "TargetParameter": "P_見積No",
+          "SourceValue": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=P_見積No"
+          }
+        }
+      ],
+      "IsPageBreakBefores": [
+        false
+      ],
+      "ReportGaps": [
+        "0cm"
+      ]
+    },
+    {
+      "$type": "OperateFilesCommand.DownloadFileCommand, OperateFilesCommand",
+      "FilePath": {
+        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+        "SerializeProperty": "=出力ファイルパス名"
+      }
+    }
+  ]
+}

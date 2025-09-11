@@ -1,0 +1,539 @@
+{
+  "Name": "工事見積最大ステータス更新処理",
+  "Enabled": true,
+  "Triggers": [
+    {
+      "$type": "Forguncy.SaveLoad.InvokeTriggerSaveData, ServerDesignerCommon",
+      "Parameters": [
+        {
+          "Name": "P_申込ID",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_工事ID",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_工事完了フラグ",
+          "DataValidationInfo": {}
+        }
+      ]
+    }
+  ],
+  "Commands": [
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "見積依頼全件",
+      "TableValue": {
+        "TableName": "t_object_construction_estimate",
+        "TableValueType": 3,
+        "SqlCondition": {
+          "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+          "ColumnBindingInfo": {
+            "TableName": "t_object_construction_estimate",
+            "ColumnName": "object_order_id",
+            "GUID": "acf7a2ff-c256-4fce-be72-8df23ed7c9f3"
+          },
+          "Value": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=P_申込ID"
+          }
+        }
+      },
+      "ID": "075cb32936184a25a015570d036fc5ea"
+    },
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "工事見積中件数",
+      "TableValue": {
+        "TableName": "t_object_construction_estimate",
+        "TableValueType": 3,
+        "SqlCondition": {
+          "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+          "SubConditions": [
+            {
+              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+              "ColumnBindingInfo": {
+                "TableName": "t_object_construction_estimate",
+                "ColumnName": "object_order_id",
+                "GUID": "42c21409-44a0-4d06-a85d-1140cc35b349"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_申込ID"
+              }
+            },
+            {
+              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+              "ColumnBindingInfo": {
+                "TableName": "t_object_construction_estimate",
+                "ColumnName": "construction_estimate_status_id",
+                "GUID": "2c944b8f-c350-4bce-b864-187a785470fd",
+                "RelationBinding": {
+                  "RelatedTable": "m_construction_estimate_status",
+                  "RelatedColumn": "construction_estimate_status_id",
+                  "DisplayColumn": "complete_flg"
+                }
+              },
+              "Value": "0"
+            }
+          ]
+        }
+      },
+      "ID": "d3f5894dcac048feb38b8431fe6cf90a"
+    },
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "受注確定件数",
+      "TableValue": {
+        "TableName": "t_object_construction_estimate",
+        "TableValueType": 3,
+        "SqlCondition": {
+          "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+          "SubConditions": [
+            {
+              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+              "ColumnBindingInfo": {
+                "TableName": "t_object_construction_estimate",
+                "ColumnName": "object_order_id",
+                "GUID": "9ec776a0-e5de-46d8-8384-511fd2450dec"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_申込ID"
+              }
+            },
+            {
+              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+              "ColumnBindingInfo": {
+                "TableName": "t_object_construction_estimate",
+                "ColumnName": "construction_estimate_status_id",
+                "GUID": "6fa8a9a1-c7ca-45c1-a550-50f6c0137e65",
+                "RelationBinding": {
+                  "RelatedTable": "m_construction_estimate_status",
+                  "RelatedColumn": "construction_estimate_status_id",
+                  "DisplayColumn": "order_confirm_flg"
+                }
+              },
+              "Value": "1"
+            }
+          ]
+        }
+      },
+      "ID": "1f0530a7ca574cf6ab8400d83e2e1c8a"
+    },
+    {
+      "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+      "ConditionAndCommandPairList": [
+        {
+          "Condition": {
+            "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+            "SubConditions": [
+              {
+                "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                "param": {
+                  "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                  "ParamObject": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=工事見積中件数"
+                  }
+                },
+                "value": "0",
+                "compareType": 2
+              },
+              {
+                "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                "param": {
+                  "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                  "ParamObject": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=受注確定件数"
+                  }
+                },
+                "value": "0"
+              },
+              {
+                "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                "param": {
+                  "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                  "ParamObject": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=P_工事完了フラグ"
+                  }
+                },
+                "value": "0"
+              }
+            ]
+          },
+          "CommandList": [
+            {
+              "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+              "ParameterName": "最大見積ST",
+              "TableValue": {
+                "TableName": "t_object_construction_estimate",
+                "TableValueType": 1,
+                "BindingInfos": [
+                  {
+                    "GUID": "b5d4cb21-2b89-49df-9338-9e6e7a2dbbc0",
+                    "BindingInfo": {
+                      "TableName": "t_object_construction_estimate",
+                      "ColumnName": "construction_estimate_status_id",
+                      "GUID": "78a0b3ea-48be-4307-9537-c0a34551f16e"
+                    },
+                    "ColumnName": "工事見積ステータスID"
+                  }
+                ],
+                "SqlCondition": {
+                  "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                  "SubConditions": [
+                    {
+                      "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                      "ColumnBindingInfo": {
+                        "TableName": "t_object_construction_estimate",
+                        "ColumnName": "object_order_id",
+                        "GUID": "97d2231b-4ce3-4bb9-82e5-aa58921b1344"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=P_申込ID"
+                      }
+                    },
+                    {
+                      "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                      "ColumnBindingInfo": {
+                        "TableName": "t_object_construction_estimate",
+                        "ColumnName": "construction_estimate_status_id",
+                        "GUID": "c81d29fe-e95e-461c-aec7-01f773299d48",
+                        "RelationBinding": {
+                          "RelatedTable": "m_construction_estimate_status",
+                          "RelatedColumn": "construction_estimate_status_id",
+                          "DisplayColumn": "complete_flg"
+                        }
+                      },
+                      "Value": "0"
+                    }
+                  ]
+                },
+                "TopCount": "1",
+                "OrderBySqlCondition": {
+                  "OrderByColumns": [
+                    {
+                      "ColumnBindingInfo": {
+                        "TableName": "t_object_construction_estimate",
+                        "ColumnName": "construction_estimate_status_id",
+                        "GUID": "0c769bbe-9565-4438-a0be-5e74a5774be8",
+                        "RelationBinding": {
+                          "RelatedTable": "m_construction_estimate_status",
+                          "RelatedColumn": "construction_estimate_status_id",
+                          "DisplayColumn": "sort_no"
+                        }
+                      },
+                      "Order": 1
+                    }
+                  ]
+                }
+              },
+              "ID": "3d7430f1f47c47a3bf3525964990db26"
+            },
+            {
+              "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+              "ParameterName": "工事見積ST",
+              "TableValue": {
+                "TableName": "m_construction_estimate_status",
+                "TableValueType": 1,
+                "BindingInfos": [
+                  {
+                    "GUID": "d533ebd8-2faf-4825-96a6-f5d4f13043ca",
+                    "BindingInfo": {
+                      "TableName": "m_construction_estimate_status",
+                      "ColumnName": "construction_status_id",
+                      "GUID": "b2b3f13b-f773-472a-87d3-46c6fffcb646"
+                    },
+                    "ColumnName": "工事ステータスID"
+                  }
+                ],
+                "SqlCondition": {
+                  "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                  "ColumnBindingInfo": {
+                    "TableName": "m_construction_estimate_status",
+                    "ColumnName": "construction_estimate_status_id",
+                    "GUID": "db51e394-6ca5-4330-8045-12f460256f24"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=最大見積ST.工事見積ステータスID"
+                  }
+                }
+              },
+              "ID": "3387d5bfa6bf4c468d2515b6a5d634b3"
+            },
+            {
+              "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+              "ParameterName": "工事ST",
+              "TableValue": {
+                "TableName": "m_construction_status",
+                "TableValueType": 1,
+                "BindingInfos": [
+                  {
+                    "GUID": "6211fb59-efd6-4793-8348-9f6270d3d356",
+                    "BindingInfo": {
+                      "TableName": "m_construction_status",
+                      "ColumnName": "order_status_id",
+                      "GUID": "3a3c4a05-b4bf-477e-9c97-435a794def14"
+                    },
+                    "ColumnName": "申込ステータスID"
+                  }
+                ],
+                "SqlCondition": {
+                  "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                  "ColumnBindingInfo": {
+                    "TableName": "m_construction_status",
+                    "ColumnName": "construction_status_id",
+                    "GUID": "3d3d8dbf-b321-49bb-ad07-1c34d0867266"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=工事見積ST.工事ステータスID"
+                  }
+                }
+              },
+              "ID": "796e413b1dd94ac4bb21ad27429c242d"
+            },
+            {
+              "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+              "TableName": "t_object_construction",
+              "ShowConfirm": false,
+              "RowsToUpdate": 1,
+              "RowsToUpdateCondition": {
+                "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                "ColumnBindingInfo": {
+                  "TableName": "t_object_construction",
+                  "ColumnName": "construction_id",
+                  "GUID": "fe958668-26c7-450b-ac04-652d557ee111"
+                },
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=P_工事ID"
+                }
+              },
+              "UpdateBindingValues": [
+                {
+                  "BindingInfo": {
+                    "TableName": "t_object_construction",
+                    "ColumnName": "construction_status_id",
+                    "GUID": "cfa2c7d8-a10c-4ff5-b5bf-b825646f63c5"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=工事見積ST.工事ステータスID"
+                  }
+                },
+                {
+                  "BindingInfo": {
+                    "TableName": "t_object_construction",
+                    "ColumnName": "order_complete_date",
+                    "GUID": "041c5195-2989-4c57-8f79-3607a7cf2181"
+                  }
+                },
+                {
+                  "BindingInfo": {
+                    "TableName": "t_object_construction",
+                    "ColumnName": "construction_customer_id",
+                    "GUID": "3603aad5-4a72-40ab-ad51-d87d092b6404"
+                  }
+                },
+                {
+                  "BindingInfo": {
+                    "TableName": "t_object_construction",
+                    "ColumnName": "construction_method_id",
+                    "GUID": "905b3223-8c10-4c0a-8d5b-b470e0feb72d"
+                  }
+                }
+              ]
+            },
+            {
+              "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+              "TableName": "t_object_order",
+              "ShowConfirm": false,
+              "RowsToUpdate": 1,
+              "RowsToUpdateCondition": {
+                "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                "ColumnBindingInfo": {
+                  "TableName": "t_object_order",
+                  "ColumnName": "object_order_id",
+                  "GUID": "685ffead-e719-4494-b235-0c9d1ac602a5"
+                },
+                "Value": {
+                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                  "SerializeProperty": "=P_申込ID"
+                }
+              },
+              "UpdateBindingValues": [
+                {
+                  "BindingInfo": {
+                    "TableName": "t_object_order",
+                    "ColumnName": "order_status_id",
+                    "GUID": "a7db96ae-4a6e-4528-981a-da3e9cc1d33a"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=工事ST.申込ステータスID"
+                  }
+                }
+              ]
+            }
+          ],
+          "ID": "75ecf2ce-2513-42a9-8d92-1103a6ae35f1"
+        },
+        {
+          "CommandList": [
+            {
+              "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+              "ParameterName": "見積依頼取り下げ件数",
+              "TableValue": {
+                "TableName": "t_object_construction_estimate",
+                "TableValueType": 3,
+                "SqlCondition": {
+                  "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                  "SubConditions": [
+                    {
+                      "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                      "ColumnBindingInfo": {
+                        "TableName": "t_object_construction_estimate",
+                        "ColumnName": "object_order_id",
+                        "GUID": "2682b0f8-f241-4358-8a85-80f9e14316bb"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=P_申込ID"
+                      }
+                    },
+                    {
+                      "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                      "ColumnBindingInfo": {
+                        "TableName": "t_object_construction_estimate",
+                        "ColumnName": "construction_estimate_status_id",
+                        "GUID": "558d62ec-01f4-49e7-babb-580e985e13a4",
+                        "RelationBinding": {
+                          "RelatedTable": "m_construction_estimate_status",
+                          "RelatedColumn": "construction_estimate_status_id",
+                          "DisplayColumn": "order_withdrawn_flg"
+                        }
+                      },
+                      "Value": "1"
+                    }
+                  ]
+                }
+              },
+              "ID": "c6e2cea8c55948e8b55d587f092102b1"
+            },
+            {
+              "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+              "ConditionAndCommandPairList": [
+                {
+                  "Condition": {
+                    "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+                    "SubConditions": [
+                      {
+                        "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                        "param": {
+                          "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                          "ParamObject": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=見積依頼全件"
+                          }
+                        },
+                        "value": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=見積依頼取り下げ件数"
+                        }
+                      },
+                      {
+                        "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                        "param": {
+                          "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                          "ParamObject": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=P_工事完了フラグ"
+                          }
+                        },
+                        "value": "0"
+                      }
+                    ]
+                  },
+                  "CommandList": [
+                    {
+                      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                      "ParameterName": "工事_手配取り下げST",
+                      "TableValue": {
+                        "TableName": "m_construction_status",
+                        "OnlyGetValue": true,
+                        "TableValueType": 0,
+                        "BindingInfos": [
+                          {
+                            "GUID": "42f60d19-e5ef-46dc-837c-465df59f2882",
+                            "BindingInfo": {
+                              "TableName": "m_construction_status",
+                              "ColumnName": "construction_status_id",
+                              "GUID": "36c7efed-950f-426c-a4ec-47755ec07ffd"
+                            },
+                            "ColumnName": "construction_status_id"
+                          }
+                        ],
+                        "SqlCondition": {
+                          "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                          "ColumnBindingInfo": {
+                            "TableName": "m_construction_status",
+                            "ColumnName": "arrangement_withdrawal_flg",
+                            "GUID": "fca6d069-250d-48fe-82e5-73c513ef70a8"
+                          },
+                          "Value": "1"
+                        }
+                      },
+                      "ID": "4769e7de750a43e79e804b0b6de70edf"
+                    },
+                    {
+                      "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+                      "TableName": "t_object_construction",
+                      "ShowConfirm": false,
+                      "RowsToUpdate": 1,
+                      "RowsToUpdateCondition": {
+                        "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                        "ColumnBindingInfo": {
+                          "TableName": "t_object_construction",
+                          "ColumnName": "construction_id",
+                          "GUID": "dac031a9-1b89-453b-a8ed-5136a351e16a"
+                        },
+                        "Value": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=P_工事ID"
+                        }
+                      },
+                      "UpdateBindingValues": [
+                        {
+                          "BindingInfo": {
+                            "TableName": "t_object_construction",
+                            "ColumnName": "construction_status_id",
+                            "GUID": "9a99dd5f-f319-4540-b5c3-fe7ab84866c4"
+                          },
+                          "Value": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=工事_手配取り下げST"
+                          }
+                        }
+                      ]
+                    }
+                  ],
+                  "ID": "40f9b8f4-11fd-437a-90f1-2904725be41a"
+                }
+              ],
+              "Comments": "全件取下げだった場合"
+            }
+          ],
+          "ID": "39488af1-a1ff-40cb-9b48-0fcd73fd6141"
+        }
+      ],
+      "Comments": "工事情報に見積の最大STをセットする"
+    }
+  ]
+}

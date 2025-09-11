@@ -1,7 +1,7 @@
 {
   "PageType": 0,
   "ColumnCount": 138,
-  "RowCount": 64,
+  "RowCount": 66,
   "Formulas": {
     "24,122": "IF(DQ25=0,\"\",DQ25)",
     "24,97": "IF(CR25=0,\"\",CR25)",
@@ -34,17 +34,19 @@
     "19,120": "IFERROR(IF(DB20>0,ODATA(\"m_user?$select=mail_address&$filter=user_id eq \"&IF(ISBLANK(DB20),\"null\",DB20)),\"\"),\"\")",
     "21,122": "IF(DQ22=0,\"\",DQ22)",
     "9,44": "CT16",
-    "17,95": "IF(CC16>0,IFERROR(ODATA(\"m_user?$select=mobile_phone&$filter=user_id eq \"&IF(ISBLANK(CC16),\"null\",CC16)),\"\"),\"\")",
+    "17,95": "IF(CC16>0,IFERROR(ODATA(\"m_user?$select=連絡先番号&$filter=user_id eq \"&IF(ISBLANK(CC16),\"null\",CC16)),\"\"),\"\")",
     "22,44": "DS16",
     "23,44": "DS18",
     "17,97": "IF(CR18=0,\"\",CR18)",
     "10,44": "CT18",
-    "17,120": "IF(DB16>0,IFERROR(ODATA(\"m_user?$select=mobile_phone&$filter=user_id eq \"&IF(ISBLANK(DB16),\"null\",DB16)),\"\"),\"\")",
+    "17,120": "IF(DB16>0,IFERROR(ODATA(\"m_user?$select=連絡先番号&$filter=user_id eq \"&IF(ISBLANK(DB16),\"null\",DB16)),\"\"),\"\")",
     "17,122": "IF(DQ18=0,\"\",DQ18)",
-    "11,126": "IF(AND(DL10=1,DW6=0,DZ6=1,EA6=1),1,0)"
+    "11,126": "IF(AND(DL10=1,DW6=0,DZ6=1,EA6=1),1,0)",
+    "52,90": "ODATA(\"m_product?$select=housing_type&$filter=product_id eq \"&IF(ISBLANK(CC53),\"null\",CC53))"
   },
   "ArrayFormulas": {
-    "5,126,1,5": "ODATA(\"m_order_type?$select=groud_survey_flg,site_survey_flg,object_overview_display_flg,analyze_flg,warranty_flg&$filter=order_type_id eq \"&IF(ISBLANK(CC6),\"null\",CC6))"
+    "5,126,1,5": "ODATA(\"m_order_type?$select=groud_survey_flg,site_survey_flg,object_overview_display_flg,analyze_flg,warranty_flg&$filter=order_type_id eq \"&IF(ISBLANK(CC6),\"null\",CC6))",
+    "24,126,1,2": "IFERROR(ODATA(\"m_customer_default?$select=warranty_period_specify_flg,specify_warranty_period&$filter=customer_id eq \"&IF(ISBLANK(CR12),\"null\",CR12)),\"\")"
   },
   "CustomNames": [
     {
@@ -213,7 +215,7 @@
     },
     {
       "Name": "申込タイプ変更フラグ",
-      "Formula": "申込内容_詳細_申込事業者用!$CW$61"
+      "Formula": "申込内容_詳細_申込事業者用!$CW$63"
     },
     {
       "Name": "申込者情報セットフラグ",
@@ -225,7 +227,7 @@
     },
     {
       "Name": "物件更新ボタン",
-      "Formula": "申込内容_詳細_申込事業者用!$DG$61"
+      "Formula": "申込内容_詳細_申込事業者用!$DG$63"
     },
     {
       "Name": "物件情報セットフラグ",

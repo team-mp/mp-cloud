@@ -1,10 +1,11 @@
 {
   "PageType": 0,
-  "ColumnCount": 25,
+  "ColumnCount": 32,
   "RowCount": 12,
   "Formulas": {
     "2,19": "IF(ユーザーID=U3,1,0)",
-    "10,19": "COUNTIF(T3,1)"
+    "3,25": "COUNTIF(T3,1)",
+    "6,25": "ODATA(\"m_user_group?$select=user_group_key&$filter=analysis_user_flg eq 1\")"
   },
   "CustomNames": [
     {

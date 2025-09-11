@@ -1,24 +1,24 @@
 {
   "PageType": 0,
-  "ColumnCount": 300,
+  "ColumnCount": 309,
   "RowCount": 30,
   "Formulas": {
-    "29,1": "\"該当データ件数：\"&TEXT(KB16,\"#,##0\")&\"件　　表示データ件数：\"&TEXT(JU13,\"#,##0\")&\"件\"",
-    "15,280": "COUNTIF(JC7,1)",
-    "12,280": "COUNT(GY7)",
-    "18,280": "JU13-JU16",
-    "21,273": "TEXTJOINIF(\",\",TRUE,JC7,1,GY7)",
-    "15,273": "IF(JN10>0,MID(JN7,JN10+1,1000),\"\")",
-    "9,273": "IF(IFERROR(FIND(\"　\",JN7),0)>0,FIND(\"　\",JN7),IF(IFERROR(FIND(\" \",JN7),0)>0,FIND(\" \",JN7),0))",
-    "6,273": "TRIM(O2)",
-    "12,273": "IF(JN10>0,LEFT(JN7,JN10-1),IF(JN7<>\"\",JN7,\"\"))",
-    "15,287": "SUM(KB9)",
-    "21,280": "TEXTJOINIF(\",\",TRUE,JC7,1,IU7)"
+    "29,1": "\"該当データ件数：\"&TEXT(KK16,\"#,##0\")&\"件　　表示データ件数：\"&TEXT(KD13,\"#,##0\")&\"件\"",
+    "15,289": "COUNTIF(JJ7,1)",
+    "12,289": "COUNT(HF7)",
+    "18,289": "KD13-KD16",
+    "21,282": "TEXTJOINIF(\",\",TRUE,JJ7,1,HF7)",
+    "15,282": "IF(JW10>0,MID(JW7,JW10+1,1000),\"\")",
+    "9,282": "IF(IFERROR(FIND(\"　\",JW7),0)>0,FIND(\"　\",JW7),IF(IFERROR(FIND(\" \",JW7),0)>0,FIND(\" \",JW7),0))",
+    "6,282": "TRIM(O2)",
+    "12,282": "IF(JW10>0,LEFT(JW7,JW10-1),IF(JW7<>\"\",JW7,\"\"))",
+    "15,296": "SUM(KK9)",
+    "21,289": "TEXTJOINIF(\",\",TRUE,JJ7,1,JB7)"
   },
   "CustomNames": [
     {
       "Name": "検索フラグ",
-      "Formula": "工事見積検索リスト!$JU$7"
+      "Formula": "工事見積検索リスト!$KD$7"
     },
     {
       "Name": "検索リストページタイトル",
@@ -26,11 +26,11 @@
     },
     {
       "Name": "検索_工事見積ステータスID",
-      "Formula": "工事見積検索リスト!$JU$10"
+      "Formula": "工事見積検索リスト!$KD$10"
     },
     {
       "Name": "ロケーションURL",
-      "Formula": "工事見積検索リスト!$KB$13"
+      "Formula": "工事見積検索リスト!$KK$13"
     }
   ]
 }

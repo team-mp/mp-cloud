@@ -4,7 +4,7 @@
   "RowCount": 41,
   "CustomNames": [
     {
-      "Name": "ユーザーグループID",
+      "Name": "ユーザーグループKEYs",
       "Formula": "TOPコンテンツ_住宅事業者!$BG$4"
     },
     {

@@ -12,7 +12,8 @@
     "21,253": "TEXTJOINIF(\",\",TRUE,IK7,1,HB7)",
     "24,253": "TEXTJOINIF(\",\",TRUE,IK7,1,HG7)",
     "15,253": "IF(IT10>0,MID(IT7,IT10+1,1000),\"\")",
-    "12,253": "IF(IT10>0,LEFT(IT7,IT10-1),IF(IT7<>\"\",IT7,\"\"))"
+    "12,253": "IF(IT10>0,LEFT(IT7,IT10-1),IF(IT7<>\"\",IT7,\"\"))",
+    "9,261": "ODATA(\"m_user_group?$select=user_group_key&$filter=soumu_user_flg eq 1\")"
   },
   "CustomNames": [
     {

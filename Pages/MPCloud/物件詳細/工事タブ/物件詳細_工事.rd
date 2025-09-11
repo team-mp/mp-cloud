@@ -9,8 +9,8 @@
     "33,119": "\"工事ファイル(\"&DO34&\")\"",
     "20,124": "DQ21+DR21+DS21+DT21",
     "20,118": "IF(ISNUMBER(SEARCH(\",\"&CF21&\",\",\",\"&表示中IDs&\",\")),1,0)",
-    "11,26": "CF14",
-    "11,13": "CE14",
+    "11,26": "CF15",
+    "11,13": "CE15",
     "29,130": "IF(DR26=1,CK7,\"\")",
     "20,117": "\"見積書(\"&DM21&\")\"",
     "33,117": "IF(OR(DK34=1,DL34=1,DM34=1),1,0)",
@@ -25,10 +25,10 @@
     "33,109": "IFERROR(ODATA(\"v_construction_product_summary?$select=仕入合計&$filter=工事ID eq \"&IF(ISBLANK(CF34),\"null\",CF34)),0)",
     "33,118": "IFERROR(ODATA(\"v_construction_file_count?$select=ファイル数&$filter=工事ID eq \"&IF(ISBLANK(CF34),\"null\",CF34)),0)",
     "33,123": "IFERROR(ODATA(\"v_construction_later_count?$select=後発件数&$filter=工事ID eq \"&IF(ISBLANK(CF34),\"null\",CF34)),0)",
-    "11,36": "CG14"
+    "11,36": "CG15"
   },
   "ArrayFormulas": {
-    "13,82,1,3": "ODATA(\"v_group_customer_default?$select=工事見積不要フラグ,工事請負フラグ,改良判定時基礎図必要フラグ&$filter=グループID eq \"&IF(ISBLANK(CS26),\"null\",CS26)&\" and 顧客ID eq \"&IF(ISBLANK(CK7),\"null\",CK7))"
+    "14,82,1,3": "ODATA(\"v_group_customer_default?$select=工事見積不要フラグ,工事請負フラグ,改良判定時基礎図必要フラグ&$filter=グループID eq \"&IF(ISBLANK(CS26),\"null\",CS26)&\" and 顧客ID eq \"&IF(ISBLANK(CK7),\"null\",CK7))"
   },
   "CustomNames": [
     {
@@ -189,7 +189,7 @@
     },
     {
       "Name": "工事見積書ファイル属性ID",
-      "Formula": "物件詳細_工事!$CS$15"
+      "Formula": "物件詳細_工事!$CY$15"
     },
     {
       "Name": "工事登録件数",
@@ -205,7 +205,7 @@
     },
     {
       "Name": "調査報告書ファイル属性ID",
-      "Formula": "物件詳細_工事!$DC$15"
+      "Formula": "物件詳細_工事!$DI$15"
     },
     {
       "Name": "元_見積期限日",

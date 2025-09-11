@@ -1,6 +1,6 @@
 {
   "PageType": 0,
-  "ColumnCount": 152,
+  "ColumnCount": 160,
   "RowCount": 38,
   "Formulas": {
     "22,116": "ODATA(\"t_object_attachment/$count?$filter=object_id eq \"&IF(ISBLANK(CZ5),\"null\",CZ5)&\" and hidden_flg eq 1 and active_flg eq 1\")",
@@ -26,9 +26,9 @@
     "16,129": "CZ14+DG14+DM14+DS14+DZ14+EG14+EN14",
     "8,141": "IF(DH9<>DI9,1,0)",
     "13,143": "COUNTIF(ER9,1)",
-    "8,120": "IFERROR(ODATA(\"v_object_attachment_cout?$select=最終コメント&$filter=添付ID eq \"&IF(ISBLANK(DA9),\"null\",DA9)),0)",
-    "8,121": "IFERROR(ODATA(\"v_object_attachment_cout?$select=最終コメント&$filter=添付ID eq \"&IF(ISBLANK(DA9),\"null\",DA9)),\"\")",
-    "8,122": "IFERROR(ODATA(\"v_object_attachment_cout?$select=最終更新ラベル&$filter=添付ID eq \"&IF(ISBLANK(DA9),\"null\",DA9)),\"\")"
+    "8,120": "IFERROR(ODATA(\"v_object_attachment_cout?$select=最終コメント&$filter=添付ID eq \"&IF(ISBLANK(DB9),\"null\",DB9)),0)",
+    "8,121": "IFERROR(ODATA(\"v_object_attachment_cout?$select=最終コメント&$filter=添付ID eq \"&IF(ISBLANK(DB9),\"null\",DB9)),\"\")",
+    "8,122": "IFERROR(ODATA(\"v_object_attachment_cout?$select=最終更新ラベル&$filter=添付ID eq \"&IF(ISBLANK(DB9),\"null\",DB9)),\"\")"
   },
   "CustomNames": [
     {

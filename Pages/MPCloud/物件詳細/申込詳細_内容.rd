@@ -1,20 +1,20 @@
 {
   "PageType": 0,
-  "ColumnCount": 172,
+  "ColumnCount": 190,
   "RowCount": 34,
   "Formulas": {
     "1,39": "IF(EZ17=1,\"審査\",\"解析\")&IF(EK8=1,\"至急解除\",\"至急依頼\")",
-    "28,138": "IF(EF29=1,EG29,\"\")",
-    "28,151": "フォーカス連絡ID",
+    "29,161": "フォーカス連絡ID",
+    "29,145": "EO30&\"　\"&EM30",
     "20,147": "IF(ER19<=1,0,ER19)",
     "13,128": "IFERROR(GETURLQUERYVALUE(\"notice_id\"),0)",
-    "28,144": "EN29&\"　\"&EL29",
-    "28,139": "IF(EF29=2,EH29,\"\")",
+    "29,140": "IF(EG30=2,EI30,\"\")",
+    "29,139": "IF(EG30=1,EH30,\"\")",
     "7,133": "IF(タブ番号<>\"\",ODATA(\"m_tab_class?$select=tab_name&$filter=tab_id eq \"&IF(ISBLANK(タブ番号),\"null\",タブ番号)),\"申込\")",
     "22,128": "IF(申込ID>0,ODATA(\"m_group_notice/$count?$filter=group_id eq \"&IF(ISBLANK(DY26),\"null\",DY26))+ODATA(\"m_customer_notice/$count?$filter=customer_id eq \"&IF(ISBLANK(顧客ID),\"null\",顧客ID)),0)",
     "16,128": "IFERROR(GETURLQUERYVALUE(\"follow_id\"),0)",
     "10,128": "IFERROR(GETURLQUERYVALUE(\"tab\"),1)",
-    "28,134": "IF(ED29=\"\",\"共通\",ED29)",
+    "29,135": "IF(EE30=\"\",\"共通\",EE30)",
     "1,78": "\"添付ファイル(\"&ED14&\")\"",
     "3,128": "IFERROR(GETURLQUERYVALUE(\"id\"),\"\")",
     "1,30": "IF(ER11=1,\"キャンセル解除\",\"申込キャンセル\")",
@@ -24,7 +24,8 @@
     "20,163": "IF(ER13=1,\"処理終了解除\",IF(ER15=1,\"保証辞退解除\",IF(AND(EZ15>EZ11,EZ15<=EZ13),\"処理終了\",\"保証辞退\")))",
     "22,163": "IF(ER13=1,1,IF(ER15=1,2,IF(AND(EZ15>EZ11,EZ15<=EZ13),3,4)))",
     "7,128": "IFERROR(GETURLQUERYVALUE(\"index\"),\"\")",
-    "22,147": "IFERROR(ODATA(\"v_order_follow_count?$select=フォローカウント&$filter=申込ID eq \"&IF(ISBLANK(申込ID),\"null\",申込ID)),0)"
+    "22,147": "IFERROR(ODATA(\"v_order_follow_count?$select=フォローカウント&$filter=申込ID eq \"&IF(ISBLANK(申込ID),\"null\",申込ID)),0)",
+    "29,155": "\"（更新者）\"&EY30"
   },
   "CustomNames": [
     {

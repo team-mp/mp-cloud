@@ -1377,6 +1377,7 @@
     "7,7": "請求日",
     "7,18": "請求書書式",
     "7,36": "営業担当",
+    "7,55": "不正な請求書データをチェックする",
     "7,66": 0,
     "9,7": "請求書送付方法",
     "9,66": 0,
@@ -1528,7 +1529,7 @@
                     ]
                   }
                 ],
-                "ID": "7dd015aa-43e8-4c72-bb59-45eef41351c8"
+                "ID": "dc05456b-3fdb-4ec4-bcb0-d19921ac119a"
               },
               {
                 "CommandList": [
@@ -1552,7 +1553,7 @@
                     ]
                   }
                 ],
-                "ID": "be1a9641-61dc-4f2b-b03d-aaea42ad2f4c"
+                "ID": "2aff065e-f8fb-4d4b-8416-25574d72e5d3"
               }
             ]
           }
@@ -2181,6 +2182,201 @@
         "07121923-6885-4c02-9851-a856b6e8a9f2"
       ]
     },
+    "7,55": {
+      "CellType": {
+        "$type": "Forguncy.ButtonCellType, ServerDesignerCommon",
+        "CommandList": [
+          {
+            "$type": "LoadingCommand.StartLoadingCommand, LoadingCommand",
+            "LoadingText": "お待ちください",
+            "LoadingTextColor": "Background 1 0"
+          },
+          {
+            "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+            "ParameterName": "重複請求番号カウント",
+            "TableValue": {
+              "TableName": "v_billing_no_duplication",
+              "TableValueType": 3
+            },
+            "ID": "38f17a7b43314b93832367544afdc5df"
+          },
+          {
+            "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+            "ConditionAndCommandPairList": [
+              {
+                "Condition": {
+                  "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                  "param": {
+                    "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+                    "cellLocations": [
+                      {
+                        "SerializeProperty": "=請求書管理!重複請求番号カウント"
+                      }
+                    ]
+                  },
+                  "value": "0"
+                },
+                "CommandList": [
+                  {
+                    "$type": "ElementUI.Commands.ShowMessageBox, ElementUI",
+                    "Title": "チェック結果",
+                    "Message": "不正な請求データは検出されませんでした",
+                    "Type": "success",
+                    "ConfirmButtonText": "OK",
+                    "CancelButtonText": "キャンセル",
+                    "AdvancedSettings": {}
+                  }
+                ],
+                "ID": "e07f0ced-e8cd-4ba6-8ec5-5fd1e19cbc87"
+              },
+              {
+                "CommandList": [
+                  {
+                    "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                    "ParameterName": "重複請求番号",
+                    "TableValue": {
+                      "TableName": "v_billing_no_duplication",
+                      "BindingInfos": [
+                        {
+                          "GUID": "c3a0f0cd-63b8-4f9d-9a11-5b92f2381f08",
+                          "BindingInfo": {
+                            "TableName": "v_billing_no_duplication",
+                            "ColumnName": "請求番号",
+                            "GUID": "4d445b50-147b-4e7b-8843-c56e479add25"
+                          },
+                          "ColumnName": "請求番号"
+                        },
+                        {
+                          "GUID": "9aa69cae-afbc-42bd-b3b4-8edadcd7a48b",
+                          "BindingInfo": {
+                            "TableName": "v_billing_no_duplication",
+                            "ColumnName": "請求日",
+                            "GUID": "bc526da0-be06-4924-87e8-4e6d647933bd"
+                          },
+                          "ColumnName": "請求日"
+                        },
+                        {
+                          "GUID": "cd425606-6331-4a7f-aed4-eb721703c20e",
+                          "BindingInfo": {
+                            "TableName": "v_billing_no_duplication",
+                            "ColumnName": "請求先名",
+                            "GUID": "e957d658-d113-48b8-bfc9-94a2883d855f"
+                          },
+                          "ColumnName": "請求先名"
+                        }
+                      ],
+                      "OrderBySqlCondition": {
+                        "OrderByColumns": [
+                          {
+                            "ColumnBindingInfo": {
+                              "TableName": "v_billing_no_duplication",
+                              "ColumnName": "請求番号",
+                              "GUID": "2f072477-a659-4d61-98fb-ac5e71a92ea2"
+                            },
+                            "Order": 0
+                          }
+                        ]
+                      }
+                    },
+                    "ID": "53589a98bc304eeaa3c9662a0cb8e654"
+                  },
+                  {
+                    "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                    "ParameterName": "警告内容",
+                    "ID": "a73b4938853c47d5b306ea25cffe7abf"
+                  },
+                  {
+                    "$type": "Forguncy.Model.LoopCommand, ServerDesignerCommon",
+                    "LoopInfo": {
+                      "$type": "Forguncy.Model.CountLoopInfo, ServerDesignerCommon",
+                      "LoopCount": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=請求書管理!重複請求番号"
+                      },
+                      "LoopItemParamName": "Item"
+                    },
+                    "CommandList": [
+                      {
+                        "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                        "ParameterName": "文字列",
+                        "ParameterValue": {
+                          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                          "SerializeProperty": "=請求書管理!Item.請求番号&\" \"&TEXT(請求書管理!Item.請求日,\"yyyy/mm/dd\")&\" \"&CHAR(10)&\"・\"&請求書管理!Item.請求先名"
+                        },
+                        "ID": "c69012cd391146e3a2efbc300bb03b15"
+                      },
+                      {
+                        "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+                        "ConditionAndCommandPairList": [
+                          {
+                            "Condition": {
+                              "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                              "param": {
+                                "$type": "Forguncy.Model.IfConditionPageElementParam, ServerDesignerCommon",
+                                "cellLocations": [
+                                  {
+                                    "SerializeProperty": "=警告内容"
+                                  }
+                                ]
+                              },
+                              "value": "%Null%"
+                            },
+                            "CommandList": [
+                              {
+                                "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                                "ParameterName": "警告内容",
+                                "ParameterValue": {
+                                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                  "SerializeProperty": "=請求書管理!文字列"
+                                },
+                                "ID": "957cadfd97984cb99f8631fae2592b00"
+                              }
+                            ],
+                            "ID": "8b3824eb-d8cf-4e46-9255-ab5fb44a9cb2"
+                          },
+                          {
+                            "CommandList": [
+                              {
+                                "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                                "ParameterName": "警告内容",
+                                "ParameterValue": {
+                                  "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                  "SerializeProperty": "=請求書管理!警告内容&CHAR(10)&請求書管理!文字列"
+                                },
+                                "ID": "c95500086b544840b96f61597afd3c3e"
+                              }
+                            ],
+                            "ID": "32e38643-22e2-4d2c-8dcd-def0d6af0d7d"
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "$type": "ElementUI.Commands.ShowMessageBox, ElementUI",
+                    "Title": "チェック結果",
+                    "Message": {
+                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                      "SerializeProperty": "=\"以下の請求番号は異なる請求先が混在しています\"&CHAR(10)&CHAR(10)&請求書管理!警告内容"
+                    },
+                    "Type": "warning",
+                    "ConfirmButtonText": "OK",
+                    "CancelButtonText": "キャンセル",
+                    "AdvancedSettings": {}
+                  }
+                ],
+                "ID": "d5f37dcf-7ab2-4467-b0e7-7ccdb6485688"
+              }
+            ]
+          },
+          {
+            "$type": "LoadingCommand.EndLoadingCommand, LoadingCommand"
+          }
+        ],
+        "Text": "不正な請求書データをチェックする",
+        "TemplateKey": "角細オレンジ"
+      }
+    },
     "7,66": {
       "CellType": {
         "$type": "Forguncy.CheckBoxCellType, ServerDesignerCommon",
@@ -2249,7 +2445,7 @@
                     ]
                   }
                 ],
-                "ID": "f60a4033-cd48-4fdd-afb4-2d95fcb60f72"
+                "ID": "488fd773-9254-481b-ab43-6b7b9d3b0935"
               }
             ]
           },
@@ -2303,7 +2499,7 @@
                     ]
                   }
                 ],
-                "ID": "e39a1d2e-6d15-480c-8623-ec646aa1c417"
+                "ID": "eeae5582-c376-4a03-b1f8-6bf2395abf1a"
               }
             ]
           },
@@ -2338,7 +2534,7 @@
                     ]
                   }
                 ],
-                "ID": "ec54ed8e-10af-462d-9742-0f84d815772f"
+                "ID": "dcc31db2-008b-4c25-9bc2-69cf92dd76c0"
               }
             ]
           },
@@ -2373,7 +2569,7 @@
                     ]
                   }
                 ],
-                "ID": "fe68eecf-af91-44c0-9e4c-25b145415bfc"
+                "ID": "8388b3e7-0cc0-4c18-bd86-a0dfcad4eb19"
               }
             ]
           }
@@ -2727,7 +2923,7 @@
                     ]
                   }
                 ],
-                "ID": "087a9639-8191-4e06-bb52-83cc16119b27"
+                "ID": "e08d0790-f797-47d9-86df-ce8ba93375e8"
               },
               {
                 "Condition": {
@@ -2766,7 +2962,7 @@
                     ]
                   }
                 ],
-                "ID": "6da07b71-2c37-49d3-bb85-200130dd3d11"
+                "ID": "990eae22-7dd1-4830-957a-7803692af410"
               },
               {
                 "Condition": {
@@ -2805,7 +3001,7 @@
                     ]
                   }
                 ],
-                "ID": "6ea3c2b2-0c4b-4f24-a43b-edc231dd2f9b"
+                "ID": "be403c75-f773-40e6-b619-8ad77d763187"
               },
               {
                 "Condition": {
@@ -2844,7 +3040,7 @@
                     ]
                   }
                 ],
-                "ID": "ac171cf5-6564-44d0-b02d-564ea9e64bde"
+                "ID": "6e917dde-a632-4feb-be91-f53d0b21611f"
               },
               {
                 "Condition": {
@@ -2880,7 +3076,7 @@
                     ]
                   }
                 ],
-                "ID": "2bc1f9d8-c906-4b4c-aff1-290aab8e53a4"
+                "ID": "efa29543-f7d6-4dd1-828a-beebab5a33dc"
               }
             ]
           },
@@ -3659,7 +3855,7 @@
                   }
                 ],
                 "Comments": "郵送有りの場合",
-                "ID": "6e2b47bf-cf75-44fc-986a-207461c9e0c8"
+                "ID": "c6bb8dd0-e461-4961-a64c-5a1ee540df64"
               },
               {
                 "CommandList": [
@@ -3694,7 +3890,7 @@
                     "ID": "6d4f2cc2050c4dbfad498d8a3089c921"
                   }
                 ],
-                "ID": "0ca9e455-b0be-470a-8005-db25e067543d"
+                "ID": "ff6c63d6-6a03-4d23-8d60-a234421ccb08"
               }
             ]
           },
@@ -3815,7 +4011,7 @@
                     "$type": "Forguncy.Model.StopCommand, ServerDesignerCommon"
                   }
                 ],
-                "ID": "bfaa0420-1e9b-4a72-85cb-e25ebffd14fd"
+                "ID": "94b96c49-cc2d-4092-a8d1-32819e1ce61b"
               }
             ]
           },
@@ -4845,7 +5041,7 @@
                   }
                 ],
                 "Comments": "請求合計リスト",
-                "ID": "328a440f-b7aa-4643-ba90-1ed11d8dce96"
+                "ID": "c7a46699-7d1f-410e-8aa4-ccd7338167d1"
               },
               {
                 "Condition": {
@@ -4893,7 +5089,7 @@
                   }
                 ],
                 "Comments": "請求明細リスト",
-                "ID": "9bba1eca-3fae-48ea-a463-449dc932cc05"
+                "ID": "f0c48ca6-d5b7-4e3e-856e-f2cdfba6ad61"
               },
               {
                 "Condition": {
@@ -4941,7 +5137,7 @@
                     ]
                   }
                 ],
-                "ID": "a8138264-7880-4afc-8926-2867d8e07f3f"
+                "ID": "550d22dd-1642-4cb4-85e9-02ef0f74e132"
               }
             ]
           }
@@ -5028,7 +5224,7 @@
                   }
                 ],
                 "Comments": "メール送信済みの場合",
-                "ID": "cea95f11-66c9-43d7-9539-bc5ecdf7d105"
+                "ID": "d6448407-315b-4c00-a699-fe8c9770f0f6"
               },
               {
                 "Condition": {
@@ -5076,7 +5272,7 @@
                   }
                 ],
                 "Comments": "郵送済みの場合",
-                "ID": "63bd31f4-b300-41b7-bcaf-b953b88543a2"
+                "ID": "8ca643a9-33ed-4a29-a2d2-ffe4a6e4ebaa"
               },
               {
                 "Condition": {
@@ -5124,7 +5320,7 @@
                   }
                 ],
                 "Comments": "システム登録済みの場合",
-                "ID": "6db415f4-63f1-46db-bd7f-580cd9a1209d"
+                "ID": "0ef07b27-60c5-44f6-a137-4150cabdd510"
               },
               {
                 "Condition": {
@@ -5172,7 +5368,7 @@
                   }
                 ],
                 "Comments": "FAX送信済みの場合",
-                "ID": "db2d2016-ebd7-43a4-9f8b-45fc80da5e34"
+                "ID": "99cafd1d-a8d6-4e00-92be-ba908dd91a95"
               },
               {
                 "Condition": {
@@ -5297,17 +5493,17 @@
                                     }
                                   }
                                 ],
-                                "ID": "e4176a26-1eac-49f3-a8da-44e13dd083fc"
+                                "ID": "ea8a47fd-d9b5-4391-89c8-ccd50525ec87"
                               }
                             ]
                           }
                         ],
-                        "ID": "3e260f43-6e29-49da-a11f-2f860610d1d8"
+                        "ID": "547bd9c6-bf05-4cb4-8a24-9a86a53efc36"
                       }
                     ]
                   }
                 ],
-                "ID": "930c4825-faef-412b-9cc6-5d8eabfcd25a"
+                "ID": "199078cd-b43e-46ca-b96a-e19b0127261b"
               },
               {
                 "Condition": {
@@ -5432,17 +5628,17 @@
                                     }
                                   }
                                 ],
-                                "ID": "04a8f058-5427-4281-b36a-a3b0e048babd"
+                                "ID": "143ea07b-9073-4343-b6d9-0523f9aeb7ee"
                               }
                             ]
                           }
                         ],
-                        "ID": "649e6336-6904-4aad-b9ec-289202212363"
+                        "ID": "ee6106e3-30b1-4696-9256-d097cd0695c2"
                       }
                     ]
                   }
                 ],
-                "ID": "c627262a-df54-4892-ac1c-bd5e2eec16a9"
+                "ID": "d2e7e2c2-a4ce-4f79-b8f9-15e48d32e23b"
               },
               {
                 "Condition": {
@@ -5567,17 +5763,17 @@
                                     }
                                   }
                                 ],
-                                "ID": "b97fa835-150f-4821-a405-69a5827a0813"
+                                "ID": "02454bab-cf8b-4aac-8bfc-5ac6930e8898"
                               }
                             ]
                           }
                         ],
-                        "ID": "e5eb05b2-21c8-4d26-a27e-f45331899e09"
+                        "ID": "436d937f-979a-489b-b854-c95844f9f3eb"
                       }
                     ]
                   }
                 ],
-                "ID": "91633eca-e768-4ba8-aaf4-6470ce602759"
+                "ID": "8196753a-2076-492d-95b2-74edf347d4cd"
               },
               {
                 "Condition": {
@@ -5702,17 +5898,17 @@
                                     }
                                   }
                                 ],
-                                "ID": "f512df7d-5136-4439-8fa1-91dc142b834d"
+                                "ID": "d76f253e-80eb-4da3-9599-716103c4b0d1"
                               }
                             ]
                           }
                         ],
-                        "ID": "acdea548-2c3f-4a4c-8884-bb78bfde4d8c"
+                        "ID": "0c96b7fe-9216-4fad-83d3-5c7937659da4"
                       }
                     ]
                   }
                 ],
-                "ID": "65e60b9c-a540-406b-b790-9ee8cd171977"
+                "ID": "9d195e2c-6353-4b9b-93cc-b759633527ab"
               },
               {
                 "Condition": {
@@ -5858,7 +6054,7 @@
                                         ]
                                       }
                                     ],
-                                    "ID": "6a409301-f3f2-442e-ba84-199d3c7e4bc4"
+                                    "ID": "4235f5f2-9ec8-43e0-966f-4882f31e8e21"
                                   }
                                 ]
                               }
@@ -5889,18 +6085,18 @@
                                     "MessageFormula": "ダウンロードファイルが見つかりませんでした\r\nPDF保存されているかご確認下さい"
                                   }
                                 ],
-                                "ID": "48de0e6d-8926-4e8d-a539-4461db63f072"
+                                "ID": "33761a7c-707b-4db7-8b56-a510ced1f6ca"
                               }
                             ]
                           }
                         ],
-                        "ID": "72dbd9d9-e8d7-4b6e-97b9-9165b1307776"
+                        "ID": "ca9b464c-2218-4f2d-a494-df69b9c5f0d1"
                       }
                     ]
                   }
                 ],
                 "Comments": "一括ダウンロード",
-                "ID": "d5d982fb-c2b5-4542-aa44-1858b2959a85"
+                "ID": "e3a42210-1178-405d-8b94-9fe475ff6822"
               },
               {
                 "Condition": {
@@ -5997,12 +6193,12 @@
                             "$type": "LoadingCommand.EndLoadingCommand, LoadingCommand"
                           }
                         ],
-                        "ID": "f1cfc571-b00f-4422-a163-fab4547fffb2"
+                        "ID": "fb852214-639f-4f18-bd87-dfced82cf4c8"
                       }
                     ]
                   }
                 ],
-                "ID": "69cce446-1968-4e22-b062-dba2bf653113"
+                "ID": "2085bf76-aa73-402a-9ed1-2e20dffae04a"
               },
               {
                 "Condition": {
@@ -6086,17 +6282,17 @@
                                     }
                                   }
                                 ],
-                                "ID": "249926d2-0cae-4e07-a557-22ad2b95e252"
+                                "ID": "2fd53041-51ec-4297-94cb-fceb5e53918b"
                               }
                             ]
                           }
                         ],
-                        "ID": "b7c82915-1cb2-482c-a27f-bc5eae2c3075"
+                        "ID": "6a5a861a-cf44-4554-ac17-ab9c3075ef43"
                       }
                     ]
                   }
                 ],
-                "ID": "c254b7a5-779e-420b-91dc-c699f56e169a"
+                "ID": "e9b386af-5f83-443b-a5b3-aa7c59268f3c"
               },
               {
                 "Condition": {
@@ -6208,7 +6404,7 @@
                                                 "ID": "54acb8d6a42c451396da3c9ddf261c3c"
                                               }
                                             ],
-                                            "ID": "8bc739b7-deb0-4bc0-9e92-9a00e49e280b"
+                                            "ID": "3cb9f035-11a7-4ef7-9bb7-68a1101b6d42"
                                           },
                                           {
                                             "CommandList": [
@@ -6231,12 +6427,12 @@
                                                 "ID": "4c055f1cca134dc2b4b3b743c9485968"
                                               }
                                             ],
-                                            "ID": "0cf33c77-d6df-4e14-8830-b2b3d3bcc61e"
+                                            "ID": "dc0ec3c4-b0e4-4503-8bff-f84496fcfbad"
                                           }
                                         ]
                                       }
                                     ],
-                                    "ID": "08bf05a2-618b-46c5-8f20-ffa6e7fc9e90"
+                                    "ID": "bde11314-69a2-42b2-a3ce-38bf65543cc7"
                                   }
                                 ]
                               },
@@ -6342,7 +6538,7 @@
                                 ]
                               }
                             ],
-                            "ID": "eb82d75e-febc-457e-a1be-96d63fb1f469"
+                            "ID": "7d06b34f-3205-4199-a96c-01ff1a77fe63"
                           }
                         ]
                       }
@@ -6371,7 +6567,7 @@
                     ]
                   }
                 ],
-                "ID": "b6505ba7-ff1e-4c97-91be-d3011d978de5"
+                "ID": "47799509-f287-442b-8812-d9438c2f7759"
               }
             ]
           }
@@ -6568,12 +6764,12 @@
                             }
                           }
                         ],
-                        "ID": "8b32787d-efcf-4b10-869a-0750742b404e"
+                        "ID": "2c819e43-1896-48dd-9254-2283731b0e2f"
                       }
                     ]
                   }
                 ],
-                "ID": "09de16a4-ef32-4e2c-8533-e1ffeff89553"
+                "ID": "211707bb-0124-436c-9597-455cd9a667ca"
               }
             ]
           }
@@ -6715,12 +6911,12 @@
                             }
                           }
                         ],
-                        "ID": "f53415f3-fe70-44ef-ab22-fb033e2505d5"
+                        "ID": "d3e50948-c453-4d90-9009-3fd0e433ea8d"
                       }
                     ]
                   }
                 ],
-                "ID": "443bedf3-8ef6-45df-9e5d-bc09ebd53519"
+                "ID": "46c6fabe-4e53-4344-8b9b-b02621cc2e86"
               }
             ]
           }
@@ -6862,12 +7058,12 @@
                             }
                           }
                         ],
-                        "ID": "5ed69085-af70-4c3e-9a0e-b1b7a01e263f"
+                        "ID": "c81371c5-66ac-44ea-b044-08ee53221100"
                       }
                     ]
                   }
                 ],
-                "ID": "b426fa29-e350-4841-abea-f53c58b27930"
+                "ID": "092fe4a3-807a-47af-85a6-c56fc519e572"
               }
             ]
           }
@@ -7009,12 +7205,12 @@
                             }
                           }
                         ],
-                        "ID": "fe72b05f-f2ab-4f72-bf6b-dee8267f063b"
+                        "ID": "91b02259-a0f8-4a64-a894-25d3620ae33f"
                       }
                     ]
                   }
                 ],
-                "ID": "97ea4c34-0824-4866-910f-53892fa00a67"
+                "ID": "45eff2b3-b65c-4878-a4f8-a38d8d07522a"
               }
             ]
           }
@@ -7109,7 +7305,7 @@
                     "UpdateRowType": 3
                   }
                 ],
-                "ID": "e72399e3-93b7-42de-aef5-105da81ab595"
+                "ID": "dfb2aa3e-9831-4b74-8287-a22b95b95585"
               },
               {
                 "CommandList": [
@@ -7128,7 +7324,7 @@
                     "UpdateRowType": 3
                   }
                 ],
-                "ID": "eb00832c-844e-4b17-8812-69d8e6fc1091"
+                "ID": "1c52cfca-1edc-4140-bf6b-ba81674aec4d"
               }
             ]
           }
@@ -7927,7 +8123,7 @@
       "7,49": 11,
       "7,51": 11,
       "7,52": 11,
-      "7,64": 3,
+      "7,55": 3,
       "7,66": 8,
       "7,75": 3,
       "7,76": 9,
@@ -13721,7 +13917,8 @@
     "15,241,1,5",
     "15,246,1,5",
     "15,251,1,5",
-    "15,256,1,4"
+    "15,256,1,4",
+    "7,55,1,10"
   ],
   "PageInfo": {
     "$type": "Forguncy.Model.Pages.NormalPage, ServerDesignerCommon",
@@ -14425,4 +14622,4 @@
       "Formula": "請求書管理!$BY$8"
     }
   ]
-}//ec+LrgiAZcEbm75UPOSwC9qZtKUbAmIy/lH2c5NETrkn92hyPKwG9AcHoenzuSKjTBxM6WkZJZ7cWPEXix1X4omkl0TaLyYXoSE9BQPb4Zali41d7xKkkZORbn5CW3ZoBgiFrruGxW04VDTBrMfml6sgKbRWMtEbUnsROqsBjRb3nMMQ8K3TS+ewcrJdZuyiUUY1tqkeqF1Ci8Ed5TDgJwdQVZwMIRGHmOxkjP6Im/T3Ckvn+GJ1x+JNi44vaaIGDuytDXcBZe2gDMktwYGg4359zvk/nImalJHwHhzuXabfRRwJBzRdhdUgWFD716iqacGXHC/jsfowuApqbV2+AVnK2wjwYlBtX4giSC4P61NQUEkw4qlL2uIsP3eNoKUxQr+dCMDfnajmbhWCCKLboYChIJ4Q+JAsHTrdes9rxqPp/XvzLALlE33LerGqZ51q6ce/43DmI6AxaVi7qC9M/2nE8uNk1Bu1i/3joGst1cfjZ0zjXec1ikLAPTpvPRSUpsmIix41ua2GJaT/M+a2Xcjjjin+AQuZTL3/7fcC6aTHEss5A78nLfqvcmV8tNPN9GpZ+qVEyl4qGOu5iN84E8D/51iaICmoFmPq6ADR3kJokfn/pntJ5omsb24pfM6tm78kjr3srkGCZzrFQrZoTqU0kBHZGIvWJOkI7uKEBq9NBmv4mbD7lK8z1san/CpUuTIW5vbKgGvpps544iM2O+r7xo8gt8rvGYTiEKtfVzM2XhlS4jTwBID/2HVSvHgcu889ZeCWl6uhFKWAkC7IHSpuMH4R9fs4ElR1WEr7ImUKBM3eMHflLIZnOGDlJAV2v+YJ7JMUf6ak0in/Okib5iUCQSDcO6QsUY/BrtUWM8bOTGsPENRuI4sHGIfYjMTu9/2U6nIU9F3HbWO/drRb4A==|920
+}//0KUrYW+BiYqcDl9Sya6HE4f2AK4n7BRphK6ty0bNnw5/Rqux5sNvYWexBB2S/6w8e51IBWdqYmGQPzQjdJKrZ/8Otes7Oc02vkTPBcY3OVpTs8L7tJCqFhJXFudDN4QbvKfQhrLj2nMPGWDK98vdAhK3j70Dhnh2YE9Kmei6qSxgpoIa1z4Qasobn1rIEYCSnZV6GwZBAXFzGqJd3bmVT7GCCE0Xnv6mPyvBXjkwp+Vv/7EekhDSLSFGP2WORSkczLhxvLohJzca6ZHqgENjnaNtWUcIcvSA7pF0J+pYvXhbDt2aIrv90hZiEEstVJDVEmsIcJ/Sxh2l59NQ4JqKFe0HNITLZbqnym6B1kCrgY20EG6mknJVaAkbFZ3UL1+YlWyHKVVwxM9yngp0H7yd7ytV6Di3p4M1t2E2taAif2RU2Fxa70+zlJsN1BfHo/u7f0lOLPVN5t66/xSbHJrBMD8JuNLU9gMemwSJsW7EqWMQXr+uRu9Dn+fIaOJIjWLqVqE3slG1ee3NBI93ckuMEOx3oOKTQKK5T8w0YIQIWngiuA7AZ2xgrsMoQMmiXnKrnovcCR9PVvFKZeWd0/Bmd/UmGQrqo6IaDLCHQmMeRw5cukNkxuqWNfSD/QSZLneMdf32Bv2SgDd5BMn0pI0pT1CQN0NXVT2HTRP83encS3MbQ0+zvpLWJZxPtkY3kYRPlhTLY45eTvN6p6mP7+HTvfn1X8vEfwgj5DDsQZzB7plbaAErA8npSCxwnD3kzgaczYS7VeFR4+eOc+EoHnqyFa6pm2kv6yRaHvxGxjd4VyJj/tIouDymqsBeCC3STk5HQqspMi6rokoQ6fNefC8jt8yYyOyl5Vvpo0pBJSf9S5dYQma3FCx+lE+JYfiAJyiY47rBv3wkVQ4PDqYY5WTMig==|920

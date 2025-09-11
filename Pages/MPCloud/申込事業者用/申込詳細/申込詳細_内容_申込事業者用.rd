@@ -1,23 +1,23 @@
 {
   "PageType": 0,
-  "ColumnCount": 172,
+  "ColumnCount": 180,
   "RowCount": 34,
   "Formulas": {
-    "29,151": "フォーカス連絡ID",
-    "29,144": "EN30&\"　\"&EL30",
+    "29,152": "フォーカス連絡ID",
+    "29,145": "EO30&\"　\"&EM30",
     "16,128": "IFERROR(GETURLQUERYVALUE(\"follow_id\"),0)",
-    "29,139": "IF(EF30=2,EH30,\"\")",
-    "29,138": "IF(EF30=1,EG30,\"\")",
+    "29,140": "IF(EG30=2,EI30,\"\")",
+    "29,139": "IF(EG30=1,EH30,\"\")",
     "7,133": "IF(タブ番号<>\"\",ODATA(\"m_tab_class?$select=tab_name&$filter=tab_id eq \"&IF(ISBLANK(タブ番号),\"null\",タブ番号)),\"申込\")",
     "13,128": "IFERROR(GETURLQUERYVALUE(\"notice_id\"),0)",
     "10,128": "IFERROR(GETURLQUERYVALUE(\"tab\"),1)",
-    "29,134": "IF(ED30=\"\",\"共通\",ED30)",
+    "29,135": "IF(EE30=\"\",\"共通\",EE30)",
     "3,78": "\"添付ファイル(\"&ER14&\")\"",
     "3,128": "IFERROR(GETURLQUERYVALUE(\"id\"),\"\")",
     "16,133": "IF(申込ID>0,ODATA(\"t_object_wait_documents/$count?$filter=object_order_id eq \"&IF(ISBLANK(申込ID),\"null\",申込ID)&\" and target_customer_id eq \"&IF(ISBLANK(IF(ED20>0,ED20,顧客ID)),\"null\",IF(ED20>0,ED20,顧客ID))&\" and receipt_flg eq 0\"),0)",
     "7,128": "IFERROR(GETURLQUERYVALUE(\"index\"),\"\")",
-    "30,157": "IF(連絡事項タブ検索<>\"\",連絡事項タブ検索,1000)",
-    "27,157": "IF(連絡事項タブ検索<>\"\",連絡事項タブ検索,1)"
+    "25,165": "IF(連絡事項タブ検索<>\"\",連絡事項タブ検索,1000)",
+    "25,157": "IF(連絡事項タブ検索<>\"\",連絡事項タブ検索,1)"
   },
   "CustomNames": [
     {
@@ -83,6 +83,10 @@
     {
       "Name": "最新外販ID",
       "Formula": "申込詳細_内容_申込事業者用!$EK$26"
+    },
+    {
+      "Name": "親物件ID",
+      "Formula": "申込詳細_内容_申込事業者用!$ER$8"
     }
   ]
 }

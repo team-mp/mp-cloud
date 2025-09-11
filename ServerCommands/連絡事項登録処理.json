@@ -82,7 +82,7 @@
           "DataValidationInfo": {}
         },
         {
-          "Name": "P_ユーザーグループID",
+          "Name": "P_ユーザーグループKEYs",
           "DataValidationInfo": {}
         },
         {
@@ -94,7 +94,23 @@
           "DataValidationInfo": {}
         },
         {
+          "Name": "P_連棟適用フラグ",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_申込KEYs",
+          "DataValidationInfo": {}
+        },
+        {
           "Name": "P_問合せID",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_再解析依頼ID",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_依頼タイプ",
           "DataValidationInfo": {}
         }
       ]
@@ -134,7 +150,26 @@
             "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
             "SerializeProperty": "=IF(P_内容<>\"\",1,2)"
           },
-          "ID": "9c3f5c349fa842d9bbc749aec48baf96"
+          "ID": "58e3e42a2dc5462186dae4a0ca6d8378"
+        },
+        {
+          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+          "ParameterName": "V_依頼日時",
+          "ID": "e7b3b5e6682f4bb3adc6a5c07d588889"
+        },
+        {
+          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+          "ParameterName": "V_依頼者ラベル",
+          "ParameterValue": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=最終更新ラベル"
+          },
+          "ID": "1d0944b0d56341bd81893ce0f1bbb67d"
+        },
+        {
+          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+          "ParameterName": "V_完了予定日",
+          "ID": "84fccb9f485646a2aa52ba6c3aa7d095"
         },
         {
           "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
@@ -196,7 +231,7 @@
                           "ID": "c9180fe7c5804934965b568d96e16a00"
                         }
                       ],
-                      "ID": "2f98c5bb-83ef-4f66-9988-ce304e605083"
+                      "ID": "af04bbf6-f139-4f52-ae73-6865e8a5ac67"
                     },
                     {
                       "CommandList": [
@@ -256,7 +291,79 @@
                           "ID": "630ecb24481d4cbf87b0fdca8bff1908"
                         }
                       ],
-                      "ID": "5367fa73-b049-451f-8f23-fceff112ff13"
+                      "ID": "7d85f2fb-2f55-4050-be4b-61ce66b4e11a"
+                    }
+                  ]
+                },
+                {
+                  "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+                  "ConditionAndCommandPairList": [
+                    {
+                      "Condition": {
+                        "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                        "param": {
+                          "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                          "ParamObject": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=P_依頼タイプ"
+                          }
+                        },
+                        "value": "%Null%",
+                        "compareType": 1
+                      },
+                      "CommandList": [
+                        {
+                          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                          "ParameterName": "V_依頼日時",
+                          "ParameterValue": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=NOW()"
+                          },
+                          "ID": "a121b7b3a28b427e950eaf00ea8ab5c7"
+                        },
+                        {
+                          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                          "ParameterName": "V_依頼者ラベル",
+                          "ParameterValue": {
+                            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                            "SerializeProperty": "=最終更新ラベル"
+                          },
+                          "ID": "78b1d841d90e453abd506f7fc76d10be"
+                        },
+                        {
+                          "$type": "Forguncy.Model.RequestServerCommand, ServerDesignerCommon",
+                          "ServerCommandName": "営業日取得",
+                          "Parameters": [
+                            {
+                              "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                              "ParamName": "P_指定日",
+                              "Value": {
+                                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                                "SerializeProperty": "=TODAY()"
+                              }
+                            },
+                            {
+                              "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                              "ParamName": "P_日数",
+                              "Value": "1"
+                            }
+                          ],
+                          "ReturnPropertiesTo": [
+                            {
+                              "ResultPropertyName": "R_営業日",
+                              "ResultTo": {
+                                "SerializeProperty": "V_完了予定日"
+                              },
+                              "Remark": "営業日計算後の日付が返却される"
+                            }
+                          ],
+                          "RefreshAfterFinish": true,
+                          "CheckDataValidation": true,
+                          "Comments": "翌営業日を完了予定日とする"
+                        }
+                      ],
+                      "Comments": "依頼タイプが設定されている場合",
+                      "ID": "3724fad1-3aff-4608-83a3-98ee43a219ad"
                     }
                   ]
                 },
@@ -270,7 +377,7 @@
                       "BindingInfo": {
                         "TableName": "t_object_notice",
                         "ColumnName": "object_order_id",
-                        "GUID": "ff808e90-7570-45b7-b6f0-fce2dd3bd4a3"
+                        "GUID": "7092fd92-5947-4527-89fd-4bbeb122454d"
                       },
                       "Value": {
                         "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
@@ -281,7 +388,7 @@
                       "BindingInfo": {
                         "TableName": "t_object_notice",
                         "ColumnName": "application_serial_number",
-                        "GUID": "a933eef1-6834-4347-8514-1791ae592210"
+                        "GUID": "ada7a54f-852f-4f9a-abb2-27507d3c49f8"
                       },
                       "Value": {
                         "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
@@ -292,7 +399,7 @@
                       "BindingInfo": {
                         "TableName": "t_object_notice",
                         "ColumnName": "tab_id",
-                        "GUID": "af3c5170-b9bb-4fa4-8fbc-9c69d531e535"
+                        "GUID": "0509b9cb-ef26-48d2-b667-4aeb109465e2"
                       },
                       "Value": {
                         "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
@@ -303,7 +410,7 @@
                       "BindingInfo": {
                         "TableName": "t_object_notice",
                         "ColumnName": "source_notice_id",
-                        "GUID": "f827e4b4-d18e-4243-8e8a-f4724c3a3bf0"
+                        "GUID": "2b760284-5006-4b56-97f8-d91272c26e73"
                       },
                       "Value": {
                         "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
@@ -314,7 +421,7 @@
                       "BindingInfo": {
                         "TableName": "t_object_notice",
                         "ColumnName": "display_type",
-                        "GUID": "43a90702-bcfe-44cc-a4ad-d2b729c78c16"
+                        "GUID": "b70d31b8-bac2-4a68-a6ab-afae001ad1ad"
                       },
                       "Value": {
                         "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
@@ -325,7 +432,7 @@
                       "BindingInfo": {
                         "TableName": "t_object_notice",
                         "ColumnName": "content",
-                        "GUID": "6e89a6de-4908-4dfd-88f9-c7401334e49c"
+                        "GUID": "81627d12-e714-4635-a5ab-9b0f6ea5bf93"
                       },
                       "Value": {
                         "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
@@ -336,7 +443,7 @@
                       "BindingInfo": {
                         "TableName": "t_object_notice",
                         "ColumnName": "ritch_text",
-                        "GUID": "ea035986-8629-4dfc-8a7d-44d1bf497d57"
+                        "GUID": "ae8095c7-1b41-484b-9e7c-2e8e8103a5af"
                       },
                       "Value": {
                         "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
@@ -347,7 +454,7 @@
                       "BindingInfo": {
                         "TableName": "t_object_notice",
                         "ColumnName": "release_public_flg",
-                        "GUID": "14cd77b8-7982-4c09-803d-ddda888b4029"
+                        "GUID": "60f0dbbd-ee39-440c-8f34-4573c11a617b"
                       },
                       "Value": {
                         "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
@@ -358,7 +465,7 @@
                       "BindingInfo": {
                         "TableName": "t_object_notice",
                         "ColumnName": "mail_notification_flg",
-                        "GUID": "aee85317-3cdc-4968-8a49-de668b076f15"
+                        "GUID": "cad2332f-576c-428d-aeeb-3f77e1b4a570"
                       },
                       "Value": {
                         "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
@@ -369,7 +476,7 @@
                       "BindingInfo": {
                         "TableName": "t_object_notice",
                         "ColumnName": "notification_userid_list",
-                        "GUID": "16c23013-4b3b-43a5-b6d6-4fe1511dd703"
+                        "GUID": "6bfe03ad-cabb-4da3-8173-e1ec263412c8"
                       },
                       "Value": {
                         "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
@@ -380,7 +487,7 @@
                       "BindingInfo": {
                         "TableName": "t_object_notice",
                         "ColumnName": "task_set_flg",
-                        "GUID": "1b918282-8609-462d-a725-0f7171f0d835"
+                        "GUID": "3032fe04-e2de-4513-9ca8-8cd2649416ed"
                       },
                       "Value": {
                         "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
@@ -391,7 +498,7 @@
                       "BindingInfo": {
                         "TableName": "t_object_notice",
                         "ColumnName": "created_user_id",
-                        "GUID": "ea8fb19d-9d1f-47c9-86f5-49c8e5b787da"
+                        "GUID": "79487f81-63e3-40a9-83d1-042d4fee52ef"
                       },
                       "Value": "%CurrentUser.user_id%"
                     },
@@ -399,7 +506,7 @@
                       "BindingInfo": {
                         "TableName": "t_object_notice",
                         "ColumnName": "release_host_flg",
-                        "GUID": "285d3e73-4740-4f8c-8788-36226a8fe43e"
+                        "GUID": "a8733c8c-8d88-4c75-98a9-79a36b6f328c"
                       },
                       "Value": {
                         "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
@@ -409,8 +516,30 @@
                     {
                       "BindingInfo": {
                         "TableName": "t_object_notice",
+                        "ColumnName": "multiple_buildings_flg",
+                        "GUID": "9d9ae420-bede-4636-a04c-fefbae1d9072"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=P_連棟適用フラグ"
+                      }
+                    },
+                    {
+                      "BindingInfo": {
+                        "TableName": "t_object_notice",
+                        "ColumnName": "object_order_keys",
+                        "GUID": "6fcfa26b-a3d8-4fcf-8413-1baf0211e26d"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=IF(P_連棟適用フラグ=1,P_申込KEYs,\"\")"
+                      }
+                    },
+                    {
+                      "BindingInfo": {
+                        "TableName": "t_object_notice",
                         "ColumnName": "inquiry_id",
-                        "GUID": "faf93999-bca2-40bf-bb6d-e186bff3ad9e"
+                        "GUID": "98defb71-0a48-4dc8-bf37-0d7cd69b4e09"
                       },
                       "Value": {
                         "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
@@ -420,8 +549,63 @@
                     {
                       "BindingInfo": {
                         "TableName": "t_object_notice",
+                        "ColumnName": "re_analysis_request_id",
+                        "GUID": "eea98cfe-d0a7-4de9-b6f2-7ea35dc3dca3"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=P_再解析依頼ID"
+                      }
+                    },
+                    {
+                      "BindingInfo": {
+                        "TableName": "t_object_notice",
+                        "ColumnName": "request_type",
+                        "GUID": "f42223bc-4a53-488d-bcb2-dde4e1d12bd5"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=P_依頼タイプ"
+                      }
+                    },
+                    {
+                      "BindingInfo": {
+                        "TableName": "t_object_notice",
+                        "ColumnName": "request_datetime",
+                        "GUID": "2d4b5a5d-4792-4047-81ef-f126198f79de"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=V_依頼日時"
+                      }
+                    },
+                    {
+                      "BindingInfo": {
+                        "TableName": "t_object_notice",
+                        "ColumnName": "request_user_label",
+                        "GUID": "cf429f58-e769-44c9-9f71-b370f2cf2afc"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=V_依頼者ラベル"
+                      }
+                    },
+                    {
+                      "BindingInfo": {
+                        "TableName": "t_object_notice",
+                        "ColumnName": "completion_date",
+                        "GUID": "7b279b1a-6ed2-422c-b90d-614a8b7ca23a"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=V_完了予定日"
+                      }
+                    },
+                    {
+                      "BindingInfo": {
+                        "TableName": "t_object_notice",
                         "ColumnName": "updated_date",
-                        "GUID": "6d1e39da-9287-4742-9b73-ffcfc722c0ce"
+                        "GUID": "3b36112b-ebc0-4ed0-951b-f4c6b7dbd7e1"
                       },
                       "Value": {
                         "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
@@ -432,7 +616,7 @@
                       "BindingInfo": {
                         "TableName": "t_object_notice",
                         "ColumnName": "last_updated_label",
-                        "GUID": "e41ac75e-d32a-4856-8eac-a9f094817f59"
+                        "GUID": "a673c709-c9e5-494c-9583-442b234042c9"
                       },
                       "Value": {
                         "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
@@ -473,7 +657,7 @@
                       "BindingInfo": {
                         "TableName": "t_object_notice",
                         "ColumnName": "notice_group_id",
-                        "GUID": "51e74e15-c1b3-4b1a-bdb8-232e588f8d57"
+                        "GUID": "94f0caa2-fa61-44bc-8062-3f4fb67b1f96"
                       },
                       "Value": {
                         "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
@@ -485,7 +669,7 @@
                   "Comments": "連絡グループIDをセット"
                 }
               ],
-              "ID": "f4b19860-a802-4b8a-8283-2118db39dcd9"
+              "ID": "9838e604-58f9-46f9-aea9-ac5584dc17c4"
             },
             {
               "CommandList": [
@@ -497,7 +681,7 @@
                     "TableValueType": 1,
                     "BindingInfos": [
                       {
-                        "GUID": "ce6e6cad-3868-4497-8ab5-1b1874155872",
+                        "GUID": "edf495b7-c0ac-4bd8-a11d-73c293c1afcf",
                         "BindingInfo": {
                           "TableName": "t_object_notice",
                           "ColumnName": "task_id",
@@ -511,7 +695,7 @@
                         "ColumnName": "リマインド設定フラグ"
                       },
                       {
-                        "GUID": "367f02be-3812-483f-958c-64772e6e494d",
+                        "GUID": "7b9795a9-4e4d-4969-935a-a4cd064e213e",
                         "BindingInfo": {
                           "TableName": "t_object_notice",
                           "ColumnName": "task_id",
@@ -538,7 +722,7 @@
                       }
                     }
                   },
-                  "ID": "b0e30ed6a3e847ebb93f0f24ec46d98e"
+                  "ID": "83bd615777684fa39fc70bba36cb7430"
                 },
                 {
                   "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
@@ -614,13 +798,13 @@
                               "BindingInfo": {
                                 "TableName": "t_task",
                                 "ColumnName": "schedule_mail_id",
-                                "GUID": "57ef41e6-a0f4-42b6-9276-efe7904b4077"
+                                "GUID": "04869916-8d3e-4c20-b5bc-f3e732bfc368"
                               }
                             }
                           ]
                         }
                       ],
-                      "ID": "0aa519a6-a0b7-43d5-b1e1-68ff05211a3d"
+                      "ID": "c24e88e6-00d2-4e5b-bf84-bb4dd4480fec"
                     }
                   ],
                   "Comments": "リマインド設定がOffの場合、スケジュールメールを削除"
@@ -647,7 +831,7 @@
                       "BindingInfo": {
                         "TableName": "t_object_notice",
                         "ColumnName": "tab_id",
-                        "GUID": "e77d8d67-eb8f-45de-b172-b7c4b686e327"
+                        "GUID": "e2c55878-a654-4bf9-ab9d-ee6544effac6"
                       },
                       "Value": {
                         "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
@@ -658,7 +842,7 @@
                       "BindingInfo": {
                         "TableName": "t_object_notice",
                         "ColumnName": "display_type",
-                        "GUID": "b1f45c37-1899-475a-8c41-8a0e5c9e66c2"
+                        "GUID": "2f855f1c-905a-4a87-8e9f-347b871f9528"
                       },
                       "Value": {
                         "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
@@ -669,7 +853,7 @@
                       "BindingInfo": {
                         "TableName": "t_object_notice",
                         "ColumnName": "content",
-                        "GUID": "d174a380-a110-41df-8152-f10a44a59280"
+                        "GUID": "a7de4937-e777-433d-ac6d-9e164e2eb9a6"
                       },
                       "Value": {
                         "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
@@ -680,7 +864,7 @@
                       "BindingInfo": {
                         "TableName": "t_object_notice",
                         "ColumnName": "ritch_text",
-                        "GUID": "aeaff64f-efd2-40fe-ba00-fdb30d55bf6c"
+                        "GUID": "1ae2e40b-1fb4-459f-bfe3-0809aa95d158"
                       },
                       "Value": {
                         "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
@@ -691,7 +875,7 @@
                       "BindingInfo": {
                         "TableName": "t_object_notice",
                         "ColumnName": "release_public_flg",
-                        "GUID": "39cc92bb-4733-45c1-b839-f85c0c664df5"
+                        "GUID": "ffee2129-9c14-442f-ba6a-160337657ba4"
                       },
                       "Value": {
                         "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
@@ -702,7 +886,7 @@
                       "BindingInfo": {
                         "TableName": "t_object_notice",
                         "ColumnName": "mail_notification_flg",
-                        "GUID": "ab6e0ede-fd61-44fc-bff3-c58b9fd7c953"
+                        "GUID": "3cba8172-2b58-4389-a97a-5c4eab250954"
                       },
                       "Value": {
                         "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
@@ -713,7 +897,7 @@
                       "BindingInfo": {
                         "TableName": "t_object_notice",
                         "ColumnName": "notification_userid_list",
-                        "GUID": "0db3a5d1-7e5e-4da2-b87e-b1862c87f5cd"
+                        "GUID": "b33976a8-09f1-4888-9c6d-6b6760a5789f"
                       },
                       "Value": {
                         "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
@@ -724,7 +908,7 @@
                       "BindingInfo": {
                         "TableName": "t_object_notice",
                         "ColumnName": "task_set_flg",
-                        "GUID": "662fd842-e81a-4248-84d3-cef32d5c592a"
+                        "GUID": "57055adb-d9b7-4e8e-b6a8-48c1706d60fc"
                       },
                       "Value": {
                         "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
@@ -735,7 +919,7 @@
                       "BindingInfo": {
                         "TableName": "t_object_notice",
                         "ColumnName": "task_id",
-                        "GUID": "42b724c9-b40f-40b1-9abe-7b43b49ec7e2"
+                        "GUID": "43e22006-52b0-4bc9-a71b-4e2831658875"
                       },
                       "Value": {
                         "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
@@ -746,7 +930,7 @@
                       "BindingInfo": {
                         "TableName": "t_object_notice",
                         "ColumnName": "created_user_id",
-                        "GUID": "6f91f7a6-325e-417e-b96d-40b947909471"
+                        "GUID": "0ecee952-9688-4ff5-877d-3322bcd08c86"
                       },
                       "Value": "%CurrentUser.user_id%"
                     },
@@ -754,7 +938,7 @@
                       "BindingInfo": {
                         "TableName": "t_object_notice",
                         "ColumnName": "release_host_flg",
-                        "GUID": "473a0ae9-a5cd-4885-bad8-e71ec5c4f156"
+                        "GUID": "724611eb-1150-4809-af0e-b1d69e7c32a5"
                       },
                       "Value": {
                         "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
@@ -764,8 +948,30 @@
                     {
                       "BindingInfo": {
                         "TableName": "t_object_notice",
+                        "ColumnName": "multiple_buildings_flg",
+                        "GUID": "a7d88008-1c09-4fa4-b2d3-a4126157e79e"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=P_連棟適用フラグ"
+                      }
+                    },
+                    {
+                      "BindingInfo": {
+                        "TableName": "t_object_notice",
+                        "ColumnName": "object_order_keys",
+                        "GUID": "abb4479d-f149-4b08-83f4-a5e594fc52a4"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=IF(P_連棟適用フラグ=1,P_申込KEYs,\"\")"
+                      }
+                    },
+                    {
+                      "BindingInfo": {
+                        "TableName": "t_object_notice",
                         "ColumnName": "updated_date",
-                        "GUID": "998c354d-0edf-4765-937b-24995d18ea5e"
+                        "GUID": "97192dac-fb09-44d6-8005-c9a0ce123bab"
                       },
                       "Value": {
                         "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
@@ -776,7 +982,7 @@
                       "BindingInfo": {
                         "TableName": "t_object_notice",
                         "ColumnName": "last_updated_label",
-                        "GUID": "177d297d-7473-4374-b851-44988cc957b6"
+                        "GUID": "be3d7de4-132b-413f-841c-1a9c1f24cb8a"
                       },
                       "Value": {
                         "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
@@ -787,7 +993,7 @@
                   "ParamNameToSaveNewRowValue": "New連絡事項"
                 }
               ],
-              "ID": "e8b5100c-0ff2-4362-bd00-71e768094db5"
+              "ID": "9aee50b3-f44e-4298-b744-0405b470f11a"
             }
           ]
         },
@@ -798,7 +1004,12 @@
             "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
             "SerializeProperty": "=IF(P_連絡ID<>\"\",P_連絡ID,New連絡事項.連絡ID)"
           },
-          "ID": "ed5179fc08524f9d95307571ecf49884"
+          "ID": "69edd32cc5d449a4906554d14d3382b0"
+        },
+        {
+          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+          "ParameterName": "タスクID",
+          "ID": "0262d6cff21a4c7bb378c251b4e1e6ee"
         },
         {
           "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
@@ -843,10 +1054,10 @@
                     },
                     {
                       "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
-                      "ParamName": "P_ユーザーグループID",
+                      "ParamName": "P_ユーザーグループKEYs",
                       "Value": {
                         "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-                        "SerializeProperty": "=P_ユーザーグループID"
+                        "SerializeProperty": "=P_ユーザーグループKEYs"
                       }
                     },
                     {
@@ -937,11 +1148,14 @@
                           "CustomReturns": [
                             {
                               "ReturnPropertyName": "R_連絡ID"
+                            },
+                            {
+                              "ReturnPropertyName": "R_タスクID"
                             }
                           ]
                         }
                       ],
-                      "ID": "2d764734-1d4f-4885-bc26-6ef49220f73b"
+                      "ID": "bed774a5-ff26-4617-81cb-88e757890834"
                     }
                   ]
                 },
@@ -967,7 +1181,7 @@
                       "BindingInfo": {
                         "TableName": "t_object_notice",
                         "ColumnName": "task_id",
-                        "GUID": "65970f79-da6a-49d7-b1bd-027f3f20575d"
+                        "GUID": "d52b647e-2b0f-4109-b9c4-8127f0e9a4cb"
                       },
                       "Value": {
                         "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
@@ -979,7 +1193,7 @@
                   "Comments": "タスクIDをセット"
                 }
               ],
-              "ID": "225e174c-1b79-4eb6-87cb-e056bf443215"
+              "ID": "458adc4c-0f57-4ff1-8709-7d928adb5aad"
             },
             {
               "CommandList": [
@@ -1043,7 +1257,7 @@
                               "BindingInfo": {
                                 "TableName": "t_object_notice",
                                 "ColumnName": "task_id",
-                                "GUID": "ad197f1b-f96c-47eb-96b9-fdb39cb594bc"
+                                "GUID": "9f9e15b7-26a5-4082-8ffe-94fc7d1638b8"
                               }
                             }
                           ],
@@ -1051,12 +1265,12 @@
                           "Comments": "タスクIDをクリア"
                         }
                       ],
-                      "ID": "6a94ecb3-5fe2-481e-bc57-ff1083d35274"
+                      "ID": "042641b9-2907-4bf8-b907-f13762f649f4"
                     }
                   ]
                 }
               ],
-              "ID": "165eaf4e-6463-403a-880a-2f52b03bce3d"
+              "ID": "5b9a7626-fb39-4d83-af06-6b7c8a011e36"
             }
           ],
           "Comments": "タスク登録する"
@@ -1071,6 +1285,13 @@
                 "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
                 "SerializeProperty": "=連絡ID"
               }
+            },
+            {
+              "ReturnPropertyName": "R_タスクID",
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=タスクID"
+              }
             }
           ]
         }
@@ -1080,6 +1301,9 @@
   "ReturnProperties": [
     {
       "Name": "R_連絡ID"
+    },
+    {
+      "Name": "R_タスクID"
     }
   ]
 }

@@ -1,0 +1,461 @@
+{
+  "Name": "見積書作成処理",
+  "Enabled": true,
+  "Triggers": [
+    {
+      "$type": "Forguncy.SaveLoad.PostRequestTriggerSaveData, ServerDesignerCommon",
+      "Permission": {
+        "PermissionData": {
+          "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionData, Forguncy.RbacPermission.Core",
+          "permissionResource": {
+            "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionResource, Forguncy.RbacPermission.Core"
+          },
+          "permissionBindings": [
+            {
+              "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionBinding, Forguncy.RbacPermission.Core",
+              "roleNames": [
+                "FGC_LoginUser"
+              ]
+            }
+          ]
+        }
+      },
+      "Parameters": [
+        {
+          "Name": "P_親物件ID",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_物件番号s",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_見積日",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_営業担当者ID",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_見積顧客ID",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_物件名",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_連棟番号名",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_見積条件",
+          "DataValidationInfo": {}
+        },
+        {
+          "Type": 1,
+          "ArrayParamItems": [
+            {
+              "Name": "P_商品ID",
+              "DataValidationInfo": {}
+            },
+            {
+              "Name": "P_商品名",
+              "DataValidationInfo": {}
+            },
+            {
+              "Name": "P_明細摘要",
+              "DataValidationInfo": {}
+            },
+            {
+              "Name": "P_数量",
+              "DataValidationInfo": {}
+            },
+            {
+              "Name": "P_単位",
+              "DataValidationInfo": {}
+            },
+            {
+              "Name": "P_金額",
+              "DataValidationInfo": {}
+            }
+          ],
+          "Name": "P_物件商品リスト",
+          "DataValidationInfo": {}
+        }
+      ]
+    }
+  ],
+  "Commands": [
+    {
+      "$type": "Forguncy.Model.ServerTransactionCommand, ServerDesignerCommon",
+      "CommandList": [
+        {
+          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+          "ParameterName": "見積登録カウント",
+          "TableValue": {
+            "TableName": "v_estimate_no",
+            "TableValueType": 3,
+            "SqlCondition": {
+              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+              "ColumnBindingInfo": {
+                "TableName": "v_estimate_no",
+                "ColumnName": "親物件ID",
+                "GUID": "a58e1488-1580-4d31-b936-89bd0bee4e3a"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_親物件ID"
+              }
+            }
+          },
+          "ID": "d55f7237265941409dc9c1672cc7a803"
+        },
+        {
+          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+          "ParameterName": "V_親物件番号",
+          "TableValue": {
+            "TableName": "t_object",
+            "OnlyGetValue": true,
+            "TableValueType": 0,
+            "BindingInfos": [
+              {
+                "GUID": "b4b09e4b-24da-46ba-ba1d-b17a8ca9a05b",
+                "BindingInfo": {
+                  "TableName": "t_object",
+                  "ColumnName": "物件番号",
+                  "GUID": "f52c2b20-8b06-4a08-94b9-081b64bba267"
+                },
+                "ColumnName": "物件番号"
+              }
+            ],
+            "SqlCondition": {
+              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+              "ColumnBindingInfo": {
+                "TableName": "t_object",
+                "ColumnName": "object_id",
+                "GUID": "0114f5d5-05fc-4639-ba23-ba95345a4399"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_親物件ID"
+              }
+            }
+          },
+          "ID": "289b7ce4dc4c44c3b3753d2525c2f292"
+        },
+        {
+          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+          "ParameterName": "V_見積No",
+          "ParameterValue": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=V_親物件番号&\"-\"&TEXT(見積登録カウント+1,\"00\")"
+          },
+          "ID": "7e987b9cacbb479ca20384a81749c3d6"
+        },
+        {
+          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+          "ParameterName": "V_最新税率",
+          "TableValue": {
+            "TableName": "m_tax_rate",
+            "OnlyGetValue": true,
+            "TableValueType": 0,
+            "BindingInfos": [
+              {
+                "GUID": "f1305d18-bd38-4ba1-861b-91ea181a66c3",
+                "BindingInfo": {
+                  "TableName": "m_tax_rate",
+                  "ColumnName": "tax_rate",
+                  "GUID": "8da69278-c3ca-4d43-a772-5b307b64b205"
+                },
+                "ColumnName": "tax_rate"
+              }
+            ],
+            "SqlCondition": {
+              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+              "CompareType": 5,
+              "ColumnBindingInfo": {
+                "TableName": "m_tax_rate",
+                "ColumnName": "revision_date",
+                "GUID": "93e1a83d-dc42-4912-87ee-3c85b0fba1fd"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_見積日"
+              }
+            },
+            "TopCount": "1",
+            "OrderBySqlCondition": {
+              "OrderByColumns": [
+                {
+                  "ColumnBindingInfo": {
+                    "TableName": "m_tax_rate",
+                    "ColumnName": "revision_date",
+                    "GUID": "5bbf856c-2d90-486a-adc4-3dcb077a7b92"
+                  },
+                  "Order": 1
+                }
+              ]
+            }
+          },
+          "ID": "50b04e5ffffb449b9f046fa6b602c093"
+        },
+        {
+          "$type": "Forguncy.Model.RequestServerCommand, ServerDesignerCommon",
+          "ServerCommandName": "登録更新ラベル取得",
+          "ReturnPropertiesTo": [
+            {
+              "ResultPropertyName": "R_ラベル名",
+              "ResultTo": {
+                "SerializeProperty": "最終更新ラベル"
+              }
+            },
+            {
+              "ResultPropertyName": "R_外部ユーザーフラグ"
+            }
+          ],
+          "RefreshAfterFinish": true,
+          "CheckDataValidation": true
+        },
+        {
+          "$type": "Forguncy.Model.LoopCommand, ServerDesignerCommon",
+          "LoopInfo": {
+            "$type": "Forguncy.Model.CountLoopInfo, ServerDesignerCommon",
+            "LoopCount": {
+              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+              "SerializeProperty": "=P_物件商品リスト"
+            },
+            "LoopItemParamName": "Item"
+          },
+          "CommandList": [
+            {
+              "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+              "ParameterName": "V_消費税額",
+              "ParameterValue": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=Item.P_金額*V_最新税率"
+              },
+              "ID": "7af27d7664a440259cc0178dc35b98fb"
+            },
+            {
+              "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+              "ParameterName": "V_見積金額",
+              "ParameterValue": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=Item.P_金額+V_消費税額"
+              },
+              "ID": "614954b526594a89a9d899e863fa0d18"
+            },
+            {
+              "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+              "TableName": "t_object_estimate",
+              "UpdateType": "add",
+              "ShowConfirm": false,
+              "UpdateBindingValues": [
+                {
+                  "BindingInfo": {
+                    "TableName": "t_object_estimate",
+                    "ColumnName": "estimate_no",
+                    "GUID": "4e3c8605-eb40-48a6-9599-8ff807ea26f2"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=V_見積No"
+                  }
+                },
+                {
+                  "BindingInfo": {
+                    "TableName": "t_object_estimate",
+                    "ColumnName": "estimate_date",
+                    "GUID": "3767c54a-e8c6-4610-8b1b-b80e15d2a1e3"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=P_見積日"
+                  }
+                },
+                {
+                  "BindingInfo": {
+                    "TableName": "t_object_estimate",
+                    "ColumnName": "sales_staff_id",
+                    "GUID": "1baed65f-efc5-4ab5-a9c3-f3d895e541a6"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=P_営業担当者ID"
+                  }
+                },
+                {
+                  "BindingInfo": {
+                    "TableName": "t_object_estimate",
+                    "ColumnName": "parent_object_id",
+                    "GUID": "dc03a09b-b13c-49e8-a8fb-155c58d948be"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=P_親物件ID"
+                  }
+                },
+                {
+                  "BindingInfo": {
+                    "TableName": "t_object_estimate",
+                    "ColumnName": "object_nos",
+                    "GUID": "06047912-4040-47f8-a982-7875a8507c30"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=P_物件番号s"
+                  }
+                },
+                {
+                  "BindingInfo": {
+                    "TableName": "t_object_estimate",
+                    "ColumnName": "estimate_customer_id",
+                    "GUID": "1aaee801-71b1-451f-a29c-981af4dabd7e"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=P_見積顧客ID"
+                  }
+                },
+                {
+                  "BindingInfo": {
+                    "TableName": "t_object_estimate",
+                    "ColumnName": "object_name",
+                    "GUID": "49467ac4-1c8e-4146-8e47-db086cee0c8a"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=P_物件名"
+                  }
+                },
+                {
+                  "BindingInfo": {
+                    "TableName": "t_object_estimate",
+                    "ColumnName": "building_number_name",
+                    "GUID": "3898a67a-4eb9-458c-b00a-761fe8763ffc"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=P_連棟番号名"
+                  }
+                },
+                {
+                  "BindingInfo": {
+                    "TableName": "t_object_estimate",
+                    "ColumnName": "product_id",
+                    "GUID": "bdecc2d1-d943-40be-afad-1f4af19bf403"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=Item.P_商品ID"
+                  }
+                },
+                {
+                  "BindingInfo": {
+                    "TableName": "t_object_estimate",
+                    "ColumnName": "product_name",
+                    "GUID": "03994d17-6c26-40dc-8ff6-63869020e1d4"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=Item.P_商品名"
+                  }
+                },
+                {
+                  "BindingInfo": {
+                    "TableName": "t_object_estimate",
+                    "ColumnName": "detailed_description",
+                    "GUID": "a985c69a-69fe-4283-8e1f-50a8ddb810d6"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=Item.P_明細摘要"
+                  }
+                },
+                {
+                  "BindingInfo": {
+                    "TableName": "t_object_estimate",
+                    "ColumnName": "quantity",
+                    "GUID": "e76aee5e-a62c-4b30-8d35-8a49dbdbba4b"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=Item.P_数量"
+                  }
+                },
+                {
+                  "BindingInfo": {
+                    "TableName": "t_object_estimate",
+                    "ColumnName": "quantity_unit",
+                    "GUID": "c70e4465-069c-487e-8717-85397be237b3"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=Item.P_単位"
+                  }
+                },
+                {
+                  "BindingInfo": {
+                    "TableName": "t_object_estimate",
+                    "ColumnName": "excluding_tax_amount",
+                    "GUID": "99aa6798-52db-4348-8d9e-71b419d838d9"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=Item.P_金額"
+                  }
+                },
+                {
+                  "BindingInfo": {
+                    "TableName": "t_object_estimate",
+                    "ColumnName": "tax_amount",
+                    "GUID": "8f580d8c-0143-4db6-91de-071dc976e322"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=V_消費税額"
+                  }
+                },
+                {
+                  "BindingInfo": {
+                    "TableName": "t_object_estimate",
+                    "ColumnName": "estimate_amount",
+                    "GUID": "a2dc70a7-2b4c-4bc9-a1fe-52a9d166ec2f"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=V_見積金額"
+                  }
+                },
+                {
+                  "BindingInfo": {
+                    "TableName": "t_object_estimate",
+                    "ColumnName": "estimate_conditions",
+                    "GUID": "27344d7a-358d-46ad-af63-d2b3c0e1ab96"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=P_見積条件"
+                  }
+                },
+                {
+                  "BindingInfo": {
+                    "TableName": "t_object_estimate",
+                    "ColumnName": "last_updated_label",
+                    "GUID": "bd27f055-83e4-4544-bb92-240e58b0227f"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=最終更新ラベル"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

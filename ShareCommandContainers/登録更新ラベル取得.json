@@ -1,0 +1,111 @@
+{
+  "ID": "c15b9237-4b23-4ae9-a1be-307e7037b59f",
+  "Name": "登録更新ラベル取得",
+  "Returns": [
+    {
+      "ID": "5d7cdb02-0832-4525-a606-1234055c426e",
+      "Name": "R_ラベル名"
+    },
+    {
+      "ID": "026d689c-aa25-4249-9b98-de13f566bacc",
+      "Name": "R_外部ユーザーフラグ"
+    }
+  ],
+  "Commands": [
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "ユーザーID",
+      "ParameterValue": "%CurrentUser.user_id%",
+      "ID": "b1d5d9f58e7946e8bfcfc9d295b76e8b"
+    },
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "ユーザー情報",
+      "TableValue": {
+        "TableName": "m_user",
+        "TableValueType": 1,
+        "BindingInfos": [
+          {
+            "GUID": "d9c7b662-a375-4f86-b785-03dd4078ec23",
+            "BindingInfo": {
+              "TableName": "m_user",
+              "ColumnName": "user_name",
+              "GUID": "38de33e4-7dda-40c2-8f8a-13e0fde6f343"
+            },
+            "ColumnName": "ユーザー名"
+          },
+          {
+            "GUID": "9d6a0a06-99e6-4b84-8cda-f04ed9cac90f",
+            "BindingInfo": {
+              "TableName": "m_user",
+              "ColumnName": "customer_id",
+              "GUID": "975b3e7a-4fc3-4dd9-9b21-7c8714a0fca8",
+              "RelationBinding": {
+                "RelatedTable": "m_customer",
+                "RelatedColumn": "customer_id",
+                "DisplayColumn": "customer_abbr"
+              }
+            },
+            "ColumnName": "顧客名略称"
+          },
+          {
+            "GUID": "ff78ac88-de9f-40cb-9136-843e76e49ed4",
+            "BindingInfo": {
+              "TableName": "m_user",
+              "ColumnName": "customer_id",
+              "GUID": "cd95a707-3bd6-4106-9cd0-5156a4c4e386",
+              "RelationBinding": {
+                "RelatedTable": "m_customer",
+                "RelatedColumn": "customer_id",
+                "DisplayColumn": "main_office_flg"
+              }
+            },
+            "ColumnName": "本社フラグ"
+          }
+        ],
+        "SqlCondition": {
+          "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+          "ColumnBindingInfo": {
+            "TableName": "m_user",
+            "ColumnName": "user_id",
+            "GUID": "6a437c2e-aaea-4f9e-8782-6bfef8496cc7"
+          },
+          "Value": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=ユーザーID"
+          }
+        },
+        "NullFormulaValueQueryPolicy": 0
+      },
+      "ID": "e02d738023364fc499322b647e1f11e7"
+    },
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "ラベル名",
+      "ParameterValue": {
+        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+        "SerializeProperty": "=TEXT(NOW(),\"yyyy/mm/dd hh:mm\")&\"　\"&ユーザー情報.顧客名略称&\" \"&ユーザー情報.ユーザー名"
+      },
+      "ID": "562938ea6e874d62a3eba22f7586934e"
+    },
+    {
+      "$type": "Forguncy.Model.ReturnCommand, ServerDesignerCommon",
+      "CustomReturns": [
+        {
+          "ReturnPropertyName": "R_ラベル名",
+          "Value": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=ラベル名"
+          }
+        },
+        {
+          "ReturnPropertyName": "R_外部ユーザーフラグ",
+          "Value": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=IF(ユーザー情報.本社フラグ<>1,1,0)"
+          }
+        }
+      ]
+    }
+  ]
+}

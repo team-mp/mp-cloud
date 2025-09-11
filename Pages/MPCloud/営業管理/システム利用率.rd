@@ -74,7 +74,8 @@
     "4,64": "IF(BJ5>=\"202504\",SUMIFS(BZ3,BV3,1,BR2,BJ5),\"\")",
     "4,62": "TEXT(BI5,\"'yy/mm\")",
     "10,65": "IF(BJ11>=\"202504\",BM11/BL11,\"\")",
-    "4,60": "EDATE(BI3,-11)"
+    "4,60": "EDATE(BI3,-11)",
+    "22,60": "ODATA(\"m_user_group?$select=user_group_key&$filter=sales_user_flg eq 1\")"
   },
   "CustomNames": [
     {

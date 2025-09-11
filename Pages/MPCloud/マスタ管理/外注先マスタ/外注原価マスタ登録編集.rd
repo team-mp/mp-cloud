@@ -1,8 +1,8 @@
 {
   "PageType": 0,
-  "ColumnCount": 49,
-  "RowCount": 40,
+  "ColumnCount": 51,
+  "RowCount": 28,
   "Formulas": {
-    "20,3": "IF(AQ15<>\"\",\"最終更新日時：\"&AQ15,\"\")"
+    "22,3": "IF(AS17<>\"\",\"最終更新日時：\"&AS17,\"\")"
   }
 }
