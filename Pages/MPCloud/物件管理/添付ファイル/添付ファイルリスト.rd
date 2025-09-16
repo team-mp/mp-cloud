@@ -1,9 +1,9 @@
 {
   "PageType": 0,
   "ColumnCount": 139,
-  "RowCount": 30,
+  "RowCount": 29,
   "Formulas": {
-    "27,4": "\"全ファイル数：\"&TEXT(EC10,\"#,##0\")"
+    "26,4": "\"全ファイル数：\"&TEXT(EC10,\"#,##0\")"
   },
   "CustomNames": [
     {

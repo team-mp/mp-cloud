@@ -1,7 +1,7 @@
 {
   "PageType": 0,
   "ColumnCount": 66,
-  "RowCount": 38,
+  "RowCount": 32,
   "Formulas": {
     "12,60": "IF(BI7>0,MID(K2,BI7+1,1000),\"\")",
     "6,60": "IF(IFERROR(FIND(\"　\",K2),0)>0,FIND(\"　\",K2),IF(IFERROR(FIND(\" \",K2),0)>0,FIND(\" \",K2),0))",

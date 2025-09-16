@@ -1,0 +1,160 @@
+{
+  "Name": "工事見積データ削除処理",
+  "Enabled": true,
+  "Triggers": [
+    {
+      "$type": "Forguncy.SaveLoad.PostRequestTriggerSaveData, ServerDesignerCommon",
+      "Permission": {
+        "PermissionData": {
+          "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionData, Forguncy.RbacPermission.Core",
+          "permissionResource": {
+            "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionResource, Forguncy.RbacPermission.Core"
+          },
+          "permissionBindings": [
+            {
+              "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionBinding, Forguncy.RbacPermission.Core",
+              "roleNames": [
+                "FGC_LoginUser"
+              ]
+            }
+          ]
+        }
+      },
+      "Parameters": [
+        {
+          "Name": "P_工事見積ID",
+          "DataValidationInfo": {}
+        }
+      ]
+    }
+  ],
+  "Commands": [
+    {
+      "$type": "Forguncy.Model.ServerTransactionCommand, ServerDesignerCommon",
+      "CommandList": [
+        {
+          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+          "ParameterName": "工事見積情報",
+          "TableValue": {
+            "TableName": "t_object_construction_estimate",
+            "TableValueType": 1,
+            "BindingInfos": [
+              {
+                "GUID": "e6cc453a-8324-4508-a907-d1311d7cc467",
+                "BindingInfo": {
+                  "TableName": "t_object_construction_estimate",
+                  "ColumnName": "object_order_id",
+                  "GUID": "0a001a75-01de-4c63-b2ba-f28133333a71"
+                },
+                "ColumnName": "申込ID"
+              },
+              {
+                "GUID": "68e53ed4-d93f-4592-9c46-bf57a0c74582",
+                "BindingInfo": {
+                  "TableName": "t_object_construction_estimate",
+                  "ColumnName": "object_order_id",
+                  "GUID": "0c7fb26b-6a53-4b47-a3ac-14bbfe4de3fa",
+                  "RelationBinding": {
+                    "RelatedTable": "t_object_order",
+                    "RelatedColumn": "object_order_id",
+                    "DisplayColumn": "latest_construction_id"
+                  }
+                },
+                "ColumnName": "最新工事ID"
+              },
+              {
+                "GUID": "ba77d410-5edc-4b66-9fa5-b47ef8f2fa88",
+                "BindingInfo": {
+                  "TableName": "t_object_construction_estimate",
+                  "ColumnName": "object_order_id",
+                  "GUID": "03071645-c512-461d-af51-b02469496375",
+                  "RelationBinding": {
+                    "RelatedTable": "t_object_order",
+                    "RelatedColumn": "object_order_id",
+                    "DisplayColumn": "latest_construction_id",
+                    "NextRelationBinding": {
+                      "RelatedTable": "t_object_construction",
+                      "RelatedColumn": "construction_id",
+                      "DisplayColumn": "construction_status_id",
+                      "NextRelationBinding": {
+                        "RelatedTable": "m_construction_status",
+                        "RelatedColumn": "construction_status_id",
+                        "DisplayColumn": "construction_complete_flg"
+                      }
+                    }
+                  }
+                },
+                "ColumnName": "工事完了フラグ"
+              }
+            ],
+            "SqlCondition": {
+              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+              "ColumnBindingInfo": {
+                "TableName": "t_object_construction_estimate",
+                "ColumnName": "construction_estimate_id",
+                "GUID": "a9ee7828-2d24-4d02-b5b7-711ba551ebd3"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_工事見積ID"
+              }
+            }
+          },
+          "ID": "ed27b45e1fb0422686fd95881ac9a626"
+        },
+        {
+          "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+          "TableName": "t_object_construction_estimate",
+          "UpdateType": "delete",
+          "ShowConfirm": true,
+          "ConfirmText": "本当に削除してもよろしいですか？",
+          "RowsToUpdate": 1,
+          "RowsToUpdateCondition": {
+            "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+            "ColumnBindingInfo": {
+              "TableName": "t_object_construction_estimate",
+              "ColumnName": "construction_estimate_id",
+              "GUID": "a138dbe0-e1ea-423e-b324-4b32a5c93127"
+            },
+            "Value": {
+              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+              "SerializeProperty": "=P_工事見積ID"
+            }
+          }
+        },
+        {
+          "$type": "Forguncy.Model.RequestServerCommand, ServerDesignerCommon",
+          "ServerCommandName": "工事見積最大ステータス更新処理",
+          "Parameters": [
+            {
+              "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+              "ParamName": "P_申込ID",
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=工事見積情報.申込ID"
+              }
+            },
+            {
+              "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+              "ParamName": "P_工事ID",
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=工事見積情報.最新工事ID"
+              }
+            },
+            {
+              "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+              "ParamName": "P_工事完了フラグ",
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=工事見積情報.工事完了フラグ"
+              }
+            }
+          ],
+          "RefreshAfterFinish": true,
+          "CheckDataValidation": true
+        }
+      ]
+    }
+  ]
+}

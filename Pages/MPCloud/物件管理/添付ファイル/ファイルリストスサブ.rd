@@ -1,11 +1,11 @@
 {
   "PageType": 0,
   "ColumnCount": 160,
-  "RowCount": 38,
+  "RowCount": 37,
   "Formulas": {
     "22,116": "ODATA(\"t_object_attachment/$count?$filter=object_id eq \"&IF(ISBLANK(CZ5),\"null\",CZ5)&\" and hidden_flg eq 1 and active_flg eq 1\")",
     "8,147": "IF(DX9<>DY9,1,0)",
-    "22,103": "SUM(DM31)",
+    "22,103": "SUM(DM30)",
     "8,146": "IF(EI9<>EJ9,1,0)",
     "16,116": "TEXTJOINIF(\",\",TRUE,CZ9,1,DB9)",
     "16,110": "COUNT(DB9)",
@@ -33,7 +33,7 @@
   "CustomNames": [
     {
       "Name": "コメント表示フラグ",
-      "Formula": "ファイルリストスサブ!$CZ$37"
+      "Formula": "ファイルリストスサブ!$CZ$36"
     },
     {
       "Name": "新規アップロードボタン",
@@ -49,15 +49,15 @@
     },
     {
       "Name": "選択解析ID",
-      "Formula": "ファイルリストスサブ!$DZ$26"
+      "Formula": "ファイルリストスサブ!$DZ$25"
     },
     {
       "Name": "選択外販ID",
-      "Formula": "ファイルリストスサブ!$EF$26"
+      "Formula": "ファイルリストスサブ!$EF$25"
     },
     {
       "Name": "選択工事ID",
-      "Formula": "ファイルリストスサブ!$DZ$31"
+      "Formula": "ファイルリストスサブ!$DZ$30"
     },
     {
       "Name": "選択工事見積ID",
@@ -77,7 +77,7 @@
     },
     {
       "Name": "選択転圧ID",
-      "Formula": "ファイルリストスサブ!$DZ$28"
+      "Formula": "ファイルリストスサブ!$DZ$27"
     },
     {
       "Name": "選択付保ID",
@@ -101,7 +101,7 @@
     },
     {
       "Name": "添付コメントタイトル",
-      "Formula": "ファイルリストスサブ!$E$28"
+      "Formula": "ファイルリストスサブ!$E$27"
     },
     {
       "Name": "非表示ファイル数",
@@ -109,7 +109,7 @@
     },
     {
       "Name": "縮小表示フラグ",
-      "Formula": "ファイルリストスサブ!$DS$30"
+      "Formula": "ファイルリストスサブ!$DS$29"
     }
   ]
 }
