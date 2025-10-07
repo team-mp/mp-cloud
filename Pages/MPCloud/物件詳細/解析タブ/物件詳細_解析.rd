@@ -3,27 +3,28 @@
   "ColumnCount": 125,
   "RowCount": 65,
   "Formulas": {
-    "28,117": "IF(AND(CR29=0,CU29=1),CF34,\"\")",
-    "28,116": "IFERROR(ODATA(\"v_analysis_later_count?$select=後発件数&$filter=解析ID eq \"&IF(ISBLANK(BB29),\"null\",BB29)),0)",
+    "28,119": "IF(AND(CR29=0,CU29=1),BE37,\"\")",
+    "28,117": "IF(OR(CT29=1,CQ29=1,CS29=1,CR29=1),1,0)",
     "33,50": "COUNT(BB29)",
     "15,8": "AY18",
     "15,25": "BA18",
-    "28,115": "IF(OR(CT29=1,CQ29=1,CS29=1,CR29=1),1,0)",
+    "28,118": "IFERROR(ODATA(\"v_analysis_later_count?$select=後発件数&$filter=解析ID eq \"&IF(ISBLANK(BB29),\"null\",BB29)),0)",
     "15,18": "AZ18",
-    "28,114": "IF(DJ29<>\"\",\"最終更新日時：\"&DJ29,\"\")",
-    "28,107": "\"解析ファイル(\"&DC29&\")\"",
+    "28,116": "IF(DL29<>\"\",\"最終更新日時：\"&DL29,\"\")",
+    "28,109": "\"解析ファイル(\"&DE29&\")\"",
     "15,35": "BB18",
-    "28,106": "IFERROR(ODATA(\"v_analysis_file_count?$select=ファイル数&$filter=解析ID eq \"&IF(ISBLANK(BB29),\"null\",BB29)),0)",
-    "28,104": "改良判定時基礎図必要フラグ",
-    "28,103": "沈下量検討書必要フラグ",
-    "28,105": "工事見積不要フラグ",
+    "28,108": "IFERROR(ODATA(\"v_analysis_file_count?$select=ファイル数&$filter=解析ID eq \"&IF(ISBLANK(BB29),\"null\",BB29)),0)",
+    "28,106": "工事見積不要フラグ",
+    "28,105": "改良判定時基礎図必要フラグ",
+    "28,104": "沈下量検討書必要フラグ",
     "28,100": "IFERROR(ODATA(\"v_analysis_product_summary?$select=仕入合計&$filter=解析ID eq \"&IF(ISBLANK(BB29),\"null\",BB29)),0)",
     "28,99": "IFERROR(ODATA(\"v_analysis_product_summary?$select=売上合計&$filter=解析ID eq \"&IF(ISBLANK(BB29),\"null\",BB29)),0)",
     "28,88": "IF(CI29<>\"\",CJ29,\"\")",
-    "28,54": "$AY$34-ROW(BA29)+1"
+    "28,54": "$AY$34-ROW(BA29)+1",
+    "28,107": "調査データ添付フラグ"
   },
   "ArrayFormulas": {
-    "17,50,1,6": "IFERROR(ODATA(\"v_group_customer_default?$select=解析時見積添付フラグ,検討書必要フラグ,転圧判定不可フラグ,液状化判定必要フラグ,改良判定時基礎図必要フラグ,工事見積不要フラグ&$filter=グループID eq \"&IF(ISBLANK(BK22),\"null\",BK22)&\" and 顧客ID eq \"&IF(ISBLANK(BR22),\"null\",BR22)),\"\")"
+    "17,50,1,7": "IFERROR(ODATA(\"v_group_customer_default?$select=解析時見積添付フラグ,検討書必要フラグ,転圧判定不可フラグ,液状化判定必要フラグ,改良判定時基礎図必要フラグ,工事見積不要フラグ,調査データ添付フラグ&$filter=グループID eq \"&IF(ISBLANK(BK22),\"null\",BK22)&\" and 顧客ID eq \"&IF(ISBLANK(BR22),\"null\",BR22)),\"\")"
   },
   "CustomNames": [
     {
@@ -149,6 +150,18 @@
     {
       "Name": "工事見積不要フラグ",
       "Formula": "物件詳細_解析!$BD$18"
+    },
+    {
+      "Name": "調査データ添付フラグ",
+      "Formula": "物件詳細_解析!$BE$18"
+    },
+    {
+      "Name": "調査データファイル属性ID",
+      "Formula": "物件詳細_解析!$CE$34"
+    },
+    {
+      "Name": "転圧設計図ファイル属性ID",
+      "Formula": "物件詳細_解析!$CN$34"
     }
   ]
 }

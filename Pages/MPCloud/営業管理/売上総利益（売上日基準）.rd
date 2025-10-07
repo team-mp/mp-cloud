@@ -92,15 +92,15 @@
   "CustomNames": [
     {
       "Name": "検索年月",
-      "Formula": "売上総利益!$BI$19"
+      "Formula": "売上総利益（売上日基準）!$BI$19"
     },
     {
       "Name": "検索営業担当者ID",
-      "Formula": "売上総利益!$BK$19"
+      "Formula": "売上総利益（売上日基準）!$BK$19"
     },
     {
       "Name": "起点月",
-      "Formula": "売上総利益!$BI$3"
+      "Formula": "売上総利益（売上日基準）!$BI$3"
     }
   ]
 }
