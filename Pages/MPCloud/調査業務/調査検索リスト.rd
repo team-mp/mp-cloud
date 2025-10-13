@@ -1,26 +1,26 @@
 {
   "PageType": 0,
-  "ColumnCount": 250,
+  "ColumnCount": 288,
   "RowCount": 30,
   "Formulas": {
-    "29,1": "\"表示データ件数：\"&TEXT(HZ16,\"#,##0\")&\"件\"",
-    "18,233": "COUNTIF(HL7,1)",
-    "21,227": "TEXTJOINIF(\",\",TRUE,HL7,1,GN7)",
-    "21,233": "HZ16-HZ19",
-    "15,227": "IF(HT10>0,MID(HT7,HT10+1,1000),\"\")",
-    "15,233": "COUNT(GN7)",
-    "6,227": "TRIM(O2)",
-    "12,227": "IF(HT10>0,LEFT(HT7,HT10-1),IF(HT7<>\"\",HT7,\"\"))",
-    "9,227": "IF(IFERROR(FIND(\"　\",HT7),0)>0,FIND(\"　\",HT7),IF(IFERROR(FIND(\" \",HT7),0)>0,FIND(\" \",HT7),0))"
+    "29,1": "\"表示データ件数：\"&TEXT(JL16,\"#,##0\")&\"件\"",
+    "15,265": "IF(JF10>0,MID(JF7,JF10+1,1000),\"\")",
+    "21,271": "JL16-JL19",
+    "9,265": "IF(IFERROR(FIND(\"　\",JF7),0)>0,FIND(\"　\",JF7),IF(IFERROR(FIND(\" \",JF7),0)>0,FIND(\" \",JF7),0))",
+    "6,265": "TRIM(V2)",
+    "15,271": "COUNT(GW7)",
+    "18,271": "COUNTIF(IS7,1)",
+    "12,265": "IF(JF10>0,LEFT(JF7,JF10-1),IF(JF7<>\"\",JF7,\"\"))",
+    "21,265": "TEXTJOINIF(\",\",TRUE,IS7,1,GW7)"
   },
   "CustomNames": [
     {
       "Name": "検索フラグ",
-      "Formula": "調査検索リスト!$HZ$7"
+      "Formula": "調査検索リスト!$JL$7"
     },
     {
       "Name": "検索_調査ステータスID",
-      "Formula": "調査検索リスト!$HZ$13"
+      "Formula": "調査検索リスト!$JL$13"
     },
     {
       "Name": "検索リストページタイトル",
@@ -28,7 +28,7 @@
     },
     {
       "Name": "ロケーションURL",
-      "Formula": "調査検索リスト!$IG$13"
+      "Formula": "調査検索リスト!$JS$13"
     }
   ]
 }

@@ -3,39 +3,31 @@
   "Columns": [
     {
       "$type": "Forguncy.SaveLoad.BindingColumnSaveData, ServerDesignerCommon",
-      "DefaultValue": 0,
-      "Required": true,
-      "DatabaseColumnType": "bigint",
+      "DatabaseColumnType": "decimal",
       "MaxLength": -1,
       "Name": "解析_解析待ち件数",
-      "ColumnType": "System.Int64, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+      "ColumnType": "System.Decimal, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
     },
     {
       "$type": "Forguncy.SaveLoad.BindingColumnSaveData, ServerDesignerCommon",
-      "DefaultValue": 0,
-      "Required": true,
-      "DatabaseColumnType": "bigint",
+      "DatabaseColumnType": "decimal",
       "MaxLength": -1,
       "Name": "解析_解析保留件数",
-      "ColumnType": "System.Int64, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+      "ColumnType": "System.Decimal, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
     },
     {
       "$type": "Forguncy.SaveLoad.BindingColumnSaveData, ServerDesignerCommon",
-      "DefaultValue": 0,
-      "Required": true,
-      "DatabaseColumnType": "bigint",
+      "DatabaseColumnType": "decimal",
       "MaxLength": -1,
       "Name": "解析_業務対応中件数",
-      "ColumnType": "System.Int64, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+      "ColumnType": "System.Decimal, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
     },
     {
       "$type": "Forguncy.SaveLoad.BindingColumnSaveData, ServerDesignerCommon",
-      "DefaultValue": 0,
-      "Required": true,
-      "DatabaseColumnType": "bigint",
+      "DatabaseColumnType": "decimal",
       "MaxLength": -1,
       "Name": "解析_完了待ち件数",
-      "ColumnType": "System.Int64, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+      "ColumnType": "System.Decimal, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
     }
   ],
   "ExternalDatabaseInfo": {
@@ -44,7 +36,7 @@
     "ConnectionId": "MySql2",
     "SourceTableName": "v_analysis_status_count",
     "SourceTableSchema": "",
-    "CreateViewSql": "select count((case when (`sub`.`analysis_wait_flg` = 1) then 1 end)) AS `解析_解析待ち件数`,count((case when (`sub`.`analysis_pending_flg` = 1) then 1 end)) AS `解析_解析保留件数`,count((case when (`sub`.`office_work_flg` = 1) then 1 end)) AS `解析_業務対応中件数`,count((case when (`sub`.`analysis_complete_wait_flg` = 1) then 1 end)) AS `解析_完了待ち件数` from (`t_object_analysis` `main` join `m_analysis_status` `sub` on((`main`.`analysis_status_id` = `sub`.`analysis_status_id`))) where (exists(select `t_object_order`.`object_order_id` from `t_object_order` where ((`t_object_order`.`object_order_id` = `main`.`object_order_id`) and (`t_object_order`.`active_flg` = 1))) and ((`sub`.`analysis_wait_flg` = 1) or (`sub`.`analysis_pending_flg` = 1) or (`sub`.`office_work_flg` = 1) or (`sub`.`analysis_complete_wait_flg` = 1)))",
+    "CreateViewSql": "SELECT\r\n     SUM(sub.analysis_wait_flg = 1) AS 解析_解析待ち件数\r\n    ,SUM(sub.analysis_pending_flg = 1) AS 解析_解析保留件数\r\n    ,SUM(sub.office_work_flg = 1) AS 解析_業務対応中件数\r\n    ,SUM(sub.analysis_complete_wait_flg = 1) AS 解析_完了待ち件数 \r\nFROM t_object_analysis main\r\nINNER JOIN m_analysis_status sub ON main.analysis_status_id = sub.analysis_status_id\r\nWHERE EXISTS(SELECT object_order_id\r\n             FROM t_object_order\r\n             WHERE t_object_order.object_order_id = main.object_order_id\r\n             AND t_object_order.active_flg = 1)\r\nAND(sub.analysis_wait_flg = 1\r\n OR sub.analysis_pending_flg = 1\r\n OR sub.office_work_flg = 1\r\n OR sub.analysis_complete_wait_flg = 1)",
     "ViewInfo": {
       "ViewName": "v_analysis_status_count",
       "QueryColumns": []

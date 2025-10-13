@@ -3,78 +3,16 @@
   "ColumnCount": 137,
   "RowCount": 85,
   "Formulas": {
-    "80,83": "SUM(CN80)",
-    "79,83": "SUM(CM80)",
-    "78,83": "SUM(CL80)",
-    "76,83": "SUM(CO75)",
-    "19,83": "SUM(CO19)",
-    "75,83": "SUM(CN75)",
-    "37,83": "SUM(CU31)",
-    "30,83": "SUM(CN31)",
-    "74,83": "SUM(CM75)",
-    "31,83": "SUM(CO31)",
-    "18,83": "SUM(CN19)",
-    "73,83": "SUM(CL75)",
-    "40,83": "SUM(CL43)",
-    "71,83": "SUM(CQ69)",
-    "70,83": "SUM(CP69)",
-    "69,83": "SUM(CO69)",
-    "34,83": "SUM(CR31)",
-    "17,83": "SUM(CM19)",
-    "33,83": "SUM(CQ31)",
-    "67,83": "SUM(CM69)",
-    "10,83": "SUM(CL13)",
-    "66,83": "SUM(CL69)",
-    "64,83": "SUM(CY54)",
-    "63,83": "SUM(CX54)",
-    "62,83": "SUM(CW54)",
-    "36,83": "SUM(CT31)",
-    "23,83": "SUM(CM25)",
-    "61,83": "SUM(CV54)",
-    "16,83": "SUM(CL19)",
-    "60,83": "SUM(CU54)",
-    "59,83": "SUM(CT54)",
-    "58,83": "SUM(CS54)",
-    "25,83": "SUM(CO25)",
-    "20,83": "SUM(CP19)",
-    "38,83": "SUM(CV31)",
-    "32,83": "SUM(CP31)",
-    "57,83": "SUM(CR54)",
-    "56,83": "SUM(CQ54)",
-    "55,83": "SUM(CP54)",
-    "54,83": "SUM(CO54)",
-    "53,83": "SUM(CN54)",
-    "11,83": "SUM(CM13)",
-    "12,83": "SUM(CN13)",
-    "22,83": "SUM(CL25)",
-    "52,83": "SUM(CM54)",
-    "51,83": "SUM(CL54)",
     "22,124": "DO28",
     "10,124": "DK24",
     "19,113": "DJ28",
     "28,124": "DQ28",
-    "13,83": "SUM(CO13)",
     "25,124": "TEXTJOIN(\",\",TRUE,DJ37)",
-    "35,83": "SUM(CS31)",
-    "14,83": "SUM(CP13)",
-    "29,83": "SUM(CM31)",
-    "49,83": "SUM(CT43)",
-    "24,83": "SUM(CN25)",
-    "48,83": "SUM(CS43)",
-    "47,83": "SUM(CR43)",
-    "28,83": "SUM(CL31)",
     "16,124": "DM28",
-    "46,83": "SUM(CQ43)",
     "13,124": "DL28",
     "19,124": "DN28",
     "31,113": "IFERROR(ODATA(\"m_group?$select=builder_notice_flg&$filter=group_id eq \"&IF(ISBLANK(DO28),\"null\",DO28)),0)",
-    "45,83": "SUM(CP43)",
-    "44,83": "SUM(CO43)",
-    "42,83": "SUM(CN43)",
-    "41,83": "SUM(CM43)",
-    "5,89": "IFERROR(GETURLQUERYVALUE(\"pagename\"),\"\")",
-    "43,83": "SUM(CU43)",
-    "68,83": "SUM(CN69)"
+    "5,89": "IFERROR(GETURLQUERYVALUE(\"pagename\"),\"\")"
   },
   "ArrayFormulas": {
     "23,113,1,3": "ODATA(\"m_user?$select=customer_id,user_authority_id,user_group_keys&$filter=user_id eq \"&IF(ISBLANK(DJ17),\"null\",DJ17))",
@@ -390,10 +328,6 @@
       "Formula": "メインフォーム_サブ!$DA$69"
     },
     {
-      "Name": "保証_プラン決定待ち件数",
-      "Formula": "メインフォーム_サブ!$CF$70"
-    },
-    {
       "Name": "保証_保証確認中件数",
       "Formula": "メインフォーム_サブ!$CF$68"
     },
@@ -460,6 +394,14 @@
     {
       "Name": "保証_発注書待ち件数",
       "Formula": "メインフォーム_サブ!$CF$69"
+    },
+    {
+      "Name": "保証_保証保留件数",
+      "Formula": "メインフォーム_サブ!$CF$70"
+    },
+    {
+      "Name": "解析_本判定依頼待ち",
+      "Formula": "メインフォーム_サブ!$CF$27"
     }
   ]
 }

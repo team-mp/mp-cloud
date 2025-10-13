@@ -1,0 +1,394 @@
+{
+  "Name": "解析用EXCELアップロード処理",
+  "Enabled": true,
+  "Triggers": [
+    {
+      "$type": "Forguncy.SaveLoad.PostRequestTriggerSaveData, ServerDesignerCommon",
+      "Permission": {
+        "PermissionData": {
+          "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionData, Forguncy.RbacPermission.Core",
+          "permissionResource": {
+            "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionResource, Forguncy.RbacPermission.Core"
+          },
+          "permissionBindings": [
+            {
+              "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionBinding, Forguncy.RbacPermission.Core",
+              "roleNames": [
+                "FGC_LoginUser"
+              ]
+            }
+          ]
+        }
+      },
+      "Parameters": [
+        {
+          "Name": "P_解析EXCELバージョンID",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_添付ファイル",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_バージョンNo",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_説明",
+          "DataValidationInfo": {}
+        }
+      ]
+    }
+  ],
+  "Commands": [
+    {
+      "$type": "Forguncy.Model.ServerTransactionCommand, ServerDesignerCommon",
+      "CommandList": [
+        {
+          "$type": "Forguncy.Model.RequestServerCommand, ServerDesignerCommon",
+          "ServerCommandName": "登録更新ラベル取得",
+          "Parameters": [
+            {
+              "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+              "ParamName": "P_ユーザーID"
+            }
+          ],
+          "ReturnPropertiesTo": [
+            {
+              "ResultPropertyName": "R_ラベル名",
+              "ResultTo": {
+                "SerializeProperty": "最終更新ラベル"
+              }
+            },
+            {
+              "ResultPropertyName": "R_外部ユーザーフラグ"
+            }
+          ],
+          "RefreshAfterFinish": true,
+          "CheckDataValidation": true
+        },
+        {
+          "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+          "ConditionAndCommandPairList": [
+            {
+              "Condition": {
+                "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                "param": {
+                  "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                  "ParamObject": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=P_解析EXCELバージョンID"
+                  }
+                },
+                "value": "%Null%"
+              },
+              "CommandList": [
+                {
+                  "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                  "ParameterName": "環境変数",
+                  "TableValue": {
+                    "TableName": "m_environment",
+                    "TableValueType": 1,
+                    "BindingInfos": [
+                      {
+                        "GUID": "f3990023-ab97-45ee-967d-8bca5b6aa663",
+                        "BindingInfo": {
+                          "TableName": "m_environment",
+                          "ColumnName": "app_name",
+                          "GUID": "19eb89ae-83c8-4451-bce1-3b6cc3fceeae"
+                        },
+                        "ColumnName": "アプリ名"
+                      },
+                      {
+                        "GUID": "9f6c0e26-ec2c-4ee3-a1a8-de111e1845fa",
+                        "BindingInfo": {
+                          "TableName": "m_environment",
+                          "ColumnName": "file_temp_path",
+                          "GUID": "e524a238-7087-4f66-959b-9b60a222392f"
+                        },
+                        "ColumnName": "ファイルTempパス"
+                      },
+                      {
+                        "GUID": "a7a8afa1-55bd-486f-aa40-e581d8d44b77",
+                        "BindingInfo": {
+                          "TableName": "m_environment",
+                          "ColumnName": "dropbox_folder_path",
+                          "GUID": "ce21d9d7-b6ce-49ca-9c84-3fe94a302728"
+                        },
+                        "ColumnName": "DropBoxフォルダパス"
+                      }
+                    ],
+                    "SqlCondition": {
+                      "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                      "ColumnBindingInfo": {
+                        "TableName": "m_environment",
+                        "ColumnName": "ID",
+                        "GUID": "7b21a54d-3932-4880-9a1a-a234ff487593"
+                      },
+                      "Value": "1"
+                    }
+                  },
+                  "ID": "ad3ca72a63724eb58b212a708bb5a20b"
+                },
+                {
+                  "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                  "ParameterName": "DropBoxフォルダパス名",
+                  "ParameterValue": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=環境変数.DropBoxフォルダパス"
+                  },
+                  "ID": "b7b3263d7c4e415f95a2fa7fbc9cb358"
+                },
+                {
+                  "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                  "ParameterName": "保存フォルダ名",
+                  "ParameterValue": "解析用EXCEL\\",
+                  "ID": "fffeda5271e343f792fad1cbd48c7584"
+                },
+                {
+                  "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                  "ParameterName": "保存先パス名",
+                  "ParameterValue": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=DropBoxフォルダパス名&保存フォルダ名"
+                  },
+                  "ID": "98a50fb4daab46f092a2df542b46b71c"
+                },
+                {
+                  "$type": "OperateFilesCommand.CreateFolderCommand, OperateFilesCommand",
+                  "FolderPath": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=保存先パス名"
+                  }
+                },
+                {
+                  "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                  "ParameterName": "ファイルTempパス名",
+                  "ParameterValue": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=環境変数.ファイルTempパス&環境変数.アプリ名&\"\\Temp\\\""
+                  },
+                  "ID": "e9fdb1ea325c4f8a944150323041d9f7"
+                },
+                {
+                  "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                  "ParameterName": "元ファイル名",
+                  "ParameterValue": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=MID(SUBSTITUTE(P_添付ファイル,\"|\",\"\"),38,100)"
+                  },
+                  "ID": "0e657f5bd3b249f88ed175f979d67e73"
+                },
+                {
+                  "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                  "ParameterName": "保存元ファイルフルパス名",
+                  "ParameterValue": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=ファイルTempパス名&SUBSTITUTE(P_添付ファイル,\"|\",\"\")"
+                  },
+                  "ID": "15eb3248834c48b08c5af8e787313b7e"
+                },
+                {
+                  "$type": "OperateFilesCommand.GetFileInformation, OperateFilesCommand",
+                  "FilePath": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=保存元ファイルフルパス名"
+                  },
+                  "FileInfomationType": 5,
+                  "ToParameterName": "ファイル有無"
+                },
+                {
+                  "$type": "OperateFilesCommand.GetFileInformation, OperateFilesCommand",
+                  "FilePath": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=保存元ファイルフルパス名"
+                  },
+                  "FileInfomationType": 1,
+                  "ToParameterName": "拡張子"
+                },
+                {
+                  "$type": "OperateFilesCommand.GetFileInformation, OperateFilesCommand",
+                  "FilePath": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=保存元ファイルフルパス名"
+                  },
+                  "FileInfomationType": 6,
+                  "ToParameterName": "ファイルサイズ"
+                },
+                {
+                  "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                  "ParameterName": "保存ファイル名",
+                  "ParameterValue": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=SUBSTITUTE(元ファイル名,拡張子,\"\")&\"_\"&TEXT(P_バージョンNo,\"0.0\")&拡張子"
+                  },
+                  "ID": "9dde9771065e4cd9b11d01ed57fb5c18"
+                },
+                {
+                  "$type": "OperateFilesCommand.MoveFileCommand, OperateFilesCommand",
+                  "FilePath": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=保存元ファイルフルパス名"
+                  },
+                  "TargetFolderPath": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=保存先パス名"
+                  },
+                  "MoveFileName": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=保存ファイル名"
+                  }
+                },
+                {
+                  "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+                  "TableName": "m_analysis_excel_version",
+                  "UpdateType": "add",
+                  "ShowConfirm": false,
+                  "UpdateBindingValues": [
+                    {
+                      "BindingInfo": {
+                        "TableName": "m_analysis_excel_version",
+                        "ColumnName": "file_name",
+                        "GUID": "09fd33cb-787a-4abb-a97f-fbda8d0ed63e"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=元ファイル名"
+                      }
+                    },
+                    {
+                      "BindingInfo": {
+                        "TableName": "m_analysis_excel_version",
+                        "ColumnName": "file_path_name",
+                        "GUID": "af2d79b4-514c-48d8-add7-db8c274be0ea"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=保存先パス名"
+                      }
+                    },
+                    {
+                      "BindingInfo": {
+                        "TableName": "m_analysis_excel_version",
+                        "ColumnName": "save_file_name",
+                        "GUID": "aae1a94a-16ce-4fcb-a2e6-7a1cd75f7c97"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=保存ファイル名"
+                      }
+                    },
+                    {
+                      "BindingInfo": {
+                        "TableName": "m_analysis_excel_version",
+                        "ColumnName": "file_size",
+                        "GUID": "b52df97a-91c0-4224-8370-3ea85f89b58b"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=ファイルサイズ"
+                      }
+                    },
+                    {
+                      "BindingInfo": {
+                        "TableName": "m_analysis_excel_version",
+                        "ColumnName": "version_no",
+                        "GUID": "7a8271a3-eec7-488b-b3e6-31e31c4d7516"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=P_バージョンNo"
+                      }
+                    },
+                    {
+                      "BindingInfo": {
+                        "TableName": "m_analysis_excel_version",
+                        "ColumnName": "description",
+                        "GUID": "ca11ede1-0a48-48a6-a522-62710298ef4b"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=P_説明"
+                      }
+                    },
+                    {
+                      "BindingInfo": {
+                        "TableName": "m_analysis_excel_version",
+                        "ColumnName": "upload_datetime",
+                        "GUID": "07394fcf-0fad-4fc4-9b02-ad8fb4ef54ef"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=NOW()"
+                      }
+                    },
+                    {
+                      "BindingInfo": {
+                        "TableName": "m_analysis_excel_version",
+                        "ColumnName": "upload_label",
+                        "GUID": "5d9b4951-4c30-47f7-9244-a78cff92133b"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=最終更新ラベル"
+                      }
+                    }
+                  ],
+                  "ParamNameToSaveNewRowValue": "New解析EXCEL"
+                }
+              ],
+              "ID": "2463c91e-2ab3-4e27-ae59-63b67c8e30ef"
+            },
+            {
+              "CommandList": [
+                {
+                  "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+                  "TableName": "m_analysis_excel_version",
+                  "ShowConfirm": false,
+                  "RowsToUpdate": 1,
+                  "RowsToUpdateCondition": {
+                    "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                    "ColumnBindingInfo": {
+                      "TableName": "m_analysis_excel_version",
+                      "ColumnName": "analysis_excel_version_id",
+                      "GUID": "73c6c85d-8ddd-485d-96e6-41ef8e5e7cd8"
+                    },
+                    "Value": {
+                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                      "SerializeProperty": "=P_解析EXCELバージョンID"
+                    }
+                  },
+                  "UpdateBindingValues": [
+                    {
+                      "BindingInfo": {
+                        "TableName": "m_analysis_excel_version",
+                        "ColumnName": "version_no",
+                        "GUID": "7883e102-724c-4471-b758-ccd1fbdfaa30"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=P_バージョンNo"
+                      }
+                    },
+                    {
+                      "BindingInfo": {
+                        "TableName": "m_analysis_excel_version",
+                        "ColumnName": "description",
+                        "GUID": "eb25194f-9698-47d5-ae47-91a2073e44bf"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=P_説明"
+                      }
+                    }
+                  ]
+                }
+              ],
+              "ID": "9bd28255-59f4-4288-8ea4-ddf7bc26f626"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
