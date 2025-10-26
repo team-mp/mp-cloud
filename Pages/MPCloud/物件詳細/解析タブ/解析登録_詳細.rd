@@ -9,7 +9,8 @@
     "8,52": "住宅事業者ID",
     "5,52": "グループID",
     "17,52": "ODATA(\"m_user_group?$select=user_group_key&$filter=soumu_user_flg eq 1\")",
-    "2,76": "ODATA(\"v_object_multiple_count?$select=連棟カウント&$filter=物件ID eq \"&IF(ISBLANK(BY6),\"null\",BY6))"
+    "2,76": "ODATA(\"v_object_multiple_count?$select=連棟カウント&$filter=物件ID eq \"&IF(ISBLANK(BY6),\"null\",BY6))",
+    "31,52": "ODATA(\"t_object_order?$select=latest_survey_id&$filter=object_order_id eq \"&IF(ISBLANK(BA3),\"null\",BA3))"
   },
   "ArrayFormulas": {
     "17,60,1,6": "IFERROR(ODATA(\"v_group_customer_default?$select=解析時見積添付フラグ,検討書必要フラグ,転圧判定不可フラグ,液状化判定必要フラグ,改良判定時基礎図必要フラグ,工事見積不要フラグ&$filter=グループID eq \"&IF(ISBLANK(BA6),\"null\",BA6)&\" and 顧客ID eq \"&IF(ISBLANK(BA9),\"null\",BA9)),\"\")"

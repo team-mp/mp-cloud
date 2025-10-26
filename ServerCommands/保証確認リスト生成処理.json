@@ -1,0 +1,238 @@
+{
+  "Name": "保証確認リスト生成処理",
+  "Enabled": true,
+  "Triggers": [
+    {
+      "$type": "Forguncy.SaveLoad.InvokeTriggerSaveData, ServerDesignerCommon",
+      "Parameters": [
+        {
+          "Name": "P_対象事業者ID",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_対象事業者名",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_ダウンロードフラグ",
+          "DataValidationInfo": {}
+        }
+      ]
+    }
+  ],
+  "Commands": [
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "エクスポートファイル名",
+      "ParameterValue": {
+        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+        "SerializeProperty": "=\"【保証書発行のご確認】\"&P_対象事業者名&\"様_\"&TEXT(TODAY(),\"yyyymmdd\")"
+      },
+      "ID": "eb244d0aa40949dcadb135473d09d514"
+    },
+    {
+      "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+      "ConditionAndCommandPairList": [
+        {
+          "Condition": {
+            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+            "param": {
+              "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+              "ParamObject": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_ダウンロードフラグ"
+              }
+            },
+            "value": "1"
+          },
+          "CommandList": [
+            {
+              "$type": "Forguncy.Model.RequestServerCommand, ServerDesignerCommon",
+              "ServerCommandName": "個人フォルダパス取得",
+              "ReturnPropertiesTo": [
+                {
+                  "ResultPropertyName": "R_個人フォルダパス名",
+                  "ResultTo": {
+                    "SerializeProperty": "個人フォルダパス名"
+                  },
+                  "Remark": "サーバーのフォルダパスを返却"
+                },
+                {
+                  "ResultPropertyName": "P_個人フォルダ名",
+                  "Remark": "ユーザーIDを返却"
+                }
+              ],
+              "RefreshAfterFinish": true,
+              "CheckDataValidation": true
+            },
+            {
+              "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+              "ParameterName": "エクスポートファイルフルパス名",
+              "ParameterValue": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=個人フォルダパス名&エクスポートファイル名"
+              },
+              "ID": "f751e6d7983443b790fb335bb1ed731a"
+            }
+          ],
+          "ID": "79b5f817-57d1-4a46-9b81-71af97e58b1b"
+        },
+        {
+          "CommandList": [
+            {
+              "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+              "ParameterName": "環境設定",
+              "TableValue": {
+                "TableName": "m_environment",
+                "TableValueType": 1,
+                "BindingInfos": [
+                  {
+                    "GUID": "bd461c80-701e-4f60-9cf2-a84de8332f6c",
+                    "BindingInfo": {
+                      "TableName": "m_environment",
+                      "ColumnName": "app_name",
+                      "GUID": "8c15572e-e779-449a-9bee-19e18811ea6d"
+                    },
+                    "ColumnName": "アプリ名"
+                  },
+                  {
+                    "GUID": "3dba1bd0-4288-4f54-aa05-1e08d42acd4e",
+                    "BindingInfo": {
+                      "TableName": "m_environment",
+                      "ColumnName": "file_temp_path",
+                      "GUID": "3b26548c-f980-4759-b419-a29da39cc951"
+                    },
+                    "ColumnName": "ファイルTempパス"
+                  }
+                ],
+                "SqlCondition": {
+                  "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                  "ColumnBindingInfo": {
+                    "TableName": "m_environment",
+                    "ColumnName": "ID",
+                    "GUID": "722fdb82-150e-420f-b856-79fffd199b42"
+                  },
+                  "Value": "1"
+                }
+              },
+              "ID": "c09793c02fe143529e15b21ad744b6ea"
+            },
+            {
+              "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+              "ParameterName": "保存先Tempパス名",
+              "ParameterValue": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=環境設定.ファイルTempパス&環境設定.アプリ名&\"\\Temp\\\""
+              },
+              "ID": "d86ee3be383a477898afacdc2f583c9f"
+            },
+            {
+              "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+              "ParameterName": "ファイル接頭乱数",
+              "ParameterValue": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=TEXT(RANDBETWEEN(0,99999999),\"00000000\")&\"-\"&TEXT(RANDBETWEEN(0,9999),\"0000\")&\"-\"&TEXT(RANDBETWEEN(0,9999),\"0000\")&\"-\"&TEXT(RANDBETWEEN(0,9999),\"0000\")&\"-\"&TEXT(RANDBETWEEN(0,999999999999),\"000000000000\")"
+              },
+              "ID": "e06e3b5fc4ac4d118b57458baee40a8f"
+            },
+            {
+              "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+              "ParameterName": "Tempファイル名",
+              "ParameterValue": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=ファイル接頭乱数&\"_\"&エクスポートファイル名"
+              },
+              "ID": "d00d74bfa68d4203bf21107d39cec370"
+            },
+            {
+              "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+              "ParameterName": "エクスポートファイルフルパス名",
+              "ParameterValue": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=保存先Tempパス名&Tempファイル名"
+              },
+              "ID": "7dfe5841e6de47bb8f5c4fc9a6883b9e"
+            }
+          ],
+          "ID": "ad7e900f-3a3d-4f63-8daa-ad4599d21e00"
+        }
+      ]
+    },
+    {
+      "$type": "Forguncy.Model.ExportPageToExcelCommand, ServerDesignerCommon",
+      "TargetPageName": "保証確認リスト",
+      "ServerExportFileName": {
+        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+        "SerializeProperty": "=エクスポートファイルフルパス名"
+      },
+      "ExportCellValueInfos": [
+        {
+          "CellName": "対象事業者ID",
+          "CellValue": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=P_対象事業者ID"
+          }
+        },
+        {
+          "CellName": "対象事業者名",
+          "CellValue": {
+            "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+            "SerializeProperty": "=P_対象事業者名"
+          }
+        }
+      ]
+    },
+    {
+      "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+      "ConditionAndCommandPairList": [
+        {
+          "Condition": {
+            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+            "param": {
+              "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+              "ParamObject": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_ダウンロードフラグ"
+              }
+            },
+            "value": "1"
+          },
+          "CommandList": [
+            {
+              "$type": "OperateFilesCommand.DownloadFileCommand, OperateFilesCommand",
+              "FilePath": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=エクスポートファイルフルパス名&\".xlsx\""
+              }
+            }
+          ],
+          "ID": "11fca989-8bb2-40ea-bb40-0f5660942045"
+        },
+        {
+          "CommandList": [
+            {
+              "$type": "Forguncy.Model.ReturnCommand, ServerDesignerCommon",
+              "CustomReturns": [
+                {
+                  "ReturnPropertyName": "R_Tempファイルパス名",
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=Tempファイル名&\".xlsx|\""
+                  },
+                  "Remark": "ForguncyのTempフォルダに出力されたファイルパス名"
+                }
+              ]
+            }
+          ],
+          "ID": "b3445b2f-3145-47f6-abf2-fb8304594bf5"
+        }
+      ]
+    }
+  ],
+  "ReturnProperties": [
+    {
+      "Name": "R_Tempファイルパス名",
+      "Remark": "ForguncyのTempフォルダに出力されたファイルパス名"
+    }
+  ]
+}

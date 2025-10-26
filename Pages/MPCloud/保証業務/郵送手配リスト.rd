@@ -1,20 +1,20 @@
 {
   "PageType": 0,
-  "ColumnCount": 287,
+  "ColumnCount": 292,
   "RowCount": 29,
   "Formulas": {
-    "20,260": "COUNTIF(IH9,1)",
-    "23,267": "TEXTJOINIF(\",\",TRUE,IH9,1,HD9)",
-    "17,274": "SUM(JO10)",
-    "11,253": "IF(IFERROR(FIND(\"　\",IT9),0)>0,FIND(\"　\",IT9),IF(IFERROR(FIND(\" \",IT9),0)>0,FIND(\" \",IT9),0))",
-    "23,274": "JH21-JA21",
-    "17,253": "IF(IT12>0,MID(IT9,IT12+1,1000),\"\")",
-    "14,253": "IF(IT12>0,LEFT(IT9,IT12-1),IF(IT9<>\"\",IT9,\"\"))",
-    "8,253": "TRIM(V2)",
-    "23,260": "TEXTJOINIF(\",\",TRUE,IH9,1,HN9)",
-    "11,267": "IF(VALUE(検索_抽出条件)=1,IT27,JA27)",
-    "20,267": "COUNTIF(P9,\"<>\")",
-    "28,1": "\"該当データ件数：\"&TEXT(JO18,\"#,##0\")&\"件　　表示データ件数：\"&TEXT(JH21,\"#,##0\")&\"件\""
+    "20,265": "COUNTIF(IM9,1)",
+    "11,272": "IF(VALUE(検索_抽出条件)=1,IY27,JF27)",
+    "8,258": "TRIM(V2)",
+    "23,279": "JM21-JF21",
+    "11,258": "IF(IFERROR(FIND(\"　\",IY9),0)>0,FIND(\"　\",IY9),IF(IFERROR(FIND(\" \",IY9),0)>0,FIND(\" \",IY9),0))",
+    "20,272": "COUNTIF(BM9,\"<>\")",
+    "23,265": "TEXTJOINIF(\",\",TRUE,IM9,1,HS9)",
+    "17,279": "SUM(JT10)",
+    "14,258": "IF(IY12>0,LEFT(IY9,IY12-1),IF(IY9<>\"\",IY9,\"\"))",
+    "23,272": "TEXTJOINIF(\",\",TRUE,IM9,1,HI9)",
+    "17,258": "IF(IY12>0,MID(IY9,IY12+1,1000),\"\")",
+    "28,1": "\"該当データ件数：\"&TEXT(JT18,\"#,##0\")&\"件　　表示データ件数：\"&TEXT(JM21,\"#,##0\")&\"件\""
   },
   "CustomNames": [
     {
@@ -23,7 +23,7 @@
     },
     {
       "Name": "検索フラグ",
-      "Formula": "郵送手配リスト!$JA$9"
+      "Formula": "郵送手配リスト!$JF$9"
     },
     {
       "Name": "検索リストページタイトル",
@@ -31,7 +31,7 @@
     },
     {
       "Name": "ロケーションURL",
-      "Formula": "郵送手配リスト!$JH$9"
+      "Formula": "郵送手配リスト!$JM$9"
     }
   ]
 }
