@@ -1,30 +1,28 @@
 {
   "PageType": 0,
   "ColumnCount": 158,
-  "RowCount": 188,
+  "RowCount": 196,
   "Formulas": {
     "27,131": "追加申込タイプID",
-    "104,124": "IF(DV105=受付商品ID,1,0)",
+    "133,148": "IF(EO134<>\"\",EO134,EI134)",
     "7,124": "IF(AD4=\"\",0,AD4)",
-    "71,124": "IF(AND(OR(IFERROR(FIND(\"様邸\",AD62),0)>0,RIGHT(TRIM(AD62),1)=\"様\"),CC62=1),1,0)",
+    "79,126": "IF(RIGHT(AD70,2)=\"様邸\",1,0)",
     "29,138": "IF(EH30=0,\"\",EH30)",
-    "153,124": "IF(DU152>0,\"リストから選択可能です\",\"指定調査会社は設定されていないため選択できません\")",
+    "121,128": "SUM(DU123)",
     "24,138": "IF(EH25=0,\"\",EH25)",
     "23,61": "IF(DX32=0,\"\",DX32)",
-    "142,62": "IF(AND(S58=2,AZ137=1),DX83,1)*DY146+DU136",
-    "127,105": "IF(CO129=\"\",\"\",IF(EA129=0,EW129,IF(AND(EA129=1,EH129=1),EW129,IF(OR(AND(ED129=1,EC129>CO129),AND(ED129=2,EC129>=CO129)),IF(EK129=1,EF129,0),EF129+((ROUNDUP((CO129-EC129)/EE129,0)+IF(AND(ED129=1,MOD((CO129-EC129),EE129)=0),1,0))*EW129)))))",
-    "122,148": "IF(EO123<>\"\",EO123,EI123)",
+    "132,99": "EG134",
+    "130,127": "IFERROR(IF(EL36>0,EL36,\"\"),\"\")",
     "26,137": "IFERROR(IF(BJ32>0,ODATA(\"m_user?$select=mail_address&$filter=user_id eq \"&IF(ISBLANK(BJ32),\"null\",BJ32)),\"\"),\"\")",
-    "90,124": "COUNTIF(DU78,\"<>\")",
-    "145,131": "COUNTIFS(DX141,\"<>\")",
-    "150,70": "IF(AB151=1,\"以降\",\"～\")",
-    "121,51": "ES123",
-    "122,127": "IF(EK36>0,EK36,\"\")",
-    "153,127": "IF(VALUE(DX12)=1,AD18,\"\")",
+    "129,99": "EG131",
+    "90,127": "COUNTIF(DU86,\"<>\")",
+    "90,124": "COUNTIF(EM86,\"<>\")",
+    "175,32": "\"※17時までのご依頼の場合、2営業日中（土日祝は休業）の\"&IF(ED71=1,\"判定\",IF(EE71=1,\"審査\",\"\"))&\"となります。納期内にて優先対応いたします。\"",
+    "159,124": "SUM(DU155)",
+    "90,133": "COUNTIF(EH86,\"\")",
     "5,29": "IF(DV12>0,IFERROR(ODATA(\"m_customer?$select=customer_name&$filter=customer_id eq \"&IF(ISBLANK(DV12),\"null\",DV12)),\"\"))",
-    "124,105": "IF(CO126=\"\",\"\",IF(EA126=0,EW126,IF(AND(EA126=1,EH126=1),EW126,IF(OR(AND(ED126=1,EC126>CO126),AND(ED126=2,EC126>=CO126)),IF(EK126=1,EF126,0),EF126+((ROUNDUP((CO126-EC126)/EE126,0)+IF(AND(ED126=1,MOD((CO126-EC126),EE126)=0),1,0))*EW126)))))",
     "40,124": "IF(S43=\"\",0,S43)",
-    "151,124": "SUM(DU147)",
+    "136,147": "IFERROR(IF(EL137<>0,EL137,DZ137),\"\")",
     "14,128": "IF(DV12>0,ODATA(\"m_customer?$select=customer_abbr&$filter=customer_id eq \"&IF(ISBLANK(DV12),\"null\",DV12)),\"\")",
     "4,137": "IFERROR(IF(AD8>0,ODATA(\"m_user?$select=mail_address&$filter=user_id eq \"&IF(ISBLANK(AD8),\"null\",AD8)),\"\"),\"\")",
     "5,137": "IFERROR(IF(AD12>0,ODATA(\"m_user?$select=mail_address&$filter=user_id eq \"&IF(ISBLANK(AD12),\"null\",AD12)),\"\"),\"\")",
@@ -33,10 +31,9 @@
     "8,137": "IFERROR(IF(AD14>0,ODATA(\"m_user?$select=mail_address&$filter=user_id eq \"&IF(ISBLANK(AD14),\"null\",AD14)),\"\"),\"\")",
     "9,137": "IFERROR(IF(BJ14>0,ODATA(\"m_user?$select=mail_address&$filter=user_id eq \"&IF(ISBLANK(BJ14),\"null\",BJ14)),\"\"),\"\")",
     "10,137": "IFERROR(IF(CP14>0,ODATA(\"m_user?$select=mail_address&$filter=user_id eq \"&IF(ISBLANK(CP14),\"null\",CP14)),\"\"),\"\")",
-    "121,99": "EG123",
+    "129,105": "IF(CO131=\"\",\"\",IF(EA131=0,EW131,IF(AND(EA131=1,EH131=1),EW131,IF(OR(AND(ED131=1,EC131>CO131),AND(ED131=2,EC131>=CO131)),IF(EK131=1,EF131,0),EF131+((ROUNDUP((CO131-EC131)/EE131,0)+IF(AND(ED131=1,MOD((CO131-EC131),EE131)=0),1,0))*EW131)))))",
     "40,127": "IF(申込タイプID=\"\",0,申込タイプID)",
-    "82,127": "COUNTIF(DU78,\"<>\")",
-    "128,127": "IF(EM36>0,EM36,\"\")",
+    "66,124": "SUMIF(DU113,1,EK113)",
     "30,138": "IF(EH31=0,\"\",EH31)",
     "4,138": "IF(EH5=0,\"\",EH5)",
     "5,138": "IF(EH6=0,\"\",EH6)",
@@ -45,11 +42,10 @@
     "8,138": "IF(EH9=0,\"\",EH9)",
     "9,138": "IF(EH10=0,\"\",EH10)",
     "10,138": "IF(EH11=0,\"\",EH11)",
-    "82,139": "IF(S58=2,COUNTIF(EO78,\"<>\"&受付商品ID),0)",
-    "58,124": "SUMIF(DU105,1,EK105)",
-    "151,127": "IF(VALUE(DX12)=1,DV12,AD18)",
+    "161,127": "IF(VALUE(DX12)=1,AD18,\"\")",
+    "73,128": "IF(DU36>0,DU36,\"\")",
     "25,138": "IF(EH26=0,\"\",EH26)",
-    "99,18": "IFERROR(ODATA(\"m_order_type?$select=required_documents_notice&$filter=order_type_id eq \"&IF(ISBLANK(申込タイプID),\"null\",申込タイプID)),\"\")",
+    "187,124": "\"申込タイプの追加を受付いたしました。\"&CHAR(10)&\"弊社クラウドサービスよりお申込みいただき、誠にありがとうございます。\"&CHAR(10)&DZ71",
     "24,137": "IFERROR(IF(AD28>0,ODATA(\"m_user?$select=mail_address&$filter=user_id eq \"&IF(ISBLANK(AD28),\"null\",AD28)),\"\"),\"\")",
     "24,131": "申込タイプ追加フラグ",
     "11,141": "IFERROR(参照顧客ID,\"\")",
@@ -59,208 +55,222 @@
     "6,141": "IFERROR(参照顧客代理店フラグ,\"\")",
     "5,141": "IFERROR(参照顧客本社フラグ,\"\")",
     "4,141": "IFERROR(ログイン者本社フラグ,\"\")",
-    "65,132": "IF(AND(DU36>0,DV36>0),0,1)",
+    "98,124": "COUNTIF(DU86,\"<>\")",
     "10,141": "IFERROR(参照管理顧客IDs,\"\")",
     "14,141": "TEXTJOIN(\",\",TRUE,EL12,EL11)",
-    "14,131": "IF(OR(EL6=1,EL10<>\"\"),1000000,0)",
-    "128,148": "IF(EO129<>\"\",EO129,EI129)",
+    "17,131": "IF(OR(EL6=1,EL10<>\"\"),1000000,0)",
+    "161,124": "IF(DU160>0,\"リストから選択可能です\",\"指定調査会社は設定されていないため選択できません\")",
     "27,137": "IFERROR(IF(CP32>0,ODATA(\"m_user?$select=mail_address&$filter=user_id eq \"&IF(ISBLANK(CP32),\"null\",CP32)),\"\"),\"\")",
-    "140,132": "IF(ED141<>\"\",ED141,\"\")",
+    "153,131": "COUNTIFS(DX149,\"<>\")",
     "28,138": "IF(EH29=0,\"\",EH29)",
-    "82,130": "COUNTIF(EF78,\"\")",
+    "133,127": "IFERROR(IF(EM36>0,EM36,\"\"),\"\")",
     "29,137": "IFERROR(IF(BJ34>0,ODATA(\"m_user?$select=mail_address&$filter=user_id eq \"&IF(ISBLANK(BJ34),\"null\",BJ34)),\"\"),\"\")",
     "26,138": "IF(EH27=0,\"\",EH27)",
-    "58,134": "COUNTIF(DU105,1)",
+    "135,99": "EG137",
     "7,131": "IF(EL6=1,1000000,0)",
-    "128,147": "IF(EL129<>0,EL129,DZ129)",
-    "135,124": "IFERROR(VALUE(DB122)+VALUE(DB125)+VALUE(DB128),0)",
-    "176,124": "\"新規物件の登録を受付いたしました。\"&CHAR(10)&\"弊社クラウドサービスよりお申込みいただき、誠にありがとうございます。\"&CHAR(10)&DZ63",
-    "177,18": "IF(ED160=0,\"\",ED160)",
-    "179,124": "\"申込タイプの追加を受付いたしました。\"&CHAR(10)&\"弊社クラウドサービスよりお申込みいただき、誠にありがとうございます。\"&CHAR(10)&DZ63",
-    "58,126": "COUNTIFS(DX105,\"<>\")",
+    "184,124": "\"新規物件の登録を受付いたしました。\"&CHAR(10)&\"弊社クラウドサービスよりお申込みいただき、誠にありがとうございます。\"&CHAR(10)&DZ71",
+    "167,133": "IFERROR(ODATA(\"v_customer_order_type?$select=特記事項&$filter=顧客ID eq \"&IF(ISBLANK(AD18),\"null\",AD18)&\" and グループID eq \"&IF(ISBLANK(AD4),\"null\",AD4)&\" and 申込タイプID eq \"&IF(ISBLANK(申込タイプID),\"null\",申込タイプID)),\"\")",
+    "130,147": "IFERROR(IF(EL131<>0,EL131,DZ131),\"\")",
+    "90,139": "IF(S66=2,COUNTIF(EO86,\"<>\"&受付商品ID),0)",
+    "135,51": "ES137",
+    "148,141": "IF(EC149=\"\",\"\",IF(EA149=0,DZ149,IF(AND(EA149=1,EB149=1),DZ149,IF(OR(AND(EF149=1,EE149>EC149),AND(EF149=2,EE149>=EC149)),IF(EI149=1,EH149+EM149+EN149,0),EH149+EM149+EN149+((ROUNDUP((EC149-EE149)/EG149,0)+IF(AND(EF149=1,MOD((EC149-EE149),EG149)=0),1,0))*DZ149)))))",
     "28,137": "IFERROR(IF(AD34>0,ODATA(\"m_user?$select=mail_address&$filter=user_id eq \"&IF(ISBLANK(AD34),\"null\",AD34)),\"\"),\"\")",
-    "125,152": "IF(EP126<>\"\",EP126,EJ126)",
-    "127,51": "ES129",
+    "73,130": "IF(DV36>0,DV36,\"\")",
+    "112,124": "IF(DV113=受付商品ID,1,0)",
     "21,128": "IF(DY18<>\"\",ODATA(\"m_order_type?$select=order_type_calss_id&$filter=order_type_id eq \"&IF(ISBLANK(DY18),\"null\",DY18)),\"\")",
     "27,138": "IF(EH28=0,\"\",EH28)",
-    "124,51": "ES126",
-    "122,152": "IF(EP123<>\"\",EP123,EJ123)",
+    "73,132": "IF(AND(DU36>0,DV36>0),0,1)",
+    "90,136": "COUNTIF(EJ86,\"\")",
     "21,29": "IF(DY32=0,\"\",DY32)",
-    "125,147": "IF(EL126<>0,EL126,DZ126)",
-    "113,128": "SUM(DU115)",
-    "124,99": "EG126",
+    "185,18": "IF(ED168=0,\"\",ED168)",
+    "107,18": "IFERROR(ODATA(\"m_order_type?$select=required_documents_notice&$filter=order_type_id eq \"&IF(ISBLANK(申込タイプID),\"null\",申込タイプID)),\"\")",
+    "158,70": "IF(AB159=1,\"以降\",\"～\")",
     "17,128": "IFERROR(ODATA(\"v_customer_order_type?$select=申込タイプID&$filter=顧客ID eq \"&IF(ISBLANK(DU18),\"null\",DU18)&\" and グループID eq \"&IF(ISBLANK(AD4),\"null\",AD4)&\" and 初期セットフラグ eq 1 and 非公開フラグ eq 0\"),\"\")",
-    "104,132": "IF(ED105<>\"\",ED105,\"\")",
-    "159,133": "IFERROR(ODATA(\"v_customer_order_type?$select=特記事項&$filter=顧客ID eq \"&IF(ISBLANK(AD18),\"null\",AD18)&\" and グループID eq \"&IF(ISBLANK(AD4),\"null\",AD4)&\" and 申込タイプID eq \"&IF(ISBLANK(申込タイプID),\"null\",申込タイプID)),\"\")",
+    "150,62": "IF(AND(S66=2,AZ145=1),DX91,1)*DY154+DU144",
+    "150,30": "IF(S66=2,ER91,DU67)",
     "25,137": "IFERROR(IF(AD32>0,ODATA(\"m_user?$select=mail_address&$filter=user_id eq \"&IF(ISBLANK(AD32),\"null\",AD32)),\"\"),\"\")",
     "21,131": "申込ID",
     "45,124": "IF(DV46=申込タイプID,1,0)",
     "30,131": "追加申込タイプ分類ID",
-    "104,140": "IF(EC105=\"\",\"\",IF(EA105=0,DZ105,IF(AND(EA105=1,EB105=1),DZ105,IF(OR(AND(EF105=1,EE105>EC105),AND(EF105=2,EE105>=EC105)),IF(EI105=1,EH105+EM105+EN105,0),EH105+EM105+EN105+((ROUNDUP((EC105-EE105)/EG105,0)+IF(AND(EF105=1,MOD((EC105-EE105),EG105)=0),1,0))*DZ105)))))",
-    "82,133": "COUNTIF(EH78,\"\")",
-    "65,130": "IF(DV36>0,DV36,\"\")",
+    "79,124": "IF(AND(OR(IFERROR(FIND(\"様邸\",AD70),0)>0,RIGHT(TRIM(AD70),1)=\"様\"),CC70=1),1,0)",
+    "112,140": "IF(EC113=\"\",\"\",IF(EA113=0,DZ113,IF(AND(EA113=1,EB113=1),DZ113,IF(OR(AND(EF113=1,EE113>EC113),AND(EF113=2,EE113>=EC113)),IF(EI113=1,EH113+EM113+EN113,0),EH113+EM113+EN113+((ROUNDUP((EC113-EE113)/EG113,0)+IF(AND(EF113=1,MOD((EC113-EE113),EG113)=0),1,0))*DZ113)))))",
+    "153,128": "SUMIF(DU149,1,EL149)",
     "23,29": "IF(DW32=0,\"\",DW32)",
     "17,124": "IF(AD18=\"\",0,AD18)",
     "30,137": "IFERROR(IF(CP34>0,ODATA(\"m_user?$select=mail_address&$filter=user_id eq \"&IF(ISBLANK(CP34),\"null\",CP34)),\"\"),\"\")",
-    "125,148": "IF(EO126<>\"\",EO126,EI126)",
-    "122,147": "IF(EL123<>0,EL123,DZ123)",
-    "140,141": "IF(EC141=\"\",\"\",IF(EA141=0,DZ141,IF(AND(EA141=1,EB141=1),DZ141,IF(OR(AND(EF141=1,EE141>EC141),AND(EF141=2,EE141>=EC141)),IF(EI141=1,EH141+EM141+EN141,0),EH141+EM141+EN141+((ROUNDUP((EC141-EE141)/EG141,0)+IF(AND(EF141=1,MOD((EC141-EE141),EG141)=0),1,0))*DZ141)))))",
-    "145,128": "SUMIF(DU141,1,EL141)",
-    "127,99": "EG129",
-    "167,32": "\"※17時までのご依頼の場合、2営業日中（土日祝は休業）の\"&IF(ED63=1,\"判定\",IF(EE63=1,\"審査\",\"\"))&\"となります。納期内にて優先対応いたします。\"",
-    "125,127": "IF(EL36>0,EL36,\"\")",
-    "82,124": "COUNTIF(EM78,\"<>\")",
-    "128,152": "IF(EP129<>\"\",EP129,EJ129)",
-    "142,95": "AE143+BK143",
-    "71,126": "IF(RIGHT(AD62,2)=\"様邸\",1,0)",
-    "65,128": "IF(DU36>0,DU36,\"\")",
-    "82,136": "COUNTIF(EJ78,\"\")",
-    "121,105": "IF(CO123=\"\",\"\",IF(EA123=0,EW123,IF(AND(EA123=1,EH123=1),EW123,IF(OR(AND(ED123=1,EC123>CO123),AND(ED123=2,EC123>=CO123)),IF(EK123=1,EF123,0),EF123+((ROUNDUP((CO123-EC123)/EE123,0)+IF(AND(ED123=1,MOD((CO123-EC123),EE123)=0),1,0))*EW123)))))",
-    "142,30": "IF(S58=2,ER83,DU59)",
-    "82,147": "SUM(ET78)"
+    "66,134": "COUNTIF(DU113,1)",
+    "130,152": "IFERROR(IF(EP131<>\"\",EP131,EJ131),\"\")",
+    "133,152": "IFERROR(IF(EP134<>\"\",EP134,EJ134),\"\")",
+    "135,105": "IF(CO137=\"\",\"\",IF(EA137=0,EW137,IF(AND(EA137=1,EH137=1),EW137,IF(OR(AND(ED137=1,EC137>CO137),AND(ED137=2,EC137>=CO137)),IF(EK137=1,EF137,0),EF137+((ROUNDUP((CO137-EC137)/EE137,0)+IF(AND(ED137=1,MOD((CO137-EC137),EE137)=0),1,0))*EW137)))))",
+    "133,147": "IFERROR(IF(EL134<>0,EL134,DZ134),\"\")",
+    "112,132": "IF(ED113<>\"\",ED113,\"\")",
+    "143,124": "IFERROR(VALUE(DB130)+VALUE(DB133)+VALUE(DB136),0)",
+    "136,148": "IF(EO137<>\"\",EO137,EI137)",
+    "90,147": "SUM(ET86)",
+    "136,127": "IFERROR(IF(EN36>0,EN36,\"\"),\"\")",
+    "150,95": "AE151+BK151",
+    "66,126": "COUNTIFS(DX113,\"<>\")",
+    "90,130": "COUNTIF(EF86,\"\")",
+    "132,51": "ES134",
+    "130,148": "IFERROR(IF(EO131<>\"\",EO131,EI131),\"\")",
+    "136,152": "IFERROR(IF(EP137<>\"\",EP137,EJ137),\"\")",
+    "129,51": "ES131",
+    "159,127": "IF(VALUE(DX12)=1,DV12,AD18)",
+    "148,132": "IF(ED149<>\"\",ED149,\"\")",
+    "132,105": "IF(CO134=\"\",\"\",IF(EA134=0,EW134,IF(AND(EA134=1,EH134=1),EW134,IF(OR(AND(ED134=1,EC134>CO134),AND(ED134=2,EC134>=CO134)),IF(EK134=1,EF134,0),EF134+((ROUNDUP((CO134-EC134)/EE134,0)+IF(AND(ED134=1,MOD((CO134-EC134),EE134)=0),1,0))*EW134)))))",
+    "60,130": "IF(DY61=1,IF(S60=1,1,IF(S61=1,2,IF(BG62=1,3,IF(BQ62=1,4,IF(S63=1,5,\"\"))))),)",
+    "60,128": "IF(AND(EB71=1,EC71=1,DW58=0,DY58=0),1,0)",
+    "62,126": "IFERROR(IF(AND(DU63=1,OR(EA12=1,EI36=1)),1,0),0)",
+    "62,130": "IFERROR(IF(AND(DU71=0,EB71=1,EC71=1,OR(EB12=1,EJ36=1)),1,0),0)",
+    "62,124": "IFERROR(IF(AND(DU71=1,EB71=1,EC71=1),1,0),0)",
+    "62,128": "IFERROR(IF(AND(DU71=0,EB71=1,EC71=1),1,0),0)"
   },
   "ArrayFormulas": {
-    "125,129,1,13": "IF(DX126<>\"\",ODATA(\"m_product?$select=product_name,quantity_need_flg,default_quantity,quantity_minimum,over_or_surpass,quantity_calc,base_price,quantity_unit,amount_fix_flg,special_note,standard_price,lessthan_basic_price_flg,billing_product_name&$filter=product_id eq \"&IF(ISBLANK(DX126),\"null\",DX126)),\"\")",
-    "122,143,1,3": "IF(DX123>0,IFERROR(ODATA(\"v_customer_product?$select=商品名,商品注釈,販売単価&$filter=顧客ID eq \"&IF(ISBLANK(AD18),\"null\",AD18)&\" and グループID eq \"&IF(ISBLANK(AD4),\"null\",AD4)&\" and 申込タイプID eq \"&IF(ISBLANK(DZ48),\"null\",DZ48)&\" and 商品ID eq \"&IF(ISBLANK(DX123),\"null\",DX123)),\"\"),\"\")",
-    "128,129,1,13": "IF(DX129<>\"\",ODATA(\"m_product?$select=product_name,quantity_need_flg,default_quantity,quantity_minimum,over_or_surpass,quantity_calc,base_price,quantity_unit,amount_fix_flg,special_note,standard_price,lessthan_basic_price_flg,billing_product_name&$filter=product_id eq \"&IF(ISBLANK(DX129),\"null\",DX129)),\"\")",
-    "125,143,1,3": "IF(DX126>0,IFERROR(ODATA(\"v_customer_product?$select=商品名,商品注釈,販売単価&$filter=顧客ID eq \"&IF(ISBLANK(AD18),\"null\",AD18)&\" and グループID eq \"&IF(ISBLANK(AD4),\"null\",AD4)&\" and 申込タイプID eq \"&IF(ISBLANK(DZ48),\"null\",DZ48)&\" and 商品ID eq \"&IF(ISBLANK(DX126),\"null\",DX126)),\"\"),\"\")",
-    "122,129,1,13": "IF(DX123<>\"\",ODATA(\"m_product?$select=product_name,quantity_need_flg,default_quantity,quantity_minimum,over_or_surpass,quantity_calc,base_price,quantity_unit,amount_fix_flg,special_note,standard_price,lessthan_basic_price_flg,billing_product_name&$filter=product_id eq \"&IF(ISBLANK(DX123),\"null\",DX123)),\"\")",
-    "128,143,1,3": "IF(DX129>0,IFERROR(ODATA(\"v_customer_product?$select=商品名,商品注釈,販売単価&$filter=顧客ID eq \"&IF(ISBLANK(AD18),\"null\",AD18)&\" and グループID eq \"&IF(ISBLANK(AD4),\"null\",AD4)&\" and 申込タイプID eq \"&IF(ISBLANK(DZ48),\"null\",DZ48)&\" and 商品ID eq \"&IF(ISBLANK(DX129),\"null\",DX129)),\"\"),\"\")",
-    "35,124,1,14": "IF(AD18>0,ODATA(\"m_customer_default?$select=structure_id,foundation_id,responsible_add_display_flg,notice_user1_id,notice_user2_id,notice_user3_id,notice_user4_id,notice_user5_id,notice_user6_id,initial_survey_type,aida_flow_flg,warranty_period,warranty_period_specify_flg,specify_warranty_period&$filter=customer_id eq \"&IF(ISBLANK(AD18),\"null\",AD18)),\"\")",
+    "136,129,1,13": "IF(DX137<>\"\",ODATA(\"m_product?$select=product_name,quantity_need_flg,default_quantity,quantity_minimum,over_or_surpass,quantity_calc,base_price,quantity_unit,amount_fix_flg,special_note,standard_price,lessthan_basic_price_flg,billing_product_name&$filter=product_id eq \"&IF(ISBLANK(DX137),\"null\",DX137)),\"\")",
+    "136,143,1,3": "IF(DX137>0,IFERROR(ODATA(\"v_customer_product?$select=商品名,商品注釈,販売単価&$filter=顧客ID eq \"&IF(ISBLANK(AD18),\"null\",AD18)&\" and グループID eq \"&IF(ISBLANK(AD4),\"null\",AD4)&\" and 申込タイプID eq \"&IF(ISBLANK(DZ48),\"null\",DZ48)&\" and 商品ID eq \"&IF(ISBLANK(DX137),\"null\",DX137)),\"\"),\"\")",
+    "70,124,1,12": "IFERROR(IF(申込タイプID>0,ODATA(\"m_order_type?$select=groud_survey_flg,site_survey_flg,object_overview_display_flg,multiple_permission_flg,order_document_ids,reception_message,initial_survey_type_id,analyze_flg,warranty_flg,analysis_starting_flg,design_review_flg,surveying_info_disply_flg&$filter=order_type_id eq \"&IF(ISBLANK(申込タイプID),\"null\",申込タイプID)),\"\"),\"\")",
+    "130,143,1,3": "IF(DX131>0,IFERROR(ODATA(\"v_customer_product?$select=商品名,商品注釈,販売単価&$filter=顧客ID eq \"&IF(ISBLANK(AD18),\"null\",AD18)&\" and グループID eq \"&IF(ISBLANK(AD4),\"null\",AD4)&\" and 申込タイプID eq \"&IF(ISBLANK(DZ48),\"null\",DZ48)&\" and 商品ID eq \"&IF(ISBLANK(DX131),\"null\",DX131)),\"\"),\"\")",
+    "133,143,1,3": "IF(DX134>0,IFERROR(ODATA(\"v_customer_product?$select=商品名,商品注釈,販売単価&$filter=顧客ID eq \"&IF(ISBLANK(AD18),\"null\",AD18)&\" and グループID eq \"&IF(ISBLANK(AD4),\"null\",AD4)&\" and 申込タイプID eq \"&IF(ISBLANK(DZ48),\"null\",DZ48)&\" and 商品ID eq \"&IF(ISBLANK(DX134),\"null\",DX134)),\"\"),\"\")",
+    "130,129,1,13": "IF(DX131<>\"\",ODATA(\"m_product?$select=product_name,quantity_need_flg,default_quantity,quantity_minimum,over_or_surpass,quantity_calc,base_price,quantity_unit,amount_fix_flg,special_note,standard_price,lessthan_basic_price_flg,billing_product_name&$filter=product_id eq \"&IF(ISBLANK(DX131),\"null\",DX131)),\"\")",
+    "133,129,1,13": "IF(DX134<>\"\",ODATA(\"m_product?$select=product_name,quantity_need_flg,default_quantity,quantity_minimum,over_or_surpass,quantity_calc,base_price,quantity_unit,amount_fix_flg,special_note,standard_price,lessthan_basic_price_flg,billing_product_name&$filter=product_id eq \"&IF(ISBLANK(DX134),\"null\",DX134)),\"\")",
+    "35,124,1,16": "IF(AD18>0,ODATA(\"m_customer_default?$select=structure_id,foundation_id,responsible_add_display_flg,notice_user1_id,notice_user2_id,notice_user3_id,notice_user4_id,notice_user5_id,notice_user6_id,initial_survey_type,aida_flow_flg,warranty_period,warranty_period_specify_flg,specify_warranty_period,survey_warranty_no_estimate_flg,analysis_warranty_no_estimate_flg&$filter=customer_id eq \"&IF(ISBLANK(AD18),\"null\",AD18)),\"\")",
     "31,124,1,5": "IFERROR(ODATA(\"m_customer?$select=customer_abbr,prefectures,phone,fax,住所&$filter=customer_id eq \"&IF(ISBLANK(AD18),\"null\",AD18)),\"\")",
-    "35,140,1,3": "IF(AF119>0,IFERROR(ODATA(\"m_customer_default?$select=site_area_product_id,difference_height_product_id,object_number_product_id&$filter=customer_id eq \"&IF(ISBLANK(AF119),\"null\",AF119)),\"\"))",
-    "11,124,1,6": "IF(AD4>0,ODATA(\"m_group?$select=group_type_id,customer_id,builder_notice_flg,group_default_priority_flg,customer_number_required_flg,analysis_warranty_surveydate_required_flg&$filter=group_id eq \"&IF(ISBLANK(AD4),\"null\",AD4)),\"\")",
-    "14,134,1,6": "IFERROR(IF(VALUE(DV12)>0,ODATA(\"m_customer_default?$select=notice_user1_id,notice_user2_id,notice_user3_id,notice_user4_id,notice_user5_id,notice_user6_id&$filter=customer_id eq \"&IF(ISBLANK(DV12),\"null\",DV12)),\"\"),\"\")",
-    "62,124,1,12": "IFERROR(IF(申込タイプID>0,ODATA(\"m_order_type?$select=groud_survey_flg,site_survey_flg,object_overview_display_flg,multiple_permission_flg,order_document_ids,reception_message,initial_survey_type_id,analyze_flg,warranty_flg,analysis_starting_flg,design_review_flg,surveying_info_disply_flg&$filter=order_type_id eq \"&IF(ISBLANK(申込タイプID),\"null\",申込タイプID)),\"\"),\"\")"
+    "35,141,1,3": "IF(AF127>0,IFERROR(ODATA(\"m_customer_default?$select=site_area_product_id,difference_height_product_id,object_number_product_id&$filter=customer_id eq \"&IF(ISBLANK(AF127),\"null\",AF127)),\"\"))",
+    "11,124,1,8": "IF(AD4>0,ODATA(\"m_group?$select=group_type_id,customer_id,builder_notice_flg,group_default_priority_flg,customer_number_required_flg,analysis_warranty_surveydate_required_flg,survey_warranty_no_estimate_flg,analysis_warranty_no_estimate_flg&$filter=group_id eq \"&IF(ISBLANK(AD4),\"null\",AD4)),\"\")",
+    "14,134,1,6": "IFERROR(IF(VALUE(DV12)>0,ODATA(\"m_customer_default?$select=notice_user1_id,notice_user2_id,notice_user3_id,notice_user4_id,notice_user5_id,notice_user6_id&$filter=customer_id eq \"&IF(ISBLANK(DV12),\"null\",DV12)),\"\"),\"\")"
   },
   "CustomNames": [
     {
-      "Name": "解析保証調査日必須フラグ",
-      "Formula": "新規申込!$DZ$12"
-    },
-    {
-      "Name": "初期化フラグ",
-      "Formula": "新規申込!$DY$5"
-    },
-    {
-      "Name": "申込タイプID",
-      "Formula": "新規申込!$DZ$48"
-    },
-    {
-      "Name": "受付商品ID",
-      "Formula": "新規申込!$DU$55"
-    },
-    {
-      "Name": "登録ボタン",
-      "Formula": "新規申込!$DU$185"
-    },
-    {
-      "Name": "入力数量チェックボタン",
-      "Formula": "新規申込!$DY$185"
-    },
-    {
-      "Name": "物件カウント",
-      "Formula": "新規申込!$DU$91"
-    },
-    {
-      "Name": "物件削除フラグ",
-      "Formula": "新規申込!$DW$91"
-    },
-    {
-      "Name": "物件表示制御フラグ",
-      "Formula": "新規申込!$DY$91"
-    },
-    {
-      "Name": "様邸存在フラグ",
-      "Formula": "新規申込!$DU$72"
-    },
-    {
-      "Name": "連棟物件チェックボタン",
-      "Formula": "新規申込!$EB$185"
-    },
-    {
-      "Name": "添付ファイル",
-      "Formula": "新規申込!$BL$100"
-    },
-    {
-      "Name": "変換ファイル",
-      "Formula": "新規申込!$DU$101"
-    },
-    {
-      "Name": "登録継続フラグ",
-      "Formula": "新規申込!$EE$185"
-    },
-    {
-      "Name": "登録実行フラグ",
-      "Formula": "新規申込!$EG$185"
-    },
-    {
-      "Name": "建物概要表示フラグ",
-      "Formula": "新規申込!$DW$63"
-    },
-    {
-      "Name": "参照住宅事業者ID",
-      "Formula": "新規申込!$DU$18"
-    },
-    {
-      "Name": "受付商品名",
-      "Formula": "新規申込!$DW$55"
-    },
-    {
-      "Name": "数量",
-      "Formula": "新規申込!$EA$55"
-    },
-    {
-      "Name": "単位",
-      "Formula": "新規申込!$EC$55"
-    },
-    {
-      "Name": "金額",
-      "Formula": "新規申込!$EE$55"
-    },
-    {
-      "Name": "数量必要フラグ",
-      "Formula": "新規申込!$EG$55"
-    },
-    {
-      "Name": "販売単価",
-      "Formula": "新規申込!$EI$55"
+      "Name": "以上OR超",
+      "Formula": "新規申込!$EO$55"
     },
     {
       "Name": "価格固定フラグ",
       "Formula": "新規申込!$EK$55"
     },
     {
-      "Name": "以上OR超",
-      "Formula": "新規申込!$EO$55"
+      "Name": "解析単価",
+      "Formula": "新規申込!$EY$55"
     },
     {
-      "Name": "最小数量",
-      "Formula": "新規申込!$EM$55"
+      "Name": "解析保証調査日必須フラグ",
+      "Formula": "新規申込!$DZ$12"
     },
     {
       "Name": "基礎単価",
       "Formula": "新規申込!$ES$55"
     },
     {
-      "Name": "最小未満基礎価格フラグ",
-      "Formula": "新規申込!$EU$55"
-    },
-    {
-      "Name": "調査単価",
-      "Formula": "新規申込!$EW$55"
-    },
-    {
-      "Name": "解析単価",
-      "Formula": "新規申込!$EY$55"
+      "Name": "金額",
+      "Formula": "新規申込!$EE$55"
     },
     {
       "Name": "計算数量",
       "Formula": "新規申込!$EQ$55"
     },
     {
+      "Name": "建物概要表示フラグ",
+      "Formula": "新規申込!$DW$71"
+    },
+    {
+      "Name": "最小数量",
+      "Formula": "新規申込!$EM$55"
+    },
+    {
+      "Name": "最小未満基礎価格フラグ",
+      "Formula": "新規申込!$EU$55"
+    },
+    {
+      "Name": "参照住宅事業者ID",
+      "Formula": "新規申込!$DU$18"
+    },
+    {
+      "Name": "受付商品ID",
+      "Formula": "新規申込!$DU$55"
+    },
+    {
+      "Name": "受付商品名",
+      "Formula": "新規申込!$DW$55"
+    },
+    {
+      "Name": "初期化フラグ",
+      "Formula": "新規申込!$DY$5"
+    },
+    {
       "Name": "商品注釈",
       "Formula": "新規申込!$DY$55"
+    },
+    {
+      "Name": "申込タイプID",
+      "Formula": "新規申込!$DZ$48"
+    },
+    {
+      "Name": "数量",
+      "Formula": "新規申込!$EA$55"
+    },
+    {
+      "Name": "数量必要フラグ",
+      "Formula": "新規申込!$EG$55"
+    },
+    {
+      "Name": "単位",
+      "Formula": "新規申込!$EC$55"
+    },
+    {
+      "Name": "調査単価",
+      "Formula": "新規申込!$EW$55"
+    },
+    {
+      "Name": "添付ファイル",
+      "Formula": "新規申込!$BL$108"
+    },
+    {
+      "Name": "登録ボタン",
+      "Formula": "新規申込!$DU$193"
+    },
+    {
+      "Name": "登録継続フラグ",
+      "Formula": "新規申込!$EE$193"
+    },
+    {
+      "Name": "登録実行フラグ",
+      "Formula": "新規申込!$EG$193"
+    },
+    {
+      "Name": "入力数量チェックボタン",
+      "Formula": "新規申込!$DY$193"
+    },
+    {
+      "Name": "販売単価",
+      "Formula": "新規申込!$EI$55"
+    },
+    {
+      "Name": "物件カウント",
+      "Formula": "新規申込!$DU$99"
+    },
+    {
+      "Name": "物件削除フラグ",
+      "Formula": "新規申込!$DW$99"
+    },
+    {
+      "Name": "物件表示制御フラグ",
+      "Formula": "新規申込!$DY$99"
+    },
+    {
+      "Name": "変換ファイル",
+      "Formula": "新規申込!$DU$109"
+    },
+    {
+      "Name": "保証確認表示制御ボタン",
+      "Formula": "新規申込!$EC$61"
+    },
+    {
+      "Name": "様邸存在フラグ",
+      "Formula": "新規申込!$DU$80"
+    },
+    {
+      "Name": "連棟物件チェックボタン",
+      "Formula": "新規申込!$EB$193"
     }
   ]
 }

@@ -1,0 +1,180 @@
+{
+  "Name": "保証確認リスト定期配信",
+  "Enabled": true,
+  "Triggers": [
+    {
+      "$type": "Forguncy.SaveLoad.OneTimeScheduleTriggerSaveData, ServerDesignerCommon",
+      "StartDateTime": 45978.0,
+      "ScheduleRunInDebugServer": false
+    }
+  ],
+  "Commands": [
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "保証確認事業者",
+      "TableValue": {
+        "TableName": "v_warranty_check_customer",
+        "BindingInfos": [
+          {
+            "GUID": "c0f4e65b-11b0-4079-9ef4-779fe3c28ac7",
+            "BindingInfo": {
+              "TableName": "v_warranty_check_customer",
+              "ColumnName": "対象事業者ID",
+              "GUID": "8114795e-8ae4-4089-b3b5-c498311a30fd"
+            },
+            "ColumnName": "対象事業者ID"
+          }
+        ]
+      },
+      "ID": "476fe4a4bad64533b3c7f486deefb6b7"
+    },
+    {
+      "$type": "Forguncy.Model.LoopCommand, ServerDesignerCommon",
+      "LoopInfo": {
+        "$type": "Forguncy.Model.CountLoopInfo, ServerDesignerCommon",
+        "LoopCount": {
+          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+          "SerializeProperty": "=保証確認事業者"
+        },
+        "LoopItemParamName": "Item"
+      },
+      "CommandList": [
+        {
+          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+          "ParameterName": "履歴カウント",
+          "TableValue": {
+            "TableName": "t_warranty_check_history",
+            "TableValueType": 3,
+            "SqlCondition": {
+              "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+              "SubConditions": [
+                {
+                  "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                  "ColumnBindingInfo": {
+                    "TableName": "t_warranty_check_history",
+                    "ColumnName": "target_customer_id",
+                    "GUID": "59f239e2-284d-44c7-bc5a-1b86a9fb0db6"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=Item.対象事業者ID"
+                  }
+                },
+                {
+                  "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                  "ColumnBindingInfo": {
+                    "TableName": "t_warranty_check_history",
+                    "ColumnName": "confirm_request_date",
+                    "GUID": "8e03855d-0471-45c8-957a-b22954fb1e93"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=TODAY()"
+                  }
+                }
+              ]
+            }
+          },
+          "ID": "fd5dc5b3365e43ac8862fe541a14a994"
+        },
+        {
+          "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+          "ConditionAndCommandPairList": [
+            {
+              "Condition": {
+                "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                "param": {
+                  "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                  "ParamObject": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=履歴カウント"
+                  }
+                },
+                "value": "0"
+              },
+              "CommandList": [
+                {
+                  "$type": "Forguncy.Model.RequestServerCommand, ServerDesignerCommon",
+                  "ServerCommandName": "保証確認リストメール送信",
+                  "Parameters": [
+                    {
+                      "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+                      "ParamName": "P_対象事業者ID",
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=Item.対象事業者ID"
+                      }
+                    }
+                  ],
+                  "ReturnPropertiesTo": [
+                    {
+                      "ResultPropertyName": "R_送信済みフラグ",
+                      "ResultTo": {
+                        "SerializeProperty": "送信済みフラグ"
+                      }
+                    }
+                  ],
+                  "RefreshAfterFinish": true,
+                  "CheckDataValidation": true
+                },
+                {
+                  "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+                  "TableName": "t_warranty_check_history",
+                  "UpdateType": "add",
+                  "ShowConfirm": false,
+                  "UpdateBindingValues": [
+                    {
+                      "BindingInfo": {
+                        "TableName": "t_warranty_check_history",
+                        "ColumnName": "confirm_request_date",
+                        "GUID": "82e0d7c6-714d-42f2-9a0b-85ad1b380b74"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=TODAY()"
+                      }
+                    },
+                    {
+                      "BindingInfo": {
+                        "TableName": "t_warranty_check_history",
+                        "ColumnName": "target_customer_id",
+                        "GUID": "c3e3d26d-b6bc-4daa-ae8d-68e73c5e3179"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=Item.対象事業者ID"
+                      }
+                    },
+                    {
+                      "BindingInfo": {
+                        "TableName": "t_warranty_check_history",
+                        "ColumnName": "send_complete_flg",
+                        "GUID": "5cd33fbb-a2b1-4280-82f0-4308f30bad24"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=IF(送信済みフラグ=1,1,0)"
+                      }
+                    },
+                    {
+                      "BindingInfo": {
+                        "TableName": "t_warranty_check_history",
+                        "ColumnName": "send_datetime",
+                        "GUID": "94471c37-2017-4018-9ebb-50b834c74bb9"
+                      },
+                      "Value": {
+                        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                        "SerializeProperty": "=IF(送信済みフラグ=1,NOW(),\"\")"
+                      }
+                    }
+                  ]
+                }
+              ],
+              "ID": "969ad3d6-66c9-42d1-a624-d85578fd29df"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

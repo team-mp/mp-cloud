@@ -29,7 +29,8 @@
     "29,111": "IF(DF20<>\"\",1,0)",
     "28,118": "IF(DH29=1,ODATA(\"m_file_class?$select=file_class_id&$filter=survey_flg eq 1\"),\"\")",
     "28,111": "IF(DA20<>\"\",1,0)",
-    "27,118": "IF(DH28=1,ODATA(\"m_file_class?$select=file_class_id&$filter=order_flg eq 1\"),\"\")"
+    "27,118": "IF(DH28=1,ODATA(\"m_file_class?$select=file_class_id&$filter=order_flg eq 1\"),\"\")",
+    "42,65": "IFERROR(ODATA(\"t_object_insurance?$select=insurance_id&$filter=object_order_id eq \"&IF(ISBLANK(BN4),\"null\",BN4)&\"&$top=1&$orderby=insurance_id desc\"),\"\")"
   },
   "CustomNames": [
     {

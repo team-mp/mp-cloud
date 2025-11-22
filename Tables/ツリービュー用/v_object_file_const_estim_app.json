@@ -12,6 +12,13 @@
       "$type": "Forguncy.SaveLoad.BindingColumnSaveData, ServerDesignerCommon",
       "DatabaseColumnType": "bigint",
       "MaxLength": -1,
+      "Name": "親物件ID",
+      "ColumnType": "System.Int64, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+    },
+    {
+      "$type": "Forguncy.SaveLoad.BindingColumnSaveData, ServerDesignerCommon",
+      "DatabaseColumnType": "bigint",
+      "MaxLength": -1,
       "Name": "ファイル分類ID",
       "ColumnType": "System.Int64, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
     },
@@ -59,7 +66,7 @@
     "ConnectionId": "MySql2",
     "SourceTableName": "v_object_file_const_estim_app",
     "SourceTableSchema": "",
-    "CreateViewSql": "select `a`.`object_id` AS `物件ID`,`c`.`file_class_id` AS `ファイル分類ID`,`b`.`file_attribute_id` AS `ファイル属性ID`,concat(`a`.`object_id`,'_',`c`.`file_class_id`,'_',`b`.`file_attribute_id`) AS `ファイル属性キー`,concat(`a`.`object_id`,'_',`c`.`file_class_id`,'_',`b`.`file_attribute_id`,'_',`d`.`construction_estimate_id`) AS `工事見積キー`,`d`.`construction_estimate_id` AS `工事見積ID`,concat(`e`.`customer_abbr`,'…(',count(`a`.`attachment_id`),')') AS `工事会社名` from ((((`t_object_attachment_relation` `a` join `t_object_attachment` `b` on((`a`.`attachment_id` = `b`.`attachment_id`))) join `m_file_attirbute` `c` on((`b`.`file_attribute_id` = `c`.`file_attribute_id`))) join `t_object_construction_estimate` `d` on((`b`.`construction_estimate_id` = `d`.`construction_estimate_id`))) join `m_customer` `e` on((`d`.`construction_customer_id` = `e`.`customer_id`))) where ((`b`.`active_flg` = 1) and (`b`.`publish_flg` = 1) and (`b`.`hidden_flg` = 0) and (`c`.`applicant_company_authority` > 0)) group by `a`.`object_id`,`b`.`file_attribute_id`,`d`.`construction_estimate_id`",
+    "CreateViewSql": "select `a`.`object_id` AS `物件ID`,`a`.`parent_object_id` AS `親物件ID`,`c`.`file_class_id` AS `ファイル分類ID`,`b`.`file_attribute_id` AS `ファイル属性ID`,concat(`a`.`object_id`,'_',`c`.`file_class_id`,'_',`b`.`file_attribute_id`) AS `ファイル属性キー`,concat(`a`.`object_id`,'_',`c`.`file_class_id`,'_',`b`.`file_attribute_id`,'_',`d`.`construction_estimate_id`) AS `工事見積キー`,`d`.`construction_estimate_id` AS `工事見積ID`,concat(`e`.`customer_abbr`,'…(',count(`b`.`attachment_id`),')') AS `工事会社名` from ((((`t_object_attachment_relation` `a` straight_join `t_object_attachment` `b` on(((`a`.`attachment_id` = `b`.`attachment_id`) and (`b`.`active_flg` = 1) and (`b`.`publish_flg` = 1) and (`b`.`hidden_flg` = 0)))) straight_join `m_file_attirbute` `c` on(((`b`.`file_attribute_id` = `c`.`file_attribute_id`) and (`c`.`applicant_company_authority` > 0)))) straight_join `t_object_construction_estimate` `d` on((`b`.`construction_estimate_id` = `d`.`construction_estimate_id`))) straight_join `m_customer` `e` on((`d`.`construction_customer_id` = `e`.`customer_id`))) group by `a`.`object_id`,`a`.`parent_object_id`,`b`.`file_attribute_id`,`d`.`construction_estimate_id`",
     "ViewInfo": {
       "ViewName": "v_object_file_const_estim_app",
       "QueryColumns": [

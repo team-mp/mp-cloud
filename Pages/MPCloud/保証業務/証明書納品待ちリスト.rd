@@ -5,7 +5,6 @@
   "Formulas": {
     "32,1": "\"該当データ件数：\"&TEXT(IP17,\"#,##0\")&\"件　　表示データ件数：\"&TEXT(II23,\"#,##0\")&\"件\"",
     "16,249": "SUM(IP12)",
-    "10,207": "ODATA(\"t_object_attachment/$count?$filter=insurance_id eq \"&IF(ISBLANK(FL11),\"null\",FL11)&\" and file_attribute_id eq \"&IF(ISBLANK(付保証明書ファイル属性ID),\"null\",付保証明書ファイル属性ID)&\" and active_flg eq 1\")",
     "10,228": "TRIM(V2)",
     "19,228": "IF(HU14>0,MID(HU11,HU14+1,1000),\"\")",
     "16,228": "IF(HU14>0,LEFT(HU11,HU14-1),IF(HU11<>\"\",HU11,\"\"))",

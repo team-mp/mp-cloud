@@ -3,7 +3,6 @@
   "Columns": [
     {
       "$type": "Forguncy.SaveLoad.BindingColumnSaveData, ServerDesignerCommon",
-      "DefaultValue": 0,
       "Required": true,
       "DatabaseColumnType": "bigint",
       "MaxLength": -1,
@@ -12,7 +11,6 @@
     },
     {
       "$type": "Forguncy.SaveLoad.BindingColumnSaveData, ServerDesignerCommon",
-      "DefaultValue": 0,
       "Required": true,
       "DatabaseColumnType": "bigint",
       "MaxLength": -1,
@@ -35,7 +33,7 @@
     "ConnectionId": "MySql2",
     "SourceTableName": "v_user_notice",
     "SourceTableSchema": "",
-    "CreateViewSql": "select `u`.`user_id` AS `ユーザーID`,`n`.`notice_id` AS `お知らせID`,count(`h`.`browse_history_id`) AS `閲覧数` from ((`m_user` `u` join `t_notice` `n`) left join `t_notice_browse_history` `h` on(((`u`.`user_id` = `h`.`browse_user_id`) and (`n`.`notice_id` = `h`.`notice_id`)))) where (`u`.`active_flg` = 1) group by `u`.`user_id`,`n`.`notice_id`",
+    "CreateViewSql": "select `u`.`user_id` AS `ユーザーID`,`n`.`notice_id` AS `お知らせID`,ifnull(`h`.`cnt`,0) AS `閲覧数` from ((`m_user` `u` join (select `t_notice`.`notice_id` AS `notice_id` from `t_notice`) `n`) left join (select `t_notice_browse_history`.`browse_user_id` AS `browse_user_id`,`t_notice_browse_history`.`notice_id` AS `notice_id`,count(0) AS `cnt` from `t_notice_browse_history` group by `t_notice_browse_history`.`browse_user_id`,`t_notice_browse_history`.`notice_id`) `h` on(((`u`.`user_id` = `h`.`browse_user_id`) and (`n`.`notice_id` = `h`.`notice_id`)))) where (`u`.`active_flg` = 1)",
     "ViewInfo": {
       "ViewName": "v_user_notice",
       "QueryColumns": [
@@ -44,6 +42,10 @@
       ]
     }
   },
+  "PrimaryKey": [
+    "ユーザーID",
+    "お知らせID"
+  ],
   "Relations": [
     {
       "PrimaryTable": "m_user",

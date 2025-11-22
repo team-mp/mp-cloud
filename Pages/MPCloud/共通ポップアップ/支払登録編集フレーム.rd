@@ -1,14 +1,14 @@
 {
   "PageType": 0,
-  "ColumnCount": 65,
+  "ColumnCount": 66,
   "RowCount": 29,
   "Formulas": {
-    "22,48": "ODATA(\"t_purchase/$count?$filter=cancel_purchase_id eq \"&IF(ISBLANK(AW5),\"null\",AW5)&\" and delete_flg eq 0\")"
+    "22,49": "ODATA(\"t_purchase/$count?$filter=cancel_purchase_id eq \"&IF(ISBLANK(AX5),\"null\",AX5)&\" and delete_flg eq 0\")"
   },
   "CustomNames": [
     {
       "Name": "申込ID",
-      "Formula": "支払登録編集フレーム!$AW$2"
+      "Formula": "支払登録編集フレーム!$AX$2"
     }
   ]
 }

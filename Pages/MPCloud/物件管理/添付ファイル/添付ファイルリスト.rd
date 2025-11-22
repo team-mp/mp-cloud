@@ -3,12 +3,12 @@
   "ColumnCount": 139,
   "RowCount": 29,
   "Formulas": {
-    "26,4": "\"全ファイル数：\"&TEXT(EC10,\"#,##0\")"
+    "26,4": "\"全ファイル数：\"&TEXT(EC13,\"#,##0\")"
   },
   "CustomNames": [
     {
       "Name": "アップロード完了フラグ",
-      "Formula": "添付ファイルリスト!$EC$13"
+      "Formula": "添付ファイルリスト!$EC$16"
     },
     {
       "Name": "物件ID",

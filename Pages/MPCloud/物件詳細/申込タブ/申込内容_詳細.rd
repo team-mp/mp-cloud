@@ -1,7 +1,7 @@
 {
   "PageType": 0,
   "ColumnCount": 138,
-  "RowCount": 66,
+  "RowCount": 72,
   "Formulas": {
     "24,122": "IF(DQ25=0,\"\",DQ25)",
     "24,97": "IF(CR25=0,\"\",CR25)",
@@ -22,7 +22,7 @@
     "22,97": "IF(CR23=0,\"\",CR23)",
     "22,95": "IFERROR(IF(CC23>0,ODATA(\"m_user?$select=mail_address&$filter=user_id eq \"&IF(ISBLANK(CC23),\"null\",CC23)),\"\"),\"\")",
     "21,97": "IF(CR22=0,\"\",CR22)",
-    "62,80": "COUNTIF(CC57,\"<>\")",
+    "68,80": "COUNTIF(CC57,\"<>\")",
     "43,21": "V40&AT40&V42",
     "21,95": "IFERROR(IF(CC22>0,ODATA(\"m_user?$select=mail_address&$filter=user_id eq \"&IF(ISBLANK(CC22),\"null\",CC22)),\"\"),\"\")",
     "20,97": "IF(CR21=0,\"\",CR21)",
@@ -33,16 +33,18 @@
     "19,122": "IF(DQ20=0,\"\",DQ20)",
     "19,120": "IFERROR(IF(DB20>0,ODATA(\"m_user?$select=mail_address&$filter=user_id eq \"&IF(ISBLANK(DB20),\"null\",DB20)),\"\"),\"\")",
     "21,122": "IF(DQ22=0,\"\",DQ22)",
-    "9,44": "CT16",
+    "9,37": "CT16",
     "17,95": "IF(CC16>0,IFERROR(ODATA(\"m_user?$select=連絡先番号&$filter=user_id eq \"&IF(ISBLANK(CC16),\"null\",CC16)),\"\"),\"\")",
-    "22,44": "DS16",
-    "23,44": "DS18",
+    "22,37": "DS16",
+    "22,63": "DS18",
     "17,97": "IF(CR18=0,\"\",CR18)",
-    "10,44": "CT18",
+    "9,63": "CT18",
     "17,120": "IF(DB16>0,IFERROR(ODATA(\"m_user?$select=連絡先番号&$filter=user_id eq \"&IF(ISBLANK(DB16),\"null\",DB16)),\"\"),\"\")",
     "17,122": "IF(DQ18=0,\"\",DQ18)",
     "11,126": "IF(AND(DL10=1,DW6=0,DZ6=1,EA6=1),1,0)",
-    "52,90": "ODATA(\"m_product?$select=housing_type&$filter=product_id eq \"&IF(ISBLANK(CC53),\"null\",CC53))"
+    "52,90": "ODATA(\"m_product?$select=housing_type&$filter=product_id eq \"&IF(ISBLANK(CC53),\"null\",CC53))",
+    "61,102": "IF(AND(元_保証確認区分>0,CC53<>\"\",DZ6=1,EA6=1,DE62=0,DK62=0),1,0)",
+    "61,80": "IF(N61=1,1,IF(N62=1,2,IF(BA63=1,3,IF(BK63=1,4,IF(N64=1,5,\"\")))))"
   },
   "ArrayFormulas": {
     "5,126,1,5": "ODATA(\"m_order_type?$select=groud_survey_flg,site_survey_flg,object_overview_display_flg,analyze_flg,warranty_flg&$filter=order_type_id eq \"&IF(ISBLANK(CC6),\"null\",CC6))",
@@ -211,7 +213,7 @@
     },
     {
       "Name": "申込タイプ変更フラグ",
-      "Formula": "申込内容_詳細!$CN$63"
+      "Formula": "申込内容_詳細!$CN$69"
     },
     {
       "Name": "グループ表示制御ボタン",
@@ -223,11 +225,27 @@
     },
     {
       "Name": "物件更新ボタン",
-      "Formula": "申込内容_詳細!$DG$63"
+      "Formula": "申込内容_詳細!$DG$69"
     },
     {
       "Name": "編集モード",
       "Formula": "申込内容_詳細!$DB$4"
+    },
+    {
+      "Name": "元_保証確認区分",
+      "Formula": "申込内容_詳細!$CH$62"
+    },
+    {
+      "Name": "物件名",
+      "Formula": "申込内容_詳細!$N$36"
+    },
+    {
+      "Name": "市区郡名",
+      "Formula": "申込内容_詳細!$AT$40"
+    },
+    {
+      "Name": "町名番地",
+      "Formula": "申込内容_詳細!$V$42"
     }
   ]
 }
