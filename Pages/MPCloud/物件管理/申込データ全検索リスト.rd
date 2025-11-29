@@ -27,15 +27,15 @@
   "CustomNames": [
     {
       "Name": "ロケーションURL",
-      "Formula": "申込データ全検索リストNEW!$NF$12"
+      "Formula": "申込データ全検索リスト!$NF$12"
     },
     {
       "Name": "検索フラグ",
-      "Formula": "申込データ全検索リストNEW!$NF$9"
+      "Formula": "申込データ全検索リスト!$NF$9"
     },
     {
       "Name": "初期表示フラグ",
-      "Formula": "申込データ全検索リストNEW!$NM$12"
+      "Formula": "申込データ全検索リスト!$NM$12"
     }
   ]
 }
