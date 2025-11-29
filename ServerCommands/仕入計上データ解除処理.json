@@ -33,6 +33,38 @@
       "$type": "Forguncy.Model.ServerTransactionCommand, ServerDesignerCommon",
       "CommandList": [
         {
+          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+          "ParameterName": "物件商品",
+          "TableValue": {
+            "TableName": "t_object_product",
+            "TableValueType": 1,
+            "BindingInfos": [
+              {
+                "GUID": "218c37f7-7aeb-41df-bbec-eb38c6279e76",
+                "BindingInfo": {
+                  "TableName": "t_object_product",
+                  "ColumnName": "object_order_id",
+                  "GUID": "c4121af7-8640-47f2-9c40-c6413152ab07"
+                },
+                "ColumnName": "申込ID"
+              }
+            ],
+            "SqlCondition": {
+              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+              "ColumnBindingInfo": {
+                "TableName": "t_object_product",
+                "ColumnName": "object_product_id",
+                "GUID": "67651736-dddc-44fd-acce-cf5b9d03d3a9"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_物件商品ID"
+              }
+            }
+          },
+          "ID": "fd0f14f60b8247b0a548fb60599e957d"
+        },
+        {
           "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
           "TableName": "t_object_product",
           "ShowConfirm": false,
@@ -54,28 +86,36 @@
               "BindingInfo": {
                 "TableName": "t_object_product",
                 "ColumnName": "purchase_account_complete_date",
-                "GUID": "2015b73e-570f-4d0c-8392-a6ff2d533fd6"
+                "GUID": "a07ed791-53b7-4f9e-890d-4c231154d18b"
               }
             },
             {
               "BindingInfo": {
                 "TableName": "t_object_product",
                 "ColumnName": "purchase_account_complete_userid",
-                "GUID": "8d6b6fcf-bf15-490d-80af-0adb2309e5ac"
+                "GUID": "17b41df4-cf42-4532-99c3-c391c714e639"
               }
             },
             {
               "BindingInfo": {
                 "TableName": "t_object_product",
                 "ColumnName": "purchase_id",
-                "GUID": "8331bf1f-42c3-4e3d-99da-34bbcafd1a8b"
+                "GUID": "caa2710f-ff12-42ef-a982-17bc4f707d6b"
               }
             },
             {
               "BindingInfo": {
                 "TableName": "t_object_product",
                 "ColumnName": "purchase_account_complete_flg",
-                "GUID": "0c162597-ea97-4342-b8c0-7d139b6b9df0"
+                "GUID": "bc8df768-d397-4a8d-9409-7f79e8da15ce"
+              },
+              "Value": "0"
+            },
+            {
+              "BindingInfo": {
+                "TableName": "t_object_product",
+                "ColumnName": "account_complete_flg",
+                "GUID": "495666ac-1ac2-4943-b37a-a0ef72a20824"
               },
               "Value": "0"
             }
@@ -139,7 +179,7 @@
               "BindingInfo": {
                 "TableName": "t_object_product",
                 "ColumnName": "purchase_account_status_id",
-                "GUID": "a466501e-7f86-4ef3-894d-c98c419ec4c1"
+                "GUID": "43b1c324-a59a-499f-9404-e1b9a4db1361"
               },
               "Value": {
                 "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
@@ -184,15 +224,66 @@
               "BindingInfo": {
                 "TableName": "t_purchase",
                 "ColumnName": "delete_flg",
-                "GUID": "a53da29a-d2ee-4027-a103-4d6e16ca0303"
+                "GUID": "dbb8a992-c319-4426-9160-6940a3e67ee3"
               },
               "Value": "1"
             }
           ]
         },
         {
-          "$type": "Forguncy.Model.ReturnCommand, ServerDesignerCommon",
-          "ErrorCode": "0"
+          "$type": "Forguncy.Model.RequestServerCommand, ServerDesignerCommon",
+          "ServerCommandName": "計上未確定発注書待ち件数更新処理",
+          "Parameters": [
+            {
+              "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+              "ParamName": "P_申込ID",
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=物件商品.申込ID"
+              }
+            }
+          ],
+          "ResultErrorCodeTo": {
+            "SerializeProperty": "リターンコード"
+          },
+          "ResultMessageTo": {
+            "SerializeProperty": "リターンメッセージ"
+          },
+          "RefreshAfterFinish": true,
+          "CheckDataValidation": true
+        },
+        {
+          "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+          "ConditionAndCommandPairList": [
+            {
+              "Condition": {
+                "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                "param": {
+                  "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                  "ParamObject": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=リターンコード"
+                  }
+                },
+                "value": "0",
+                "compareType": 1
+              },
+              "CommandList": [
+                {
+                  "$type": "Forguncy.Model.ReturnCommand, ServerDesignerCommon",
+                  "ErrorCode": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=リターンコード"
+                  },
+                  "Message": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=リターンメッセージ"
+                  }
+                }
+              ],
+              "ID": "2f82ba80-dd5e-483f-9c88-55043d75b3c5"
+            }
+          ]
         }
       ]
     }

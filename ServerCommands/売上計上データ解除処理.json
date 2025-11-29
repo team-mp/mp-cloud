@@ -33,6 +33,38 @@
       "$type": "Forguncy.Model.ServerTransactionCommand, ServerDesignerCommon",
       "CommandList": [
         {
+          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+          "ParameterName": "物件商品",
+          "TableValue": {
+            "TableName": "t_object_product",
+            "TableValueType": 1,
+            "BindingInfos": [
+              {
+                "GUID": "8b26aa6a-ab33-49be-87dc-9412796bbd18",
+                "BindingInfo": {
+                  "TableName": "t_object_product",
+                  "ColumnName": "object_order_id",
+                  "GUID": "328e129e-3210-4174-93c9-a35dc29a2fba"
+                },
+                "ColumnName": "申込ID"
+              }
+            ],
+            "SqlCondition": {
+              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+              "ColumnBindingInfo": {
+                "TableName": "t_object_product",
+                "ColumnName": "object_product_id",
+                "GUID": "20a535fe-aa7b-4ea4-8ed7-6b28aa511e0c"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_物件商品ID"
+              }
+            }
+          },
+          "ID": "fa697501e4f849658259cac122e11b95"
+        },
+        {
           "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
           "TableName": "t_object_product",
           "ShowConfirm": false,
@@ -54,28 +86,36 @@
               "BindingInfo": {
                 "TableName": "t_object_product",
                 "ColumnName": "sales_account_complete_date",
-                "GUID": "dfdbc60f-318b-4089-a5a6-2528c36d3b93"
+                "GUID": "14f2b496-e4b8-4f07-a06b-dc6a2e9fe292"
               }
             },
             {
               "BindingInfo": {
                 "TableName": "t_object_product",
                 "ColumnName": "sales_account_complete_userid",
-                "GUID": "a3172013-d120-437b-9e73-de8411071833"
+                "GUID": "059eb7e0-13e6-44ae-adf7-8943dab5d3ae"
               }
             },
             {
               "BindingInfo": {
                 "TableName": "t_object_product",
                 "ColumnName": "sales_id",
-                "GUID": "25c3797e-823f-42c0-84e7-b3e64529166a"
+                "GUID": "bc09694d-c947-44d0-87d0-2838c80d37cb"
               }
             },
             {
               "BindingInfo": {
                 "TableName": "t_object_product",
                 "ColumnName": "sales_account_complete_flg",
-                "GUID": "caa0fe30-e249-4f99-bb11-1290005078a8"
+                "GUID": "a4a1fc4b-fa54-4c8e-932b-27e8c2705194"
+              },
+              "Value": "0"
+            },
+            {
+              "BindingInfo": {
+                "TableName": "t_object_product",
+                "ColumnName": "account_complete_flg",
+                "GUID": "635afbf9-facf-4048-b300-b9913861e234"
               },
               "Value": "0"
             }
@@ -184,15 +224,66 @@
               "BindingInfo": {
                 "TableName": "t_sales",
                 "ColumnName": "delete_flg",
-                "GUID": "8c11857f-b15c-426e-80dc-2d9128716d1b"
+                "GUID": "8acd0dd3-c46e-4733-ac8a-06881ff0242e"
               },
               "Value": "1"
             }
           ]
         },
         {
-          "$type": "Forguncy.Model.ReturnCommand, ServerDesignerCommon",
-          "ErrorCode": "0"
+          "$type": "Forguncy.Model.RequestServerCommand, ServerDesignerCommon",
+          "ServerCommandName": "計上未確定発注書待ち件数更新処理",
+          "Parameters": [
+            {
+              "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+              "ParamName": "P_申込ID",
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=物件商品.申込ID"
+              }
+            }
+          ],
+          "ResultErrorCodeTo": {
+            "SerializeProperty": "リターンコード"
+          },
+          "ResultMessageTo": {
+            "SerializeProperty": "リターンメッセージ"
+          },
+          "RefreshAfterFinish": true,
+          "CheckDataValidation": true
+        },
+        {
+          "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+          "ConditionAndCommandPairList": [
+            {
+              "Condition": {
+                "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+                "param": {
+                  "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+                  "ParamObject": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=リターンコード"
+                  }
+                },
+                "value": "0",
+                "compareType": 1
+              },
+              "CommandList": [
+                {
+                  "$type": "Forguncy.Model.ReturnCommand, ServerDesignerCommon",
+                  "ErrorCode": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=リターンコード"
+                  },
+                  "Message": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=リターンメッセージ"
+                  }
+                }
+              ],
+              "ID": "a2ca76e7-88e7-47a0-aabc-4ed61ed80624"
+            }
+          ]
         }
       ]
     }

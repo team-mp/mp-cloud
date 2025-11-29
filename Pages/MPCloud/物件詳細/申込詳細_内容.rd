@@ -24,7 +24,6 @@
     "20,163": "IF(ER13=1,\"処理終了解除\",IF(ER15=1,\"保証辞退解除\",IF(AND(EZ15>EZ11,EZ15<=EZ13),\"処理終了\",\"保証辞退\")))",
     "22,163": "IF(ER13=1,1,IF(ER15=1,2,IF(AND(EZ15>EZ11,EZ15<=EZ13),3,4)))",
     "7,128": "IFERROR(GETURLQUERYVALUE(\"index\"),\"\")",
-    "22,147": "IFERROR(ODATA(\"v_order_follow_count?$select=フォローカウント&$filter=申込ID eq \"&IF(ISBLANK(申込ID),\"null\",申込ID)),0)",
     "29,155": "\"（更新者）\"&EY30"
   },
   "CustomNames": [

@@ -4,8 +4,8 @@
   "RowCount": 68,
   "Formulas": {
     "15,69": "IF(X9=1,TODAY(),DATE(2999,12,31))",
-    "21,78": "SUMIF(BS23,3,BT23)",
-    "21,76": "SUMIF(BS23,2,BT23)",
+    "24,75": "SUMIF(BS23,3,BT23)",
+    "24,74": "SUMIF(BS23,2,BT23)",
     "50,63": "SUMIFS(BP$45,BN$45,BI51,BO$45,\"<>1\")",
     "4,70": "ROW(BS5)",
     "54,62": "SUMIFS(BP$45,BN$45,BI55,BO$45,1)",
