@@ -1,0 +1,170 @@
+{
+  "Name": "調査後発履歴更新処理",
+  "Enabled": true,
+  "Triggers": [
+    {
+      "$type": "Forguncy.SaveLoad.PostRequestTriggerSaveData, ServerDesignerCommon",
+      "Permission": {
+        "PermissionData": {
+          "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionData, Forguncy.RbacPermission.Core",
+          "permissionResource": {
+            "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionResource, Forguncy.RbacPermission.Core"
+          },
+          "permissionBindings": [
+            {
+              "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionBinding, Forguncy.RbacPermission.Core",
+              "roleNames": [
+                "FGC_LoginUser"
+              ]
+            }
+          ]
+        }
+      },
+      "Parameters": [
+        {
+          "Name": "P_申込ID",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_調査ID",
+          "DataValidationInfo": {}
+        }
+      ]
+    }
+  ],
+  "Commands": [
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "調査履歴",
+      "TableValue": {
+        "TableName": "t_object_survey",
+        "BindingInfos": [
+          {
+            "GUID": "2ef91f94-dfc0-4ff0-9dc3-cb6164b66091",
+            "BindingInfo": {
+              "TableName": "t_object_survey",
+              "ColumnName": "survey_id",
+              "GUID": "29a172f0-830c-4328-bf8b-ee083603493d"
+            },
+            "ColumnName": "調査ID"
+          }
+        ],
+        "SqlCondition": {
+          "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+          "SubConditions": [
+            {
+              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+              "ColumnBindingInfo": {
+                "TableName": "t_object_survey",
+                "ColumnName": "object_order_id",
+                "GUID": "3aa269bd-4b3a-4aac-a53b-7976b1ba4b3e"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_申込ID"
+              }
+            },
+            {
+              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+              "CompareType": 1,
+              "ColumnBindingInfo": {
+                "TableName": "t_object_survey",
+                "ColumnName": "survey_id",
+                "GUID": "bb447f5f-e490-4f21-bce1-7402e402a72b"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_調査ID"
+              }
+            }
+          ]
+        },
+        "NullFormulaValueQueryPolicy": 0
+      },
+      "ID": "8580398e26a84e15a886c9dd152ad9ce"
+    },
+    {
+      "$type": "Forguncy.Model.LoopCommand, ServerDesignerCommon",
+      "LoopInfo": {
+        "$type": "Forguncy.Model.CountLoopInfo, ServerDesignerCommon",
+        "LoopCount": {
+          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+          "SerializeProperty": "=調査履歴"
+        },
+        "LoopItemParamName": "Item"
+      },
+      "CommandList": [
+        {
+          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+          "ParameterName": "後発履歴カウント",
+          "TableValue": {
+            "TableName": "t_object_survey",
+            "TableValueType": 3,
+            "SqlCondition": {
+              "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+              "SubConditions": [
+                {
+                  "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                  "ColumnBindingInfo": {
+                    "TableName": "t_object_survey",
+                    "ColumnName": "object_order_id",
+                    "GUID": "c6353461-450b-4d3e-8fa0-84f2ee556b89"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=P_申込ID"
+                  }
+                },
+                {
+                  "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                  "CompareType": 2,
+                  "ColumnBindingInfo": {
+                    "TableName": "t_object_survey",
+                    "ColumnName": "survey_id",
+                    "GUID": "28860c14-04fc-43f2-80ff-5cf125443f38"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=Item.調査ID"
+                  }
+                }
+              ]
+            }
+          },
+          "ID": "af73f238892b40a6a19e7994247b2057"
+        },
+        {
+          "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+          "TableName": "t_object_survey",
+          "ShowConfirm": false,
+          "RowsToUpdate": 1,
+          "RowsToUpdateCondition": {
+            "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+            "ColumnBindingInfo": {
+              "TableName": "t_object_survey",
+              "ColumnName": "survey_id",
+              "GUID": "a2df0a28-55ae-4f02-8d8f-674cbe324153"
+            },
+            "Value": {
+              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+              "SerializeProperty": "=Item.調査ID"
+            }
+          },
+          "UpdateBindingValues": [
+            {
+              "BindingInfo": {
+                "TableName": "t_object_survey",
+                "ColumnName": "later_count",
+                "GUID": "b3002382-1afd-4928-a9bc-ca6046882753"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=後発履歴カウント"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

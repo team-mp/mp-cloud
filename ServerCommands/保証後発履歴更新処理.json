@@ -1,0 +1,171 @@
+{
+  "Name": "保証後発履歴更新処理",
+  "Enabled": true,
+  "Triggers": [
+    {
+      "$type": "Forguncy.SaveLoad.PostRequestTriggerSaveData, ServerDesignerCommon",
+      "Permission": {
+        "PermissionData": {
+          "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionData, Forguncy.RbacPermission.Core",
+          "permissionResource": {
+            "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionResource, Forguncy.RbacPermission.Core"
+          },
+          "permissionBindings": [
+            {
+              "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionBinding, Forguncy.RbacPermission.Core",
+              "roleNames": [
+                "FGC_LoginUser"
+              ]
+            }
+          ]
+        }
+      },
+      "Parameters": [
+        {
+          "Name": "P_申込ID",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_保証ID",
+          "DataValidationInfo": {}
+        }
+      ]
+    }
+  ],
+  "Commands": [
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "保証履歴",
+      "TableValue": {
+        "TableName": "t_object_warranty",
+        "BindingInfos": [
+          {
+            "GUID": "928e9abb-a855-428b-bc65-c6694c2cbe8b",
+            "BindingInfo": {
+              "TableName": "t_object_warranty",
+              "ColumnName": "warranty_id",
+              "GUID": "1b19c82a-3f56-461b-bf04-20603ca74abf"
+            },
+            "ColumnName": "保証ID"
+          }
+        ],
+        "SqlCondition": {
+          "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+          "SubConditions": [
+            {
+              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+              "ColumnBindingInfo": {
+                "TableName": "t_object_warranty",
+                "ColumnName": "object_order_id",
+                "GUID": "988066ff-b7e8-4fc7-8876-935a889d9e3f"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_申込ID"
+              }
+            },
+            {
+              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+              "CompareType": 1,
+              "ColumnBindingInfo": {
+                "TableName": "t_object_warranty",
+                "ColumnName": "warranty_id",
+                "GUID": "52147d0c-9270-46e8-afd6-63665c9e415d"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_保証ID"
+              }
+            }
+          ]
+        },
+        "NullFormulaValueQueryPolicy": 0
+      },
+      "ID": "5de90450d3e942b3a3035f08e0056d0c"
+    },
+    {
+      "$type": "Forguncy.Model.LoopCommand, ServerDesignerCommon",
+      "LoopInfo": {
+        "$type": "Forguncy.Model.CountLoopInfo, ServerDesignerCommon",
+        "LoopCount": {
+          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+          "SerializeProperty": "=保証履歴"
+        },
+        "LoopItemParamName": "Item"
+      },
+      "CommandList": [
+        {
+          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+          "ParameterName": "後発履歴カウント",
+          "TableValue": {
+            "TableName": "t_object_warranty",
+            "TableValueType": 3,
+            "SqlCondition": {
+              "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+              "SubConditions": [
+                {
+                  "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                  "ColumnBindingInfo": {
+                    "TableName": "t_object_warranty",
+                    "ColumnName": "object_order_id",
+                    "GUID": "f2f27686-cdab-4642-a0d7-a82b3025f4a8"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=P_申込ID"
+                  }
+                },
+                {
+                  "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                  "CompareType": 2,
+                  "ColumnBindingInfo": {
+                    "TableName": "t_object_warranty",
+                    "ColumnName": "warranty_id",
+                    "GUID": "afa5ac8f-05ff-41d8-9e59-a0e962912e7e"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=Item.保証ID"
+                  }
+                }
+              ]
+            }
+          },
+          "ID": "76c5a8441c0e49b7a69651e9fc9261a3"
+        },
+        {
+          "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+          "TableName": "t_object_warranty",
+          "ShowConfirm": false,
+          "RowsToUpdate": 1,
+          "RowsToUpdateCondition": {
+            "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+            "ColumnBindingInfo": {
+              "TableName": "t_object_warranty",
+              "ColumnName": "warranty_id",
+              "GUID": "1ff1d8ec-88c7-4192-8a25-28ed282369d1"
+            },
+            "Value": {
+              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+              "SerializeProperty": "=Item.保証ID"
+            }
+          },
+          "UpdateBindingValues": [
+            {
+              "BindingInfo": {
+                "TableName": "t_object_warranty",
+                "ColumnName": "later_count",
+                "GUID": "50abd5f8-e632-4187-adf5-27f43a3ebe99"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=後発履歴カウント"
+              }
+            }
+          ],
+          "Comments": "後発履歴を更新する"
+        }
+      ]
+    }
+  ]
+}

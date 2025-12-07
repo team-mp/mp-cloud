@@ -1,0 +1,171 @@
+{
+  "Name": "解析後発履歴更新処理",
+  "Enabled": true,
+  "Triggers": [
+    {
+      "$type": "Forguncy.SaveLoad.PostRequestTriggerSaveData, ServerDesignerCommon",
+      "Permission": {
+        "PermissionData": {
+          "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionData, Forguncy.RbacPermission.Core",
+          "permissionResource": {
+            "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionResource, Forguncy.RbacPermission.Core"
+          },
+          "permissionBindings": [
+            {
+              "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionBinding, Forguncy.RbacPermission.Core",
+              "roleNames": [
+                "FGC_LoginUser"
+              ]
+            }
+          ]
+        }
+      },
+      "Parameters": [
+        {
+          "Name": "P_申込ID",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_解析ID",
+          "DataValidationInfo": {}
+        }
+      ]
+    }
+  ],
+  "Commands": [
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "解析履歴",
+      "TableValue": {
+        "TableName": "t_object_analysis",
+        "BindingInfos": [
+          {
+            "GUID": "b2e7bc3b-0a8c-4509-a498-b7f6d77f4677",
+            "BindingInfo": {
+              "TableName": "t_object_analysis",
+              "ColumnName": "analysis_id",
+              "GUID": "0fad25cf-eae9-4ca9-b17f-c167c42e11d0"
+            },
+            "ColumnName": "解析ID"
+          }
+        ],
+        "SqlCondition": {
+          "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+          "SubConditions": [
+            {
+              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+              "ColumnBindingInfo": {
+                "TableName": "t_object_analysis",
+                "ColumnName": "object_order_id",
+                "GUID": "85ef7fe7-bb03-4993-a5da-4d8c3d75409a"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_申込ID"
+              }
+            },
+            {
+              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+              "CompareType": 1,
+              "ColumnBindingInfo": {
+                "TableName": "t_object_analysis",
+                "ColumnName": "analysis_id",
+                "GUID": "20b9c00e-1799-47f6-8cb2-16017c505f07"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_解析ID"
+              }
+            }
+          ]
+        },
+        "NullFormulaValueQueryPolicy": 0
+      },
+      "ID": "174bca7e5f154cf4b642d57933238613"
+    },
+    {
+      "$type": "Forguncy.Model.LoopCommand, ServerDesignerCommon",
+      "LoopInfo": {
+        "$type": "Forguncy.Model.CountLoopInfo, ServerDesignerCommon",
+        "LoopCount": {
+          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+          "SerializeProperty": "=解析履歴"
+        },
+        "LoopItemParamName": "Item"
+      },
+      "CommandList": [
+        {
+          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+          "ParameterName": "後発履歴カウント",
+          "TableValue": {
+            "TableName": "t_object_analysis",
+            "TableValueType": 3,
+            "SqlCondition": {
+              "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+              "SubConditions": [
+                {
+                  "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                  "ColumnBindingInfo": {
+                    "TableName": "t_object_analysis",
+                    "ColumnName": "object_order_id",
+                    "GUID": "9f9e80f7-4168-4c20-b8f8-196fad728624"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=P_申込ID"
+                  }
+                },
+                {
+                  "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                  "CompareType": 2,
+                  "ColumnBindingInfo": {
+                    "TableName": "t_object_analysis",
+                    "ColumnName": "analysis_id",
+                    "GUID": "815c065b-b35b-4732-9d0b-51223fb3ec6e"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=Item.解析ID"
+                  }
+                }
+              ]
+            }
+          },
+          "ID": "66f2c2b254204de994be9510254d95ac"
+        },
+        {
+          "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+          "TableName": "t_object_analysis",
+          "ShowConfirm": false,
+          "RowsToUpdate": 1,
+          "RowsToUpdateCondition": {
+            "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+            "ColumnBindingInfo": {
+              "TableName": "t_object_analysis",
+              "ColumnName": "analysis_id",
+              "GUID": "78477ffe-6230-414c-973f-07e75344e45e"
+            },
+            "Value": {
+              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+              "SerializeProperty": "=Item.解析ID"
+            }
+          },
+          "UpdateBindingValues": [
+            {
+              "BindingInfo": {
+                "TableName": "t_object_analysis",
+                "ColumnName": "later_count",
+                "GUID": "05fa4925-6869-4ee5-8af5-e5b566b95085"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=後発履歴カウント"
+              }
+            }
+          ],
+          "Comments": "後発履歴を更新する"
+        }
+      ]
+    }
+  ]
+}

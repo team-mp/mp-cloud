@@ -3,7 +3,6 @@
   "ColumnCount": 133,
   "RowCount": 84,
   "Formulas": {
-    "33,105": "IFERROR(ODATA(\"v_surveying_later_count?$select=後発件数&$filter=測量ID eq \"&IF(ISBLANK(BB34),\"null\",BB34)),0)",
     "33,54": "$BA$39-ROW(BA34)+1",
     "33,58": "IF(BD34=1,\"以降\",\"～\")",
     "38,52": "COUNT(BB34)",

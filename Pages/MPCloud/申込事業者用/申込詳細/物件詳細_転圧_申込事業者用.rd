@@ -13,8 +13,7 @@
     "12,123": "\"転圧見積書(\"&DQ13&\")\"",
     "12,119": "IFERROR(ODATA(\"v_compaction_file_count?$select=転圧設計図数_申込事業者&$filter=転圧ID eq \"&IF(ISBLANK(CE13),\"null\",CE13)),0)",
     "12,120": "IFERROR(ODATA(\"v_compaction_file_count?$select=転圧見積書数_申込事業者&$filter=転圧ID eq \"&IF(ISBLANK(CE13),\"null\",CE13)),0)",
-    "12,121": "IFERROR(ODATA(\"v_compaction_file_count?$select=転圧報告書数_申込事業者&$filter=転圧ID eq \"&IF(ISBLANK(CE13),\"null\",CE13)),0)",
-    "12,128": "IFERROR(ODATA(\"v_compaction_later_count?$select=後発件数&$filter=転圧ID eq \"&IF(ISBLANK(CE13),\"null\",CE13)),0)"
+    "12,121": "IFERROR(ODATA(\"v_compaction_file_count?$select=転圧報告書数_申込事業者&$filter=転圧ID eq \"&IF(ISBLANK(CE13),\"null\",CE13)),0)"
   },
   "ArrayFormulas": {
     "8,102,1,4": "ODATA(\"m_customer_default?$select=no_compaction_estimate_flg,comaction_other_construction_flg,compaction_re_survey_flg,surplus_soil_disposal_flg&$filter=customer_id eq \"&IF(ISBLANK(DP9),\"null\",DP9))"

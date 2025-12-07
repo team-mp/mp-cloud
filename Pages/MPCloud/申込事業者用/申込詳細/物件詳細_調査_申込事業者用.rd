@@ -10,8 +10,7 @@
     "19,103": "\"調査報告書(\"&CY20&\")\"",
     "19,70": "IF(BP20=1,\"以降\",\"～\")",
     "19,63": "$BH$25-ROW(BH20)+1",
-    "19,102": "IFERROR(ODATA(\"v_survey_file_count?$select=調査報告書数_申込事業者&$filter=調査ID eq \"&IF(ISBLANK(BK20),\"null\",BK20)),0)",
-    "19,107": "ODATA(\"v_survey_later_count?$select=後発件数&$filter=調査ID eq \"&IF(ISBLANK(BK20),\"null\",BK20))"
+    "19,102": "IFERROR(ODATA(\"v_survey_file_count?$select=調査報告書数_申込事業者&$filter=調査ID eq \"&IF(ISBLANK(BK20),\"null\",BK20)),0)"
   },
   "CustomNames": [
     {

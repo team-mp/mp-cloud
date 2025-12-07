@@ -30,6 +30,25 @@
   ],
   "Commands": [
     {
+      "$type": "Forguncy.Model.RequestServerCommand, ServerDesignerCommon",
+      "ServerCommandName": "個人フォルダパス取得",
+      "ReturnPropertiesTo": [
+        {
+          "ResultPropertyName": "R_個人フォルダパス名",
+          "ResultTo": {
+            "SerializeProperty": "個人フォルダフルパス名"
+          },
+          "Remark": "サーバーのフォルダパスを返却"
+        },
+        {
+          "ResultPropertyName": "P_個人フォルダ名",
+          "Remark": "ユーザーIDを返却"
+        }
+      ],
+      "RefreshAfterFinish": true,
+      "CheckDataValidation": true
+    },
+    {
       "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
       "ParameterName": "解析EXCEL",
       "TableValue": {
@@ -37,7 +56,7 @@
         "TableValueType": 1,
         "BindingInfos": [
           {
-            "GUID": "e4e4c524-87c6-4cb0-a47e-143eb2cdbacc",
+            "GUID": "059b32f0-22bc-4596-b521-f0a91d2e042a",
             "BindingInfo": {
               "TableName": "m_analysis_excel_version",
               "ColumnName": "file_name",
@@ -46,7 +65,7 @@
             "ColumnName": "ファイル名"
           },
           {
-            "GUID": "a9914b0b-69a9-467c-b8cb-70070bc56294",
+            "GUID": "d698be90-e74c-49d6-b88d-bf9b56baed08",
             "BindingInfo": {
               "TableName": "m_analysis_excel_version",
               "ColumnName": "file_path_name",
@@ -55,7 +74,7 @@
             "ColumnName": "ファイルパス名"
           },
           {
-            "GUID": "f0e510ea-7fed-4408-89aa-dd793bf5dd6b",
+            "GUID": "2de5365f-6997-4b83-8a10-b96c8dd88b45",
             "BindingInfo": {
               "TableName": "m_analysis_excel_version",
               "ColumnName": "save_file_name",
@@ -77,18 +96,134 @@
           }
         }
       },
-      "ID": "f616ff25d87d46878ef41899846a4002"
+      "ID": "e02c40178bee4babad2c50ee1fb92aeb"
     },
     {
-      "$type": "OperateFilesCommand.DownloadFileCommand, OperateFilesCommand",
-      "FilePath": {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "保存ファイルフルパス名",
+      "ParameterValue": {
         "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
         "SerializeProperty": "=解析EXCEL.ファイルパス名&解析EXCEL.保存ファイル名"
       },
-      "DownloadFileName": {
+      "ID": "f241c982ff7e4e42a0f58a1913f3d10a"
+    },
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "DropBoxフルパス名",
+      "ParameterValue": {
         "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
-        "SerializeProperty": "=解析EXCEL.ファイル名"
-      }
+        "SerializeProperty": "=SUBSTITUTE(保存ファイルフルパス名,\"C:\\MP-Cloud\\Dropbox\",\"\")"
+      },
+      "ID": "3566ae454f2a4fce951759b99531e1d1"
+    },
+    {
+      "$type": "OperateFilesCommand.GetFileInformation, OperateFilesCommand",
+      "FilePath": {
+        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+        "SerializeProperty": "=保存ファイルフルパス名"
+      },
+      "FileInfomationType": 5,
+      "ToParameterName": "ファイル有無"
+    },
+    {
+      "$type": "OperateFilesCommand.GetFileInformation, OperateFilesCommand",
+      "FilePath": {
+        "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+        "SerializeProperty": "=保存ファイルフルパス名"
+      },
+      "ToParameterName": "ファイル名"
+    },
+    {
+      "$type": "Forguncy.Model.ConditionCommand, ServerDesignerCommon",
+      "ConditionAndCommandPairList": [
+        {
+          "Condition": {
+            "$type": "Forguncy.Model.IfCondition, ServerDesignerCommon",
+            "param": {
+              "$type": "Forguncy.Model.IfConditionServerSiteParam, ServerDesignerCommon",
+              "ParamObject": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=ファイル有無"
+              }
+            },
+            "value": "True"
+          },
+          "CommandList": [
+            {
+              "$type": "Forguncy.Model.CatchExceptionCommand, ServerDesignerCommon",
+              "TryCommandPart": {
+                "CommandList": [
+                  {
+                    "$type": "OperateFilesCommand.CloudStorage.DownloadCloudFileToServer, OperateFilesCommand",
+                    "FilePath": {
+                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                      "SerializeProperty": "=DropBoxフルパス名"
+                    },
+                    "LocalFolderPath": {
+                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                      "SerializeProperty": "=個人フォルダフルパス名"
+                    },
+                    "Type": "DropboxStrage"
+                  }
+                ]
+              },
+              "CatchCommandPart": {
+                "CommandList": [
+                  {
+                    "$type": "OperateFilesCommand.CopyFileCommand, OperateFilesCommand",
+                    "FilePath": {
+                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                      "SerializeProperty": "=保存ファイルフルパス名"
+                    },
+                    "TargetFolderPath": {
+                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                      "SerializeProperty": "=個人フォルダフルパス名"
+                    }
+                  }
+                ]
+              },
+              "FinallyCommandPart": {
+                "CommandList": [
+                  {
+                    "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+                    "ParameterName": "ダウンロードファイル名",
+                    "ParameterValue": {
+                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                      "SerializeProperty": "=解析EXCEL.ファイル名"
+                    },
+                    "ID": "145c806e50de497f915437fb7f1e3394"
+                  },
+                  {
+                    "$type": "OperateFilesCommand.DownloadFileCommand, OperateFilesCommand",
+                    "FilePath": {
+                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                      "SerializeProperty": "=個人フォルダフルパス名&ファイル名"
+                    },
+                    "DownloadFileName": {
+                      "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                      "SerializeProperty": "=ダウンロードファイル名"
+                    }
+                  }
+                ]
+              }
+            }
+          ],
+          "ID": "6626d888-976b-42c9-85ed-55ddd5e4f073"
+        },
+        {
+          "CommandList": [
+            {
+              "$type": "Forguncy.Model.ReturnCommand, ServerDesignerCommon",
+              "ErrorCode": "100",
+              "Message": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=\"「\"&解析EXCEL.ファイル名&\"」は存在しませんでした\"&CHAR(10)&\"システム管理者へお問合せ下さい\""
+              }
+            }
+          ],
+          "ID": "fda8c8ce-5581-4736-b5bb-afddf9f53273"
+        }
+      ]
     }
   ]
 }

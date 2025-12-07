@@ -1,0 +1,157 @@
+{
+  "Name": "見積送付期限更新処理",
+  "Enabled": true,
+  "Triggers": [
+    {
+      "$type": "Forguncy.SaveLoad.PostRequestTriggerSaveData, ServerDesignerCommon",
+      "Permission": {
+        "PermissionData": {
+          "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionData, Forguncy.RbacPermission.Core",
+          "permissionResource": {
+            "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionResource, Forguncy.RbacPermission.Core"
+          },
+          "permissionBindings": [
+            {
+              "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionBinding, Forguncy.RbacPermission.Core",
+              "roleNames": [
+                "FGC_LoginUser"
+              ]
+            }
+          ]
+        }
+      },
+      "Parameters": [
+        {
+          "Name": "P_工事ID",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_申込ID",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_見積送付期限日",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_見積至急フラグ",
+          "DataValidationInfo": {}
+        }
+      ]
+    }
+  ],
+  "Commands": [
+    {
+      "$type": "Forguncy.Model.ServerTransactionCommand, ServerDesignerCommon",
+      "CommandList": [
+        {
+          "$type": "Forguncy.Model.RequestServerCommand, ServerDesignerCommon",
+          "ServerCommandName": "登録更新ラベル取得",
+          "Parameters": [
+            {
+              "$type": "Forguncy.Model.RequestServerCommandObjectParam, ServerDesignerCommon",
+              "ParamName": "P_ユーザーID"
+            }
+          ],
+          "ReturnPropertiesTo": [
+            {
+              "ResultPropertyName": "R_ラベル名",
+              "ResultTo": {
+                "SerializeProperty": "V_最終更新ラベル"
+              }
+            },
+            {
+              "ResultPropertyName": "R_外部ユーザーフラグ"
+            }
+          ],
+          "RefreshAfterFinish": true,
+          "CheckDataValidation": true
+        },
+        {
+          "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+          "TableName": "t_object_construction",
+          "ShowConfirm": false,
+          "RowsToUpdate": 1,
+          "RowsToUpdateCondition": {
+            "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+            "ColumnBindingInfo": {
+              "TableName": "t_object_construction",
+              "ColumnName": "construction_id",
+              "GUID": "a1e55928-ea60-4f35-a7cf-1cef2d1bf08f"
+            },
+            "Value": {
+              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+              "SerializeProperty": "=P_工事ID"
+            }
+          },
+          "UpdateBindingValues": [
+            {
+              "BindingInfo": {
+                "TableName": "t_object_construction",
+                "ColumnName": "estimate_send_period_date",
+                "GUID": "ced5174d-184e-4fdb-b086-c23d6ae25424"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_見積送付期限日"
+              }
+            },
+            {
+              "BindingInfo": {
+                "TableName": "t_object_construction",
+                "ColumnName": "estimate_urgent_flg",
+                "GUID": "2b4a8851-226e-4fec-974f-f62294cef1be"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_見積至急フラグ"
+              }
+            },
+            {
+              "BindingInfo": {
+                "TableName": "t_object_construction",
+                "ColumnName": "estimate_period_update_label",
+                "GUID": "c1376602-f08a-4c3e-9b50-ddc1b4ecd9cf"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=V_最終更新ラベル"
+              }
+            }
+          ]
+        },
+        {
+          "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+          "TableName": "t_object_construction_estimate",
+          "ShowConfirm": false,
+          "RowsToUpdate": 1,
+          "RowsToUpdateCondition": {
+            "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+            "ColumnBindingInfo": {
+              "TableName": "t_object_construction_estimate",
+              "ColumnName": "object_order_id",
+              "GUID": "4d3872fd-9df9-4402-92ef-f68de5fb0e2d"
+            },
+            "Value": {
+              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+              "SerializeProperty": "=P_申込ID"
+            }
+          },
+          "UpdateBindingValues": [
+            {
+              "BindingInfo": {
+                "TableName": "t_object_construction_estimate",
+                "ColumnName": "estimate_urgent_flg",
+                "GUID": "fe38d862-0f76-4482-8110-42daa4cafbc2"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_見積至急フラグ"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

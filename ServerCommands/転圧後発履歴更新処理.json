@@ -1,0 +1,171 @@
+{
+  "Name": "転圧後発履歴更新処理",
+  "Enabled": true,
+  "Triggers": [
+    {
+      "$type": "Forguncy.SaveLoad.PostRequestTriggerSaveData, ServerDesignerCommon",
+      "Permission": {
+        "PermissionData": {
+          "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionData, Forguncy.RbacPermission.Core",
+          "permissionResource": {
+            "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionResource, Forguncy.RbacPermission.Core"
+          },
+          "permissionBindings": [
+            {
+              "$type": "Forguncy.RbacPermission.Core.Impl.ServerCommand.ServerCommandPermissionBinding, Forguncy.RbacPermission.Core",
+              "roleNames": [
+                "FGC_LoginUser"
+              ]
+            }
+          ]
+        }
+      },
+      "Parameters": [
+        {
+          "Name": "P_申込ID",
+          "DataValidationInfo": {}
+        },
+        {
+          "Name": "P_転圧ID",
+          "DataValidationInfo": {}
+        }
+      ]
+    }
+  ],
+  "Commands": [
+    {
+      "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+      "ParameterName": "転圧履歴",
+      "TableValue": {
+        "TableName": "t_object_compaction",
+        "BindingInfos": [
+          {
+            "GUID": "798f0aea-1886-43b6-96fc-935eaafcb62a",
+            "BindingInfo": {
+              "TableName": "t_object_compaction",
+              "ColumnName": "compaction_id",
+              "GUID": "80639b9c-2059-4807-9a1a-1df76d1d4c5a"
+            },
+            "ColumnName": "転圧ID"
+          }
+        ],
+        "SqlCondition": {
+          "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+          "SubConditions": [
+            {
+              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+              "ColumnBindingInfo": {
+                "TableName": "t_object_compaction",
+                "ColumnName": "object_order_id",
+                "GUID": "b99bd3f7-0662-4335-95f8-5e81f575200d"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_申込ID"
+              }
+            },
+            {
+              "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+              "CompareType": 1,
+              "ColumnBindingInfo": {
+                "TableName": "t_object_compaction",
+                "ColumnName": "compaction_id",
+                "GUID": "f9e106ff-983b-4ba6-875b-ddacd30b1281"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=P_転圧ID"
+              }
+            }
+          ]
+        },
+        "NullFormulaValueQueryPolicy": 0
+      },
+      "ID": "674044ae5cf74c3cb41d8ed5407b2235"
+    },
+    {
+      "$type": "Forguncy.Model.LoopCommand, ServerDesignerCommon",
+      "LoopInfo": {
+        "$type": "Forguncy.Model.CountLoopInfo, ServerDesignerCommon",
+        "LoopCount": {
+          "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+          "SerializeProperty": "=転圧履歴"
+        },
+        "LoopItemParamName": "Item"
+      },
+      "CommandList": [
+        {
+          "$type": "Forguncy.Model.Commands.SetParameterCommand, ServerDesignerCommon",
+          "ParameterName": "後発履歴カウント",
+          "TableValue": {
+            "TableName": "t_object_compaction",
+            "TableValueType": 3,
+            "SqlCondition": {
+              "$type": "ForguncyDataAccess.RelationSqlCondition, ForguncyDataAccess",
+              "SubConditions": [
+                {
+                  "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                  "ColumnBindingInfo": {
+                    "TableName": "t_object_compaction",
+                    "ColumnName": "object_order_id",
+                    "GUID": "37d8e090-9fcd-4a4a-add7-48fb8b0f97de"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=P_申込ID"
+                  }
+                },
+                {
+                  "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+                  "CompareType": 2,
+                  "ColumnBindingInfo": {
+                    "TableName": "t_object_compaction",
+                    "ColumnName": "compaction_id",
+                    "GUID": "554759b1-1ba5-4d4b-94c2-3269842ff3ca"
+                  },
+                  "Value": {
+                    "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                    "SerializeProperty": "=Item.転圧ID"
+                  }
+                }
+              ]
+            }
+          },
+          "ID": "7b3b43d200d047a5a28ecb704cb7dd82"
+        },
+        {
+          "$type": "Forguncy.Model.UpdateDataTableCommand, ServerDesignerCommon",
+          "TableName": "t_object_compaction",
+          "ShowConfirm": false,
+          "RowsToUpdate": 1,
+          "RowsToUpdateCondition": {
+            "$type": "ForguncyDataAccess.GeneralCESqlCondition, ForguncyDataAccess",
+            "ColumnBindingInfo": {
+              "TableName": "t_object_compaction",
+              "ColumnName": "compaction_id",
+              "GUID": "14fa9c45-34eb-40e1-9e0c-639537358ec0"
+            },
+            "Value": {
+              "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+              "SerializeProperty": "=Item.転圧ID"
+            }
+          },
+          "UpdateBindingValues": [
+            {
+              "BindingInfo": {
+                "TableName": "t_object_compaction",
+                "ColumnName": "later_count",
+                "GUID": "9548e678-ee1e-4a9a-9400-7c14b64b4dba"
+              },
+              "Value": {
+                "$type": "Forguncy.Model.FormulaReferObject, ServerDesignerCommon",
+                "SerializeProperty": "=後発履歴カウント"
+              }
+            }
+          ],
+          "Comments": "後発履歴を更新する"
+        }
+      ]
+    }
+  ]
+}

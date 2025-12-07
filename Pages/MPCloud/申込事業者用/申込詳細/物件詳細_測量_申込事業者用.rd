@@ -9,7 +9,6 @@
     "29,62": "COUNT(BM25)",
     "24,69": "IF(BO25=1,\"以降\",\"～\")",
     "24,65": "$BK$30-ROW(BK25)+1",
-    "24,116": "ODATA(\"v_surveying_later_count?$select=後発件数&$filter=測量ID eq \"&IF(ISBLANK(BM25),\"null\",BM25))",
     "24,109": "IFERROR(ODATA(\"v_surveying_file_count?$select=測量報告書（納品用）数_申込事業者&$filter=測量ID eq \"&IF(ISBLANK(BM25),\"null\",BM25)),0)",
     "24,111": "IFERROR(ODATA(\"v_surveying_file_count?$select=仮杭報告書（納品用）数_申込事業者&$filter=測量ID eq \"&IF(ISBLANK(BM25),\"null\",BM25)),0)"
   },

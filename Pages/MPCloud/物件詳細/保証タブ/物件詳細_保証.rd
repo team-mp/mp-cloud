@@ -4,7 +4,6 @@
   "RowCount": 58,
   "Formulas": {
     "38,54": "COUNT(BD34)",
-    "33,96": "IFERROR(ODATA(\"v_warranty_later_count?$select=後発件数&$filter=保証ID eq \"&IF(ISBLANK(BD34),\"null\",BD34)),0)",
     "33,92": "\"保証ファイル(\"&CN34&\")\"",
     "33,91": "IFERROR(ODATA(\"v_warranty_file_count?$select=地盤保証書数&$filter=保証ID eq \"&IF(ISBLANK(BD34),\"null\",BD34)),0)",
     "33,89": "IF(OR(CA34=1,CB34=1,CC34=1),1,0)",
@@ -15,7 +14,6 @@
     "19,61": "$BU$19-ROW(BI20)+1",
     "26,94": "ODATA(\"m_warranty_status?$select=warranty_status_id&$filter=warranty_check_flg eq 1\")",
     "19,64": "IF(BL20=1,\"処理済み\",IF(BL20=9,\"依頼取り下げ\",\"発行依頼中\"))",
-    "14,79": "IFERROR(ODATA(\"v_insurance_later_count?$select=後発件数&$filter=付保ID eq \"&IF(ISBLANK(BI15),\"null\",BI15)),0)",
     "14,71": "\"添付(\"&BS15&\")\"",
     "14,70": "IFERROR(ODATA(\"v_insurance_file_count?$select=付保証明書数&$filter=付保ID eq \"&IF(ISBLANK(BI15),\"null\",BI15)),0)",
     "14,63": "$CD$14-ROW(BJ15)+1",

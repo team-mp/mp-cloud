@@ -17,8 +17,7 @@
     "7,72": "COUNTIF(BJ8,\"<>\")",
     "7,62": "$BU$8-ROW(BJ8)+1",
     "7,66": "IF(BN8=1,\"処理済み\",IF(BN8=9,\"依頼取下げ\",\"発行依頼中\"))",
-    "21,89": "IFERROR(ODATA(\"v_warranty_file_count?$select=地盤保証書数_申込事業者&$filter=保証ID eq \"&IF(ISBLANK(BF22),\"null\",BF22)),0)",
-    "21,93": "IFERROR(ODATA(\"v_warranty_later_count?$select=後発件数&$filter=保証ID eq \"&IF(ISBLANK(BF22),\"null\",BF22)),0)"
+    "21,89": "IFERROR(ODATA(\"v_warranty_file_count?$select=地盤保証書数_申込事業者&$filter=保証ID eq \"&IF(ISBLANK(BF22),\"null\",BF22)),0)"
   },
   "ArrayFormulas": {
     "1,55,1,5": "ODATA(\"m_customer_default?$select=warranty_period,warranty_mailing_flg,mailing_commission_flg,mailing_method_id,insurance_certificate_need_flg&$filter=customer_id eq \"&IF(ISBLANK(CJ15),\"null\",CJ15))"

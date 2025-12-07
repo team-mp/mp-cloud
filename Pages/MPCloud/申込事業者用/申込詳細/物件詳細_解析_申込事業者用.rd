@@ -14,8 +14,7 @@
     "12,52": "$AX$18-ROW(AX13)+1",
     "12,101": "IFERROR(ODATA(\"v_analysis_file_count?$select=地盤判定書数_申込事業者&$filter=解析ID eq \"&IF(ISBLANK(AZ13),\"null\",AZ13)),0)",
     "12,102": "IFERROR(ODATA(\"v_analysis_file_count?$select=検討書数_申込事業者&$filter=解析ID eq \"&IF(ISBLANK(AZ13),\"null\",AZ13)),0)",
-    "12,103": "IFERROR(ODATA(\"v_analysis_file_count?$select=調査報告書（納品用）数_申込事業者&$filter=解析ID eq \"&IF(ISBLANK(AZ13),\"null\",AZ13)),0)",
-    "12,111": "IFERROR(ODATA(\"v_analysis_later_count?$select=後発件数&$filter=解析ID eq \"&IF(ISBLANK(AZ13),\"null\",AZ13)),0)"
+    "12,103": "IFERROR(ODATA(\"v_analysis_file_count?$select=調査報告書（納品用）数_申込事業者&$filter=解析ID eq \"&IF(ISBLANK(AZ13),\"null\",AZ13)),0)"
   },
   "CustomNames": [
     {

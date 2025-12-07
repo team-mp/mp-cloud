@@ -4,7 +4,6 @@
   "RowCount": 65,
   "Formulas": {
     "28,121": "IF(AND(CT29=0,CW29=1),BE37,\"\")",
-    "28,120": "IFERROR(ODATA(\"v_analysis_later_count?$select=後発件数&$filter=解析ID eq \"&IF(ISBLANK(BC29),\"null\",BC29)),0)",
     "33,50": "COUNT(BC29)",
     "15,8": "AY18",
     "15,25": "BA18",

@@ -14,8 +14,7 @@
     "28,54": "$AX$34-ROW(AX29)+1",
     "28,92": "IFERROR(ODATA(\"v_survey_product_summary?$select=売上合計&$filter=調査ID eq \"&IF(ISBLANK(BB29),\"null\",BB29)),0)",
     "28,93": "IFERROR(ODATA(\"v_survey_product_summary?$select=仕入合計&$filter=調査ID eq \"&IF(ISBLANK(BB29),\"null\",BB29)),0)",
-    "28,95": "IFERROR(ODATA(\"v_survey_file_count?$select=ファイル数&$filter=調査ID eq \"&IF(ISBLANK(BB29),\"null\",BB29)),0)",
-    "28,100": "ODATA(\"v_survey_later_count?$select=後発件数&$filter=調査ID eq \"&IF(ISBLANK(BB29),\"null\",BB29))"
+    "28,95": "IFERROR(ODATA(\"v_survey_file_count?$select=ファイル数&$filter=調査ID eq \"&IF(ISBLANK(BB29),\"null\",BB29)),0)"
   },
   "CustomNames": [
     {

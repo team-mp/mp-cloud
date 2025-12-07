@@ -5,7 +5,6 @@
   "Formulas": {
     "24,127": "IF(OR(DO25=1,DP25=1),1,0)",
     "24,82": "$CC$30-ROW(CC25)+1",
-    "24,126": "IFERROR(ODATA(\"v_compaction_later_count?$select=後発件数&$filter=転圧ID eq \"&IF(ISBLANK(CD25),\"null\",CD25)),0)",
     "24,125": "IF(DU25<>\"\",\"最終更新日時：\"&DU25,\"\")",
     "11,27": "CZ21",
     "32,94": "転圧設計書ファイル属性ID&\",\"&転圧見積書ファイル属性ID",

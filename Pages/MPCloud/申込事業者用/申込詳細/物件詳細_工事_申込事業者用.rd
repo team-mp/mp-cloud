@@ -15,8 +15,7 @@
     "27,81": "COUNT(CF23)",
     "14,114": "COUNT(CD10)",
     "9,90": "IFERROR(ODATA(\"m_customer_specify_construction?$select=priority_type&$filter=customer_id eq \"&IF(ISBLANK(CL10),\"null\",CL10)&\" and construction_id eq \"&IF(ISBLANK(CI10),\"null\",CI10)),0)",
-    "22,114": "IFERROR(ODATA(\"v_construction_file_count?$select=改良工事報告書数_申込事業者&$filter=工事ID eq \"&IF(ISBLANK(CF23),\"null\",CF23)),0)",
-    "22,119": "IFERROR(ODATA(\"v_construction_later_count?$select=後発件数&$filter=工事ID eq \"&IF(ISBLANK(CF23),\"null\",CF23)),0)"
+    "22,114": "IFERROR(ODATA(\"v_construction_file_count?$select=改良工事報告書数_申込事業者&$filter=工事ID eq \"&IF(ISBLANK(CF23),\"null\",CF23)),0)"
   },
   "CustomNames": [
     {
